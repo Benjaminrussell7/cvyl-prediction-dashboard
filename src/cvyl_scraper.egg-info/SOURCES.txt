@@ -1,0 +1,17 @@
+README.md
+pyproject.toml
+src/cvyl_scraper/__init__.py
+src/cvyl_scraper/cleaning.py
+src/cvyl_scraper/cli.py
+src/cvyl_scraper/config.py
+src/cvyl_scraper/export.py
+src/cvyl_scraper/models.py
+src/cvyl_scraper/parsing.py
+src/cvyl_scraper/scraping.py
+src/cvyl_scraper.egg-info/PKG-INFO
+src/cvyl_scraper.egg-info/SOURCES.txt
+src/cvyl_scraper.egg-info/dependency_links.txt
+src/cvyl_scraper.egg-info/entry_points.txt
+src/cvyl_scraper.egg-info/requires.txt
+src/cvyl_scraper.egg-info/top_level.txt
+tests/test_cleaning.py

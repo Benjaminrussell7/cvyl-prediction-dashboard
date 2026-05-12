@@ -1,0 +1,2 @@
+[console_scripts]
+cvyl-scraper = cvyl_scraper.cli:main
