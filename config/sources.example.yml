@@ -1,0 +1,5 @@
+sources:
+  - name: cvyl_example
+    url: "https://example.com/cvyl/schedule"
+    season: 2026
+    division: "Example Division"
