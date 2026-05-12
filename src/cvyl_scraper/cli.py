@@ -7,6 +7,7 @@ import pandas as pd
 from cvyl_scraper.cleaning import build_canonical_games, split_by_status
 from cvyl_scraper.config import load_sources
 from cvyl_scraper.export import export_csv
+from cvyl_scraper.modeling import build_team_games
 from cvyl_scraper.parsing import parse_schedule_page
 from cvyl_scraper.scraping import fetch_page
 
@@ -31,6 +32,11 @@ def main() -> None:
         default="data/processed/cvyl_scheduled_games.csv",
         help="Scheduled games CSV output path.",
     )
+    parser.add_argument(
+        "--team-games-output",
+        default="data/processed/cvyl_team_games.csv",
+        help="Team-game modeling CSV output path.",
+    )
     args = parser.parse_args()
 
     sources = load_sources(args.config)
@@ -42,14 +48,17 @@ def main() -> None:
     raw_games = pd.concat(raw_frames, ignore_index=True) if raw_frames else pd.DataFrame()
     games = build_canonical_games(raw_games)
     completed, scheduled = split_by_status(games)
+    team_games = build_team_games(games)
 
     export_csv(games, args.output)
     export_csv(completed, args.completed_output)
     export_csv(scheduled, args.scheduled_output)
+    export_csv(team_games, args.team_games_output)
 
     print(f"Exported {len(games)} games to {args.output}")
     print(f"Exported {len(completed)} completed games to {args.completed_output}")
     print(f"Exported {len(scheduled)} scheduled games to {args.scheduled_output}")
+    print(f"Exported {len(team_games)} team-game rows to {args.team_games_output}")
 
 
 if __name__ == "__main__":
