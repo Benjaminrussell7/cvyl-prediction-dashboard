@@ -6,6 +6,7 @@ import pandas as pd
 
 from cvyl_scraper.cleaning import build_canonical_games, split_by_status
 from cvyl_scraper.config import load_sources
+from cvyl_scraper.discovery import discover_team_sources
 from cvyl_scraper.elo import build_elo_outputs
 from cvyl_scraper.export import export_csv
 from cvyl_scraper.modeling import build_team_games
@@ -54,7 +55,26 @@ def main() -> None:
         default=20.0,
         help="K-factor for ELO rating updates.",
     )
+    parser.add_argument(
+        "--discover-url",
+        default=None,
+        help="Optional CVYL divisions/teams page URL for team source discovery.",
+    )
+    parser.add_argument(
+        "--discovered-sources-output",
+        default="data/processed/discovered_sources.csv",
+        help="Discovered team sources CSV output path.",
+    )
     args = parser.parse_args()
+
+    if args.discover_url:
+        discovery_page = fetch_page(args.discover_url)
+        discovered_sources = discover_team_sources(discovery_page.html, discovery_page.url)
+        export_csv(discovered_sources, args.discovered_sources_output)
+        print(
+            f"Exported {len(discovered_sources)} discovered sources "
+            f"to {args.discovered_sources_output}"
+        )
 
     sources = load_sources(args.config)
     raw_frames = []

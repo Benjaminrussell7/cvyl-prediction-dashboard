@@ -3,7 +3,10 @@
 __all__ = [
     "cleaning",
     "config",
+    "discovery",
+    "elo",
     "export",
+    "modeling",
     "parsing",
     "scraping",
 ]
