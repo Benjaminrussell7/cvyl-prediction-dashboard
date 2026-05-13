@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import inspect
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -174,7 +173,12 @@ def render_matchup_predictor(
         st.warning("Choose two different teams.")
         return
 
-    prediction = build_matchup_prediction(team_a, team_b, ratings, team_games, sos, power_v2)
+    try:
+        prediction = build_matchup_prediction(team_a, team_b, ratings, team_games, sos, power_v2)
+    except Exception as exc:
+        LOGGER.exception("Matchup prediction failed for %s vs %s", team_a, team_b)
+        st.warning(f"Unable to generate this matchup prediction right now: {exc}")
+        return
 
     st.markdown(f"**Power Rating favorite:** {prediction.power_v2_predicted_winner}")
     prob1, prob2 = st.columns(2)
@@ -217,7 +221,6 @@ def build_matchup_prediction(
     sos: pd.DataFrame,
     power_v2: pd.DataFrame,
 ):
-    validate_predict_matchup_signature()
     return predict_matchup(
         team_a,
         team_b,
@@ -226,17 +229,6 @@ def build_matchup_prediction(
         sos if not sos.empty else None,
         power_v2 if not power_v2.empty else None,
     )
-
-
-def validate_predict_matchup_signature() -> None:
-    signature = inspect.signature(predict_matchup)
-    parameter_names = list(signature.parameters)
-    expected = ["team_a", "team_b", "ratings", "team_games", "sos", "power_v2"]
-    if parameter_names[: len(expected)] != expected:
-        raise TypeError(
-            "Unexpected predict_matchup signature. "
-            f"Expected leading parameters {expected}; got {parameter_names}."
-        )
 
 
 def render_team_detail(
