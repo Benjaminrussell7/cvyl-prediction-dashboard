@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -216,14 +217,26 @@ def build_matchup_prediction(
     sos: pd.DataFrame,
     power_v2: pd.DataFrame,
 ):
+    validate_predict_matchup_signature()
     return predict_matchup(
-        team_a=team_a,
-        team_b=team_b,
-        ratings=ratings,
-        team_games=team_games,
-        sos=sos if not sos.empty else None,
-        power_v2=power_v2 if not power_v2.empty else None,
+        team_a,
+        team_b,
+        ratings,
+        team_games,
+        sos if not sos.empty else None,
+        power_v2 if not power_v2.empty else None,
     )
+
+
+def validate_predict_matchup_signature() -> None:
+    signature = inspect.signature(predict_matchup)
+    parameter_names = list(signature.parameters)
+    expected = ["team_a", "team_b", "ratings", "team_games", "sos", "power_v2"]
+    if parameter_names[: len(expected)] != expected:
+        raise TypeError(
+            "Unexpected predict_matchup signature. "
+            f"Expected leading parameters {expected}; got {parameter_names}."
+        )
 
 
 def render_team_detail(

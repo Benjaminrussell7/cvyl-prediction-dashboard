@@ -42,13 +42,13 @@ def test_build_matchup_prediction_passes_current_prediction_arguments(monkeypatc
     expected_prediction = object()
 
     def fake_predict_matchup(
-        *,
         team_a,
         team_b,
         ratings,
         team_games,
         sos=None,
         power_v2=None,
+        /,
     ):
         captured.update(
             {
@@ -86,13 +86,13 @@ def test_build_matchup_prediction_converts_empty_optional_frames_to_none(monkeyp
     captured = {}
 
     def fake_predict_matchup(
-        *,
         team_a,
         team_b,
         ratings,
         team_games,
         sos=None,
         power_v2=None,
+        /,
     ):
         captured["sos"] = sos
         captured["power_v2"] = power_v2
