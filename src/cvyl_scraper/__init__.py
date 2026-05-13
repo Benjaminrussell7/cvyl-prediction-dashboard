@@ -8,6 +8,8 @@ __all__ = [
     "export",
     "modeling",
     "parsing",
+    "prediction",
     "scraping",
     "source_config",
+    "team_identity",
 ]

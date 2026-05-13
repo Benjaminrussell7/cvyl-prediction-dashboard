@@ -5,14 +5,16 @@ import argparse
 import pandas as pd
 
 from cvyl_scraper.cleaning import build_canonical_games, split_by_status
-from cvyl_scraper.config import load_sources
+from cvyl_scraper.config import load_sources, load_team_aliases
 from cvyl_scraper.discovery import discover_team_sources
 from cvyl_scraper.elo import build_elo_outputs
 from cvyl_scraper.export import export_csv
 from cvyl_scraper.modeling import build_team_games
 from cvyl_scraper.parsing import parse_schedule_page
+from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup_from_file
 from cvyl_scraper.scraping import fetch_page
 from cvyl_scraper.source_config import generate_discovered_sources_config
+from cvyl_scraper.team_identity import export_team_identity_audit
 
 
 def main() -> None:
@@ -20,6 +22,11 @@ def main() -> None:
         description="Scrape CVYL lacrosse schedules and scores into cleaned CSV files."
     )
     parser.add_argument("--config", default="config/sources.yml", help="YAML source config path.")
+    parser.add_argument(
+        "--team-aliases",
+        default="config/team_aliases.yml",
+        help="Optional explicit team alias mapping config path.",
+    )
     parser.add_argument(
         "--output",
         default="data/processed/cvyl_games.csv",
@@ -81,7 +88,40 @@ def main() -> None:
         default="config/discovered_sources.yml",
         help="Generated discovered sources YAML output path.",
     )
+    parser.add_argument(
+        "--team-identity-audit",
+        action="store_true",
+        help="Generate data/processed/team_identity_audit.csv from canonical games and exit.",
+    )
+    parser.add_argument(
+        "--team-identity-input",
+        default="data/processed/cvyl_games.csv",
+        help="Canonical games CSV input path for team identity audit.",
+    )
+    parser.add_argument(
+        "--team-identity-output",
+        default="data/processed/team_identity_audit.csv",
+        help="Team identity audit CSV output path.",
+    )
+    parser.add_argument("--predict-team-a", default=None, help="First team for ELO matchup prediction.")
+    parser.add_argument("--predict-team-b", default=None, help="Second team for ELO matchup prediction.")
+    parser.add_argument(
+        "--prediction-ratings",
+        default="data/processed/cvyl_elo_ratings.csv",
+        help="ELO ratings CSV input path for matchup prediction.",
+    )
     args = parser.parse_args()
+
+    if args.predict_team_a or args.predict_team_b:
+        if not args.predict_team_a or not args.predict_team_b:
+            parser.error("--predict-team-a and --predict-team-b must be provided together.")
+        prediction = predict_matchup_from_file(
+            args.predict_team_a,
+            args.predict_team_b,
+            args.prediction_ratings,
+        )
+        print(format_matchup_prediction(prediction))
+        return
 
     if args.generate_discovered_config:
         generated_path = generate_discovered_sources_config(
@@ -89,6 +129,14 @@ def main() -> None:
             args.discovered_config_output,
         )
         print(f"Exported discovered sources config to {generated_path}")
+        return
+
+    if args.team_identity_audit:
+        audit_path = export_team_identity_audit(
+            args.team_identity_input,
+            args.team_identity_output,
+        )
+        print(f"Exported team identity audit to {audit_path}")
         return
 
     if args.discover_url:
@@ -107,7 +155,8 @@ def main() -> None:
         raw_frames.append(parse_schedule_page(page.html, source))
 
     raw_games = pd.concat(raw_frames, ignore_index=True) if raw_frames else pd.DataFrame()
-    games = build_canonical_games(raw_games)
+    team_aliases = load_team_aliases(args.team_aliases)
+    games = build_canonical_games(raw_games, team_aliases=team_aliases)
     completed, scheduled = split_by_status(games)
     team_games = build_team_games(games)
     elo_ratings, elo_history = build_elo_outputs(team_games, k_factor=args.elo_k_factor)

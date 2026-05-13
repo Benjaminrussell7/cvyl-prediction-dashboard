@@ -76,3 +76,53 @@ def test_split_by_status_returns_completed_and_scheduled_games() -> None:
 
     assert len(completed) == 1
     assert len(scheduled) == 1
+
+
+def test_build_canonical_games_applies_explicit_team_aliases_and_preserves_raw_names() -> None:
+    raw = pd.DataFrame(
+        [
+            {
+                "game_date": "2026-04-10",
+                "game_time": "6:00 PM",
+                "season": 2026,
+                "division": "U12 Boys",
+                "home_team": "Granby",
+                "away_team": "Simsbury 12U",
+                "home_score": 8,
+                "away_score": 7,
+                "source_name": "source",
+                "source_url": "https://example.com",
+            }
+        ]
+    )
+
+    games = build_canonical_games(raw, team_aliases={"Granby": "Granby 12U"})
+
+    assert games.iloc[0]["raw_home_team"] == "Granby"
+    assert games.iloc[0]["home_team"] == "Granby 12U"
+    assert games.iloc[0]["raw_away_team"] == "Simsbury 12U"
+    assert games.iloc[0]["away_team"] == "Simsbury 12U"
+
+
+def test_build_canonical_games_ignores_unmapped_team_names() -> None:
+    raw = pd.DataFrame(
+        [
+            {
+                "game_date": "2026-04-10",
+                "game_time": "6:00 PM",
+                "season": 2026,
+                "division": "U12 Boys",
+                "home_team": "Granby",
+                "away_team": "Simsbury 12U",
+                "home_score": 8,
+                "away_score": 7,
+                "source_name": "source",
+                "source_url": "https://example.com",
+            }
+        ]
+    )
+
+    games = build_canonical_games(raw, team_aliases={"Other Team": "Other Team 12U"})
+
+    assert games.iloc[0]["raw_home_team"] == "Granby"
+    assert games.iloc[0]["home_team"] == "Granby"

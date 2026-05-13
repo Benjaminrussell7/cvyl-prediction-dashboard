@@ -36,6 +36,27 @@ def load_sources(path: str | Path) -> list[Source]:
     return sources
 
 
+def load_team_aliases(path: str | Path) -> dict[str, str]:
+    config_path = Path(path)
+    if not config_path.exists():
+        return {}
+
+    with config_path.open("r", encoding="utf-8") as file:
+        payload: dict[str, Any] = yaml.safe_load(file) or {}
+
+    rows = payload.get("aliases", {})
+    if not isinstance(rows, dict):
+        raise ValueError("Team aliases config must contain an 'aliases' mapping.")
+
+    aliases: dict[str, str] = {}
+    for raw_name, canonical_name in rows.items():
+        if raw_name in (None, "") or canonical_name in (None, ""):
+            raise ValueError("Team alias entries must include non-empty source and target names.")
+        aliases[str(raw_name)] = str(canonical_name)
+
+    return aliases
+
+
 def _optional_int(value: Any) -> int | None:
     if value in (None, ""):
         return None

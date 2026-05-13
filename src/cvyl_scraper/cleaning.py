@@ -11,6 +11,8 @@ GAME_COLUMNS = [
     "game_time",
     "season",
     "division",
+    "raw_home_team",
+    "raw_away_team",
     "home_team",
     "away_team",
     "home_score",
@@ -22,18 +24,24 @@ GAME_COLUMNS = [
 ]
 
 
-def build_canonical_games(raw_games: pd.DataFrame) -> pd.DataFrame:
+def build_canonical_games(
+    raw_games: pd.DataFrame,
+    team_aliases: dict[str, str] | None = None,
+) -> pd.DataFrame:
     if raw_games.empty:
         return pd.DataFrame(columns=GAME_COLUMNS)
 
     games = raw_games.copy()
+    aliases = _normalized_aliases(team_aliases or {})
     games["game_date"] = pd.to_datetime(games["game_date"], errors="coerce").dt.date
     games["game_time"] = games["game_time"].map(_clean_optional_text)
     games["division"] = games["division"].map(_clean_optional_text)
     games["source_name"] = games["source_name"].map(_clean_optional_text)
     games["source_url"] = games["source_url"].map(_clean_optional_text)
-    games["home_team"] = games["home_team"].map(normalize_team_name)
-    games["away_team"] = games["away_team"].map(normalize_team_name)
+    games["raw_home_team"] = games["home_team"].map(normalize_team_name)
+    games["raw_away_team"] = games["away_team"].map(normalize_team_name)
+    games["home_team"] = games["raw_home_team"].map(lambda value: _apply_team_alias(value, aliases))
+    games["away_team"] = games["raw_away_team"].map(lambda value: _apply_team_alias(value, aliases))
     games["home_score"] = pd.to_numeric(games["home_score"], errors="coerce").astype("Int64")
     games["away_score"] = pd.to_numeric(games["away_score"], errors="coerce").astype("Int64")
     games["status"] = games.apply(_status_for_game, axis=1)
@@ -68,6 +76,22 @@ def normalize_team_name(value: object) -> str | None:
         return None
     cleaned = re.sub(r"\s+", " ", cleaned)
     return cleaned.strip()
+
+
+def _normalized_aliases(team_aliases: dict[str, str]) -> dict[str, str]:
+    aliases: dict[str, str] = {}
+    for raw_name, canonical_name in team_aliases.items():
+        normalized_raw = normalize_team_name(raw_name)
+        normalized_canonical = normalize_team_name(canonical_name)
+        if normalized_raw and normalized_canonical:
+            aliases[normalized_raw] = normalized_canonical
+    return aliases
+
+
+def _apply_team_alias(value: str | None, team_aliases: dict[str, str]) -> str | None:
+    if value is None:
+        return None
+    return team_aliases.get(value, value)
 
 
 def _status_for_game(row: pd.Series) -> str:
