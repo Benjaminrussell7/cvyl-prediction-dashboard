@@ -6,11 +6,115 @@ from pathlib import Path
 import pandas as pd
 
 APP_PATH = Path(__file__).resolve().parents[1] / "app" / "streamlit_app.py"
+PROCESSED = Path(__file__).resolve().parents[1] / "data" / "processed"
 SPEC = importlib.util.spec_from_file_location("streamlit_app", APP_PATH)
 assert SPEC is not None
 assert SPEC.loader is not None
 dashboard = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(dashboard)
+
+
+REQUIRED_CSV_COLUMNS = {
+    "cvyl_games.csv": {
+        "game_date",
+        "season",
+        "division",
+        "home_team",
+        "away_team",
+        "home_score",
+        "away_score",
+        "status",
+        "game_id",
+    },
+    "cvyl_team_games.csv": {
+        "game_id",
+        "team",
+        "opponent",
+        "points_for",
+        "points_against",
+        "win",
+        "game_date",
+        "season",
+        "division",
+        "status",
+    },
+    "cvyl_elo_ratings.csv": {
+        "team",
+        "elo",
+        "games_played",
+    },
+    "cvyl_sos.csv": {
+        "team",
+        "games_played",
+        "average_opponent_elo",
+        "opponent_count",
+        "sos_rank",
+    },
+    "cvyl_power_ratings_v2.csv": {
+        "team",
+        "games_played",
+        "avg_points_for",
+        "avg_points_against",
+        "avg_margin",
+        "adjusted_offense_rating",
+        "adjusted_defense_rating",
+        "adjusted_margin_rating",
+        "power_rating_v2",
+        "power_rank_v2",
+        "confidence_tier",
+        "shrinkage_multiplier",
+    },
+    "cvyl_model_comparison_summary.csv": {
+        "total_games",
+        "power_v2_accuracy",
+        "power_v2_brier_score",
+        "elo_accuracy",
+        "elo_brier_score",
+    },
+}
+
+
+def test_dashboard_required_processed_csv_contracts() -> None:
+    for filename, required_columns in REQUIRED_CSV_COLUMNS.items():
+        path = PROCESSED / filename
+        assert path.exists(), f"Missing dashboard CSV: {path}"
+        frame = pd.read_csv(path)
+        missing_columns = required_columns - set(frame.columns)
+        assert not missing_columns, f"{filename} missing columns: {sorted(missing_columns)}"
+        assert not frame.empty, f"{filename} should not be empty"
+
+
+def test_dashboard_processed_data_smoke_contract() -> None:
+    ratings = dashboard.load_csv("cvyl_elo_ratings.csv")
+    team_games = dashboard.load_csv("cvyl_team_games.csv")
+    sos = dashboard.load_csv("cvyl_sos.csv")
+    power_v2 = dashboard.load_csv("cvyl_power_ratings_v2.csv")
+    model_summary = dashboard.load_csv("cvyl_model_comparison_summary.csv")
+
+    prediction = dashboard.build_matchup_prediction(
+        "West Hartford 12U Green",
+        "RHAM 12U",
+        ratings,
+        team_games,
+        sos,
+        power_v2,
+    )
+    power_row = dashboard.find_team_row(power_v2, "Avon 12U B")
+    power_context = dashboard.matchup_power_context(
+        "West Hartford 12U Green",
+        "RHAM 12U",
+        power_v2,
+    )
+
+    assert prediction.team_a == "West Hartford 12U Green"
+    assert prediction.team_b == "RHAM 12U"
+    assert power_context["predicted_winner"] in {"West Hartford 12U Green", "RHAM 12U"}
+    assert power_row is not None
+    assert pd.notna(power_row["power_rank_v2"])
+    assert dashboard.metric_value(model_summary, dashboard.POWER_ACCURACY_KEY, percentage=True) != "N/A"
+    assert dashboard.metric_value(model_summary, dashboard.POWER_BRIER_KEY) != "N/A"
+    assert pd.notna(model_summary.iloc[0]["power_v2_accuracy"])
+    assert pd.notna(model_summary.iloc[0]["power_v2_brier_score"])
 
 
 def test_build_matchup_prediction_passes_current_prediction_arguments(monkeypatch) -> None:
