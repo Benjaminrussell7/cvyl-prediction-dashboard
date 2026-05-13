@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -345,3 +346,11 @@ def test_upcoming_scheduled_games_for_team_excludes_past_scheduled_games() -> No
 
     assert list(upcoming["game_date"].dt.strftime("%Y-%m-%d")) == ["2026-05-13", "2026-05-20"]
     assert set(upcoming["status"]) == {"scheduled"}
+
+
+def test_format_eastern_timestamp_labels_timezone_for_aware_and_naive_values() -> None:
+    aware = dashboard.format_eastern_timestamp(datetime(2026, 5, 13, 15, 30, tzinfo=UTC))
+    naive = dashboard.format_eastern_timestamp(datetime(2026, 5, 13, 15, 30))
+
+    assert aware == "2026-05-13 11:30 AM ET"
+    assert naive.endswith(" ET")

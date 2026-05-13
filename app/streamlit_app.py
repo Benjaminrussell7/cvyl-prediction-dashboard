@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 import streamlit as st
@@ -22,6 +23,7 @@ POWER_RATING_COLUMN = "power_rating_v3_recency"
 POWER_RANK_COLUMN = "power_rank_v3_recency"
 
 LOGGER = logging.getLogger(__name__)
+EASTERN_TIME = ZoneInfo("America/New_York")
 
 
 @st.cache_data
@@ -73,7 +75,7 @@ def main() -> None:
 def render_data_freshness() -> None:
     games_path = PROCESSED / "cvyl_games.csv"
     if games_path.exists():
-        modified = datetime.fromtimestamp(games_path.stat().st_mtime).strftime("%Y-%m-%d %I:%M %p")
+        modified = format_eastern_timestamp(datetime.fromtimestamp(games_path.stat().st_mtime))
     else:
         modified = "Unavailable"
 
@@ -83,6 +85,13 @@ def render_data_freshness() -> None:
         "Predictions and rankings are based only on scores currently reported on CVYL.org. "
         "Some recent games may not yet be reflected."
     )
+
+
+def format_eastern_timestamp(timestamp: datetime) -> str:
+    if timestamp.tzinfo is None:
+        timestamp = timestamp.astimezone()
+    eastern_timestamp = timestamp.astimezone(EASTERN_TIME)
+    return f"{eastern_timestamp:%Y-%m-%d %I:%M %p} ET"
 
 
 def render_summary_cards(
