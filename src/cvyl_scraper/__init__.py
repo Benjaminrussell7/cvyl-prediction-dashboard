@@ -10,6 +10,7 @@ __all__ = [
     "modeling",
     "parsing",
     "prediction",
+    "power_v2",
     "scraping",
     "sos",
     "source_config",

@@ -133,6 +133,35 @@ def test_predict_matchup_includes_sos_when_available() -> None:
     assert "Avon 12U SOS: 1510.0 opponent ELO (rank 2)" in output
 
 
+def test_predict_matchup_includes_power_v2_context_when_available() -> None:
+    prediction = predict_matchup(
+        "Avon 12U",
+        "Granby 12U",
+        _ratings(5, 6),
+        _team_games_for_prediction(),
+        power_v2=pd.DataFrame(
+            [
+                {
+                    "team": "Avon 12U",
+                    "power_rating_v2": 3.25,
+                    "power_rank_v2": 2,
+                },
+                {
+                    "team": "Granby 12U",
+                    "power_rating_v2": 1.10,
+                    "power_rank_v2": 5,
+                },
+            ]
+        ),
+    )
+
+    output = format_matchup_prediction(prediction)
+
+    assert prediction.team_a_power_v2 == 3.25
+    assert prediction.team_b_power_rank_v2 == 5
+    assert "Avon 12U Power v2: 3.25 (rank 2)" in output
+
+
 def test_predict_matchup_medium_confidence_has_warning() -> None:
     prediction = predict_matchup(
         "Avon 12U",

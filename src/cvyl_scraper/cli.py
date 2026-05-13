@@ -13,6 +13,7 @@ from cvyl_scraper.export import export_csv
 from cvyl_scraper.modeling import build_team_games
 from cvyl_scraper.parsing import parse_schedule_page
 from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup_from_file
+from cvyl_scraper.power_v2 import build_power_ratings_v2
 from cvyl_scraper.scraping import fetch_page
 from cvyl_scraper.sos import build_sos
 from cvyl_scraper.source_config import generate_discovered_sources_config
@@ -73,6 +74,11 @@ def main() -> None:
         "--sos-output",
         default="data/processed/cvyl_sos.csv",
         help="Strength of schedule CSV output path.",
+    )
+    parser.add_argument(
+        "--power-ratings-v2-output",
+        default="data/processed/cvyl_power_ratings_v2.csv",
+        help="Power Ratings v2 CSV output path.",
     )
     parser.add_argument(
         "--elo-k-factor",
@@ -149,6 +155,16 @@ def main() -> None:
         default="data/processed/cvyl_sos.csv",
         help="Strength of schedule CSV input path for matchup prediction.",
     )
+    parser.add_argument(
+        "--use-power-v2",
+        action="store_true",
+        help="Show Power Ratings v2 context in matchup prediction output.",
+    )
+    parser.add_argument(
+        "--prediction-power-v2",
+        default="data/processed/cvyl_power_ratings_v2.csv",
+        help="Power Ratings v2 CSV input path for matchup prediction context.",
+    )
     args = parser.parse_args()
 
     if args.predict_team_a or args.predict_team_b:
@@ -160,6 +176,7 @@ def main() -> None:
             args.prediction_ratings,
             args.prediction_team_games,
             args.prediction_sos,
+            args.prediction_power_v2 if args.use_power_v2 else None,
         )
         print(format_matchup_prediction(prediction))
         return
@@ -213,6 +230,7 @@ def main() -> None:
         recency_growth_games=args.elo_recency_growth_games,
     )
     sos = build_sos(team_games, elo_ratings)
+    power_ratings_v2 = build_power_ratings_v2(team_games)
 
     export_csv(games, args.output)
     export_csv(completed, args.completed_output)
@@ -223,6 +241,7 @@ def main() -> None:
     export_csv(backtest, args.backtest_output)
     export_csv(backtest_summary, args.backtest_summary_output)
     export_csv(sos, args.sos_output)
+    export_csv(power_ratings_v2, args.power_ratings_v2_output)
 
     print(f"Exported {len(games)} games to {args.output}")
     print(f"Exported {len(completed)} completed games to {args.completed_output}")
@@ -233,6 +252,7 @@ def main() -> None:
     print(f"Exported {len(backtest)} backtest predictions to {args.backtest_output}")
     print(f"Exported backtest summary to {args.backtest_summary_output}")
     print(f"Exported {len(sos)} SOS rows to {args.sos_output}")
+    print(f"Exported {len(power_ratings_v2)} Power Ratings v2 rows to {args.power_ratings_v2_output}")
 
 
 if __name__ == "__main__":
