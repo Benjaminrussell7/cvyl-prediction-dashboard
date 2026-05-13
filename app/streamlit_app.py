@@ -173,14 +173,7 @@ def render_matchup_predictor(
         st.warning("Choose two different teams.")
         return
 
-    prediction = predict_matchup(
-        team_a,
-        team_b,
-        ratings,
-        team_games,
-        sos if not sos.empty else None,
-        power_v2 if not power_v2.empty else None,
-    )
+    prediction = build_matchup_prediction(team_a, team_b, ratings, team_games, sos, power_v2)
 
     st.markdown(f"**Power Rating favorite:** {prediction.power_v2_predicted_winner}")
     prob1, prob2 = st.columns(2)
@@ -213,6 +206,24 @@ def render_matchup_predictor(
 
     with st.expander("Prediction Details"):
         st.text(format_matchup_prediction(prediction))
+
+
+def build_matchup_prediction(
+    team_a: str,
+    team_b: str,
+    ratings: pd.DataFrame,
+    team_games: pd.DataFrame,
+    sos: pd.DataFrame,
+    power_v2: pd.DataFrame,
+):
+    return predict_matchup(
+        team_a=team_a,
+        team_b=team_b,
+        ratings=ratings,
+        team_games=team_games,
+        sos=sos if not sos.empty else None,
+        power_v2=power_v2 if not power_v2.empty else None,
+    )
 
 
 def render_team_detail(
