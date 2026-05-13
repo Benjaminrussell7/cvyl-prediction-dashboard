@@ -9,4 +9,5 @@ __all__ = [
     "modeling",
     "parsing",
     "scraping",
+    "source_config",
 ]

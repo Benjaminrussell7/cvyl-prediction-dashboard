@@ -1,0 +1,189 @@
+sources:
+- name: agawam_12u
+  url: https://www.cvyl.org/team/225891/games
+  season: 2026
+  division: U12 Boys
+- name: amherst_12u
+  url: https://www.cvyl.org/team/225892/games
+  season: 2026
+  division: U12 Boys
+- name: avon_12u
+  url: https://www.cvyl.org/team/225893/games
+  season: 2026
+  division: U12 Boys
+- name: avon_12u_b
+  url: https://www.cvyl.org/team/225869/games
+  season: 2026
+  division: U12 Boys
+- name: belchertown_12u
+  url: https://www.cvyl.org/team/225894/games
+  season: 2026
+  division: U12 Boys
+- name: berlin_12u_a
+  url: https://www.cvyl.org/team/225896/games
+  season: 2026
+  division: U12 Boys
+- name: bristol_12u
+  url: https://www.cvyl.org/team/225897/games
+  season: 2026
+  division: U12 Boys
+- name: burlington_12u
+  url: https://www.cvyl.org/team/225898/games
+  season: 2026
+  division: U12 Boys
+- name: colchester_12u
+  url: https://www.cvyl.org/team/225899/games
+  season: 2026
+  division: U12 Boys
+- name: east_longmeadow_12u_a
+  url: https://www.cvyl.org/team/225900/games
+  season: 2026
+  division: U12 Boys
+- name: east_longmeadow_12u_white
+  url: https://www.cvyl.org/team/225928/games
+  season: 2026
+  division: U12 Boys
+- name: ellington_12u
+  url: https://www.cvyl.org/team/225901/games
+  season: 2026
+  division: U12 Boys
+- name: farmington_12u_black
+  url: https://www.cvyl.org/team/225902/games
+  season: 2026
+  division: U12 Boys
+- name: farmington_12u_red
+  url: https://www.cvyl.org/team/225929/games
+  season: 2026
+  division: U12 Boys
+- name: glastonbury_12u_blue
+  url: https://www.cvyl.org/team/225930/games
+  season: 2026
+  division: U12 Boys
+- name: glastonbury_12u_white
+  url: https://www.cvyl.org/team/225903/games
+  season: 2026
+  division: U12 Boys
+- name: granby_12u
+  url: https://www.cvyl.org/team/225904/games
+  season: 2026
+  division: U12 Boys
+- name: longmeadow_12u_black
+  url: https://www.cvyl.org/team/225905/games
+  season: 2026
+  division: U12 Boys
+- name: longmeadow_12u_white
+  url: https://www.cvyl.org/team/225932/games
+  season: 2026
+  division: U12 Boys
+- name: meriden_12u
+  url: https://www.cvyl.org/team/225906/games
+  season: 2026
+  division: U12 Boys
+- name: middletown_12u
+  url: https://www.cvyl.org/team/225907/games
+  season: 2026
+  division: U12 Boys
+- name: minnechaug_12u
+  url: https://www.cvyl.org/team/225908/games
+  season: 2026
+  division: U12 Boys
+- name: minnechaug_12u_white
+  url: https://www.cvyl.org/team/225933/games
+  season: 2026
+  division: U12 Boys
+- name: newington_12u
+  url: https://www.cvyl.org/team/225909/games
+  season: 2026
+  division: U12 Boys
+- name: northampton_12u
+  url: https://www.cvyl.org/team/225910/games
+  season: 2026
+  division: U12 Boys
+- name: rham_12u
+  url: https://www.cvyl.org/team/225911/games
+  season: 2026
+  division: U12 Boys
+- name: simsbury_12u_a
+  url: https://www.cvyl.org/team/225912/games
+  season: 2026
+  division: U12 Boys
+- name: simsbury_12u_blue
+  url: https://www.cvyl.org/team/225935/games
+  season: 2026
+  division: U12 Boys
+- name: somers_12u_red
+  url: https://www.cvyl.org/team/225936/games
+  season: 2026
+  division: U12 Boys
+- name: somers_12u_white
+  url: https://www.cvyl.org/team/225913/games
+  season: 2026
+  division: U12 Boys
+- name: south_hadley_12u
+  url: https://www.cvyl.org/team/225914/games
+  season: 2026
+  division: U12 Boys
+- name: south_windsor_12u
+  url: https://www.cvyl.org/team/225915/games
+  season: 2026
+  division: U12 Boys
+- name: southington_12u_blue
+  url: https://www.cvyl.org/team/225916/games
+  season: 2026
+  division: U12 Boys
+- name: southington_12u_white
+  url: https://www.cvyl.org/team/225937/games
+  season: 2026
+  division: U12 Boys
+- name: suffield_12u
+  url: https://www.cvyl.org/team/225917/games
+  season: 2026
+  division: U12 Boys
+- name: suffield_12u_white
+  url: https://www.cvyl.org/team/225938/games
+  season: 2026
+  division: U12 Boys
+- name: tolland_12u
+  url: https://www.cvyl.org/team/225918/games
+  season: 2026
+  division: U12 Boys
+- name: vernon_12u
+  url: https://www.cvyl.org/team/225919/games
+  season: 2026
+  division: U12 Boys
+- name: west_hartford_12u_gold
+  url: https://www.cvyl.org/team/225920/games
+  season: 2026
+  division: U12 Boys
+- name: west_hartford_12u_green
+  url: https://www.cvyl.org/team/225939/games
+  season: 2026
+  division: U12 Boys
+- name: west_hartford_12u_white
+  url: https://www.cvyl.org/team/225940/games
+  season: 2026
+  division: U12 Boys
+- name: west_springfield_12u
+  url: https://www.cvyl.org/team/225921/games
+  season: 2026
+  division: U12 Boys
+- name: westfield_12u_black
+  url: https://www.cvyl.org/team/225922/games
+  season: 2026
+  division: U12 Boys
+- name: westfield_12u_red
+  url: https://www.cvyl.org/team/225923/games
+  season: 2026
+  division: U12 Boys
+- name: wethersfield_12u_a
+  url: https://www.cvyl.org/team/225924/games
+  season: 2026
+  division: U12 Boys
+- name: wethersfield_12u_b
+  url: https://www.cvyl.org/team/225943/games
+  season: 2026
+  division: U12 Boys
+- name: wolcott_12u
+  url: https://www.cvyl.org/team/225925/games
+  season: 2026
+  division: U12 Boys

@@ -12,6 +12,7 @@ from cvyl_scraper.export import export_csv
 from cvyl_scraper.modeling import build_team_games
 from cvyl_scraper.parsing import parse_schedule_page
 from cvyl_scraper.scraping import fetch_page
+from cvyl_scraper.source_config import generate_discovered_sources_config
 
 
 def main() -> None:
@@ -65,7 +66,30 @@ def main() -> None:
         default="data/processed/discovered_sources.csv",
         help="Discovered team sources CSV output path.",
     )
+    parser.add_argument(
+        "--generate-discovered-config",
+        action="store_true",
+        help="Generate config/discovered_sources.yml from discovered_sources.csv and exit.",
+    )
+    parser.add_argument(
+        "--discovered-config-input",
+        default="data/processed/discovered_sources.csv",
+        help="Discovered sources CSV input path for config generation.",
+    )
+    parser.add_argument(
+        "--discovered-config-output",
+        default="config/discovered_sources.yml",
+        help="Generated discovered sources YAML output path.",
+    )
     args = parser.parse_args()
+
+    if args.generate_discovered_config:
+        generated_path = generate_discovered_sources_config(
+            args.discovered_config_input,
+            args.discovered_config_output,
+        )
+        print(f"Exported discovered sources config to {generated_path}")
+        return
 
     if args.discover_url:
         discovery_page = fetch_page(args.discover_url)
