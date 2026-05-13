@@ -76,6 +76,18 @@ streamlit run app/streamlit_app.py
 
 The dashboard reads existing files from `data/processed/` and shows model summary metrics, power rankings, matchup predictions, team details, and backtest results.
 
+## Automated Data Refresh
+
+GitHub Actions refreshes the processed CVYL data twice daily, once in the morning and once in the evening, and can also be run manually from the Actions tab.
+
+The workflow is defined in `.github/workflows/refresh-data.yml`. It installs dependencies from `requirements.txt`, runs:
+
+```bash
+python -m cvyl_scraper.cli --config config/discovered_sources.yml --team-aliases config/team_aliases.yml
+```
+
+and commits updated processed CSV outputs back to `data/processed/` when the pipeline produces changes. The Streamlit dashboard reads those committed CSVs, so a successful refresh updates the deployed dashboard data after the repository changes are picked up by Streamlit Cloud.
+
 ## Known Limitations
 
 - Predictions and rankings are based only on scores currently reported on CVYL.org.
