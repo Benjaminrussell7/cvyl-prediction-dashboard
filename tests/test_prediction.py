@@ -37,6 +37,8 @@ def test_predict_matchup_favors_stronger_team() -> None:
     assert prediction.elo_difference == 150.0
     assert prediction.projected_margin > 0
     assert prediction.projected_spread.startswith("West Hartford 12U Gold by")
+    assert 0 < prediction.hybrid_win_probability_team_a < 1
+    assert 0 < prediction.hybrid_win_probability_team_b < 1
 
 
 def test_predict_matchup_output_is_deterministic() -> None:
@@ -159,7 +161,34 @@ def test_predict_matchup_includes_power_v2_context_when_available() -> None:
 
     assert prediction.team_a_power_v2 == 3.25
     assert prediction.team_b_power_rank_v2 == 5
+    assert prediction.hybrid_predicted_winner == "Avon 12U"
+    assert prediction.hybrid_win_probability_team_a > prediction.hybrid_win_probability_team_b
+    assert prediction.hybrid_model_edge > 0
     assert "Avon 12U Power v2: 3.25 (rank 2)" in output
+    assert "Hybrid prediction:" in output
+
+
+def test_predict_matchup_hybrid_responds_to_stronger_team() -> None:
+    prediction = predict_matchup(
+        "Avon 12U",
+        "Granby 12U",
+        pd.DataFrame(
+            [
+                {"team": "Avon 12U", "elo": 1550.0, "games_played": 6},
+                {"team": "Granby 12U", "elo": 1450.0, "games_played": 6},
+            ]
+        ),
+        _team_games_for_prediction(),
+        power_v2=pd.DataFrame(
+            [
+                {"team": "Avon 12U", "power_rating_v2": 2.0, "power_rank_v2": 2},
+                {"team": "Granby 12U", "power_rating_v2": -1.0, "power_rank_v2": 8},
+            ]
+        ),
+    )
+
+    assert prediction.hybrid_predicted_winner == "Avon 12U"
+    assert prediction.hybrid_win_probability_team_a > 0.5
 
 
 def test_predict_matchup_medium_confidence_has_warning() -> None:

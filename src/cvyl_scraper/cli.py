@@ -10,6 +10,7 @@ from cvyl_scraper.config import load_sources, load_team_aliases
 from cvyl_scraper.discovery import discover_team_sources
 from cvyl_scraper.elo import build_elo_outputs
 from cvyl_scraper.export import export_csv
+from cvyl_scraper.model_comparison import build_model_comparison_outputs
 from cvyl_scraper.modeling import build_team_games
 from cvyl_scraper.parsing import parse_schedule_page
 from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup_from_file
@@ -79,6 +80,16 @@ def main() -> None:
         "--power-ratings-v2-output",
         default="data/processed/cvyl_power_ratings_v2.csv",
         help="Power Ratings v2 CSV output path.",
+    )
+    parser.add_argument(
+        "--model-comparison-output",
+        default="data/processed/cvyl_model_comparison.csv",
+        help="ELO vs Power Ratings v2 comparison CSV output path.",
+    )
+    parser.add_argument(
+        "--model-comparison-summary-output",
+        default="data/processed/cvyl_model_comparison_summary.csv",
+        help="ELO vs Power Ratings v2 comparison summary CSV output path.",
     )
     parser.add_argument(
         "--elo-k-factor",
@@ -176,7 +187,7 @@ def main() -> None:
             args.prediction_ratings,
             args.prediction_team_games,
             args.prediction_sos,
-            args.prediction_power_v2 if args.use_power_v2 else None,
+            args.prediction_power_v2,
         )
         print(format_matchup_prediction(prediction))
         return
@@ -231,6 +242,12 @@ def main() -> None:
     )
     sos = build_sos(team_games, elo_ratings)
     power_ratings_v2 = build_power_ratings_v2(team_games)
+    model_comparison, model_comparison_summary = build_model_comparison_outputs(
+        games,
+        k_factor=args.elo_k_factor,
+        recency_min_multiplier=args.elo_recency_min_multiplier,
+        recency_growth_games=args.elo_recency_growth_games,
+    )
 
     export_csv(games, args.output)
     export_csv(completed, args.completed_output)
@@ -242,6 +259,8 @@ def main() -> None:
     export_csv(backtest_summary, args.backtest_summary_output)
     export_csv(sos, args.sos_output)
     export_csv(power_ratings_v2, args.power_ratings_v2_output)
+    export_csv(model_comparison, args.model_comparison_output)
+    export_csv(model_comparison_summary, args.model_comparison_summary_output)
 
     print(f"Exported {len(games)} games to {args.output}")
     print(f"Exported {len(completed)} completed games to {args.completed_output}")
@@ -253,6 +272,8 @@ def main() -> None:
     print(f"Exported backtest summary to {args.backtest_summary_output}")
     print(f"Exported {len(sos)} SOS rows to {args.sos_output}")
     print(f"Exported {len(power_ratings_v2)} Power Ratings v2 rows to {args.power_ratings_v2_output}")
+    print(f"Exported {len(model_comparison)} model comparison rows to {args.model_comparison_output}")
+    print(f"Exported model comparison summary to {args.model_comparison_summary_output}")
 
 
 if __name__ == "__main__":

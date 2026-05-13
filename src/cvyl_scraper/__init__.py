@@ -7,6 +7,8 @@ __all__ = [
     "discovery",
     "elo",
     "export",
+    "hybrid",
+    "model_comparison",
     "modeling",
     "parsing",
     "prediction",

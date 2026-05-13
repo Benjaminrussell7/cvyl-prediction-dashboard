@@ -29,6 +29,7 @@ def main() -> None:
     team_games = load_csv("cvyl_team_games.csv")
     elo_history = load_csv("cvyl_elo_history.csv")
     sos = load_csv("cvyl_sos.csv")
+    power_v2 = load_csv("cvyl_power_ratings_v2.csv")
     backtest = load_csv("cvyl_backtest.csv")
     backtest_summary = load_csv("cvyl_backtest_summary.csv")
 
@@ -41,7 +42,7 @@ def main() -> None:
 
     render_summary_cards(games, ratings, backtest_summary)
     render_power_rankings(ratings, sos)
-    render_matchup_predictor(ratings, team_games, sos)
+    render_matchup_predictor(ratings, team_games, sos, power_v2)
     render_team_detail(games, ratings, team_games, elo_history, sos)
     render_backtest(backtest, backtest_summary)
 
@@ -119,6 +120,7 @@ def render_matchup_predictor(
     ratings: pd.DataFrame,
     team_games: pd.DataFrame,
     sos: pd.DataFrame,
+    power_v2: pd.DataFrame,
 ) -> None:
     st.subheader("Matchup Predictor")
     teams = ratings["team"].dropna().sort_values().tolist()
@@ -135,12 +137,19 @@ def render_matchup_predictor(
         st.warning("Choose two different teams.")
         return
 
-    prediction = predict_matchup(team_a, team_b, ratings, team_games, sos if not sos.empty else None)
+    prediction = predict_matchup(
+        team_a,
+        team_b,
+        ratings,
+        team_games,
+        sos if not sos.empty else None,
+        power_v2 if not power_v2.empty else None,
+    )
 
-    st.markdown(f"**Predicted winner:** {prediction.predicted_winner}")
+    st.markdown(f"**Hybrid predicted winner:** {prediction.hybrid_predicted_winner}")
     prob1, prob2 = st.columns(2)
-    prob1.metric(f"{team_a} win probability", f"{prediction.team_a_win_probability:.1%}")
-    prob2.metric(f"{team_b} win probability", f"{prediction.team_b_win_probability:.1%}")
+    prob1.metric(f"{team_a} hybrid win probability", f"{prediction.hybrid_win_probability_team_a:.1%}")
+    prob2.metric(f"{team_b} hybrid win probability", f"{prediction.hybrid_win_probability_team_b:.1%}")
 
     spread_col, total_col, score_col, confidence_col = st.columns(4)
     spread_col.metric("Projected Spread", prediction.projected_spread)
@@ -154,6 +163,12 @@ def render_matchup_predictor(
     st.caption(
         f"SOS: {team_a} {_format_sos_context(prediction.team_a_sos, prediction.team_a_sos_rank)} | "
         f"{team_b} {_format_sos_context(prediction.team_b_sos, prediction.team_b_sos_rank)}"
+    )
+    st.caption(
+        "Supporting context: "
+        f"ELO favors {prediction.predicted_winner} ({prediction.win_probability:.1%}); "
+        f"{team_a} Power v2 {_format_power_context(prediction.team_a_power_v2, prediction.team_a_power_rank_v2)} | "
+        f"{team_b} Power v2 {_format_power_context(prediction.team_b_power_v2, prediction.team_b_power_rank_v2)}"
     )
     if prediction.confidence_warning:
         st.warning(prediction.confidence_warning)
@@ -273,6 +288,12 @@ def _format_sos_context(average_opponent_elo: float | None, sos_rank: int | None
     if average_opponent_elo is None or sos_rank is None:
         return "SOS unavailable"
     return f"SOS rank {sos_rank}, avg opponent ELO {average_opponent_elo:.1f}"
+
+
+def _format_power_context(power_rating: float | None, power_rank: int | None) -> str:
+    if power_rating is None or power_rank is None:
+        return "unavailable"
+    return f"{power_rating:.2f} (rank {power_rank})"
 
 
 if __name__ == "__main__":

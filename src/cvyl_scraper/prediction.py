@@ -5,6 +5,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from cvyl_scraper.hybrid import hybrid_model_edge, hybrid_win_probability
+
 
 DEFAULT_ELO_RATINGS_CSV = "data/processed/cvyl_elo_ratings.csv"
 DEFAULT_TEAM_GAMES_CSV = "data/processed/cvyl_team_games.csv"
@@ -40,6 +42,10 @@ class MatchupPrediction:
     projected_total_goals: float
     confidence_level: str
     confidence_warning: str | None
+    hybrid_win_probability_team_a: float
+    hybrid_win_probability_team_b: float
+    hybrid_predicted_winner: str
+    hybrid_model_edge: float
 
 
 def predict_matchup_from_file(
@@ -48,7 +54,7 @@ def predict_matchup_from_file(
     ratings_path: str | Path = DEFAULT_ELO_RATINGS_CSV,
     team_games_path: str | Path = DEFAULT_TEAM_GAMES_CSV,
     sos_path: str | Path = DEFAULT_SOS_CSV,
-    power_v2_path: str | Path | None = None,
+    power_v2_path: str | Path | None = DEFAULT_POWER_RATINGS_V2_CSV,
 ) -> MatchupPrediction:
     ratings = pd.read_csv(ratings_path)
     team_games = pd.read_csv(team_games_path)
@@ -73,8 +79,17 @@ def predict_matchup(
     team_b_sos, team_b_sos_rank = _team_sos(team_b, sos)
     team_a_power_v2, team_a_power_rank_v2 = _team_power_v2(team_a, power_v2)
     team_b_power_v2, team_b_power_rank_v2 = _team_power_v2(team_b, power_v2)
+    team_a_power_value = team_a_power_v2 or 0.0
+    team_b_power_value = team_b_power_v2 or 0.0
     team_a_probability = elo_win_probability(team_a_elo, team_b_elo)
     team_b_probability = 1.0 - team_a_probability
+    team_a_hybrid_probability = hybrid_win_probability(
+        team_a_elo - team_b_elo,
+        team_a_power_value - team_b_power_value,
+    )
+    team_b_hybrid_probability = 1.0 - team_a_hybrid_probability
+    hybrid_edge = hybrid_model_edge(team_a_elo - team_b_elo, team_a_power_value - team_b_power_value)
+    hybrid_predicted_winner = team_a if team_a_hybrid_probability >= 0.5 else team_b
 
     if team_a_probability >= team_b_probability:
         predicted_winner = team_a
@@ -115,6 +130,10 @@ def predict_matchup(
         projected_total_goals=team_a_projected_goals + team_b_projected_goals,
         confidence_level=confidence_level,
         confidence_warning=_confidence_warning(confidence_level),
+        hybrid_win_probability_team_a=team_a_hybrid_probability,
+        hybrid_win_probability_team_b=team_b_hybrid_probability,
+        hybrid_predicted_winner=hybrid_predicted_winner,
+        hybrid_model_edge=hybrid_edge,
     )
 
 
@@ -132,9 +151,15 @@ def format_matchup_prediction(prediction: MatchupPrediction) -> str:
             f"{prediction.team_b} SOS: {_format_sos(prediction.team_b_sos, prediction.team_b_sos_rank)}",
             *(_format_power_v2_lines(prediction)),
             f"ELO difference ({prediction.team_a} - {prediction.team_b}): {prediction.elo_difference:.1f}",
-            f"{prediction.team_a} win probability: {prediction.team_a_win_probability:.1%}",
-            f"{prediction.team_b} win probability: {prediction.team_b_win_probability:.1%}",
-            f"Predicted winner: {prediction.predicted_winner} ({prediction.win_probability:.1%})",
+            "ELO prediction:",
+            f"  {prediction.team_a} win probability: {prediction.team_a_win_probability:.1%}",
+            f"  {prediction.team_b} win probability: {prediction.team_b_win_probability:.1%}",
+            f"  Predicted winner: {prediction.predicted_winner} ({prediction.win_probability:.1%})",
+            "Hybrid prediction:",
+            f"  {prediction.team_a} win probability: {prediction.hybrid_win_probability_team_a:.1%}",
+            f"  {prediction.team_b} win probability: {prediction.hybrid_win_probability_team_b:.1%}",
+            f"  Predicted winner: {prediction.hybrid_predicted_winner}",
+            f"  Hybrid model edge: {prediction.hybrid_model_edge:.3f}",
             f"Confidence: {prediction.confidence_level}",
             *([f"Warning: {prediction.confidence_warning}"] if prediction.confidence_warning else []),
             f"Projected spread: {prediction.projected_spread}",
