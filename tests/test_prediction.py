@@ -86,6 +86,46 @@ def test_predict_matchup_total_goals_is_numeric_and_reasonable() -> None:
     assert prediction.projected_total_goals == 15.0
 
 
+def test_predict_matchup_high_confidence_has_no_warning() -> None:
+    prediction = predict_matchup(
+        "Avon 12U",
+        "Granby 12U",
+        _ratings(5, 6),
+        _team_games_for_prediction(),
+    )
+
+    assert prediction.confidence_level == "High"
+    assert prediction.confidence_warning is None
+    assert "Confidence: High" in format_matchup_prediction(prediction)
+    assert "Warning:" not in format_matchup_prediction(prediction)
+
+
+def test_predict_matchup_medium_confidence_has_warning() -> None:
+    prediction = predict_matchup(
+        "Avon 12U",
+        "Granby 12U",
+        _ratings(3, 4),
+        _team_games_for_prediction(),
+    )
+
+    assert prediction.confidence_level == "Medium"
+    assert prediction.confidence_warning is not None
+    assert "Warning:" in format_matchup_prediction(prediction)
+
+
+def test_predict_matchup_low_confidence_has_warning() -> None:
+    prediction = predict_matchup(
+        "Avon 12U",
+        "Granby 12U",
+        _ratings(2, 8),
+        _team_games_for_prediction(),
+    )
+
+    assert prediction.confidence_level == "Low"
+    assert prediction.confidence_warning is not None
+    assert "Small sample size" in prediction.confidence_warning
+
+
 def _team_game(
     team: str,
     points_for: int | None,
@@ -99,3 +139,23 @@ def _team_game(
         "points_against": points_against,
         "status": status,
     }
+
+
+def _ratings(team_a_games_played: int, team_b_games_played: int) -> pd.DataFrame:
+    return pd.DataFrame(
+        [
+            {"team": "Avon 12U", "elo": 1525.0, "games_played": team_a_games_played},
+            {"team": "Granby 12U", "elo": 1490.0, "games_played": team_b_games_played},
+        ]
+    )
+
+
+def _team_games_for_prediction() -> pd.DataFrame:
+    return pd.DataFrame(
+        [
+            _team_game("Avon 12U", 8, 5),
+            _team_game("Avon 12U", 10, 7),
+            _team_game("Granby 12U", 6, 8),
+            _team_game("Granby 12U", 7, 9),
+        ]
+    )

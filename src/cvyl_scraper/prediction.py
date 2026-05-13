@@ -16,6 +16,8 @@ class MatchupPrediction:
     team_b: str
     team_a_elo: float
     team_b_elo: float
+    team_a_games_played: int
+    team_b_games_played: int
     team_a_win_probability: float
     team_b_win_probability: float
     predicted_winner: str
@@ -26,6 +28,8 @@ class MatchupPrediction:
     projected_margin: float
     projected_spread: str
     projected_total_goals: float
+    confidence_level: str
+    confidence_warning: str | None
 
 
 def predict_matchup_from_file(
@@ -47,6 +51,8 @@ def predict_matchup(
 ) -> MatchupPrediction:
     team_a_elo = _team_elo(team_a, ratings)
     team_b_elo = _team_elo(team_b, ratings)
+    team_a_games_played = _team_games_played(team_a, ratings)
+    team_b_games_played = _team_games_played(team_b, ratings)
     team_a_probability = elo_win_probability(team_a_elo, team_b_elo)
     team_b_probability = 1.0 - team_a_probability
 
@@ -60,12 +66,15 @@ def predict_matchup(
     team_a_projected_goals, team_b_projected_goals = _projected_goals(team_a, team_b, team_games)
     projected_margin = team_a_projected_goals - team_b_projected_goals
     projected_spread = _projected_spread(team_a, team_b, projected_margin)
+    confidence_level = _confidence_level(team_a_games_played, team_b_games_played)
 
     return MatchupPrediction(
         team_a=team_a,
         team_b=team_b,
         team_a_elo=team_a_elo,
         team_b_elo=team_b_elo,
+        team_a_games_played=team_a_games_played,
+        team_b_games_played=team_b_games_played,
         team_a_win_probability=team_a_probability,
         team_b_win_probability=team_b_probability,
         predicted_winner=predicted_winner,
@@ -76,6 +85,8 @@ def predict_matchup(
         projected_margin=projected_margin,
         projected_spread=projected_spread,
         projected_total_goals=team_a_projected_goals + team_b_projected_goals,
+        confidence_level=confidence_level,
+        confidence_warning=_confidence_warning(confidence_level),
     )
 
 
@@ -87,12 +98,14 @@ def format_matchup_prediction(prediction: MatchupPrediction) -> str:
     return "\n".join(
         [
             f"Matchup: {prediction.team_a} vs {prediction.team_b}",
-            f"{prediction.team_a} ELO: {prediction.team_a_elo:.1f}",
-            f"{prediction.team_b} ELO: {prediction.team_b_elo:.1f}",
+            f"{prediction.team_a} ELO: {prediction.team_a_elo:.1f} ({prediction.team_a_games_played} games)",
+            f"{prediction.team_b} ELO: {prediction.team_b_elo:.1f} ({prediction.team_b_games_played} games)",
             f"ELO difference ({prediction.team_a} - {prediction.team_b}): {prediction.elo_difference:.1f}",
             f"{prediction.team_a} win probability: {prediction.team_a_win_probability:.1%}",
             f"{prediction.team_b} win probability: {prediction.team_b_win_probability:.1%}",
             f"Predicted winner: {prediction.predicted_winner} ({prediction.win_probability:.1%})",
+            f"Confidence: {prediction.confidence_level}",
+            *([f"Warning: {prediction.confidence_warning}"] if prediction.confidence_warning else []),
             f"Projected spread: {prediction.projected_spread}",
             f"Projected total goals: {prediction.projected_total_goals:.1f}",
             (
@@ -109,6 +122,13 @@ def _team_elo(team_name: str, ratings: pd.DataFrame) -> float:
     if matches.empty:
         raise ValueError(f"Team not found in ELO ratings: {team_name}")
     return float(matches.iloc[0]["elo"])
+
+
+def _team_games_played(team_name: str, ratings: pd.DataFrame) -> int:
+    matches = ratings[ratings["team"] == team_name]
+    if matches.empty:
+        raise ValueError(f"Team not found in ELO ratings: {team_name}")
+    return int(matches.iloc[0]["games_played"])
 
 
 def _projected_goals(team_a: str, team_b: str, team_games: pd.DataFrame) -> tuple[float, float]:
@@ -140,3 +160,19 @@ def _projected_spread(team_a: str, team_b: str, projected_margin: float) -> str:
     if projected_margin < 0:
         return f"{team_b} by {abs(projected_margin):.1f}"
     return "Pick'em"
+
+
+def _confidence_level(team_a_games_played: int, team_b_games_played: int) -> str:
+    if team_a_games_played >= 5 and team_b_games_played >= 5:
+        return "High"
+    if team_a_games_played >= 3 and team_b_games_played >= 3:
+        return "Medium"
+    return "Low"
+
+
+def _confidence_warning(confidence_level: str) -> str | None:
+    if confidence_level == "Medium":
+        return "Moderate sample size; treat this prediction as directional."
+    if confidence_level == "Low":
+        return "Small sample size; prediction may be unstable."
+    return None
