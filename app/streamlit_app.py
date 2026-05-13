@@ -302,7 +302,8 @@ def render_weekly_matchups(
         use_container_width=True,
         hide_index=True,
     )
-    render_weekly_matchup_cards(weekly_matchups)
+    with st.expander("Compact matchup cards", expanded=False):
+        render_weekly_matchup_cards(weekly_matchups)
 
 
 def build_weekly_matchups(
@@ -394,7 +395,6 @@ def build_weekly_matchups(
 
 
 def render_weekly_matchup_cards(weekly_matchups: pd.DataFrame) -> None:
-    st.markdown("**Compact Matchup View**")
     for _, matchup in weekly_matchups.iterrows():
         with st.container(border=True):
             st.markdown(
