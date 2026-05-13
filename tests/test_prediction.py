@@ -20,13 +20,23 @@ def test_predict_matchup_favors_stronger_team() -> None:
             {"team": "Canton 12U", "elo": 1450.0, "games_played": 8},
         ]
     )
+    team_games = pd.DataFrame(
+        [
+            _team_game("West Hartford 12U Gold", 12, 4),
+            _team_game("West Hartford 12U Gold", 10, 6),
+            _team_game("Canton 12U", 5, 11),
+            _team_game("Canton 12U", 6, 10),
+        ]
+    )
 
-    prediction = predict_matchup("West Hartford 12U Gold", "Canton 12U", ratings)
+    prediction = predict_matchup("West Hartford 12U Gold", "Canton 12U", ratings, team_games)
 
     assert prediction.predicted_winner == "West Hartford 12U Gold"
     assert prediction.win_probability > 0.5
     assert prediction.team_a_win_probability > prediction.team_b_win_probability
     assert prediction.elo_difference == 150.0
+    assert prediction.projected_margin > 0
+    assert prediction.projected_spread.startswith("West Hartford 12U Gold by")
 
 
 def test_predict_matchup_output_is_deterministic() -> None:
@@ -36,9 +46,56 @@ def test_predict_matchup_output_is_deterministic() -> None:
             {"team": "Granby 12U", "elo": 1490.0, "games_played": 8},
         ]
     )
+    team_games = pd.DataFrame(
+        [
+            _team_game("Avon 12U", 8, 5),
+            _team_game("Avon 12U", 10, 7),
+            _team_game("Granby 12U", 6, 8),
+            _team_game("Granby 12U", 7, 9),
+        ]
+    )
 
-    first = predict_matchup("Avon 12U", "Granby 12U", ratings)
-    second = predict_matchup("Avon 12U", "Granby 12U", ratings)
+    first = predict_matchup("Avon 12U", "Granby 12U", ratings, team_games)
+    second = predict_matchup("Avon 12U", "Granby 12U", ratings, team_games)
 
     assert first == second
     assert format_matchup_prediction(first) == format_matchup_prediction(second)
+
+
+def test_predict_matchup_total_goals_is_numeric_and_reasonable() -> None:
+    ratings = pd.DataFrame(
+        [
+            {"team": "Avon 12U", "elo": 1525.0, "games_played": 8},
+            {"team": "Granby 12U", "elo": 1490.0, "games_played": 8},
+        ]
+    )
+    team_games = pd.DataFrame(
+        [
+            _team_game("Avon 12U", 8, 5),
+            _team_game("Avon 12U", 10, 7),
+            _team_game("Granby 12U", 6, 8),
+            _team_game("Granby 12U", 7, 9),
+            _team_game("Avon 12U", None, None, status="scheduled"),
+        ]
+    )
+
+    prediction = predict_matchup("Avon 12U", "Granby 12U", ratings, team_games)
+
+    assert isinstance(prediction.projected_total_goals, float)
+    assert 0 < prediction.projected_total_goals < 40
+    assert prediction.projected_total_goals == 15.0
+
+
+def _team_game(
+    team: str,
+    points_for: int | None,
+    points_against: int | None,
+    *,
+    status: str = "completed",
+) -> dict[str, object]:
+    return {
+        "team": team,
+        "points_for": points_for,
+        "points_against": points_against,
+        "status": status,
+    }

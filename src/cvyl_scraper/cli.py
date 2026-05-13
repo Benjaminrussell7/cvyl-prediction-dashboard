@@ -110,6 +110,11 @@ def main() -> None:
         default="data/processed/cvyl_elo_ratings.csv",
         help="ELO ratings CSV input path for matchup prediction.",
     )
+    parser.add_argument(
+        "--prediction-team-games",
+        default="data/processed/cvyl_team_games.csv",
+        help="Completed team-game CSV input path for matchup projection.",
+    )
     args = parser.parse_args()
 
     if args.predict_team_a or args.predict_team_b:
@@ -119,6 +124,7 @@ def main() -> None:
             args.predict_team_a,
             args.predict_team_b,
             args.prediction_ratings,
+            args.prediction_team_games,
         )
         print(format_matchup_prediction(prediction))
         return
