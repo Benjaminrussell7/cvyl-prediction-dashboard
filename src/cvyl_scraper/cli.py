@@ -5,6 +5,7 @@ import argparse
 import pandas as pd
 
 from cvyl_scraper.backtesting import build_backtest_outputs
+from cvyl_scraper.calibration import build_power_rating_calibration
 from cvyl_scraper.cleaning import build_canonical_games, split_by_status
 from cvyl_scraper.config import load_sources, load_team_aliases
 from cvyl_scraper.discovery import discover_team_sources
@@ -107,6 +108,11 @@ def main() -> None:
         "--model-comparison-v3-summary-output",
         default="data/processed/cvyl_model_comparison_v3_summary.csv",
         help="ELO vs Power v2 vs Power v3 recency comparison summary CSV output path.",
+    )
+    parser.add_argument(
+        "--power-rating-calibration-output",
+        default="data/processed/cvyl_calibration_power_rating.csv",
+        help="Power Rating calibration bucket CSV output path.",
     )
     parser.add_argument(
         "--elo-k-factor",
@@ -272,6 +278,7 @@ def main() -> None:
         recency_min_multiplier=args.elo_recency_min_multiplier,
         recency_growth_games=args.elo_recency_growth_games,
     )
+    power_rating_calibration = build_power_rating_calibration(model_comparison_v3)
 
     export_csv(games, args.output)
     export_csv(completed, args.completed_output)
@@ -288,6 +295,7 @@ def main() -> None:
     export_csv(model_comparison_summary, args.model_comparison_summary_output)
     export_csv(model_comparison_v3, args.model_comparison_v3_output)
     export_csv(model_comparison_v3_summary, args.model_comparison_v3_summary_output)
+    export_csv(power_rating_calibration, args.power_rating_calibration_output)
 
     print(f"Exported {len(games)} games to {args.output}")
     print(f"Exported {len(completed)} completed games to {args.completed_output}")
@@ -310,6 +318,10 @@ def main() -> None:
         f"to {args.model_comparison_v3_output}"
     )
     print(f"Exported v3 model comparison summary to {args.model_comparison_v3_summary_output}")
+    print(
+        f"Exported {len(power_rating_calibration)} Power Rating calibration rows "
+        f"to {args.power_rating_calibration_output}"
+    )
 
 
 if __name__ == "__main__":

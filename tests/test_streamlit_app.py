@@ -106,6 +106,13 @@ REQUIRED_CSV_COLUMNS = {
         "elo_accuracy",
         "elo_brier_score",
     },
+    "cvyl_calibration_power_rating.csv": {
+        "bucket",
+        "games",
+        "average_predicted_probability",
+        "actual_win_rate",
+        "calibration_gap",
+    },
 }
 
 

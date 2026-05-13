@@ -54,6 +54,7 @@ def main() -> None:
     power_ratings = load_csv(PRIMARY_POWER_RATINGS_FILE)
     backtest = load_csv("cvyl_backtest.csv")
     model_comparison_summary = load_csv(PRIMARY_MODEL_COMPARISON_SUMMARY_FILE)
+    calibration = load_csv("cvyl_calibration_power_rating.csv")
     log_model_comparison_summary(model_comparison_summary)
 
     st.title("CVYL U12 Boys Prediction Dashboard")
@@ -69,6 +70,7 @@ def main() -> None:
     render_weekly_matchups(scheduled_games, ratings, team_games, sos, power_ratings)
     render_team_detail(games, ratings, team_games, elo_history, sos, power_ratings)
     render_model_comparison(model_comparison_summary)
+    render_model_calibration(calibration)
     render_backtest(backtest)
 
 
@@ -695,6 +697,42 @@ def render_model_comparison(model_comparison_summary: pd.DataFrame) -> None:
         "Power v2",
         metric_value(model_comparison_summary, "power_v2_accuracy", percentage=True),
         f"Brier {metric_value(model_comparison_summary, 'power_v2_brier_score')}",
+    )
+
+
+def render_model_calibration(calibration: pd.DataFrame) -> None:
+    st.subheader("Model Calibration")
+    st.caption(
+        "Calibration shows whether teams predicted around 60% actually win around 60% of the time."
+    )
+    if calibration.empty:
+        st.info("Power Rating calibration is not available.")
+        return
+
+    display = calibration.copy()
+    percentage_columns = [
+        "average_predicted_probability",
+        "actual_win_rate",
+        "calibration_gap",
+    ]
+    for column in percentage_columns:
+        if column in display.columns:
+            display[column] = display[column] * 100.0
+
+    st.dataframe(
+        display,
+        column_config={
+            "bucket": "Bucket",
+            "games": "Games",
+            "average_predicted_probability": st.column_config.NumberColumn(
+                "Avg. Predicted",
+                format="%.1f%%",
+            ),
+            "actual_win_rate": st.column_config.NumberColumn("Actual Win Rate", format="%.1f%%"),
+            "calibration_gap": st.column_config.NumberColumn("Calibration Gap", format="%.1f%%"),
+        },
+        use_container_width=True,
+        hide_index=True,
     )
 
 
