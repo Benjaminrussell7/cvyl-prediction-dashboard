@@ -31,7 +31,7 @@ def main() -> None:
     sos = load_csv("cvyl_sos.csv")
     power_v2 = load_csv("cvyl_power_ratings_v2.csv")
     backtest = load_csv("cvyl_backtest.csv")
-    backtest_summary = load_csv("cvyl_backtest_summary.csv")
+    model_comparison_summary = load_csv("cvyl_model_comparison_summary.csv")
 
     st.title("CVYL U12 Boys Prediction Dashboard")
     render_data_freshness()
@@ -40,11 +40,12 @@ def main() -> None:
         st.warning("Missing core processed CSVs. Run the scraper/model pipeline before using the dashboard.")
         return
 
-    render_summary_cards(games, ratings, backtest_summary)
+    render_summary_cards(games, ratings, model_comparison_summary)
     render_power_rankings(ratings, sos, power_v2)
     render_matchup_predictor(ratings, team_games, sos, power_v2)
     render_team_detail(games, ratings, team_games, elo_history, sos, power_v2)
-    render_backtest(backtest, backtest_summary)
+    render_model_comparison(model_comparison_summary)
+    render_backtest(backtest)
 
 
 def render_data_freshness() -> None:
@@ -65,19 +66,20 @@ def render_data_freshness() -> None:
 def render_summary_cards(
     games: pd.DataFrame,
     ratings: pd.DataFrame,
-    backtest_summary: pd.DataFrame,
+    model_comparison_summary: pd.DataFrame,
 ) -> None:
     completed_games = int((games["status"] == "completed").sum()) if "status" in games else 0
     total_teams = len(ratings)
-    accuracy = metric_value(backtest_summary, "accuracy", percentage=True)
-    brier_score = metric_value(backtest_summary, "brier_score")
+    accuracy = metric_value(model_comparison_summary, "power_v2_accuracy", percentage=True)
+    brier_score = metric_value(model_comparison_summary, "power_v2_brier_score")
 
     st.subheader("Model Summary")
+    st.caption("Power Rating is the primary prediction model. ELO is retained as supporting context.")
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Completed Games", completed_games)
     col2.metric("Teams Rated", total_teams)
-    col3.metric("Backtest Accuracy", accuracy)
-    col4.metric("Brier Score", brier_score)
+    col3.metric("Power Rating Accuracy", accuracy)
+    col4.metric("Power Rating Brier", brier_score)
 
 
 def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_v2: pd.DataFrame) -> None:
@@ -296,24 +298,43 @@ def render_elo_trend(team: str, elo_history: pd.DataFrame) -> None:
     st.line_chart(trend, x="game_date", y="ELO", height=260)
 
 
-def render_backtest(backtest: pd.DataFrame, backtest_summary: pd.DataFrame) -> None:
-    st.subheader("Backtest")
-    if backtest_summary.empty:
-        st.info("Backtest summary is not available.")
+def render_model_comparison(model_comparison_summary: pd.DataFrame) -> None:
+    st.subheader("Model Comparison")
+    if model_comparison_summary.empty:
+        st.info("Model comparison summary is not available.")
         return
 
+    st.caption("Power Rating is primary; ELO and Hybrid are shown for comparison.")
     col1, col2, col3 = st.columns(3)
-    col1.metric("Accuracy", metric_value(backtest_summary, "accuracy", percentage=True))
-    col2.metric("Average Confidence", metric_value(backtest_summary, "average_confidence", percentage=True))
-    col3.metric("Brier Score", metric_value(backtest_summary, "brier_score"))
+    col1.metric(
+        "Power Rating",
+        metric_value(model_comparison_summary, "power_v2_accuracy", percentage=True),
+        f"Brier {metric_value(model_comparison_summary, 'power_v2_brier_score')}",
+    )
+    col2.metric(
+        "ELO",
+        metric_value(model_comparison_summary, "elo_accuracy", percentage=True),
+        f"Brier {metric_value(model_comparison_summary, 'elo_brier_score')}",
+    )
+    col3.metric(
+        "Hybrid",
+        metric_value(model_comparison_summary, "hybrid_accuracy", percentage=True),
+        f"Brier {metric_value(model_comparison_summary, 'hybrid_brier_score')}",
+    )
+
+
+def render_backtest(backtest: pd.DataFrame) -> None:
+    st.subheader("Recent ELO Backtest Rows")
+    st.caption("Detailed ELO replay rows are retained for debugging and comparison context.")
 
     if not backtest.empty:
-        st.markdown("**Recent Backtest Rows**")
         st.dataframe(
             backtest.sort_values("game_date", ascending=False).head(25),
             use_container_width=True,
             hide_index=True,
         )
+    else:
+        st.info("Backtest rows are not available.")
 
 
 def metric_value(summary: pd.DataFrame, column: str, *, percentage: bool = False) -> str:
