@@ -99,6 +99,25 @@ REQUIRED_CSV_COLUMNS = {
         "elo_accuracy",
         "elo_brier_score",
     },
+    "cvyl_model_comparison_v4_calibrated_summary.csv": {
+        "total_games",
+        "power_v3_recency_accuracy",
+        "power_v3_calibrated_accuracy",
+        "power_v3_recency_brier_score",
+        "power_v3_calibrated_brier_score",
+    },
+    "cvyl_model_comparison_v4_calibrated.csv": {
+        "game_date",
+        "home_team",
+        "away_team",
+        "actual_winner",
+        "power_v3_recency_predicted_winner",
+        "power_v3_recency_win_probability",
+        "power_v3_calibrated_predicted_winner",
+        "power_v3_calibrated_win_probability",
+        "power_v3_recency_correct",
+        "power_v3_calibrated_correct",
+    },
     "cvyl_model_comparison_summary.csv": {
         "total_games",
         "power_v2_accuracy",
@@ -107,6 +126,13 @@ REQUIRED_CSV_COLUMNS = {
         "elo_brier_score",
     },
     "cvyl_calibration_power_rating.csv": {
+        "bucket",
+        "games",
+        "average_predicted_probability",
+        "actual_win_rate",
+        "calibration_gap",
+    },
+    "cvyl_calibration_power_rating_v4.csv": {
         "bucket",
         "games",
         "average_predicted_probability",
@@ -158,8 +184,8 @@ def test_dashboard_processed_data_smoke_contract() -> None:
     assert pd.notna(power_row["average_recency_weight"])
     assert dashboard.metric_value(model_summary, dashboard.POWER_ACCURACY_KEY, percentage=True) != "N/A"
     assert dashboard.metric_value(model_summary, dashboard.POWER_BRIER_KEY) != "N/A"
-    assert pd.notna(model_summary.iloc[0]["power_v3_recency_accuracy"])
-    assert pd.notna(model_summary.iloc[0]["power_v3_recency_brier_score"])
+    assert pd.notna(model_summary.iloc[0]["power_v3_calibrated_accuracy"])
+    assert pd.notna(model_summary.iloc[0]["power_v3_calibrated_brier_score"])
 
     weekly_matchups = dashboard.build_weekly_matchups(
         scheduled_games,
@@ -302,6 +328,20 @@ def test_find_team_row_normalizes_power_rating_team_names() -> None:
 
     assert row is not None
     assert int(row["power_rank_v3_recency"]) == 20
+
+
+def test_matchup_power_context_uses_calibrated_probability() -> None:
+    power_ratings = pd.DataFrame(
+        [
+            {"team": "Avon 12U", "power_rating_v3_recency": 2.0, "power_rank_v3_recency": 1},
+            {"team": "Granby 12U", "power_rating_v3_recency": 0.0, "power_rank_v3_recency": 2},
+        ]
+    )
+
+    context = dashboard.matchup_power_context("Avon 12U", "Granby 12U", power_ratings)
+
+    assert context["team_a_probability"] > 0.62
+    assert context["predicted_winner"] == "Avon 12U"
 
 
 def test_filter_matchups_by_team_matches_home_or_away() -> None:

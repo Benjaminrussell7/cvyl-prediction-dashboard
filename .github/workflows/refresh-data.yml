@@ -48,6 +48,9 @@ jobs:
             data/processed/cvyl_model_comparison_v3.csv \
             data/processed/cvyl_model_comparison_v3_summary.csv \
             data/processed/cvyl_calibration_power_rating.csv \
+            data/processed/cvyl_model_comparison_v4_calibrated.csv \
+            data/processed/cvyl_model_comparison_v4_calibrated_summary.csv \
+            data/processed/cvyl_calibration_power_rating_v4.csv \
             data/processed/cvyl_backtest.csv \
             data/processed/cvyl_backtest_summary.csv
           if git diff --cached --quiet; then

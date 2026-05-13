@@ -16,6 +16,7 @@ from cvyl_scraper.model_comparison_v3 import build_model_comparison_v3_outputs
 from cvyl_scraper.modeling import build_team_games
 from cvyl_scraper.parsing import parse_schedule_page
 from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup_from_file
+from cvyl_scraper.probability_calibration import build_model_comparison_v4_calibrated_outputs
 from cvyl_scraper.power_v2 import build_power_ratings_v2
 from cvyl_scraper.power_v3_recency import build_power_ratings_v3_recency
 from cvyl_scraper.scraping import fetch_page
@@ -113,6 +114,21 @@ def main() -> None:
         "--power-rating-calibration-output",
         default="data/processed/cvyl_calibration_power_rating.csv",
         help="Power Rating calibration bucket CSV output path.",
+    )
+    parser.add_argument(
+        "--model-comparison-v4-calibrated-output",
+        default="data/processed/cvyl_model_comparison_v4_calibrated.csv",
+        help="Baseline Power v3 vs calibrated Power v3 comparison CSV output path.",
+    )
+    parser.add_argument(
+        "--model-comparison-v4-calibrated-summary-output",
+        default="data/processed/cvyl_model_comparison_v4_calibrated_summary.csv",
+        help="Baseline Power v3 vs calibrated Power v3 comparison summary CSV output path.",
+    )
+    parser.add_argument(
+        "--power-rating-v4-calibration-output",
+        default="data/processed/cvyl_calibration_power_rating_v4.csv",
+        help="Calibrated Power Rating v4 calibration bucket CSV output path.",
     )
     parser.add_argument(
         "--elo-k-factor",
@@ -279,6 +295,11 @@ def main() -> None:
         recency_growth_games=args.elo_recency_growth_games,
     )
     power_rating_calibration = build_power_rating_calibration(model_comparison_v3)
+    (
+        model_comparison_v4_calibrated,
+        model_comparison_v4_calibrated_summary,
+        power_rating_v4_calibration,
+    ) = build_model_comparison_v4_calibrated_outputs(games)
 
     export_csv(games, args.output)
     export_csv(completed, args.completed_output)
@@ -296,6 +317,12 @@ def main() -> None:
     export_csv(model_comparison_v3, args.model_comparison_v3_output)
     export_csv(model_comparison_v3_summary, args.model_comparison_v3_summary_output)
     export_csv(power_rating_calibration, args.power_rating_calibration_output)
+    export_csv(model_comparison_v4_calibrated, args.model_comparison_v4_calibrated_output)
+    export_csv(
+        model_comparison_v4_calibrated_summary,
+        args.model_comparison_v4_calibrated_summary_output,
+    )
+    export_csv(power_rating_v4_calibration, args.power_rating_v4_calibration_output)
 
     print(f"Exported {len(games)} games to {args.output}")
     print(f"Exported {len(completed)} completed games to {args.completed_output}")
@@ -321,6 +348,18 @@ def main() -> None:
     print(
         f"Exported {len(power_rating_calibration)} Power Rating calibration rows "
         f"to {args.power_rating_calibration_output}"
+    )
+    print(
+        f"Exported {len(model_comparison_v4_calibrated)} calibrated v4 model comparison rows "
+        f"to {args.model_comparison_v4_calibrated_output}"
+    )
+    print(
+        "Exported calibrated v4 model comparison summary "
+        f"to {args.model_comparison_v4_calibrated_summary_output}"
+    )
+    print(
+        f"Exported {len(power_rating_v4_calibration)} calibrated v4 calibration rows "
+        f"to {args.power_rating_v4_calibration_output}"
     )
 
 

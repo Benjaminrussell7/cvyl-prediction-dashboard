@@ -8,17 +8,18 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 import streamlit as st
 
-from cvyl_scraper.hybrid import power_v2_win_probability
 from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup
+from cvyl_scraper.probability_calibration import calibrated_power_v3_probability
 
 
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "data" / "processed"
 MODEL_COMPARISON_SUMMARY_FILE = "cvyl_model_comparison_summary.csv"
 PRIMARY_POWER_RATINGS_FILE = "cvyl_power_ratings_v3_recency.csv"
-PRIMARY_MODEL_COMPARISON_SUMMARY_FILE = "cvyl_model_comparison_v3_summary.csv"
-POWER_ACCURACY_KEY = "power_v3_recency_accuracy"
-POWER_BRIER_KEY = "power_v3_recency_brier_score"
+PRIMARY_MODEL_COMPARISON_SUMMARY_FILE = "cvyl_model_comparison_v4_calibrated_summary.csv"
+PRIMARY_CALIBRATION_FILE = "cvyl_calibration_power_rating_v4.csv"
+POWER_ACCURACY_KEY = "power_v3_calibrated_accuracy"
+POWER_BRIER_KEY = "power_v3_calibrated_brier_score"
 POWER_RATING_COLUMN = "power_rating_v3_recency"
 POWER_RANK_COLUMN = "power_rank_v3_recency"
 
@@ -54,7 +55,7 @@ def main() -> None:
     power_ratings = load_csv(PRIMARY_POWER_RATINGS_FILE)
     backtest = load_csv("cvyl_backtest.csv")
     model_comparison_summary = load_csv(PRIMARY_MODEL_COMPARISON_SUMMARY_FILE)
-    calibration = load_csv("cvyl_calibration_power_rating.csv")
+    calibration = load_csv(PRIMARY_CALIBRATION_FILE)
     log_model_comparison_summary(model_comparison_summary)
 
     st.title("CVYL U12 Boys Prediction Dashboard")
@@ -480,7 +481,7 @@ def matchup_power_context(team_a: str, team_b: str, power_ratings: pd.DataFrame)
         team_a_probability = 0.5
         team_b_probability = 0.5
     else:
-        team_a_probability = power_v2_win_probability(team_a_rating - team_b_rating)
+        team_a_probability = calibrated_power_v3_probability(team_a_rating - team_b_rating)
         team_b_probability = 1.0 - team_a_probability
 
     return {
@@ -681,22 +682,17 @@ def render_model_comparison(model_comparison_summary: pd.DataFrame) -> None:
         st.info("Model comparison summary is not available.")
         return
 
-    st.caption("Power Rating is primary; ELO and Power v2 are shown for comparison.")
-    col1, col2, col3 = st.columns(3)
+    st.caption("Calibrated Power Rating probabilities are primary; Power v3 baseline is shown for comparison.")
+    col1, col2 = st.columns(2)
     col1.metric(
-        "Power Rating",
+        "Calibrated Power Rating",
         metric_value(model_comparison_summary, POWER_ACCURACY_KEY, percentage=True),
         f"Brier {metric_value(model_comparison_summary, POWER_BRIER_KEY)}",
     )
     col2.metric(
-        "ELO",
-        metric_value(model_comparison_summary, "elo_accuracy", percentage=True),
-        f"Brier {metric_value(model_comparison_summary, 'elo_brier_score')}",
-    )
-    col3.metric(
-        "Power v2",
-        metric_value(model_comparison_summary, "power_v2_accuracy", percentage=True),
-        f"Brier {metric_value(model_comparison_summary, 'power_v2_brier_score')}",
+        "Power v3 Baseline",
+        metric_value(model_comparison_summary, "power_v3_recency_accuracy", percentage=True),
+        f"Brier {metric_value(model_comparison_summary, 'power_v3_recency_brier_score')}",
     )
 
 
