@@ -66,6 +66,23 @@ python -m cvyl_scraper.cli \
 
 The exported CSV contains one canonical row per game with normalized team names, dates, scores, game status, and source metadata.
 
+## How to Run the Dashboard Locally
+
+After generating the processed CSV outputs, run:
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+The dashboard reads existing files from `data/processed/` and shows model summary metrics, power rankings, matchup predictions, team details, and backtest results.
+
+## Known Limitations
+
+- Predictions and rankings are based only on scores currently reported on CVYL.org.
+- Some recent games may be missing if scores have not been posted yet.
+- Team identity depends on the canonical names and any explicit aliases configured locally.
+- The matchup projection uses simple ELO, scoring averages, SOS, and backtest outputs; it is not a machine learning model.
+
 ## Output Columns
 
 ```text

@@ -1,6 +1,7 @@
 beautifulsoup4>=4.12
 pandas>=2.2
 requests>=2.31
+streamlit>=1.36
 PyYAML>=6.0
 
 [dev]
