@@ -14,6 +14,7 @@ from cvyl_scraper.modeling import build_team_games
 from cvyl_scraper.parsing import parse_schedule_page
 from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup_from_file
 from cvyl_scraper.scraping import fetch_page
+from cvyl_scraper.sos import build_sos
 from cvyl_scraper.source_config import generate_discovered_sources_config
 from cvyl_scraper.team_identity import export_team_identity_audit
 
@@ -67,6 +68,11 @@ def main() -> None:
         "--backtest-summary-output",
         default="data/processed/cvyl_backtest_summary.csv",
         help="Backtest summary metrics CSV output path.",
+    )
+    parser.add_argument(
+        "--sos-output",
+        default="data/processed/cvyl_sos.csv",
+        help="Strength of schedule CSV output path.",
     )
     parser.add_argument(
         "--elo-k-factor",
@@ -138,6 +144,11 @@ def main() -> None:
         default="data/processed/cvyl_team_games.csv",
         help="Completed team-game CSV input path for matchup projection.",
     )
+    parser.add_argument(
+        "--prediction-sos",
+        default="data/processed/cvyl_sos.csv",
+        help="Strength of schedule CSV input path for matchup prediction.",
+    )
     args = parser.parse_args()
 
     if args.predict_team_a or args.predict_team_b:
@@ -148,6 +159,7 @@ def main() -> None:
             args.predict_team_b,
             args.prediction_ratings,
             args.prediction_team_games,
+            args.prediction_sos,
         )
         print(format_matchup_prediction(prediction))
         return
@@ -200,6 +212,7 @@ def main() -> None:
         recency_min_multiplier=args.elo_recency_min_multiplier,
         recency_growth_games=args.elo_recency_growth_games,
     )
+    sos = build_sos(team_games, elo_ratings)
 
     export_csv(games, args.output)
     export_csv(completed, args.completed_output)
@@ -209,6 +222,7 @@ def main() -> None:
     export_csv(elo_history, args.elo_history_output)
     export_csv(backtest, args.backtest_output)
     export_csv(backtest_summary, args.backtest_summary_output)
+    export_csv(sos, args.sos_output)
 
     print(f"Exported {len(games)} games to {args.output}")
     print(f"Exported {len(completed)} completed games to {args.completed_output}")
@@ -218,6 +232,7 @@ def main() -> None:
     print(f"Exported {len(elo_history)} ELO history rows to {args.elo_history_output}")
     print(f"Exported {len(backtest)} backtest predictions to {args.backtest_output}")
     print(f"Exported backtest summary to {args.backtest_summary_output}")
+    print(f"Exported {len(sos)} SOS rows to {args.sos_output}")
 
 
 if __name__ == "__main__":

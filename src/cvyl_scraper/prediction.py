@@ -8,6 +8,7 @@ import pandas as pd
 
 DEFAULT_ELO_RATINGS_CSV = "data/processed/cvyl_elo_ratings.csv"
 DEFAULT_TEAM_GAMES_CSV = "data/processed/cvyl_team_games.csv"
+DEFAULT_SOS_CSV = "data/processed/cvyl_sos.csv"
 
 
 @dataclass(frozen=True)
@@ -18,6 +19,10 @@ class MatchupPrediction:
     team_b_elo: float
     team_a_games_played: int
     team_b_games_played: int
+    team_a_sos: float | None
+    team_b_sos: float | None
+    team_a_sos_rank: int | None
+    team_b_sos_rank: int | None
     team_a_win_probability: float
     team_b_win_probability: float
     predicted_winner: str
@@ -37,10 +42,12 @@ def predict_matchup_from_file(
     team_b: str,
     ratings_path: str | Path = DEFAULT_ELO_RATINGS_CSV,
     team_games_path: str | Path = DEFAULT_TEAM_GAMES_CSV,
+    sos_path: str | Path = DEFAULT_SOS_CSV,
 ) -> MatchupPrediction:
     ratings = pd.read_csv(ratings_path)
     team_games = pd.read_csv(team_games_path)
-    return predict_matchup(team_a, team_b, ratings, team_games)
+    sos = _read_optional_sos(sos_path)
+    return predict_matchup(team_a, team_b, ratings, team_games, sos)
 
 
 def predict_matchup(
@@ -48,11 +55,14 @@ def predict_matchup(
     team_b: str,
     ratings: pd.DataFrame,
     team_games: pd.DataFrame,
+    sos: pd.DataFrame | None = None,
 ) -> MatchupPrediction:
     team_a_elo = _team_elo(team_a, ratings)
     team_b_elo = _team_elo(team_b, ratings)
     team_a_games_played = _team_games_played(team_a, ratings)
     team_b_games_played = _team_games_played(team_b, ratings)
+    team_a_sos, team_a_sos_rank = _team_sos(team_a, sos)
+    team_b_sos, team_b_sos_rank = _team_sos(team_b, sos)
     team_a_probability = elo_win_probability(team_a_elo, team_b_elo)
     team_b_probability = 1.0 - team_a_probability
 
@@ -75,6 +85,10 @@ def predict_matchup(
         team_b_elo=team_b_elo,
         team_a_games_played=team_a_games_played,
         team_b_games_played=team_b_games_played,
+        team_a_sos=team_a_sos,
+        team_b_sos=team_b_sos,
+        team_a_sos_rank=team_a_sos_rank,
+        team_b_sos_rank=team_b_sos_rank,
         team_a_win_probability=team_a_probability,
         team_b_win_probability=team_b_probability,
         predicted_winner=predicted_winner,
@@ -100,6 +114,8 @@ def format_matchup_prediction(prediction: MatchupPrediction) -> str:
             f"Matchup: {prediction.team_a} vs {prediction.team_b}",
             f"{prediction.team_a} ELO: {prediction.team_a_elo:.1f} ({prediction.team_a_games_played} games)",
             f"{prediction.team_b} ELO: {prediction.team_b_elo:.1f} ({prediction.team_b_games_played} games)",
+            f"{prediction.team_a} SOS: {_format_sos(prediction.team_a_sos, prediction.team_a_sos_rank)}",
+            f"{prediction.team_b} SOS: {_format_sos(prediction.team_b_sos, prediction.team_b_sos_rank)}",
             f"ELO difference ({prediction.team_a} - {prediction.team_b}): {prediction.elo_difference:.1f}",
             f"{prediction.team_a} win probability: {prediction.team_a_win_probability:.1%}",
             f"{prediction.team_b} win probability: {prediction.team_b_win_probability:.1%}",
@@ -129,6 +145,28 @@ def _team_games_played(team_name: str, ratings: pd.DataFrame) -> int:
     if matches.empty:
         raise ValueError(f"Team not found in ELO ratings: {team_name}")
     return int(matches.iloc[0]["games_played"])
+
+
+def _team_sos(team_name: str, sos: pd.DataFrame | None) -> tuple[float | None, int | None]:
+    if sos is None or sos.empty:
+        return None, None
+    matches = sos[sos["team"] == team_name]
+    if matches.empty:
+        return None, None
+    return float(matches.iloc[0]["average_opponent_elo"]), int(matches.iloc[0]["sos_rank"])
+
+
+def _read_optional_sos(sos_path: str | Path) -> pd.DataFrame | None:
+    path = Path(sos_path)
+    if not path.exists():
+        return None
+    return pd.read_csv(path)
+
+
+def _format_sos(average_opponent_elo: float | None, sos_rank: int | None) -> str:
+    if average_opponent_elo is None or sos_rank is None:
+        return "Unavailable"
+    return f"{average_opponent_elo:.1f} opponent ELO (rank {sos_rank})"
 
 
 def _projected_goals(team_a: str, team_b: str, team_games: pd.DataFrame) -> tuple[float, float]:

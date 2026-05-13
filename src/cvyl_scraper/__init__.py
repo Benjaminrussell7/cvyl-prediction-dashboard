@@ -11,6 +11,7 @@ __all__ = [
     "parsing",
     "prediction",
     "scraping",
+    "sos",
     "source_config",
     "team_identity",
 ]

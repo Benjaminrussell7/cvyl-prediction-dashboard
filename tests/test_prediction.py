@@ -100,6 +100,39 @@ def test_predict_matchup_high_confidence_has_no_warning() -> None:
     assert "Warning:" not in format_matchup_prediction(prediction)
 
 
+def test_predict_matchup_includes_sos_when_available() -> None:
+    prediction = predict_matchup(
+        "Avon 12U",
+        "Granby 12U",
+        _ratings(5, 6),
+        _team_games_for_prediction(),
+        pd.DataFrame(
+            [
+                {
+                    "team": "Avon 12U",
+                    "games_played": 5,
+                    "average_opponent_elo": 1510.0,
+                    "opponent_count": 4,
+                    "sos_rank": 2,
+                },
+                {
+                    "team": "Granby 12U",
+                    "games_played": 6,
+                    "average_opponent_elo": 1490.0,
+                    "opponent_count": 5,
+                    "sos_rank": 4,
+                },
+            ]
+        ),
+    )
+
+    output = format_matchup_prediction(prediction)
+
+    assert prediction.team_a_sos == 1510.0
+    assert prediction.team_b_sos_rank == 4
+    assert "Avon 12U SOS: 1510.0 opponent ELO (rank 2)" in output
+
+
 def test_predict_matchup_medium_confidence_has_warning() -> None:
     prediction = predict_matchup(
         "Avon 12U",
