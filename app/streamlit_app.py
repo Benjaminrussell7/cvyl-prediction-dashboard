@@ -7,6 +7,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
+from cvyl_scraper.hybrid import power_v2_win_probability
 from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup
 
 
@@ -180,10 +181,11 @@ def render_matchup_predictor(
         st.warning(f"Unable to generate this matchup prediction right now: {exc}")
         return
 
-    st.markdown(f"**Power Rating favorite:** {prediction.power_v2_predicted_winner}")
+    power_context = matchup_power_context(team_a, team_b, power_v2)
+    st.markdown(f"**Power Rating favorite:** {power_context['predicted_winner']}")
     prob1, prob2 = st.columns(2)
-    prob1.metric(f"{team_a} Power Rating win probability", f"{prediction.power_v2_win_probability_team_a:.1%}")
-    prob2.metric(f"{team_b} Power Rating win probability", f"{prediction.power_v2_win_probability_team_b:.1%}")
+    prob1.metric(f"{team_a} Power Rating win probability", f"{power_context['team_a_probability']:.1%}")
+    prob2.metric(f"{team_b} Power Rating win probability", f"{power_context['team_b_probability']:.1%}")
 
     spread_col, total_col, score_col, confidence_col = st.columns(4)
     spread_col.metric("Projected Spread", prediction.projected_spread)
@@ -199,12 +201,10 @@ def render_matchup_predictor(
         f"{team_b} {_format_sos_context(prediction.team_b_sos, prediction.team_b_sos_rank)}"
     )
     st.caption(
-        "Supporting context: "
-        f"ELO favors {prediction.predicted_winner} ({prediction.win_probability:.1%}); "
-        f"Hybrid favors {prediction.hybrid_predicted_winner} "
-        f"({max(prediction.hybrid_win_probability_team_a, prediction.hybrid_win_probability_team_b):.1%}); "
-        f"{team_a} Power Rating {_format_power_context(prediction.team_a_power_v2, prediction.team_a_power_rank_v2)} | "
-        f"{team_b} Power Rating {_format_power_context(prediction.team_b_power_v2, prediction.team_b_power_rank_v2)}"
+        format_supporting_prediction_context(prediction)
+        + " "
+        f"{team_a} Power Rating {_format_power_context(power_context['team_a_rating'], power_context['team_a_rank'])} | "
+        f"{team_b} Power Rating {_format_power_context(power_context['team_b_rating'], power_context['team_b_rank'])}"
     )
     if prediction.confidence_warning:
         st.warning(prediction.confidence_warning)
@@ -221,14 +221,65 @@ def build_matchup_prediction(
     sos: pd.DataFrame,
     power_v2: pd.DataFrame,
 ):
+    del power_v2
     return predict_matchup(
         team_a,
         team_b,
         ratings,
         team_games,
         sos if not sos.empty else None,
-        power_v2 if not power_v2.empty else None,
     )
+
+
+def matchup_power_context(team_a: str, team_b: str, power_v2: pd.DataFrame) -> dict[str, object]:
+    team_a_row = find_team_row(power_v2, team_a)
+    team_b_row = find_team_row(power_v2, team_b)
+    team_a_rating = float(team_a_row["power_rating_v2"]) if team_a_row is not None else None
+    team_b_rating = float(team_b_row["power_rating_v2"]) if team_b_row is not None else None
+
+    if team_a_rating is None or team_b_rating is None:
+        team_a_probability = 0.5
+        team_b_probability = 0.5
+    else:
+        team_a_probability = power_v2_win_probability(team_a_rating - team_b_rating)
+        team_b_probability = 1.0 - team_a_probability
+
+    return {
+        "team_a_rating": team_a_rating,
+        "team_b_rating": team_b_rating,
+        "team_a_rank": int(team_a_row["power_rank_v2"]) if team_a_row is not None else None,
+        "team_b_rank": int(team_b_row["power_rank_v2"]) if team_b_row is not None else None,
+        "team_a_probability": team_a_probability,
+        "team_b_probability": team_b_probability,
+        "predicted_winner": team_a if team_a_probability >= team_b_probability else team_b,
+    }
+
+
+def format_supporting_prediction_context(prediction) -> str:
+    context = (
+        "Supporting context: "
+        f"ELO favors {prediction.predicted_winner} ({prediction.win_probability:.1%}); "
+    )
+    hybrid_winner = getattr(prediction, "hybrid_predicted_winner", None)
+    hybrid_team_a = getattr(prediction, "hybrid_win_probability_team_a", None)
+    hybrid_team_b = getattr(prediction, "hybrid_win_probability_team_b", None)
+    if hybrid_winner is not None and hybrid_team_a is not None and hybrid_team_b is not None:
+        context += f"Hybrid favors {hybrid_winner} ({max(hybrid_team_a, hybrid_team_b):.1%}); "
+    return context
+
+
+def find_team_row(frame: pd.DataFrame, team: str) -> pd.Series | None:
+    if frame.empty or "team" not in frame.columns:
+        return None
+    normalized_team = normalize_team_name(team)
+    matches = frame[frame["team"].map(normalize_team_name) == normalized_team]
+    if matches.empty:
+        return None
+    return matches.iloc[0]
+
+
+def normalize_team_name(team: object) -> str:
+    return " ".join(str(team).strip().casefold().split())
 
 
 def render_team_detail(
@@ -245,13 +296,13 @@ def render_team_detail(
 
     rating_row = ratings[ratings["team"] == team].iloc[0]
     sos_row = sos[sos["team"] == team] if not sos.empty else pd.DataFrame()
-    power_row = power_v2[power_v2["team"] == team] if not power_v2.empty else pd.DataFrame()
+    power_row = find_team_row(power_v2, team)
 
     col1, col2, col3, col4 = st.columns(4)
-    if not power_row.empty:
-        col1.metric("Power Rank", int(power_row.iloc[0]["power_rank_v2"]))
-        col2.metric("Power Rating", f"{float(power_row.iloc[0]['power_rating_v2']):.2f}")
-        col3.metric("Confidence", str(power_row.iloc[0]["confidence_tier"]).title())
+    if power_row is not None:
+        col1.metric("Power Rank", int(power_row["power_rank_v2"]))
+        col2.metric("Power Rating", f"{float(power_row['power_rating_v2']):.2f}")
+        col3.metric("Confidence", str(power_row["confidence_tier"]).title())
     else:
         col1.metric("Power Rank", "N/A")
         col2.metric("Power Rating", "N/A")
@@ -264,11 +315,11 @@ def render_team_detail(
     metric1, metric2, metric3 = st.columns(3)
     metric1.metric("ELO", f"{float(rating_row['elo']):.1f}")
     metric2.metric("Games Played", int(rating_row["games_played"]))
-    if not power_row.empty:
+    if power_row is not None:
         metric3.metric(
             "Offense / Defense",
-            f"{float(power_row.iloc[0]['adjusted_offense_rating']):.2f} / "
-            f"{float(power_row.iloc[0]['adjusted_defense_rating']):.2f}",
+            f"{float(power_row['adjusted_offense_rating']):.2f} / "
+            f"{float(power_row['adjusted_defense_rating']):.2f}",
         )
     else:
         metric3.metric("Offense / Defense", "N/A")

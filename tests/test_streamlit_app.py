@@ -47,7 +47,6 @@ def test_build_matchup_prediction_passes_current_prediction_arguments(monkeypatc
         ratings,
         team_games,
         sos=None,
-        power_v2=None,
         /,
     ):
         captured.update(
@@ -57,7 +56,6 @@ def test_build_matchup_prediction_passes_current_prediction_arguments(monkeypatc
                 "ratings": ratings,
                 "team_games": team_games,
                 "sos": sos,
-                "power_v2": power_v2,
             }
         )
         return expected_prediction
@@ -79,7 +77,6 @@ def test_build_matchup_prediction_passes_current_prediction_arguments(monkeypatc
     assert captured["ratings"] is ratings
     assert captured["team_games"] is team_games
     assert captured["sos"] is sos
-    assert captured["power_v2"] is power_v2
 
 
 def test_build_matchup_prediction_converts_empty_optional_frames_to_none(monkeypatch) -> None:
@@ -91,11 +88,9 @@ def test_build_matchup_prediction_converts_empty_optional_frames_to_none(monkeyp
         ratings,
         team_games,
         sos=None,
-        power_v2=None,
         /,
     ):
         captured["sos"] = sos
-        captured["power_v2"] = power_v2
         return object()
 
     monkeypatch.setattr(dashboard, "predict_matchup", fake_predict_matchup)
@@ -110,4 +105,21 @@ def test_build_matchup_prediction_converts_empty_optional_frames_to_none(monkeyp
     )
 
     assert captured["sos"] is None
-    assert captured["power_v2"] is None
+
+
+def test_find_team_row_normalizes_power_rating_team_names() -> None:
+    power_v2 = pd.DataFrame(
+        [
+            {
+                "team": "Avon 12U B",
+                "power_rank_v2": 20,
+                "power_rating_v2": 0.50,
+                "confidence_tier": "medium",
+            }
+        ]
+    )
+
+    row = dashboard.find_team_row(power_v2, "  avon   12u b  ")
+
+    assert row is not None
+    assert int(row["power_rank_v2"]) == 20
