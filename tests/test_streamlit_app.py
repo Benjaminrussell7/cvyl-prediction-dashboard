@@ -290,3 +290,58 @@ def test_find_team_row_normalizes_power_rating_team_names() -> None:
 
     assert row is not None
     assert int(row["power_rank_v3_recency"]) == 20
+
+
+def test_filter_matchups_by_team_matches_home_or_away() -> None:
+    matchups = pd.DataFrame(
+        [
+            {"Home": "West Hartford 12U Gold", "Away": "Avon 12U", "Projected Winner": "Avon 12U"},
+            {"Home": "RHAM 12U", "Away": "Granby 12U", "Projected Winner": "RHAM 12U"},
+            {"Home": "Canton 12U", "Away": "West Hartford 12U Green", "Projected Winner": "Canton 12U"},
+        ]
+    )
+
+    filtered = dashboard.filter_matchups_by_team(matchups, "West Hartford")
+
+    assert len(filtered) == 2
+    assert set(filtered["Home"]) == {"West Hartford 12U Gold", "Canton 12U"}
+
+
+def test_upcoming_scheduled_games_for_team_excludes_past_scheduled_games() -> None:
+    games = pd.DataFrame(
+        [
+            {
+                "game_date": "2026-05-12",
+                "game_time": "6:00 PM",
+                "home_team": "Avon 12U",
+                "away_team": "Canton 12U",
+                "status": "scheduled",
+            },
+            {
+                "game_date": "2026-05-13",
+                "game_time": "6:00 PM",
+                "home_team": "Granby 12U",
+                "away_team": "Avon 12U",
+                "status": "scheduled",
+            },
+            {
+                "game_date": "2026-05-20",
+                "game_time": "6:00 PM",
+                "home_team": "Avon 12U",
+                "away_team": "RHAM 12U",
+                "status": "scheduled",
+            },
+            {
+                "game_date": "2026-05-21",
+                "game_time": "6:00 PM",
+                "home_team": "Avon 12U",
+                "away_team": "Berlin 12U",
+                "status": "completed",
+            },
+        ]
+    )
+
+    upcoming = dashboard.upcoming_scheduled_games_for_team(games, "Avon 12U", today="2026-05-13")
+
+    assert list(upcoming["game_date"].dt.strftime("%Y-%m-%d")) == ["2026-05-13", "2026-05-20"]
+    assert set(upcoming["status"]) == {"scheduled"}

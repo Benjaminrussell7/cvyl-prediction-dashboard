@@ -242,6 +242,12 @@ def render_weekly_matchups(
         st.info("No scheduled games found in the next 7 days.")
         return
 
+    team_filter = st.text_input("Search weekly matchups", "", key="weekly_matchup_filter")
+    weekly_matchups = filter_matchups_by_team(weekly_matchups, team_filter)
+    if weekly_matchups.empty:
+        st.info("No matchups match that team search.")
+        return
+
     st.dataframe(
         weekly_matchups,
         use_container_width=True,
@@ -335,6 +341,16 @@ def build_weekly_matchups(
         rows.append(row)
 
     return pd.DataFrame(rows, columns=columns)
+
+
+def filter_matchups_by_team(matchups: pd.DataFrame, team_filter: str) -> pd.DataFrame:
+    if matchups.empty or not team_filter.strip():
+        return matchups
+    pattern = team_filter.strip()
+    return matchups[
+        matchups["Home"].str.contains(pattern, case=False, na=False, regex=False)
+        | matchups["Away"].str.contains(pattern, case=False, na=False, regex=False)
+    ].copy()
 
 
 def build_matchup_prediction(
@@ -508,10 +524,7 @@ def render_team_detail(
         hide_index=True,
     )
 
-    upcoming = games[
-        (games["status"] == "scheduled")
-        & ((games["home_team"] == team) | (games["away_team"] == team))
-    ].copy()
+    upcoming = upcoming_scheduled_games_for_team(games, team)
     st.markdown("**Upcoming Scheduled Games**")
     if upcoming.empty:
         st.info("No scheduled games found for this team.")
@@ -527,6 +540,23 @@ def render_team_detail(
             use_container_width=True,
             hide_index=True,
         )
+
+
+def upcoming_scheduled_games_for_team(
+    games: pd.DataFrame,
+    team: str,
+    *,
+    today: str | pd.Timestamp | None = None,
+) -> pd.DataFrame:
+    if games.empty:
+        return pd.DataFrame()
+    current_day = pd.Timestamp.today().normalize() if today is None else pd.Timestamp(today).normalize()
+    upcoming = games[
+        (games["status"] == "scheduled")
+        & ((games["home_team"] == team) | (games["away_team"] == team))
+    ].copy()
+    upcoming["game_date"] = pd.to_datetime(upcoming["game_date"], errors="coerce")
+    return upcoming[upcoming["game_date"] >= current_day].copy()
 
 
 def render_elo_trend(team: str, elo_history: pd.DataFrame) -> None:
