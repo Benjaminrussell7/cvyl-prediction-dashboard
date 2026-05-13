@@ -170,6 +170,38 @@ def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_rating
         use_container_width=True,
         hide_index=True,
     )
+    render_compact_power_rankings(rankings, sort_column, ascending)
+
+
+def render_compact_power_rankings(rankings: pd.DataFrame, sort_column: str, ascending: bool) -> None:
+    compact_columns = [
+        column
+        for column in [
+            POWER_RANK_COLUMN,
+            "team",
+            POWER_RATING_COLUMN,
+            "confidence_tier",
+            "games_played",
+        ]
+        if column in rankings.columns
+    ]
+    if not compact_columns:
+        return
+
+    compact = rankings[compact_columns].sort_values(sort_column, ascending=ascending).head(25)
+    st.markdown("**Compact Rankings**")
+    st.dataframe(
+        compact,
+        column_config={
+            POWER_RANK_COLUMN: "Rank",
+            "team": "Team",
+            POWER_RATING_COLUMN: st.column_config.NumberColumn("Power", format="%.2f"),
+            "confidence_tier": "Confidence",
+            "games_played": "Games",
+        },
+        use_container_width=True,
+        hide_index=True,
+    )
 
 
 def render_matchup_predictor(
@@ -202,9 +234,17 @@ def render_matchup_predictor(
 
     power_context = matchup_power_context(team_a, team_b, power_ratings)
     st.markdown(f"**Power Rating favorite:** {power_context['predicted_winner']}")
+    st.info(
+        f"{power_context['predicted_winner']} is favored. "
+        f"Projected spread: {prediction.projected_spread}. "
+        f"Projected total: {prediction.projected_total_goals:.1f}. "
+        f"Confidence: {prediction.confidence_level}."
+    )
     prob1, prob2 = st.columns(2)
-    prob1.metric(f"{team_a} Power Rating win probability", f"{power_context['team_a_probability']:.1%}")
-    prob2.metric(f"{team_b} Power Rating win probability", f"{power_context['team_b_probability']:.1%}")
+    prob1.metric("Team A Win Probability", f"{power_context['team_a_probability']:.1%}")
+    prob1.caption(team_a)
+    prob2.metric("Team B Win Probability", f"{power_context['team_b_probability']:.1%}")
+    prob2.caption(team_b)
 
     spread_col, total_col, score_col, confidence_col = st.columns(4)
     spread_col.metric("Projected Spread", prediction.projected_spread)
@@ -262,6 +302,7 @@ def render_weekly_matchups(
         use_container_width=True,
         hide_index=True,
     )
+    render_weekly_matchup_cards(weekly_matchups)
 
 
 def build_weekly_matchups(
@@ -350,6 +391,25 @@ def build_weekly_matchups(
         rows.append(row)
 
     return pd.DataFrame(rows, columns=columns)
+
+
+def render_weekly_matchup_cards(weekly_matchups: pd.DataFrame) -> None:
+    st.markdown("**Compact Matchup View**")
+    for _, matchup in weekly_matchups.iterrows():
+        with st.container(border=True):
+            st.markdown(
+                f"**{matchup['Home']} vs {matchup['Away']}**  \n"
+                f"{matchup['Date']} {matchup['Time']}"
+            )
+            cols = st.columns(2)
+            cols[0].metric("Projected Winner", matchup["Projected Winner"] or "Unavailable")
+            cols[1].metric("Win Probability", matchup["Win Probability"] or "N/A")
+            cols = st.columns(3)
+            cols[0].metric("Spread", matchup["Projected Spread"] or "N/A")
+            cols[1].metric("Total", matchup["Projected Total"] or "N/A")
+            cols[2].metric("Confidence", matchup["Confidence"] or "N/A")
+            if matchup["Note"]:
+                st.caption(matchup["Note"])
 
 
 def filter_matchups_by_team(matchups: pd.DataFrame, team_filter: str) -> pd.DataFrame:
