@@ -207,6 +207,7 @@ def test_dashboard_processed_data_smoke_contract() -> None:
         team_games,
         sos,
         power_ratings,
+        dashboard.load_csv("cvyl_trends.csv"),
         today="2026-05-13",
     )
 
@@ -222,6 +223,7 @@ def test_dashboard_processed_data_smoke_contract() -> None:
         "Projected Spread",
         "Projected Total",
         "Confidence",
+        "Explanation",
         "Note",
     }.issubset(weekly_matchups.columns)
     assert weekly_matchups["Date"].min() >= "2026-05-13"

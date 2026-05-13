@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 import streamlit as st
 
+from cvyl_scraper.explanations import generate_matchup_explanation
 from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup
 from cvyl_scraper.probability_calibration import calibrated_power_v3_probability
 
@@ -69,8 +70,8 @@ def main() -> None:
     render_summary_cards(games, ratings, model_comparison_summary)
     render_power_rankings(ratings, sos, power_ratings)
     render_trending_teams(trends)
-    render_matchup_predictor(ratings, team_games, sos, power_ratings)
-    render_weekly_matchups(scheduled_games, ratings, team_games, sos, power_ratings)
+    render_matchup_predictor(ratings, team_games, sos, power_ratings, trends)
+    render_weekly_matchups(scheduled_games, ratings, team_games, sos, power_ratings, trends)
     render_team_detail(games, ratings, team_games, elo_history, sos, power_ratings)
     render_model_comparison(model_comparison_summary)
     render_model_calibration(calibration)
@@ -293,6 +294,7 @@ def render_matchup_predictor(
     team_games: pd.DataFrame,
     sos: pd.DataFrame,
     power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
 ) -> None:
     st.subheader("Matchup Predictor")
     teams = ratings["team"].dropna().sort_values().tolist()
@@ -322,6 +324,16 @@ def render_matchup_predictor(
         power_context["team_b_probability"],
     )
     edge_label = prediction_edge_label(favorite_probability)
+    explanation = generate_matchup_explanation(
+        team_a,
+        team_b,
+        predicted_winner=str(power_context["predicted_winner"]),
+        win_probability=favorite_probability,
+        confidence_tier=prediction.confidence_level,
+        power_ratings=power_ratings,
+        trends=trends,
+        sos=sos,
+    )
     st.markdown(f"**Power Rating favorite:** {power_context['predicted_winner']}")
     st.info(
         f"{power_context['predicted_winner']} is favored. "
@@ -345,6 +357,7 @@ def render_matchup_predictor(
     )
     confidence_col.metric("Confidence", prediction.confidence_level)
     st.caption(f"Prediction edge: **{edge_label}**")
+    st.info(explanation)
 
     st.caption(
         f"SOS: {team_a} {_format_sos_context(prediction.team_a_sos, prediction.team_a_sos_rank)} | "
@@ -369,6 +382,7 @@ def render_weekly_matchups(
     team_games: pd.DataFrame,
     sos: pd.DataFrame,
     power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
 ) -> None:
     st.subheader("This Week's Matchups")
     weekly_matchups = build_weekly_matchups(
@@ -377,6 +391,7 @@ def render_weekly_matchups(
         team_games,
         sos,
         power_ratings,
+        trends,
     )
     if weekly_matchups.empty:
         st.info("No scheduled games found in the next 7 days.")
@@ -403,6 +418,7 @@ def build_weekly_matchups(
     team_games: pd.DataFrame,
     sos: pd.DataFrame,
     power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
     *,
     today: str | pd.Timestamp | None = None,
 ) -> pd.DataFrame:
@@ -417,6 +433,7 @@ def build_weekly_matchups(
         "Projected Spread",
         "Projected Total",
         "Confidence",
+        "Explanation",
         "Note",
     ]
     if scheduled_games.empty:
@@ -453,6 +470,7 @@ def build_weekly_matchups(
             "Projected Spread": "",
             "Projected Total": "",
             "Confidence": "",
+            "Explanation": "Unavailable",
             "Note": "",
         }
         try:
@@ -477,6 +495,16 @@ def build_weekly_matchups(
                     "Projected Spread": prediction.projected_spread,
                     "Projected Total": f"{prediction.projected_total_goals:.1f}",
                     "Confidence": matchup_confidence_tier(home_team, away_team, power_ratings),
+                    "Explanation": generate_matchup_explanation(
+                        home_team,
+                        away_team,
+                        predicted_winner=str(power_context["predicted_winner"]),
+                        win_probability=favorite_probability,
+                        confidence_tier=matchup_confidence_tier(home_team, away_team, power_ratings),
+                        power_ratings=power_ratings,
+                        trends=trends,
+                        sos=sos,
+                    ),
                 }
             )
         except Exception as exc:
@@ -507,6 +535,7 @@ def render_weekly_matchup_cards(weekly_matchups: pd.DataFrame) -> None:
             cols[1].metric("Spread", matchup["Projected Spread"] or "N/A")
             cols[2].metric("Total", matchup["Projected Total"] or "N/A")
             st.caption(f"Confidence: {matchup['Confidence'] or 'Unavailable'}")
+            st.caption(matchup["Explanation"] or "Explanation unavailable.")
             if matchup["Note"]:
                 st.caption(matchup["Note"])
 
