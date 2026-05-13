@@ -23,6 +23,7 @@ from cvyl_scraper.scraping import fetch_page
 from cvyl_scraper.sos import build_sos
 from cvyl_scraper.source_config import generate_discovered_sources_config
 from cvyl_scraper.team_identity import export_team_identity_audit
+from cvyl_scraper.trends import build_trends
 
 
 def main() -> None:
@@ -129,6 +130,11 @@ def main() -> None:
         "--power-rating-v4-calibration-output",
         default="data/processed/cvyl_calibration_power_rating_v4.csv",
         help="Calibrated Power Rating v4 calibration bucket CSV output path.",
+    )
+    parser.add_argument(
+        "--trends-output",
+        default="data/processed/cvyl_trends.csv",
+        help="Recent team trend and momentum CSV output path.",
     )
     parser.add_argument(
         "--elo-k-factor",
@@ -280,6 +286,7 @@ def main() -> None:
         recency_growth_games=args.elo_recency_growth_games,
     )
     sos = build_sos(team_games, elo_ratings)
+    trends = build_trends(team_games)
     power_ratings_v2 = build_power_ratings_v2(team_games)
     power_ratings_v3_recency = build_power_ratings_v3_recency(team_games)
     model_comparison, model_comparison_summary = build_model_comparison_outputs(
@@ -310,6 +317,7 @@ def main() -> None:
     export_csv(backtest, args.backtest_output)
     export_csv(backtest_summary, args.backtest_summary_output)
     export_csv(sos, args.sos_output)
+    export_csv(trends, args.trends_output)
     export_csv(power_ratings_v2, args.power_ratings_v2_output)
     export_csv(power_ratings_v3_recency, args.power_ratings_v3_recency_output)
     export_csv(model_comparison, args.model_comparison_output)
@@ -333,6 +341,7 @@ def main() -> None:
     print(f"Exported {len(backtest)} backtest predictions to {args.backtest_output}")
     print(f"Exported backtest summary to {args.backtest_summary_output}")
     print(f"Exported {len(sos)} SOS rows to {args.sos_output}")
+    print(f"Exported {len(trends)} trend rows to {args.trends_output}")
     print(f"Exported {len(power_ratings_v2)} Power Ratings v2 rows to {args.power_ratings_v2_output}")
     print(
         f"Exported {len(power_ratings_v3_recency)} Power Ratings v3 recency rows "

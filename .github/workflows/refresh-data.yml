@@ -41,6 +41,7 @@ jobs:
             data/processed/cvyl_elo_ratings.csv \
             data/processed/cvyl_elo_history.csv \
             data/processed/cvyl_sos.csv \
+            data/processed/cvyl_trends.csv \
             data/processed/cvyl_power_ratings_v2.csv \
             data/processed/cvyl_power_ratings_v3_recency.csv \
             data/processed/cvyl_model_comparison.csv \

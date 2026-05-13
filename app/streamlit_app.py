@@ -52,6 +52,7 @@ def main() -> None:
     team_games = load_csv("cvyl_team_games.csv")
     elo_history = load_csv("cvyl_elo_history.csv")
     sos = load_csv("cvyl_sos.csv")
+    trends = load_csv("cvyl_trends.csv")
     power_ratings = load_csv(PRIMARY_POWER_RATINGS_FILE)
     backtest = load_csv("cvyl_backtest.csv")
     model_comparison_summary = load_csv(PRIMARY_MODEL_COMPARISON_SUMMARY_FILE)
@@ -67,6 +68,7 @@ def main() -> None:
 
     render_summary_cards(games, ratings, model_comparison_summary)
     render_power_rankings(ratings, sos, power_ratings)
+    render_trending_teams(trends)
     render_matchup_predictor(ratings, team_games, sos, power_ratings)
     render_weekly_matchups(scheduled_games, ratings, team_games, sos, power_ratings)
     render_team_detail(games, ratings, team_games, elo_history, sos, power_ratings)
@@ -205,6 +207,85 @@ def render_compact_power_rankings(rankings: pd.DataFrame, sort_column: str, asce
         use_container_width=True,
         hide_index=True,
     )
+
+
+def render_trending_teams(trends: pd.DataFrame) -> None:
+    st.subheader("Trending Teams")
+    st.caption(
+        "Recent form uses completed games only. Momentum blends recent wins, scoring margin, "
+        "offense, defense, and Power Rating rank movement."
+    )
+    if trends.empty:
+        st.info("Trend data is not available yet.")
+        return
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("**Hottest Teams**")
+        st.dataframe(
+            trend_display(
+                trends.sort_values(["momentum_score", "team"], ascending=[False, True]).head(8)
+            ),
+            use_container_width=True,
+            hide_index=True,
+        )
+    with col2:
+        st.markdown("**Biggest Risers**")
+        st.dataframe(
+            trend_display(
+                trends.sort_values(["power_rank_movement", "momentum_score"], ascending=[False, False]).head(8)
+            ),
+            use_container_width=True,
+            hide_index=True,
+        )
+
+    col3, col4 = st.columns(2)
+    with col3:
+        st.markdown("**Strongest Recent Defense**")
+        st.dataframe(
+            trend_display(
+                trends.sort_values(["recent_defense_rating", "team"], ascending=[True, True]).head(8)
+            ),
+            use_container_width=True,
+            hide_index=True,
+        )
+    with col4:
+        st.markdown("**Strongest Recent Offense**")
+        st.dataframe(
+            trend_display(
+                trends.sort_values(["recent_offense_rating", "team"], ascending=[False, True]).head(8)
+            ),
+            use_container_width=True,
+            hide_index=True,
+        )
+
+
+def trend_display(trends: pd.DataFrame) -> pd.DataFrame:
+    columns = [
+        "team",
+        "momentum_label",
+        "last_3_win_pct",
+        "last_5_win_pct",
+        "recent_avg_margin",
+        "recent_offense_rating",
+        "recent_defense_rating",
+        "power_rank_movement",
+    ]
+    display = trends[[column for column in columns if column in trends.columns]].copy()
+    for column in ["last_3_win_pct", "last_5_win_pct"]:
+        if column in display.columns:
+            display[column] = (display[column] * 100).round(0).astype(int).astype(str) + "%"
+    rename = {
+        "team": "Team",
+        "momentum_label": "Form",
+        "last_3_win_pct": "Last 3",
+        "last_5_win_pct": "Last 5",
+        "recent_avg_margin": "Margin",
+        "recent_offense_rating": "Offense",
+        "recent_defense_rating": "Defense",
+        "power_rank_movement": "Rank Move",
+    }
+    return display.rename(columns=rename)
 
 
 def render_matchup_predictor(
