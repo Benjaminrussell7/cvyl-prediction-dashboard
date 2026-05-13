@@ -3,7 +3,7 @@ from __future__ import annotations
 import pandas as pd
 from pandas.testing import assert_frame_equal
 
-from cvyl_scraper.elo import build_elo_outputs
+from cvyl_scraper.elo import build_elo_outputs, recency_multiplier, updated_elo_pair
 
 
 def test_build_elo_outputs_updates_games_chronologically() -> None:
@@ -92,6 +92,31 @@ def test_build_elo_outputs_excludes_scheduled_games() -> None:
 
     assert set(ratings["team"]) == {"Avon", "Canton"}
     assert set(history["game_id"]) == {"game-1"}
+
+
+def test_recency_multiplier_makes_recent_games_larger_rating_updates() -> None:
+    early_multiplier = recency_multiplier(0, min_multiplier=0.80, growth_games=2)
+    recent_multiplier = recency_multiplier(10, min_multiplier=0.80, growth_games=2)
+
+    early_winner_elo, _ = updated_elo_pair(
+        1500,
+        1500,
+        10,
+        5,
+        k_factor=20,
+        recency_multiplier_value=early_multiplier,
+    )
+    recent_winner_elo, _ = updated_elo_pair(
+        1500,
+        1500,
+        10,
+        5,
+        k_factor=20,
+        recency_multiplier_value=recent_multiplier,
+    )
+
+    assert recent_multiplier > early_multiplier
+    assert recent_winner_elo - 1500 > early_winner_elo - 1500
 
 
 def _team_game(

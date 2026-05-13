@@ -4,6 +4,7 @@ import argparse
 
 import pandas as pd
 
+from cvyl_scraper.backtesting import build_backtest_outputs
 from cvyl_scraper.cleaning import build_canonical_games, split_by_status
 from cvyl_scraper.config import load_sources, load_team_aliases
 from cvyl_scraper.discovery import discover_team_sources
@@ -58,10 +59,32 @@ def main() -> None:
         help="Per-game ELO history CSV output path.",
     )
     parser.add_argument(
+        "--backtest-output",
+        default="data/processed/cvyl_backtest.csv",
+        help="Completed-game backtest CSV output path.",
+    )
+    parser.add_argument(
+        "--backtest-summary-output",
+        default="data/processed/cvyl_backtest_summary.csv",
+        help="Backtest summary metrics CSV output path.",
+    )
+    parser.add_argument(
         "--elo-k-factor",
         type=float,
         default=20.0,
         help="K-factor for ELO rating updates.",
+    )
+    parser.add_argument(
+        "--elo-recency-min-multiplier",
+        type=float,
+        default=0.85,
+        help="Starting multiplier for early-season ELO updates.",
+    )
+    parser.add_argument(
+        "--elo-recency-growth-games",
+        type=float,
+        default=20.0,
+        help="Number of games controlling how quickly ELO recency weight approaches 1.0.",
     )
     parser.add_argument(
         "--discover-url",
@@ -165,7 +188,18 @@ def main() -> None:
     games = build_canonical_games(raw_games, team_aliases=team_aliases)
     completed, scheduled = split_by_status(games)
     team_games = build_team_games(games)
-    elo_ratings, elo_history = build_elo_outputs(team_games, k_factor=args.elo_k_factor)
+    elo_ratings, elo_history = build_elo_outputs(
+        team_games,
+        k_factor=args.elo_k_factor,
+        recency_min_multiplier=args.elo_recency_min_multiplier,
+        recency_growth_games=args.elo_recency_growth_games,
+    )
+    backtest, backtest_summary = build_backtest_outputs(
+        games,
+        k_factor=args.elo_k_factor,
+        recency_min_multiplier=args.elo_recency_min_multiplier,
+        recency_growth_games=args.elo_recency_growth_games,
+    )
 
     export_csv(games, args.output)
     export_csv(completed, args.completed_output)
@@ -173,6 +207,8 @@ def main() -> None:
     export_csv(team_games, args.team_games_output)
     export_csv(elo_ratings, args.elo_ratings_output)
     export_csv(elo_history, args.elo_history_output)
+    export_csv(backtest, args.backtest_output)
+    export_csv(backtest_summary, args.backtest_summary_output)
 
     print(f"Exported {len(games)} games to {args.output}")
     print(f"Exported {len(completed)} completed games to {args.completed_output}")
@@ -180,6 +216,8 @@ def main() -> None:
     print(f"Exported {len(team_games)} team-game rows to {args.team_games_output}")
     print(f"Exported {len(elo_ratings)} ELO ratings to {args.elo_ratings_output}")
     print(f"Exported {len(elo_history)} ELO history rows to {args.elo_history_output}")
+    print(f"Exported {len(backtest)} backtest predictions to {args.backtest_output}")
+    print(f"Exported backtest summary to {args.backtest_summary_output}")
 
 
 if __name__ == "__main__":
