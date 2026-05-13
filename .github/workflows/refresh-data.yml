@@ -33,7 +33,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
+          git add -f \
             data/processed/cvyl_games.csv \
             data/processed/cvyl_completed_games.csv \
             data/processed/cvyl_scheduled_games.csv \
@@ -42,8 +42,11 @@ jobs:
             data/processed/cvyl_elo_history.csv \
             data/processed/cvyl_sos.csv \
             data/processed/cvyl_power_ratings_v2.csv \
+            data/processed/cvyl_power_ratings_v3_recency.csv \
             data/processed/cvyl_model_comparison.csv \
             data/processed/cvyl_model_comparison_summary.csv \
+            data/processed/cvyl_model_comparison_v3.csv \
+            data/processed/cvyl_model_comparison_v3_summary.csv \
             data/processed/cvyl_backtest.csv \
             data/processed/cvyl_backtest_summary.csv
           if git diff --cached --quiet; then

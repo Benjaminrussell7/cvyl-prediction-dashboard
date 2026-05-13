@@ -14,8 +14,12 @@ from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "data" / "processed"
 MODEL_COMPARISON_SUMMARY_FILE = "cvyl_model_comparison_summary.csv"
-POWER_ACCURACY_KEY = "power_v2_accuracy"
-POWER_BRIER_KEY = "power_v2_brier_score"
+PRIMARY_POWER_RATINGS_FILE = "cvyl_power_ratings_v3_recency.csv"
+PRIMARY_MODEL_COMPARISON_SUMMARY_FILE = "cvyl_model_comparison_v3_summary.csv"
+POWER_ACCURACY_KEY = "power_v3_recency_accuracy"
+POWER_BRIER_KEY = "power_v3_recency_brier_score"
+POWER_RATING_COLUMN = "power_rating_v3_recency"
+POWER_RANK_COLUMN = "power_rank_v3_recency"
 
 LOGGER = logging.getLogger(__name__)
 
@@ -44,9 +48,9 @@ def main() -> None:
     team_games = load_csv("cvyl_team_games.csv")
     elo_history = load_csv("cvyl_elo_history.csv")
     sos = load_csv("cvyl_sos.csv")
-    power_v2 = load_csv("cvyl_power_ratings_v2.csv")
+    power_ratings = load_csv(PRIMARY_POWER_RATINGS_FILE)
     backtest = load_csv("cvyl_backtest.csv")
-    model_comparison_summary = load_csv(MODEL_COMPARISON_SUMMARY_FILE)
+    model_comparison_summary = load_csv(PRIMARY_MODEL_COMPARISON_SUMMARY_FILE)
     log_model_comparison_summary(model_comparison_summary)
 
     st.title("CVYL U12 Boys Prediction Dashboard")
@@ -57,9 +61,9 @@ def main() -> None:
         return
 
     render_summary_cards(games, ratings, model_comparison_summary)
-    render_power_rankings(ratings, sos, power_v2)
-    render_matchup_predictor(ratings, team_games, sos, power_v2)
-    render_team_detail(games, ratings, team_games, elo_history, sos, power_v2)
+    render_power_rankings(ratings, sos, power_ratings)
+    render_matchup_predictor(ratings, team_games, sos, power_ratings)
+    render_team_detail(games, ratings, team_games, elo_history, sos, power_ratings)
     render_model_comparison(model_comparison_summary)
     render_backtest(backtest)
 
@@ -98,9 +102,9 @@ def render_summary_cards(
     col4.metric("Power Rating Brier", brier_score)
 
 
-def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_v2: pd.DataFrame) -> None:
+def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_ratings: pd.DataFrame) -> None:
     st.subheader("Power Rankings")
-    rankings = power_v2.copy() if not power_v2.empty else pd.DataFrame()
+    rankings = power_ratings.copy() if not power_ratings.empty else pd.DataFrame()
     if rankings.empty:
         rankings = ratings.copy()
     elif not ratings.empty:
@@ -121,8 +125,10 @@ def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_v2: pd
         column
         for column in [
             "power_rank_v2",
+            "power_rank_v3_recency",
             "team",
             "power_rating_v2",
+            "power_rating_v3_recency",
             "confidence_tier",
             "elo",
             "games_played",
@@ -131,14 +137,16 @@ def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_v2: pd
         ]
         if column in rankings.columns
     ]
-    sort_column = "power_rank_v2" if "power_rank_v2" in rankings.columns else "elo"
-    ascending = sort_column == "power_rank_v2"
+    sort_column = POWER_RANK_COLUMN if POWER_RANK_COLUMN in rankings.columns else "elo"
+    ascending = sort_column == POWER_RANK_COLUMN
     st.dataframe(
         rankings[display_columns].sort_values(sort_column, ascending=ascending),
         column_config={
             "power_rank_v2": "Power Rank",
+            "power_rank_v3_recency": "Power Rank",
             "team": "Team",
             "power_rating_v2": st.column_config.NumberColumn("Power Rating", format="%.2f"),
+            "power_rating_v3_recency": st.column_config.NumberColumn("Power Rating", format="%.2f"),
             "confidence_tier": "Confidence",
             "elo": st.column_config.NumberColumn("ELO", format="%.1f"),
             "games_played": "Games Played",
@@ -157,7 +165,7 @@ def render_matchup_predictor(
     ratings: pd.DataFrame,
     team_games: pd.DataFrame,
     sos: pd.DataFrame,
-    power_v2: pd.DataFrame,
+    power_ratings: pd.DataFrame,
 ) -> None:
     st.subheader("Matchup Predictor")
     teams = ratings["team"].dropna().sort_values().tolist()
@@ -175,13 +183,13 @@ def render_matchup_predictor(
         return
 
     try:
-        prediction = build_matchup_prediction(team_a, team_b, ratings, team_games, sos, power_v2)
+        prediction = build_matchup_prediction(team_a, team_b, ratings, team_games, sos, power_ratings)
     except Exception as exc:
         LOGGER.exception("Matchup prediction failed for %s vs %s", team_a, team_b)
         st.warning(f"Unable to generate this matchup prediction right now: {exc}")
         return
 
-    power_context = matchup_power_context(team_a, team_b, power_v2)
+    power_context = matchup_power_context(team_a, team_b, power_ratings)
     st.markdown(f"**Power Rating favorite:** {power_context['predicted_winner']}")
     prob1, prob2 = st.columns(2)
     prob1.metric(f"{team_a} Power Rating win probability", f"{power_context['team_a_probability']:.1%}")
@@ -219,9 +227,9 @@ def build_matchup_prediction(
     ratings: pd.DataFrame,
     team_games: pd.DataFrame,
     sos: pd.DataFrame,
-    power_v2: pd.DataFrame,
+    power_ratings: pd.DataFrame,
 ):
-    del power_v2
+    del power_ratings
     return predict_matchup(
         team_a,
         team_b,
@@ -231,11 +239,11 @@ def build_matchup_prediction(
     )
 
 
-def matchup_power_context(team_a: str, team_b: str, power_v2: pd.DataFrame) -> dict[str, object]:
-    team_a_row = find_team_row(power_v2, team_a)
-    team_b_row = find_team_row(power_v2, team_b)
-    team_a_rating = float(team_a_row["power_rating_v2"]) if team_a_row is not None else None
-    team_b_rating = float(team_b_row["power_rating_v2"]) if team_b_row is not None else None
+def matchup_power_context(team_a: str, team_b: str, power_ratings: pd.DataFrame) -> dict[str, object]:
+    team_a_row = find_team_row(power_ratings, team_a)
+    team_b_row = find_team_row(power_ratings, team_b)
+    team_a_rating = power_rating_value(team_a_row)
+    team_b_rating = power_rating_value(team_b_row)
 
     if team_a_rating is None or team_b_rating is None:
         team_a_probability = 0.5
@@ -247,8 +255,8 @@ def matchup_power_context(team_a: str, team_b: str, power_v2: pd.DataFrame) -> d
     return {
         "team_a_rating": team_a_rating,
         "team_b_rating": team_b_rating,
-        "team_a_rank": int(team_a_row["power_rank_v2"]) if team_a_row is not None else None,
-        "team_b_rank": int(team_b_row["power_rank_v2"]) if team_b_row is not None else None,
+        "team_a_rank": power_rank_value(team_a_row),
+        "team_b_rank": power_rank_value(team_b_row),
         "team_a_probability": team_a_probability,
         "team_b_probability": team_b_probability,
         "predicted_winner": team_a if team_a_probability >= team_b_probability else team_b,
@@ -282,13 +290,31 @@ def normalize_team_name(team: object) -> str:
     return " ".join(str(team).strip().casefold().split())
 
 
+def power_rating_value(row: pd.Series | None) -> float | None:
+    if row is None:
+        return None
+    for column in [POWER_RATING_COLUMN, "power_rating_v2"]:
+        if column in row and pd.notna(row[column]):
+            return float(row[column])
+    return None
+
+
+def power_rank_value(row: pd.Series | None) -> int | None:
+    if row is None:
+        return None
+    for column in [POWER_RANK_COLUMN, "power_rank_v2"]:
+        if column in row and pd.notna(row[column]):
+            return int(row[column])
+    return None
+
+
 def render_team_detail(
     games: pd.DataFrame,
     ratings: pd.DataFrame,
     team_games: pd.DataFrame,
     elo_history: pd.DataFrame,
     sos: pd.DataFrame,
-    power_v2: pd.DataFrame,
+    power_ratings: pd.DataFrame,
 ) -> None:
     st.subheader("Team Detail")
     teams = ratings["team"].dropna().sort_values().tolist()
@@ -296,12 +322,12 @@ def render_team_detail(
 
     rating_row = ratings[ratings["team"] == team].iloc[0]
     sos_row = sos[sos["team"] == team] if not sos.empty else pd.DataFrame()
-    power_row = find_team_row(power_v2, team)
+    power_row = find_team_row(power_ratings, team)
 
     col1, col2, col3, col4 = st.columns(4)
     if power_row is not None:
-        col1.metric("Power Rank", int(power_row["power_rank_v2"]))
-        col2.metric("Power Rating", f"{float(power_row['power_rating_v2']):.2f}")
+        col1.metric("Power Rank", power_rank_value(power_row))
+        col2.metric("Power Rating", f"{power_rating_value(power_row):.2f}")
         col3.metric("Confidence", str(power_row["confidence_tier"]).title())
     else:
         col1.metric("Power Rank", "N/A")
@@ -316,10 +342,16 @@ def render_team_detail(
     metric1.metric("ELO", f"{float(rating_row['elo']):.1f}")
     metric2.metric("Games Played", int(rating_row["games_played"]))
     if power_row is not None:
+        recency_weight = (
+            f" / {float(power_row['average_recency_weight']):.2f}"
+            if "average_recency_weight" in power_row and pd.notna(power_row["average_recency_weight"])
+            else ""
+        )
         metric3.metric(
-            "Offense / Defense",
+            "Offense / Defense / Recency",
             f"{float(power_row['adjusted_offense_rating']):.2f} / "
-            f"{float(power_row['adjusted_defense_rating']):.2f}",
+            f"{float(power_row['adjusted_defense_rating']):.2f}"
+            f"{recency_weight}",
         )
     else:
         metric3.metric("Offense / Defense", "N/A")
@@ -386,7 +418,7 @@ def render_model_comparison(model_comparison_summary: pd.DataFrame) -> None:
         st.info("Model comparison summary is not available.")
         return
 
-    st.caption("Power Rating is primary; ELO and Hybrid are shown for comparison.")
+    st.caption("Power Rating is primary; ELO and Power v2 are shown for comparison.")
     col1, col2, col3 = st.columns(3)
     col1.metric(
         "Power Rating",
@@ -399,9 +431,9 @@ def render_model_comparison(model_comparison_summary: pd.DataFrame) -> None:
         f"Brier {metric_value(model_comparison_summary, 'elo_brier_score')}",
     )
     col3.metric(
-        "Hybrid",
-        metric_value(model_comparison_summary, "hybrid_accuracy", percentage=True),
-        f"Brier {metric_value(model_comparison_summary, 'hybrid_brier_score')}",
+        "Power v2",
+        metric_value(model_comparison_summary, "power_v2_accuracy", percentage=True),
+        f"Brier {metric_value(model_comparison_summary, 'power_v2_brier_score')}",
     )
 
 
@@ -437,7 +469,7 @@ def metric_value(summary: pd.DataFrame, column: str, *, percentage: bool = False
 
 
 def log_model_comparison_summary(summary: pd.DataFrame) -> None:
-    path = PROCESSED / MODEL_COMPARISON_SUMMARY_FILE
+    path = PROCESSED / PRIMARY_MODEL_COMPARISON_SUMMARY_FILE
     raw_headers = read_csv_header(path)
     row_values = summary.iloc[0].to_dict() if not summary.empty else {}
     LOGGER.warning("Loaded comparison summary path: %s", path)

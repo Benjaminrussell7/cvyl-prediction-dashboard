@@ -64,6 +64,30 @@ REQUIRED_CSV_COLUMNS = {
         "confidence_tier",
         "shrinkage_multiplier",
     },
+    "cvyl_power_ratings_v3_recency.csv": {
+        "team",
+        "games_played",
+        "avg_points_for",
+        "avg_points_against",
+        "avg_margin",
+        "adjusted_offense_rating",
+        "adjusted_defense_rating",
+        "adjusted_margin_rating",
+        "power_rating_v3_recency",
+        "power_rank_v3_recency",
+        "confidence_tier",
+        "shrinkage_multiplier",
+        "average_recency_weight",
+    },
+    "cvyl_model_comparison_v3_summary.csv": {
+        "total_games",
+        "power_v3_recency_accuracy",
+        "power_v3_recency_brier_score",
+        "power_v2_accuracy",
+        "power_v2_brier_score",
+        "elo_accuracy",
+        "elo_brier_score",
+    },
     "cvyl_model_comparison_summary.csv": {
         "total_games",
         "power_v2_accuracy",
@@ -88,8 +112,8 @@ def test_dashboard_processed_data_smoke_contract() -> None:
     ratings = dashboard.load_csv("cvyl_elo_ratings.csv")
     team_games = dashboard.load_csv("cvyl_team_games.csv")
     sos = dashboard.load_csv("cvyl_sos.csv")
-    power_v2 = dashboard.load_csv("cvyl_power_ratings_v2.csv")
-    model_summary = dashboard.load_csv("cvyl_model_comparison_summary.csv")
+    power_ratings = dashboard.load_csv(dashboard.PRIMARY_POWER_RATINGS_FILE)
+    model_summary = dashboard.load_csv(dashboard.PRIMARY_MODEL_COMPARISON_SUMMARY_FILE)
 
     prediction = dashboard.build_matchup_prediction(
         "West Hartford 12U Green",
@@ -97,24 +121,26 @@ def test_dashboard_processed_data_smoke_contract() -> None:
         ratings,
         team_games,
         sos,
-        power_v2,
+        power_ratings,
     )
-    power_row = dashboard.find_team_row(power_v2, "Avon 12U B")
+    power_row = dashboard.find_team_row(power_ratings, "Avon 12U B")
     power_context = dashboard.matchup_power_context(
         "West Hartford 12U Green",
         "RHAM 12U",
-        power_v2,
+        power_ratings,
     )
 
     assert prediction.team_a == "West Hartford 12U Green"
     assert prediction.team_b == "RHAM 12U"
     assert power_context["predicted_winner"] in {"West Hartford 12U Green", "RHAM 12U"}
     assert power_row is not None
-    assert pd.notna(power_row["power_rank_v2"])
+    assert pd.notna(power_row["power_rank_v3_recency"])
+    assert pd.notna(power_row["power_rating_v3_recency"])
+    assert pd.notna(power_row["average_recency_weight"])
     assert dashboard.metric_value(model_summary, dashboard.POWER_ACCURACY_KEY, percentage=True) != "N/A"
     assert dashboard.metric_value(model_summary, dashboard.POWER_BRIER_KEY) != "N/A"
-    assert pd.notna(model_summary.iloc[0]["power_v2_accuracy"])
-    assert pd.notna(model_summary.iloc[0]["power_v2_brier_score"])
+    assert pd.notna(model_summary.iloc[0]["power_v3_recency_accuracy"])
+    assert pd.notna(model_summary.iloc[0]["power_v3_recency_brier_score"])
 
 
 def test_build_matchup_prediction_passes_current_prediction_arguments(monkeypatch) -> None:
@@ -136,10 +162,10 @@ def test_build_matchup_prediction_passes_current_prediction_arguments(monkeypatc
             {"team": "Granby 12U", "average_opponent_elo": 1490.0, "sos_rank": 4},
         ]
     )
-    power_v2 = pd.DataFrame(
+    power_ratings = pd.DataFrame(
         [
-            {"team": "Avon 12U", "power_rating_v2": 2.5, "power_rank_v2": 2},
-            {"team": "Granby 12U", "power_rating_v2": 1.0, "power_rank_v2": 5},
+            {"team": "Avon 12U", "power_rating_v3_recency": 2.5, "power_rank_v3_recency": 2},
+            {"team": "Granby 12U", "power_rating_v3_recency": 1.0, "power_rank_v3_recency": 5},
         ]
     )
     captured = {}
@@ -172,7 +198,7 @@ def test_build_matchup_prediction_passes_current_prediction_arguments(monkeypatc
         ratings,
         team_games,
         sos,
-        power_v2,
+        power_ratings,
     )
 
     assert prediction is expected_prediction
@@ -212,18 +238,18 @@ def test_build_matchup_prediction_converts_empty_optional_frames_to_none(monkeyp
 
 
 def test_find_team_row_normalizes_power_rating_team_names() -> None:
-    power_v2 = pd.DataFrame(
+    power_ratings = pd.DataFrame(
         [
             {
                 "team": "Avon 12U B",
-                "power_rank_v2": 20,
-                "power_rating_v2": 0.50,
+                "power_rank_v3_recency": 20,
+                "power_rating_v3_recency": 0.50,
                 "confidence_tier": "medium",
             }
         ]
     )
 
-    row = dashboard.find_team_row(power_v2, "  avon   12u b  ")
+    row = dashboard.find_team_row(power_ratings, "  avon   12u b  ")
 
     assert row is not None
-    assert int(row["power_rank_v2"]) == 20
+    assert int(row["power_rank_v3_recency"]) == 20
