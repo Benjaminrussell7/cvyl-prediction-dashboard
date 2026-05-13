@@ -161,10 +161,13 @@ def test_predict_matchup_includes_power_v2_context_when_available() -> None:
 
     assert prediction.team_a_power_v2 == 3.25
     assert prediction.team_b_power_rank_v2 == 5
+    assert prediction.power_v2_predicted_winner == "Avon 12U"
+    assert prediction.power_v2_win_probability_team_a > prediction.power_v2_win_probability_team_b
     assert prediction.hybrid_predicted_winner == "Avon 12U"
     assert prediction.hybrid_win_probability_team_a > prediction.hybrid_win_probability_team_b
     assert prediction.hybrid_model_edge > 0
-    assert "Avon 12U Power v2: 3.25 (rank 2)" in output
+    assert "Avon 12U Power Rating: 3.25 (rank 2)" in output
+    assert "Power Rating prediction:" in output
     assert "Hybrid prediction:" in output
 
 

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from cvyl_scraper.hybrid import hybrid_model_edge, hybrid_win_probability
+from cvyl_scraper.hybrid import hybrid_model_edge, hybrid_win_probability, power_v2_win_probability
 
 
 DEFAULT_ELO_RATINGS_CSV = "data/processed/cvyl_elo_ratings.csv"
@@ -30,6 +30,9 @@ class MatchupPrediction:
     team_b_power_v2: float | None
     team_a_power_rank_v2: int | None
     team_b_power_rank_v2: int | None
+    power_v2_win_probability_team_a: float
+    power_v2_win_probability_team_b: float
+    power_v2_predicted_winner: str
     team_a_win_probability: float
     team_b_win_probability: float
     predicted_winner: str
@@ -81,6 +84,9 @@ def predict_matchup(
     team_b_power_v2, team_b_power_rank_v2 = _team_power_v2(team_b, power_v2)
     team_a_power_value = team_a_power_v2 or 0.0
     team_b_power_value = team_b_power_v2 or 0.0
+    team_a_power_probability = power_v2_win_probability(team_a_power_value - team_b_power_value)
+    team_b_power_probability = 1.0 - team_a_power_probability
+    power_predicted_winner = team_a if team_a_power_probability >= 0.5 else team_b
     team_a_probability = elo_win_probability(team_a_elo, team_b_elo)
     team_b_probability = 1.0 - team_a_probability
     team_a_hybrid_probability = hybrid_win_probability(
@@ -118,6 +124,9 @@ def predict_matchup(
         team_b_power_v2=team_b_power_v2,
         team_a_power_rank_v2=team_a_power_rank_v2,
         team_b_power_rank_v2=team_b_power_rank_v2,
+        power_v2_win_probability_team_a=team_a_power_probability,
+        power_v2_win_probability_team_b=team_b_power_probability,
+        power_v2_predicted_winner=power_predicted_winner,
         team_a_win_probability=team_a_probability,
         team_b_win_probability=team_b_probability,
         predicted_winner=predicted_winner,
@@ -150,6 +159,10 @@ def format_matchup_prediction(prediction: MatchupPrediction) -> str:
             f"{prediction.team_a} SOS: {_format_sos(prediction.team_a_sos, prediction.team_a_sos_rank)}",
             f"{prediction.team_b} SOS: {_format_sos(prediction.team_b_sos, prediction.team_b_sos_rank)}",
             *(_format_power_v2_lines(prediction)),
+            "Power Rating prediction:",
+            f"  {prediction.team_a} win probability: {prediction.power_v2_win_probability_team_a:.1%}",
+            f"  {prediction.team_b} win probability: {prediction.power_v2_win_probability_team_b:.1%}",
+            f"  Predicted winner: {prediction.power_v2_predicted_winner}",
             f"ELO difference ({prediction.team_a} - {prediction.team_b}): {prediction.elo_difference:.1f}",
             "ELO prediction:",
             f"  {prediction.team_a} win probability: {prediction.team_a_win_probability:.1%}",
@@ -237,11 +250,11 @@ def _format_power_v2_lines(prediction: MatchupPrediction) -> list[str]:
         return []
     return [
         (
-            f"{prediction.team_a} Power v2: {prediction.team_a_power_v2:.2f} "
+            f"{prediction.team_a} Power Rating: {prediction.team_a_power_v2:.2f} "
             f"(rank {prediction.team_a_power_rank_v2})"
         ),
         (
-            f"{prediction.team_b} Power v2: {prediction.team_b_power_v2:.2f} "
+            f"{prediction.team_b} Power Rating: {prediction.team_b_power_v2:.2f} "
             f"(rank {prediction.team_b_power_rank_v2})"
         ),
     ]

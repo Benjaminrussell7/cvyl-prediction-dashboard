@@ -41,9 +41,9 @@ def main() -> None:
         return
 
     render_summary_cards(games, ratings, backtest_summary)
-    render_power_rankings(ratings, sos)
+    render_power_rankings(ratings, sos, power_v2)
     render_matchup_predictor(ratings, team_games, sos, power_v2)
-    render_team_detail(games, ratings, team_games, elo_history, sos)
+    render_team_detail(games, ratings, team_games, elo_history, sos, power_v2)
     render_backtest(backtest, backtest_summary)
 
 
@@ -80,9 +80,14 @@ def render_summary_cards(
     col4.metric("Brier Score", brier_score)
 
 
-def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame) -> None:
+def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_v2: pd.DataFrame) -> None:
     st.subheader("Power Rankings")
-    rankings = ratings.copy()
+    rankings = power_v2.copy() if not power_v2.empty else pd.DataFrame()
+    if rankings.empty:
+        rankings = ratings.copy()
+    elif not ratings.empty:
+        rankings = rankings.merge(ratings[["team", "elo"]], on="team", how="left")
+
     if not sos.empty:
         rankings = rankings.merge(
             sos[["team", "sos_rank", "average_opponent_elo"]],
@@ -96,13 +101,27 @@ def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame) -> None:
 
     display_columns = [
         column
-        for column in ["team", "elo", "games_played", "sos_rank", "average_opponent_elo"]
+        for column in [
+            "power_rank_v2",
+            "team",
+            "power_rating_v2",
+            "confidence_tier",
+            "elo",
+            "games_played",
+            "sos_rank",
+            "average_opponent_elo",
+        ]
         if column in rankings.columns
     ]
+    sort_column = "power_rank_v2" if "power_rank_v2" in rankings.columns else "elo"
+    ascending = sort_column == "power_rank_v2"
     st.dataframe(
-        rankings[display_columns].sort_values("elo", ascending=False),
+        rankings[display_columns].sort_values(sort_column, ascending=ascending),
         column_config={
+            "power_rank_v2": "Power Rank",
             "team": "Team",
+            "power_rating_v2": st.column_config.NumberColumn("Power Rating", format="%.2f"),
+            "confidence_tier": "Confidence",
             "elo": st.column_config.NumberColumn("ELO", format="%.1f"),
             "games_played": "Games Played",
             "sos_rank": "SOS Rank",
@@ -146,10 +165,10 @@ def render_matchup_predictor(
         power_v2 if not power_v2.empty else None,
     )
 
-    st.markdown(f"**Hybrid predicted winner:** {prediction.hybrid_predicted_winner}")
+    st.markdown(f"**Power Rating favorite:** {prediction.power_v2_predicted_winner}")
     prob1, prob2 = st.columns(2)
-    prob1.metric(f"{team_a} hybrid win probability", f"{prediction.hybrid_win_probability_team_a:.1%}")
-    prob2.metric(f"{team_b} hybrid win probability", f"{prediction.hybrid_win_probability_team_b:.1%}")
+    prob1.metric(f"{team_a} Power Rating win probability", f"{prediction.power_v2_win_probability_team_a:.1%}")
+    prob2.metric(f"{team_b} Power Rating win probability", f"{prediction.power_v2_win_probability_team_b:.1%}")
 
     spread_col, total_col, score_col, confidence_col = st.columns(4)
     spread_col.metric("Projected Spread", prediction.projected_spread)
@@ -167,8 +186,10 @@ def render_matchup_predictor(
     st.caption(
         "Supporting context: "
         f"ELO favors {prediction.predicted_winner} ({prediction.win_probability:.1%}); "
-        f"{team_a} Power v2 {_format_power_context(prediction.team_a_power_v2, prediction.team_a_power_rank_v2)} | "
-        f"{team_b} Power v2 {_format_power_context(prediction.team_b_power_v2, prediction.team_b_power_rank_v2)}"
+        f"Hybrid favors {prediction.hybrid_predicted_winner} "
+        f"({max(prediction.hybrid_win_probability_team_a, prediction.hybrid_win_probability_team_b):.1%}); "
+        f"{team_a} Power Rating {_format_power_context(prediction.team_a_power_v2, prediction.team_a_power_rank_v2)} | "
+        f"{team_b} Power Rating {_format_power_context(prediction.team_b_power_v2, prediction.team_b_power_rank_v2)}"
     )
     if prediction.confidence_warning:
         st.warning(prediction.confidence_warning)
@@ -183,6 +204,7 @@ def render_team_detail(
     team_games: pd.DataFrame,
     elo_history: pd.DataFrame,
     sos: pd.DataFrame,
+    power_v2: pd.DataFrame,
 ) -> None:
     st.subheader("Team Detail")
     teams = ratings["team"].dropna().sort_values().tolist()
@@ -190,14 +212,33 @@ def render_team_detail(
 
     rating_row = ratings[ratings["team"] == team].iloc[0]
     sos_row = sos[sos["team"] == team] if not sos.empty else pd.DataFrame()
+    power_row = power_v2[power_v2["team"] == team] if not power_v2.empty else pd.DataFrame()
 
-    col1, col2, col3 = st.columns(3)
-    col1.metric("ELO", f"{float(rating_row['elo']):.1f}")
-    col2.metric("Games Played", int(rating_row["games_played"]))
-    if not sos_row.empty:
-        col3.metric("SOS Rank", int(sos_row.iloc[0]["sos_rank"]))
+    col1, col2, col3, col4 = st.columns(4)
+    if not power_row.empty:
+        col1.metric("Power Rank", int(power_row.iloc[0]["power_rank_v2"]))
+        col2.metric("Power Rating", f"{float(power_row.iloc[0]['power_rating_v2']):.2f}")
+        col3.metric("Confidence", str(power_row.iloc[0]["confidence_tier"]).title())
     else:
-        col3.metric("SOS Rank", "N/A")
+        col1.metric("Power Rank", "N/A")
+        col2.metric("Power Rating", "N/A")
+        col3.metric("Confidence", "N/A")
+    if not sos_row.empty:
+        col4.metric("SOS Rank", int(sos_row.iloc[0]["sos_rank"]))
+    else:
+        col4.metric("SOS Rank", "N/A")
+
+    metric1, metric2, metric3 = st.columns(3)
+    metric1.metric("ELO", f"{float(rating_row['elo']):.1f}")
+    metric2.metric("Games Played", int(rating_row["games_played"]))
+    if not power_row.empty:
+        metric3.metric(
+            "Offense / Defense",
+            f"{float(power_row.iloc[0]['adjusted_offense_rating']):.2f} / "
+            f"{float(power_row.iloc[0]['adjusted_defense_rating']):.2f}",
+        )
+    else:
+        metric3.metric("Offense / Defense", "N/A")
 
     render_elo_trend(team, elo_history)
 
