@@ -14,11 +14,19 @@ PROCESSED = ROOT / "data" / "processed"
 
 
 @st.cache_data
-def load_csv(filename: str) -> pd.DataFrame:
+def _read_csv(filename: str, modified_ns: int) -> pd.DataFrame:
     path = PROCESSED / filename
     if not path.exists():
         return pd.DataFrame()
-    return pd.read_csv(path)
+    frame = pd.read_csv(path)
+    frame.columns = [str(column).strip().removeprefix("\ufeff") for column in frame.columns]
+    return frame
+
+
+def load_csv(filename: str) -> pd.DataFrame:
+    path = PROCESSED / filename
+    modified_ns = path.stat().st_mtime_ns if path.exists() else 0
+    return _read_csv(filename, modified_ns)
 
 
 def main() -> None:
@@ -338,9 +346,13 @@ def render_backtest(backtest: pd.DataFrame) -> None:
 
 
 def metric_value(summary: pd.DataFrame, column: str, *, percentage: bool = False) -> str:
-    if summary.empty or column not in summary.columns:
+    if summary.empty:
         return "N/A"
-    value = float(summary.iloc[0][column])
+    normalized = summary.copy()
+    normalized.columns = [str(name).strip().removeprefix("\ufeff") for name in normalized.columns]
+    if column not in normalized.columns or pd.isna(normalized.iloc[0][column]):
+        return "N/A"
+    value = float(normalized.iloc[0][column])
     if percentage:
         return f"{value:.1%}"
     return f"{value:.3f}"
