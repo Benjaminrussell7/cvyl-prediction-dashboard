@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from datetime import datetime
 from pathlib import Path
 
@@ -11,6 +12,11 @@ from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup
 
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "data" / "processed"
+MODEL_COMPARISON_SUMMARY_FILE = "cvyl_model_comparison_summary.csv"
+POWER_ACCURACY_KEY = "power_v2_accuracy"
+POWER_BRIER_KEY = "power_v2_brier_score"
+
+LOGGER = logging.getLogger(__name__)
 
 
 @st.cache_data
@@ -39,7 +45,8 @@ def main() -> None:
     sos = load_csv("cvyl_sos.csv")
     power_v2 = load_csv("cvyl_power_ratings_v2.csv")
     backtest = load_csv("cvyl_backtest.csv")
-    model_comparison_summary = load_csv("cvyl_model_comparison_summary.csv")
+    model_comparison_summary = load_csv(MODEL_COMPARISON_SUMMARY_FILE)
+    log_model_comparison_summary(model_comparison_summary)
 
     st.title("CVYL U12 Boys Prediction Dashboard")
     render_data_freshness()
@@ -78,8 +85,8 @@ def render_summary_cards(
 ) -> None:
     completed_games = int((games["status"] == "completed").sum()) if "status" in games else 0
     total_teams = len(ratings)
-    accuracy = metric_value(model_comparison_summary, "power_v2_accuracy", percentage=True)
-    brier_score = metric_value(model_comparison_summary, "power_v2_brier_score")
+    accuracy = metric_value(model_comparison_summary, POWER_ACCURACY_KEY, percentage=True)
+    brier_score = metric_value(model_comparison_summary, POWER_BRIER_KEY)
 
     st.subheader("Model Summary")
     st.caption("Power Rating is the primary prediction model. ELO is retained as supporting context.")
@@ -316,8 +323,8 @@ def render_model_comparison(model_comparison_summary: pd.DataFrame) -> None:
     col1, col2, col3 = st.columns(3)
     col1.metric(
         "Power Rating",
-        metric_value(model_comparison_summary, "power_v2_accuracy", percentage=True),
-        f"Brier {metric_value(model_comparison_summary, 'power_v2_brier_score')}",
+        metric_value(model_comparison_summary, POWER_ACCURACY_KEY, percentage=True),
+        f"Brier {metric_value(model_comparison_summary, POWER_BRIER_KEY)}",
     )
     col2.metric(
         "ELO",
@@ -347,15 +354,37 @@ def render_backtest(backtest: pd.DataFrame) -> None:
 
 def metric_value(summary: pd.DataFrame, column: str, *, percentage: bool = False) -> str:
     if summary.empty:
-        return "N/A"
+        raise ValueError(f"Cannot read metric '{column}' because the comparison summary is empty.")
     normalized = summary.copy()
     normalized.columns = [str(name).strip().removeprefix("\ufeff") for name in normalized.columns]
-    if column not in normalized.columns or pd.isna(normalized.iloc[0][column]):
-        return "N/A"
+    if column not in normalized.columns:
+        raise KeyError(
+            f"Missing metric column '{column}'. Available columns: {normalized.columns.tolist()}"
+        )
+    if pd.isna(normalized.iloc[0][column]):
+        raise ValueError(f"Metric column '{column}' is present but the first row value is missing.")
     value = float(normalized.iloc[0][column])
     if percentage:
         return f"{value:.1%}"
     return f"{value:.3f}"
+
+
+def log_model_comparison_summary(summary: pd.DataFrame) -> None:
+    path = PROCESSED / MODEL_COMPARISON_SUMMARY_FILE
+    raw_headers = read_csv_header(path)
+    row_values = summary.iloc[0].to_dict() if not summary.empty else {}
+    LOGGER.warning("Loaded comparison summary path: %s", path)
+    LOGGER.warning("Comparison summary raw CSV headers: %s", raw_headers)
+    LOGGER.warning("Comparison summary dataframe columns: %s", summary.columns.tolist())
+    LOGGER.warning("Comparison summary first row values: %s", row_values)
+    LOGGER.warning("Power Rating metric lookup keys: %s, %s", POWER_ACCURACY_KEY, POWER_BRIER_KEY)
+
+
+def read_csv_header(path: Path) -> list[str]:
+    if not path.exists():
+        return []
+    first_line = path.read_text(encoding="utf-8-sig").splitlines()[0]
+    return [header.strip() for header in first_line.split(",")]
 
 
 def _format_sos_context(average_opponent_elo: float | None, sos_rank: int | None) -> str:
