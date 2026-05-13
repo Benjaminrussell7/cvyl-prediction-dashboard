@@ -171,6 +171,7 @@ def test_dashboard_processed_data_smoke_contract() -> None:
         "Away",
         "Projected Winner",
         "Win Probability",
+        "Edge",
         "Projected Spread",
         "Projected Total",
         "Confidence",
@@ -179,6 +180,9 @@ def test_dashboard_processed_data_smoke_contract() -> None:
     assert weekly_matchups["Date"].min() >= "2026-05-13"
     assert weekly_matchups["Date"].max() <= "2026-05-20"
     assert weekly_matchups["Projected Winner"].ne("").any()
+    assert weekly_matchups["Edge"].isin(
+        ["Toss-up", "Slight Edge", "Solid Favorite", "Strong Favorite", "Unavailable"]
+    ).all()
 
 
 def test_build_matchup_prediction_passes_current_prediction_arguments(monkeypatch) -> None:
@@ -354,3 +358,15 @@ def test_format_eastern_timestamp_labels_timezone_for_aware_and_naive_values() -
 
     assert aware == "2026-05-13 11:30 AM ET"
     assert naive.endswith(" ET")
+
+
+def test_prediction_edge_label_boundaries() -> None:
+    assert dashboard.prediction_edge_label(0.50) == "Toss-up"
+    assert dashboard.prediction_edge_label(0.549) == "Toss-up"
+    assert dashboard.prediction_edge_label(0.55) == "Slight Edge"
+    assert dashboard.prediction_edge_label(0.649) == "Slight Edge"
+    assert dashboard.prediction_edge_label(0.65) == "Solid Favorite"
+    assert dashboard.prediction_edge_label(0.749) == "Solid Favorite"
+    assert dashboard.prediction_edge_label(0.75) == "Strong Favorite"
+    assert dashboard.prediction_edge_label(0.25) == "Strong Favorite"
+    assert dashboard.prediction_edge_label(None) == "Unavailable"

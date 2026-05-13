@@ -233,9 +233,15 @@ def render_matchup_predictor(
         return
 
     power_context = matchup_power_context(team_a, team_b, power_ratings)
+    favorite_probability = max(
+        power_context["team_a_probability"],
+        power_context["team_b_probability"],
+    )
+    edge_label = prediction_edge_label(favorite_probability)
     st.markdown(f"**Power Rating favorite:** {power_context['predicted_winner']}")
     st.info(
         f"{power_context['predicted_winner']} is favored. "
+        f"Edge: {edge_label}. "
         f"Projected spread: {prediction.projected_spread}. "
         f"Projected total: {prediction.projected_total_goals:.1f}. "
         f"Confidence: {prediction.confidence_level}."
@@ -254,6 +260,7 @@ def render_matchup_predictor(
         f"{prediction.projected_team_a_goals:.1f}-{prediction.projected_team_b_goals:.1f}",
     )
     confidence_col.metric("Confidence", prediction.confidence_level)
+    st.caption(f"Prediction edge: **{edge_label}**")
 
     st.caption(
         f"SOS: {team_a} {_format_sos_context(prediction.team_a_sos, prediction.team_a_sos_rank)} | "
@@ -322,6 +329,7 @@ def build_weekly_matchups(
         "Away",
         "Projected Winner",
         "Win Probability",
+        "Edge",
         "Projected Spread",
         "Projected Total",
         "Confidence",
@@ -357,6 +365,7 @@ def build_weekly_matchups(
             "Away": away_team,
             "Projected Winner": "",
             "Win Probability": "",
+            "Edge": "Unavailable",
             "Projected Spread": "",
             "Projected Total": "",
             "Confidence": "",
@@ -372,10 +381,15 @@ def build_weekly_matchups(
                 power_ratings,
             )
             power_context = matchup_power_context(home_team, away_team, power_ratings)
+            favorite_probability = max(
+                power_context["team_a_probability"],
+                power_context["team_b_probability"],
+            )
             row.update(
                 {
                     "Projected Winner": power_context["predicted_winner"],
-                    "Win Probability": f"{max(power_context['team_a_probability'], power_context['team_b_probability']):.1%}",
+                    "Win Probability": f"{favorite_probability:.1%}",
+                    "Edge": prediction_edge_label(favorite_probability),
                     "Projected Spread": prediction.projected_spread,
                     "Projected Total": f"{prediction.projected_total_goals:.1f}",
                     "Confidence": matchup_confidence_tier(home_team, away_team, power_ratings),
@@ -405,9 +419,10 @@ def render_weekly_matchup_cards(weekly_matchups: pd.DataFrame) -> None:
             cols[0].metric("Projected Winner", matchup["Projected Winner"] or "Unavailable")
             cols[1].metric("Win Probability", matchup["Win Probability"] or "N/A")
             cols = st.columns(3)
-            cols[0].metric("Spread", matchup["Projected Spread"] or "N/A")
-            cols[1].metric("Total", matchup["Projected Total"] or "N/A")
-            cols[2].metric("Confidence", matchup["Confidence"] or "N/A")
+            cols[0].metric("Edge", matchup["Edge"] or "Unavailable")
+            cols[1].metric("Spread", matchup["Projected Spread"] or "N/A")
+            cols[2].metric("Total", matchup["Projected Total"] or "N/A")
+            st.caption(f"Confidence: {matchup['Confidence'] or 'Unavailable'}")
             if matchup["Note"]:
                 st.caption(matchup["Note"])
 
@@ -420,6 +435,19 @@ def filter_matchups_by_team(matchups: pd.DataFrame, team_filter: str) -> pd.Data
         matchups["Home"].str.contains(pattern, case=False, na=False, regex=False)
         | matchups["Away"].str.contains(pattern, case=False, na=False, regex=False)
     ].copy()
+
+
+def prediction_edge_label(win_probability: float | None) -> str:
+    if win_probability is None or pd.isna(win_probability):
+        return "Unavailable"
+    probability = max(float(win_probability), 1.0 - float(win_probability))
+    if probability < 0.55:
+        return "Toss-up"
+    if probability < 0.65:
+        return "Slight Edge"
+    if probability < 0.75:
+        return "Solid Favorite"
+    return "Strong Favorite"
 
 
 def build_matchup_prediction(
