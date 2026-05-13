@@ -44,6 +44,7 @@ def main() -> None:
     st.set_page_config(page_title="CVYL U12 Boys Prediction Dashboard", layout="wide")
 
     games = load_csv("cvyl_games.csv")
+    scheduled_games = load_csv("cvyl_scheduled_games.csv")
     ratings = load_csv("cvyl_elo_ratings.csv")
     team_games = load_csv("cvyl_team_games.csv")
     elo_history = load_csv("cvyl_elo_history.csv")
@@ -63,6 +64,7 @@ def main() -> None:
     render_summary_cards(games, ratings, model_comparison_summary)
     render_power_rankings(ratings, sos, power_ratings)
     render_matchup_predictor(ratings, team_games, sos, power_ratings)
+    render_weekly_matchups(scheduled_games, ratings, team_games, sos, power_ratings)
     render_team_detail(games, ratings, team_games, elo_history, sos, power_ratings)
     render_model_comparison(model_comparison_summary)
     render_backtest(backtest)
@@ -221,6 +223,120 @@ def render_matchup_predictor(
         st.text(format_matchup_prediction(prediction))
 
 
+def render_weekly_matchups(
+    scheduled_games: pd.DataFrame,
+    ratings: pd.DataFrame,
+    team_games: pd.DataFrame,
+    sos: pd.DataFrame,
+    power_ratings: pd.DataFrame,
+) -> None:
+    st.subheader("This Week's Matchups")
+    weekly_matchups = build_weekly_matchups(
+        scheduled_games,
+        ratings,
+        team_games,
+        sos,
+        power_ratings,
+    )
+    if weekly_matchups.empty:
+        st.info("No scheduled games found in the next 7 days.")
+        return
+
+    st.dataframe(
+        weekly_matchups,
+        use_container_width=True,
+        hide_index=True,
+    )
+
+
+def build_weekly_matchups(
+    scheduled_games: pd.DataFrame,
+    ratings: pd.DataFrame,
+    team_games: pd.DataFrame,
+    sos: pd.DataFrame,
+    power_ratings: pd.DataFrame,
+    *,
+    today: str | pd.Timestamp | None = None,
+) -> pd.DataFrame:
+    columns = [
+        "Date",
+        "Time",
+        "Home",
+        "Away",
+        "Projected Winner",
+        "Win Probability",
+        "Projected Spread",
+        "Projected Total",
+        "Confidence",
+        "Note",
+    ]
+    if scheduled_games.empty:
+        return pd.DataFrame(columns=columns)
+
+    games = scheduled_games.copy()
+    if "status" in games.columns:
+        games = games[games["status"] == "scheduled"].copy()
+    games["game_date"] = pd.to_datetime(games["game_date"], errors="coerce")
+    current_day = pd.Timestamp.today().normalize() if today is None else pd.Timestamp(today).normalize()
+    window_end = current_day + pd.Timedelta(days=7)
+    games = games[
+        (games["game_date"] >= current_day)
+        & (games["game_date"] <= window_end)
+    ].copy()
+    if games.empty:
+        return pd.DataFrame(columns=columns)
+
+    sort_columns = [column for column in ["game_date", "game_time", "game_id"] if column in games.columns]
+    games = games.sort_values(sort_columns, na_position="last")
+
+    rows = []
+    for _, game in games.iterrows():
+        home_team = str(game["home_team"])
+        away_team = str(game["away_team"])
+        row = {
+            "Date": game["game_date"].date().isoformat(),
+            "Time": game.get("game_time", ""),
+            "Home": home_team,
+            "Away": away_team,
+            "Projected Winner": "",
+            "Win Probability": "",
+            "Projected Spread": "",
+            "Projected Total": "",
+            "Confidence": "",
+            "Note": "",
+        }
+        try:
+            prediction = build_matchup_prediction(
+                home_team,
+                away_team,
+                ratings,
+                team_games,
+                sos,
+                power_ratings,
+            )
+            power_context = matchup_power_context(home_team, away_team, power_ratings)
+            row.update(
+                {
+                    "Projected Winner": power_context["predicted_winner"],
+                    "Win Probability": f"{max(power_context['team_a_probability'], power_context['team_b_probability']):.1%}",
+                    "Projected Spread": prediction.projected_spread,
+                    "Projected Total": f"{prediction.projected_total_goals:.1f}",
+                    "Confidence": matchup_confidence_tier(home_team, away_team, power_ratings),
+                }
+            )
+        except Exception as exc:
+            LOGGER.warning(
+                "Weekly matchup prediction failed for %s vs %s: %s",
+                home_team,
+                away_team,
+                exc,
+            )
+            row["Note"] = f"Prediction unavailable: {exc}"
+        rows.append(row)
+
+    return pd.DataFrame(rows, columns=columns)
+
+
 def build_matchup_prediction(
     team_a: str,
     team_b: str,
@@ -306,6 +422,24 @@ def power_rank_value(row: pd.Series | None) -> int | None:
         if column in row and pd.notna(row[column]):
             return int(row[column])
     return None
+
+
+def matchup_confidence_tier(team_a: str, team_b: str, power_ratings: pd.DataFrame) -> str:
+    tiers = [
+        power_confidence_tier(find_team_row(power_ratings, team_a)),
+        power_confidence_tier(find_team_row(power_ratings, team_b)),
+    ]
+    available_tiers = [tier for tier in tiers if tier is not None]
+    if not available_tiers:
+        return "Unavailable"
+    order = {"very low": 0, "low": 1, "medium": 2, "high": 3}
+    return min(available_tiers, key=lambda tier: order.get(tier, -1)).title()
+
+
+def power_confidence_tier(row: pd.Series | None) -> str | None:
+    if row is None or "confidence_tier" not in row or pd.isna(row["confidence_tier"]):
+        return None
+    return str(row["confidence_tier"]).strip().casefold()
 
 
 def render_team_detail(

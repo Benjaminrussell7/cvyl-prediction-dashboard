@@ -38,6 +38,16 @@ REQUIRED_CSV_COLUMNS = {
         "division",
         "status",
     },
+    "cvyl_scheduled_games.csv": {
+        "game_date",
+        "game_time",
+        "season",
+        "division",
+        "home_team",
+        "away_team",
+        "status",
+        "game_id",
+    },
     "cvyl_elo_ratings.csv": {
         "team",
         "elo",
@@ -114,6 +124,7 @@ def test_dashboard_processed_data_smoke_contract() -> None:
     sos = dashboard.load_csv("cvyl_sos.csv")
     power_ratings = dashboard.load_csv(dashboard.PRIMARY_POWER_RATINGS_FILE)
     model_summary = dashboard.load_csv(dashboard.PRIMARY_MODEL_COMPARISON_SUMMARY_FILE)
+    scheduled_games = dashboard.load_csv("cvyl_scheduled_games.csv")
 
     prediction = dashboard.build_matchup_prediction(
         "West Hartford 12U Green",
@@ -141,6 +152,32 @@ def test_dashboard_processed_data_smoke_contract() -> None:
     assert dashboard.metric_value(model_summary, dashboard.POWER_BRIER_KEY) != "N/A"
     assert pd.notna(model_summary.iloc[0]["power_v3_recency_accuracy"])
     assert pd.notna(model_summary.iloc[0]["power_v3_recency_brier_score"])
+
+    weekly_matchups = dashboard.build_weekly_matchups(
+        scheduled_games,
+        ratings,
+        team_games,
+        sos,
+        power_ratings,
+        today="2026-05-13",
+    )
+
+    assert not weekly_matchups.empty
+    assert {
+        "Date",
+        "Time",
+        "Home",
+        "Away",
+        "Projected Winner",
+        "Win Probability",
+        "Projected Spread",
+        "Projected Total",
+        "Confidence",
+        "Note",
+    }.issubset(weekly_matchups.columns)
+    assert weekly_matchups["Date"].min() >= "2026-05-13"
+    assert weekly_matchups["Date"].max() <= "2026-05-20"
+    assert weekly_matchups["Projected Winner"].ne("").any()
 
 
 def test_build_matchup_prediction_passes_current_prediction_arguments(monkeypatch) -> None:
