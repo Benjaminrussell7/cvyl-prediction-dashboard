@@ -433,3 +433,60 @@ def test_prediction_edge_label_boundaries() -> None:
     assert dashboard.prediction_edge_label(0.75) == "Strong Favorite"
     assert dashboard.prediction_edge_label(0.25) == "Strong Favorite"
     assert dashboard.prediction_edge_label(None) == "Unavailable"
+
+
+def test_dashboard_badge_helpers_render_expected_labels() -> None:
+    assert "Strong Favorite" in dashboard.edge_badge("Strong Favorite")
+    assert "#166534" in dashboard.edge_badge("Strong Favorite")
+    assert "Confidence: High" in dashboard.confidence_badge("high")
+    assert "Confidence: Unavailable" in dashboard.confidence_badge(None)
+
+
+def test_momentum_indicator_adds_direction_when_rank_moves() -> None:
+    assert dashboard.momentum_indicator("Surging", 2) == "Surging ↑"
+    assert dashboard.momentum_indicator("Cooling", -1) == "Cooling ↓"
+    assert dashboard.momentum_indicator("Steady", 0) == "Steady"
+
+
+def test_rank_movement_formatting_is_clear() -> None:
+    assert dashboard.format_rank_movement(3) == "↑ +3"
+    assert dashboard.format_rank_movement(-2) == "↓ -2"
+    assert dashboard.format_rank_movement(0) == "→ 0"
+
+
+def test_ordered_bar_chart_preserves_input_category_order() -> None:
+    frame = pd.DataFrame(
+        [
+            {"team": "A", "score": 3.0},
+            {"team": "B", "score": 2.0},
+            {"team": "C", "score": 1.0},
+        ]
+    )
+
+    chart_spec = dashboard.ordered_bar_chart(
+        frame,
+        x_column="team",
+        y_column="score",
+        y_title="Score",
+    ).to_dict()
+
+    assert chart_spec["encoding"]["x"]["sort"] == ["A", "B", "C"]
+
+
+def test_trend_cell_style_is_limited_and_readable() -> None:
+    assert "#dcfce7" in dashboard.trend_cell_style("Surging")
+    assert "#e0f2fe" in dashboard.trend_cell_style("Improving")
+    assert "#fef3c7" in dashboard.trend_cell_style("Recovering")
+    assert "#f3f4f6" in dashboard.trend_cell_style("Steady")
+    assert "#fecaca" in dashboard.trend_cell_style("Cooling")
+    assert dashboard.trend_cell_style("75%") == ""
+    assert dashboard.trend_cell_style("2.5") == ""
+
+
+def test_display_form_state_simplifies_mixed_momentum_labels() -> None:
+    assert dashboard.display_form_state("Surging", 2) == "Surging"
+    assert dashboard.display_form_state("Surging", -1) == "Cooling"
+    assert dashboard.display_form_state("Steady", 1) == "Improving"
+    assert dashboard.display_form_state("Steady", 0) == "Steady"
+    assert dashboard.display_form_state("Cooling", 1) == "Recovering"
+    assert dashboard.display_form_state("Cooling", -1) == "Cooling"

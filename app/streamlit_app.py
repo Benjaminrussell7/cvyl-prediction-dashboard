@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+import altair as alt
 import pandas as pd
 import streamlit as st
 
@@ -68,14 +69,12 @@ def main() -> None:
         return
 
     render_summary_cards(games, ratings, model_comparison_summary)
-    render_power_rankings(ratings, sos, power_ratings)
-    render_trending_teams(trends)
     render_matchup_predictor(ratings, team_games, sos, power_ratings, trends)
     render_weekly_matchups(scheduled_games, ratings, team_games, sos, power_ratings, trends)
+    render_trending_teams(trends)
+    render_power_rankings(ratings, sos, power_ratings)
     render_team_detail(games, ratings, team_games, elo_history, sos, power_ratings)
-    render_model_comparison(model_comparison_summary)
-    render_model_calibration(calibration)
-    render_backtest(backtest)
+    render_model_insights(model_comparison_summary, calibration, backtest)
 
 
 def render_data_freshness() -> None:
@@ -85,8 +84,7 @@ def render_data_freshness() -> None:
     else:
         modified = "Unavailable"
 
-    st.subheader("Data Freshness")
-    st.write(f"Latest `cvyl_games.csv` update: **{modified}**")
+    st.caption(f"Latest `cvyl_games.csv` update: **{modified}**")
     st.caption(
         "Predictions and rankings are based only on scores currently reported on CVYL.org. "
         "Some recent games may not yet be reflected."
@@ -110,17 +108,20 @@ def render_summary_cards(
     accuracy = metric_value(model_comparison_summary, POWER_ACCURACY_KEY, percentage=True)
     brier_score = metric_value(model_comparison_summary, POWER_BRIER_KEY)
 
-    st.subheader("Model Summary")
+    st.divider()
+    st.subheader("At a Glance")
     st.caption("Power Rating is the primary prediction model. ELO is retained as supporting context.")
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Completed Games", completed_games)
-    col2.metric("Teams Rated", total_teams)
-    col3.metric("Power Rating Accuracy", accuracy)
-    col4.metric("Power Rating Brier", brier_score)
+    with st.container(border=True):
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric("Completed Games", completed_games)
+        col2.metric("Teams Rated", total_teams)
+        col3.metric("Power Rating Accuracy", accuracy)
+        col4.metric("Power Rating Brier", brier_score)
 
 
 def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_ratings: pd.DataFrame) -> None:
-    st.subheader("Power Rankings")
+    st.divider()
+    st.subheader("Rankings")
     rankings = power_ratings.copy() if not power_ratings.empty else pd.DataFrame()
     if rankings.empty:
         rankings = ratings.copy()
@@ -156,6 +157,7 @@ def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_rating
     ]
     sort_column = POWER_RANK_COLUMN if POWER_RANK_COLUMN in rankings.columns else "elo"
     ascending = sort_column == POWER_RANK_COLUMN
+    render_power_rating_chart(rankings, sort_column, ascending)
     st.dataframe(
         rankings[display_columns].sort_values(sort_column, ascending=ascending),
         column_config={
@@ -176,7 +178,31 @@ def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_rating
         use_container_width=True,
         hide_index=True,
     )
-    render_compact_power_rankings(rankings, sort_column, ascending)
+    with st.expander("Compact rankings", expanded=False):
+        render_compact_power_rankings(rankings, sort_column, ascending)
+
+
+def render_power_rating_chart(rankings: pd.DataFrame, sort_column: str, ascending: bool) -> None:
+    if POWER_RATING_COLUMN not in rankings.columns or "team" not in rankings.columns:
+        return
+    top_power = (
+        rankings.dropna(subset=[POWER_RATING_COLUMN])
+        .sort_values(POWER_RATING_COLUMN, ascending=False)
+        .head(10)
+        [["team", POWER_RATING_COLUMN]]
+    )
+    if top_power.empty:
+        return
+    st.markdown("**Top 10 Power Ratings**")
+    st.altair_chart(
+        ordered_bar_chart(
+            top_power,
+            x_column="team",
+            y_column=POWER_RATING_COLUMN,
+            y_title="Power Rating",
+        ),
+        use_container_width=True,
+    )
 
 
 def render_compact_power_rankings(rankings: pd.DataFrame, sort_column: str, ascending: bool) -> None:
@@ -195,7 +221,6 @@ def render_compact_power_rankings(rankings: pd.DataFrame, sort_column: str, asce
         return
 
     compact = rankings[compact_columns].sort_values(sort_column, ascending=ascending).head(25)
-    st.markdown("**Compact Rankings**")
     st.dataframe(
         compact,
         column_config={
@@ -211,54 +236,104 @@ def render_compact_power_rankings(rankings: pd.DataFrame, sort_column: str, asce
 
 
 def render_trending_teams(trends: pd.DataFrame) -> None:
+    st.divider()
     st.subheader("Trending Teams")
     st.caption(
         "Recent form uses completed games only. Momentum blends recent wins, scoring margin, "
         "offense, defense, and Power Rating rank movement."
     )
+    st.caption(
+        "Rank Move compares current Power Rank to the prior snapshot from recent completed games. "
+        "Positive means the team moved up."
+    )
     if trends.empty:
         st.info("Trend data is not available yet.")
         return
 
+    render_momentum_chart(trends)
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("**Hottest Teams**")
-        st.dataframe(
-            trend_display(
-                trends.sort_values(["momentum_score", "team"], ascending=[False, True]).head(8)
-            ),
-            use_container_width=True,
-            hide_index=True,
+        render_trend_table(
+            trends.sort_values(["momentum_score", "team"], ascending=[False, True]).head(8)
         )
     with col2:
         st.markdown("**Biggest Risers**")
-        st.dataframe(
-            trend_display(
-                trends.sort_values(["power_rank_movement", "momentum_score"], ascending=[False, False]).head(8)
-            ),
-            use_container_width=True,
-            hide_index=True,
+        render_trend_table(
+            trends.sort_values(["power_rank_movement", "momentum_score"], ascending=[False, False]).head(8)
         )
 
     col3, col4 = st.columns(2)
     with col3:
         st.markdown("**Strongest Recent Defense**")
-        st.dataframe(
-            trend_display(
-                trends.sort_values(["recent_defense_rating", "team"], ascending=[True, True]).head(8)
-            ),
-            use_container_width=True,
-            hide_index=True,
+        render_trend_table(
+            trends.sort_values(["recent_defense_rating", "team"], ascending=[True, True]).head(8)
         )
     with col4:
         st.markdown("**Strongest Recent Offense**")
-        st.dataframe(
-            trend_display(
-                trends.sort_values(["recent_offense_rating", "team"], ascending=[False, True]).head(8)
+        render_trend_table(
+            trends.sort_values(["recent_offense_rating", "team"], ascending=[False, True]).head(8)
+        )
+
+
+def render_momentum_chart(trends: pd.DataFrame) -> None:
+    if "momentum_score" not in trends.columns or "team" not in trends.columns:
+        return
+    momentum = (
+        trends[["team", "momentum_score"]]
+        .dropna()
+        .sort_values(["momentum_score", "team"], ascending=[False, True])
+        .head(10)
+    )
+    if momentum.empty:
+        return
+    with st.expander("Momentum chart", expanded=True):
+        st.altair_chart(
+            ordered_bar_chart(
+                momentum,
+                x_column="team",
+                y_column="momentum_score",
+                y_title="Momentum Score",
             ),
             use_container_width=True,
-            hide_index=True,
         )
+
+
+def ordered_bar_chart(
+    frame: pd.DataFrame,
+    *,
+    x_column: str,
+    y_column: str,
+    y_title: str,
+) -> alt.Chart:
+    ordered_categories = frame[x_column].astype(str).tolist()
+    return (
+        alt.Chart(frame)
+        .mark_bar(color="#2563eb")
+        .encode(
+            x=alt.X(
+                f"{x_column}:N",
+                sort=ordered_categories,
+                title=None,
+                axis=alt.Axis(labelAngle=-35),
+            ),
+            y=alt.Y(f"{y_column}:Q", title=y_title),
+            tooltip=[
+                alt.Tooltip(f"{x_column}:N", title="Team"),
+                alt.Tooltip(f"{y_column}:Q", title=y_title, format=".2f"),
+            ],
+        )
+        .properties(height=260)
+    )
+
+
+def render_trend_table(trends: pd.DataFrame) -> None:
+    display = trend_display(trends)
+    st.dataframe(
+        style_trend_display(display),
+        use_container_width=True,
+        hide_index=True,
+    )
 
 
 def trend_display(trends: pd.DataFrame) -> pd.DataFrame:
@@ -270,12 +345,27 @@ def trend_display(trends: pd.DataFrame) -> pd.DataFrame:
         "recent_avg_margin",
         "recent_offense_rating",
         "recent_defense_rating",
+        "current_power_rank",
+        "prior_power_rank",
         "power_rank_movement",
     ]
     display = trends[[column for column in columns if column in trends.columns]].copy()
+    if {"momentum_label", "power_rank_movement"}.issubset(display.columns):
+        display["momentum_label"] = display.apply(
+            lambda row: display_form_state(row["momentum_label"], row["power_rank_movement"]),
+            axis=1,
+        )
     for column in ["last_3_win_pct", "last_5_win_pct"]:
         if column in display.columns:
             display[column] = (display[column] * 100).round(0).astype(int).astype(str) + "%"
+    for column in ["recent_avg_margin", "recent_offense_rating", "recent_defense_rating"]:
+        if column in display.columns:
+            display[column] = display[column].round(1)
+    for column in ["current_power_rank", "prior_power_rank"]:
+        if column in display.columns:
+            display[column] = display[column].round(0).astype("Int64")
+    if "power_rank_movement" in display.columns:
+        display["power_rank_movement"] = display["power_rank_movement"].map(format_rank_movement)
     rename = {
         "team": "Team",
         "momentum_label": "Form",
@@ -284,9 +374,89 @@ def trend_display(trends: pd.DataFrame) -> pd.DataFrame:
         "recent_avg_margin": "Margin",
         "recent_offense_rating": "Offense",
         "recent_defense_rating": "Defense",
+        "current_power_rank": "Current Rank",
+        "prior_power_rank": "Prior Rank",
         "power_rank_movement": "Rank Move",
     }
     return display.rename(columns=rename)
+
+
+def style_trend_display(display: pd.DataFrame) -> pd.io.formats.style.Styler:
+    styled_columns = [
+        column
+        for column in ["Form", "Rank Move"]
+        if column in display.columns
+    ]
+    if not styled_columns:
+        return display.style
+    return display.style.map(trend_cell_style, subset=styled_columns)
+
+
+def trend_cell_style(value: object) -> str:
+    text = str(value)
+    if text in {"<NA>", "nan", "None"}:
+        return ""
+    if text == "Surging":
+        return "background-color: #dcfce7; color: #166534;"
+    if text == "Improving":
+        return "background-color: #e0f2fe; color: #075985;"
+    if text == "Recovering":
+        return "background-color: #fef3c7; color: #92400e;"
+    if text == "Steady":
+        return "background-color: #f3f4f6; color: #374151;"
+    if text == "Cooling":
+        return "background-color: #fecaca; color: #7f1d1d;"
+    if text.startswith("↑"):
+        return "background-color: #dcfce7; color: #166534;"
+    if text.startswith("↓"):
+        return "background-color: #fee2e2; color: #991b1b;"
+    if text.startswith("→"):
+        return "background-color: #f3f4f6; color: #374151;"
+    return ""
+
+
+def format_rank_movement(value: object) -> str:
+    if pd.isna(value):
+        return "→ 0"
+    movement = int(round(float(value)))
+    if movement > 0:
+        return f"↑ +{movement}"
+    if movement < 0:
+        return f"↓ {movement}"
+    return "→ 0"
+
+
+def display_form_state(label: object, rank_movement: object) -> str:
+    base = str(label or "Steady").strip().title()
+    try:
+        movement = float(rank_movement)
+    except (TypeError, ValueError):
+        movement = 0.0
+
+    if base == "Surging":
+        return "Surging" if movement >= 0 else "Cooling"
+    if base == "Steady":
+        return "Improving" if movement > 0 else "Steady"
+    if base == "Cooling":
+        return "Recovering" if movement > 0 else "Cooling"
+    if base == "Improving":
+        return "Improving"
+    if base == "Recovering":
+        return "Recovering"
+    return base
+
+
+def momentum_indicator(label: object, rank_movement: object) -> str:
+    value = str(label or "Steady")
+    try:
+        movement = float(rank_movement)
+    except (TypeError, ValueError):
+        movement = 0.0
+    if movement > 0:
+        return f"{value} ↑"
+    if movement < 0:
+        return f"{value} ↓"
+    return value
 
 
 def render_matchup_predictor(
@@ -296,16 +466,18 @@ def render_matchup_predictor(
     power_ratings: pd.DataFrame,
     trends: pd.DataFrame,
 ) -> None:
+    st.divider()
     st.subheader("Matchup Predictor")
     teams = ratings["team"].dropna().sort_values().tolist()
     if len(teams) < 2:
         st.info("At least two rated teams are required for matchup predictions.")
         return
 
-    col1, col2 = st.columns(2)
-    team_a = col1.selectbox("Team A", teams, index=0)
-    default_b_index = 1 if len(teams) > 1 else 0
-    team_b = col2.selectbox("Team B", teams, index=default_b_index)
+    with st.container(border=True):
+        col1, col2 = st.columns(2)
+        team_a = col1.selectbox("Team A", teams, index=0)
+        default_b_index = 1 if len(teams) > 1 else 0
+        team_b = col2.selectbox("Team B", teams, index=default_b_index)
 
     if team_a == team_b:
         st.warning("Choose two different teams.")
@@ -334,7 +506,11 @@ def render_matchup_predictor(
         trends=trends,
         sos=sos,
     )
-    st.markdown(f"**Power Rating favorite:** {power_context['predicted_winner']}")
+    st.markdown(
+        f"**Power Rating favorite:** {power_context['predicted_winner']} "
+        f"{edge_badge(edge_label)} {confidence_badge(prediction.confidence_level)}",
+        unsafe_allow_html=True,
+    )
     st.info(
         f"{power_context['predicted_winner']} is favored. "
         f"Edge: {edge_label}. "
@@ -384,6 +560,7 @@ def render_weekly_matchups(
     power_ratings: pd.DataFrame,
     trends: pd.DataFrame,
 ) -> None:
+    st.divider()
     st.subheader("This Week's Matchups")
     weekly_matchups = build_weekly_matchups(
         scheduled_games,
@@ -527,6 +704,10 @@ def render_weekly_matchup_cards(weekly_matchups: pd.DataFrame) -> None:
                 f"**{matchup['Home']} vs {matchup['Away']}**  \n"
                 f"{matchup['Date']} {matchup['Time']}"
             )
+            st.markdown(
+                f"{edge_badge(matchup['Edge'])} {confidence_badge(matchup['Confidence'])}",
+                unsafe_allow_html=True,
+            )
             cols = st.columns(2)
             cols[0].metric("Projected Winner", matchup["Projected Winner"] or "Unavailable")
             cols[1].metric("Win Probability", matchup["Win Probability"] or "N/A")
@@ -561,6 +742,40 @@ def prediction_edge_label(win_probability: float | None) -> str:
     if probability < 0.75:
         return "Solid Favorite"
     return "Strong Favorite"
+
+
+def edge_badge(label: object) -> str:
+    value = str(label or "Unavailable")
+    tones = {
+        "Toss-up": ("#374151", "#f3f4f6"),
+        "Slight Edge": ("#92400e", "#fef3c7"),
+        "Solid Favorite": ("#075985", "#e0f2fe"),
+        "Strong Favorite": ("#166534", "#dcfce7"),
+        "Unavailable": ("#4b5563", "#f3f4f6"),
+    }
+    color, background = tones.get(value, tones["Unavailable"])
+    return metric_badge(value, color=color, background=background)
+
+
+def confidence_badge(label: object) -> str:
+    value = str(label or "Unavailable").title()
+    tones = {
+        "High": ("#166534", "#dcfce7"),
+        "Medium": ("#92400e", "#fef3c7"),
+        "Low": ("#991b1b", "#fee2e2"),
+        "Very Low": ("#991b1b", "#fee2e2"),
+        "Unavailable": ("#4b5563", "#f3f4f6"),
+    }
+    color, background = tones.get(value, tones["Unavailable"])
+    return metric_badge(f"Confidence: {value}", color=color, background=background)
+
+
+def metric_badge(label: str, *, color: str, background: str) -> str:
+    return (
+        f"<span style='display:inline-block;padding:0.18rem 0.55rem;"
+        f"border-radius:999px;font-size:0.82rem;font-weight:650;"
+        f"color:{color};background:{background};margin-right:0.25rem;'>{label}</span>"
+    )
 
 
 def build_matchup_prediction(
@@ -676,6 +891,7 @@ def render_team_detail(
     sos: pd.DataFrame,
     power_ratings: pd.DataFrame,
 ) -> None:
+    st.divider()
     st.subheader("Team Detail")
     teams = ratings["team"].dropna().sort_values().tolist()
     team = st.selectbox("Team", teams, key="team_detail")
@@ -689,6 +905,7 @@ def render_team_detail(
         col1.metric("Power Rank", power_rank_value(power_row))
         col2.metric("Power Rating", f"{power_rating_value(power_row):.2f}")
         col3.metric("Confidence", str(power_row["confidence_tier"]).title())
+        st.markdown(confidence_badge(power_row["confidence_tier"]), unsafe_allow_html=True)
     else:
         col1.metric("Power Rank", "N/A")
         col2.metric("Power Rating", "N/A")
@@ -716,6 +933,7 @@ def render_team_detail(
     else:
         metric3.metric("Offense / Defense", "N/A")
 
+    render_offense_defense_chart(power_row)
     render_elo_trend(team, elo_history)
 
     completed_log = team_games[
@@ -750,6 +968,22 @@ def render_team_detail(
             use_container_width=True,
             hide_index=True,
         )
+
+
+def render_offense_defense_chart(power_row: pd.Series | None) -> None:
+    if power_row is None:
+        return
+    required = ["adjusted_offense_rating", "adjusted_defense_rating"]
+    if any(column not in power_row or pd.isna(power_row[column]) for column in required):
+        return
+    chart = pd.DataFrame(
+        [
+            {"Metric": "Offense", "Rating": float(power_row["adjusted_offense_rating"])},
+            {"Metric": "Defense", "Rating": float(power_row["adjusted_defense_rating"])},
+        ]
+    )
+    with st.expander("Offense vs Defense", expanded=False):
+        st.bar_chart(chart, x="Metric", y="Rating", height=220)
 
 
 def upcoming_scheduled_games_for_team(
@@ -788,6 +1022,10 @@ def render_elo_trend(team: str, elo_history: pd.DataFrame) -> None:
 
 def render_model_comparison(model_comparison_summary: pd.DataFrame) -> None:
     st.subheader("Model Comparison")
+    render_model_comparison_content(model_comparison_summary)
+
+
+def render_model_comparison_content(model_comparison_summary: pd.DataFrame) -> None:
     if model_comparison_summary.empty:
         st.info("Model comparison summary is not available.")
         return
@@ -808,6 +1046,10 @@ def render_model_comparison(model_comparison_summary: pd.DataFrame) -> None:
 
 def render_model_calibration(calibration: pd.DataFrame) -> None:
     st.subheader("Model Calibration")
+    render_model_calibration_content(calibration)
+
+
+def render_model_calibration_content(calibration: pd.DataFrame) -> None:
     st.caption(
         "Calibration shows whether teams predicted around 60% actually win around 60% of the time."
     )
@@ -815,6 +1057,7 @@ def render_model_calibration(calibration: pd.DataFrame) -> None:
         st.info("Power Rating calibration is not available.")
         return
 
+    render_calibration_chart(calibration)
     display = calibration.copy()
     percentage_columns = [
         "average_predicted_probability",
@@ -842,8 +1085,32 @@ def render_model_calibration(calibration: pd.DataFrame) -> None:
     )
 
 
+def render_calibration_chart(calibration: pd.DataFrame) -> None:
+    required = {"bucket", "average_predicted_probability", "actual_win_rate"}
+    if calibration.empty or not required.issubset(calibration.columns):
+        return
+    chart = calibration[list(required)].copy()
+    chart["average_predicted_probability"] = chart["average_predicted_probability"] * 100.0
+    chart["actual_win_rate"] = chart["actual_win_rate"] * 100.0
+    st.line_chart(
+        chart.rename(
+            columns={
+                "average_predicted_probability": "Predicted",
+                "actual_win_rate": "Actual",
+            }
+        ),
+        x="bucket",
+        y=["Predicted", "Actual"],
+        height=240,
+    )
+
+
 def render_backtest(backtest: pd.DataFrame) -> None:
     st.subheader("Recent ELO Backtest Rows")
+    render_backtest_content(backtest)
+
+
+def render_backtest_content(backtest: pd.DataFrame) -> None:
     st.caption("Detailed ELO replay rows are retained for debugging and comparison context.")
 
     if not backtest.empty:
@@ -854,6 +1121,22 @@ def render_backtest(backtest: pd.DataFrame) -> None:
         )
     else:
         st.info("Backtest rows are not available.")
+
+
+def render_model_insights(
+    model_comparison_summary: pd.DataFrame,
+    calibration: pd.DataFrame,
+    backtest: pd.DataFrame,
+) -> None:
+    st.divider()
+    st.subheader("Model Insights")
+    st.caption("Validation details are available here without taking over the main coaching workflow.")
+    with st.expander("Model Comparison", expanded=True):
+        render_model_comparison_content(model_comparison_summary)
+    with st.expander("Model Calibration", expanded=False):
+        render_model_calibration_content(calibration)
+    with st.expander("Recent ELO Backtest Rows", expanded=False):
+        render_backtest_content(backtest)
 
 
 def metric_value(summary: pd.DataFrame, column: str, *, percentage: bool = False) -> str:
