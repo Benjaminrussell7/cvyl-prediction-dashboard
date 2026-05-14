@@ -473,6 +473,171 @@ def test_ordered_bar_chart_preserves_input_category_order() -> None:
     assert chart_spec["encoding"]["x"]["sort"] == ["A", "B", "C"]
 
 
+def test_matchup_probability_data_uses_current_power_context() -> None:
+    probabilities = dashboard.matchup_probability_data(
+        "Avon",
+        "Granby",
+        {
+            "team_a_probability": 0.62,
+            "team_b_probability": 0.38,
+        },
+    )
+
+    assert list(probabilities["Team"]) == ["Avon", "Granby"]
+    assert list(probabilities["Probability"]) == [0.62, 0.38]
+
+
+def test_matchup_team_colors_are_consistent_across_charts() -> None:
+    colors = dashboard.matchup_team_colors("Avon", "Granby")
+    probabilities = pd.DataFrame(
+        [
+            {"Team": "Avon", "Probability": 0.62},
+            {"Team": "Granby", "Probability": 0.38},
+        ]
+    )
+    scores = pd.DataFrame(
+        [
+            {"Team": "Avon", "Projected Goals": 6.1},
+            {"Team": "Granby", "Projected Goals": 4.8},
+        ]
+    )
+
+    probability_spec = dashboard.matchup_probability_chart(probabilities, colors).to_dict()
+    score_spec = dashboard.projected_score_chart(scores, colors).to_dict()
+
+    assert probability_spec["encoding"]["color"]["scale"]["domain"] == ["Avon", "Granby"]
+    assert score_spec["encoding"]["color"]["scale"]["domain"] == ["Avon", "Granby"]
+    assert probability_spec["encoding"]["color"]["scale"]["range"] == score_spec["encoding"]["color"]["scale"]["range"]
+
+
+def test_matchup_strength_data_reads_power_rating_context() -> None:
+    power_ratings = pd.DataFrame(
+        [
+            {
+                "team": "Avon",
+                "adjusted_offense_rating": 2.5,
+                "adjusted_defense_rating": 1.2,
+            },
+            {
+                "team": "Granby",
+                "adjusted_offense_rating": 1.5,
+                "adjusted_defense_rating": 0.8,
+            },
+        ]
+    )
+
+    strengths = dashboard.matchup_strength_data("Avon", "Granby", power_ratings)
+
+    assert len(strengths) == 4
+    assert set(strengths["Metric"]) == {"Offense Strength", "Defense Strength"}
+    assert set(strengths["Team"]) == {"Avon", "Granby"}
+
+
+def test_projected_score_data_labels_each_team() -> None:
+    class Prediction:
+        projected_team_a_goals = 4.8
+        projected_team_b_goals = 5.0
+
+    scores = dashboard.projected_score_data("West Hartford 12U Green", "RHAM 12U", Prediction())
+
+    assert list(scores["Team"]) == ["West Hartford 12U Green", "RHAM 12U"]
+    assert list(scores["Projected Goals"]) == [4.8, 5.0]
+
+
+def test_team_profile_comparison_data_uses_existing_context() -> None:
+    power_ratings = pd.DataFrame(
+        [
+            {
+                "team": "Avon",
+                "power_rank_v3_recency": 3,
+                "power_rating_v3_recency": 2.25,
+                "adjusted_offense_rating": 1.5,
+                "adjusted_defense_rating": 0.7,
+            },
+            {
+                "team": "Granby",
+                "power_rank_v3_recency": 8,
+                "power_rating_v3_recency": 0.75,
+                "adjusted_offense_rating": 0.5,
+                "adjusted_defense_rating": -0.2,
+            },
+        ]
+    )
+    trends = pd.DataFrame(
+        [
+            {"team": "Avon", "momentum_label": "Steady", "power_rank_movement": 2},
+            {"team": "Granby", "momentum_label": "Cooling", "power_rank_movement": -1},
+        ]
+    )
+    sos = pd.DataFrame(
+        [
+            {"team": "Avon", "sos_rank": 4},
+            {"team": "Granby", "sos_rank": 10},
+        ]
+    )
+
+    profile = dashboard.team_profile_comparison_data("Avon", "Granby", power_ratings, trends, sos)
+
+    assert list(profile["Team"]) == ["Avon", "Granby"]
+    assert list(profile["Power Rank"]) == ["3", "8"]
+    assert list(profile["Recent Form"]) == ["Improving", "Cooling"]
+    assert list(profile["Recent Rank Move"]) == ["↑ +2", "↓ -1"]
+    assert list(profile["SOS Rank"]) == ["4", "10"]
+
+
+def test_matchup_summary_card_data_includes_both_teams() -> None:
+    class Prediction:
+        projected_team_a_goals = 4.8
+        projected_team_b_goals = 5.0
+
+    power_ratings = pd.DataFrame(
+        [
+            {"team": "Avon", "power_rank_v3_recency": 3},
+            {"team": "Granby", "power_rank_v3_recency": 8},
+        ]
+    )
+    trends = pd.DataFrame(
+        [
+            {"team": "Avon", "momentum_label": "Surging", "power_rank_movement": 1},
+            {"team": "Granby", "momentum_label": "Steady", "power_rank_movement": 0},
+        ]
+    )
+
+    cards = dashboard.matchup_summary_card_data(
+        "Avon",
+        "Granby",
+        Prediction(),
+        {"team_a_probability": 0.62, "team_b_probability": 0.38},
+        power_ratings,
+        trends,
+    )
+
+    assert [card["Team"] for card in cards] == ["Avon", "Granby"]
+    assert cards[0]["Win Probability"] == "62.0%"
+    assert cards[0]["Projected Goals"] == "4.8"
+    assert cards[0]["Power Rank"] == "3"
+    assert cards[0]["Recent Form"] == "Surging"
+
+
+def test_form_distribution_data_uses_display_form_states() -> None:
+    trends = pd.DataFrame(
+        [
+            {"momentum_label": "Surging", "power_rank_movement": 1},
+            {"momentum_label": "Steady", "power_rank_movement": 1},
+            {"momentum_label": "Cooling", "power_rank_movement": 1},
+            {"momentum_label": "Cooling", "power_rank_movement": -1},
+        ]
+    )
+
+    form = dashboard.form_distribution_data(trends)
+
+    counts = dict(zip(form["Form"], form["Teams"], strict=True))
+    assert counts["Surging"] == 1
+    assert counts["Improving"] == 1
+    assert counts["Recovering"] == 1
+    assert counts["Cooling"] == 1
+
+
 def test_trend_cell_style_is_limited_and_readable() -> None:
     assert "#dcfce7" in dashboard.trend_cell_style("Surging")
     assert "#e0f2fe" in dashboard.trend_cell_style("Improving")

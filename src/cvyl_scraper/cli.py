@@ -5,6 +5,7 @@ import argparse
 import pandas as pd
 
 from cvyl_scraper.backtesting import build_backtest_outputs
+from cvyl_scraper.branding import discover_team_branding
 from cvyl_scraper.calibration import build_power_rating_calibration
 from cvyl_scraper.cleaning import build_canonical_games, split_by_status
 from cvyl_scraper.config import load_sources, load_team_aliases
@@ -194,6 +195,21 @@ def main() -> None:
         default="data/processed/team_identity_audit.csv",
         help="Team identity audit CSV output path.",
     )
+    parser.add_argument(
+        "--discover-branding",
+        action="store_true",
+        help="Discover team logo URLs and branding metadata from discovered team pages and exit.",
+    )
+    parser.add_argument(
+        "--branding-sources-input",
+        default="config/discovered_sources.yml",
+        help="Discovered sources YAML or CSV input path for branding discovery.",
+    )
+    parser.add_argument(
+        "--branding-output",
+        default="data/processed/cvyl_team_branding.csv",
+        help="Team branding CSV output path.",
+    )
     parser.add_argument("--predict-team-a", default=None, help="First team for ELO matchup prediction.")
     parser.add_argument("--predict-team-b", default=None, help="Second team for ELO matchup prediction.")
     parser.add_argument(
@@ -251,6 +267,14 @@ def main() -> None:
             args.team_identity_output,
         )
         print(f"Exported team identity audit to {audit_path}")
+        return
+
+    if args.discover_branding:
+        branding_path = discover_team_branding(
+            args.branding_sources_input,
+            args.branding_output,
+        )
+        print(f"Exported team branding to {branding_path}")
         return
 
     if args.discover_url:

@@ -24,6 +24,7 @@ POWER_ACCURACY_KEY = "power_v3_calibrated_accuracy"
 POWER_BRIER_KEY = "power_v3_calibrated_brier_score"
 POWER_RATING_COLUMN = "power_rating_v3_recency"
 POWER_RANK_COLUMN = "power_rank_v3_recency"
+MATCHUP_TEAM_COLORS = ["#2563eb", "#16a34a"]
 
 LOGGER = logging.getLogger(__name__)
 EASTERN_TIME = ZoneInfo("America/New_York")
@@ -200,6 +201,7 @@ def render_power_rating_chart(rankings: pd.DataFrame, sort_column: str, ascendin
             x_column="team",
             y_column=POWER_RATING_COLUMN,
             y_title="Power Rating",
+            color="#1d4ed8",
         ),
         use_container_width=True,
     )
@@ -251,6 +253,7 @@ def render_trending_teams(trends: pd.DataFrame) -> None:
         return
 
     render_momentum_chart(trends)
+    render_form_distribution(trends)
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("**Hottest Teams**")
@@ -294,9 +297,54 @@ def render_momentum_chart(trends: pd.DataFrame) -> None:
                 x_column="team",
                 y_column="momentum_score",
                 y_title="Momentum Score",
+                color="#0f766e",
             ),
             use_container_width=True,
         )
+
+
+def render_form_distribution(trends: pd.DataFrame) -> None:
+    form = form_distribution_data(trends)
+    if form.empty:
+        return
+    with st.expander("Recent form mix", expanded=False):
+        st.altair_chart(form_distribution_chart(form), use_container_width=True)
+
+
+def form_distribution_data(trends: pd.DataFrame) -> pd.DataFrame:
+    required = {"momentum_label", "power_rank_movement"}
+    if trends.empty or not required.issubset(trends.columns):
+        return pd.DataFrame(columns=["Form", "Teams"])
+    form_order = ["Surging", "Improving", "Recovering", "Steady", "Cooling"]
+    display = trends.copy()
+    display["Form"] = display.apply(
+        lambda row: display_form_state(row["momentum_label"], row["power_rank_movement"]),
+        axis=1,
+    )
+    counts = display["Form"].value_counts().reindex(form_order, fill_value=0)
+    return pd.DataFrame({"Form": counts.index, "Teams": counts.values})
+
+
+def form_distribution_chart(form: pd.DataFrame) -> alt.Chart:
+    colors = ["#16a34a", "#0ea5e9", "#f59e0b", "#6b7280", "#dc2626"]
+    return (
+        alt.Chart(form)
+        .mark_bar(cornerRadiusTopRight=4, cornerRadiusBottomRight=4)
+        .encode(
+            y=alt.Y("Form:N", sort=form["Form"].tolist(), title=None),
+            x=alt.X("Teams:Q", title="Teams"),
+            color=alt.Color(
+                "Form:N",
+                scale=alt.Scale(domain=form["Form"].tolist(), range=colors),
+                legend=None,
+            ),
+            tooltip=[
+                alt.Tooltip("Form:N", title="Form"),
+                alt.Tooltip("Teams:Q", title="Teams"),
+            ],
+        )
+        .properties(height=190)
+    )
 
 
 def ordered_bar_chart(
@@ -305,11 +353,12 @@ def ordered_bar_chart(
     x_column: str,
     y_column: str,
     y_title: str,
+    color: str = "#2563eb",
 ) -> alt.Chart:
     ordered_categories = frame[x_column].astype(str).tolist()
     return (
         alt.Chart(frame)
-        .mark_bar(color="#2563eb")
+        .mark_bar(color=color, cornerRadiusTopLeft=4, cornerRadiusTopRight=4)
         .encode(
             x=alt.X(
                 f"{x_column}:N",
@@ -506,34 +555,22 @@ def render_matchup_predictor(
         trends=trends,
         sos=sos,
     )
-    st.markdown(
-        f"**Power Rating favorite:** {power_context['predicted_winner']} "
-        f"{edge_badge(edge_label)} {confidence_badge(prediction.confidence_level)}",
-        unsafe_allow_html=True,
+    team_colors = matchup_team_colors(team_a, team_b)
+    render_matchup_summary_cards(
+        team_a,
+        team_b,
+        prediction,
+        power_context,
+        power_ratings,
+        trends,
+        edge_label,
+        team_colors,
     )
-    st.info(
-        f"{power_context['predicted_winner']} is favored. "
-        f"Edge: {edge_label}. "
-        f"Projected spread: {prediction.projected_spread}. "
-        f"Projected total: {prediction.projected_total_goals:.1f}. "
-        f"Confidence: {prediction.confidence_level}."
-    )
-    prob1, prob2 = st.columns(2)
-    prob1.metric("Team A Win Probability", f"{power_context['team_a_probability']:.1%}")
-    prob1.caption(team_a)
-    prob2.metric("Team B Win Probability", f"{power_context['team_b_probability']:.1%}")
-    prob2.caption(team_b)
-
-    spread_col, total_col, score_col, confidence_col = st.columns(4)
-    spread_col.metric("Projected Spread", prediction.projected_spread)
-    total_col.metric("Projected Total", f"{prediction.projected_total_goals:.1f}")
-    score_col.metric(
-        "Projected Score",
-        f"{prediction.projected_team_a_goals:.1f}-{prediction.projected_team_b_goals:.1f}",
-    )
-    confidence_col.metric("Confidence", prediction.confidence_level)
-    st.caption(f"Prediction edge: **{edge_label}**")
-    st.info(explanation)
+    render_projected_score_summary(team_a, team_b, prediction, team_colors)
+    render_win_probability_bar(team_a, team_b, power_context, team_colors)
+    render_projected_score_comparison(team_a, team_b, prediction, team_colors)
+    render_team_profile_comparison(team_a, team_b, power_ratings, trends, sos)
+    render_matchup_strength_comparison(team_a, team_b, power_ratings, team_colors)
 
     st.caption(
         f"SOS: {team_a} {_format_sos_context(prediction.team_a_sos, prediction.team_a_sos_rank)} | "
@@ -550,6 +587,343 @@ def render_matchup_predictor(
 
     with st.expander("Prediction Details"):
         st.text(format_matchup_prediction(prediction))
+
+
+def matchup_team_colors(team_a: str, team_b: str) -> dict[str, str]:
+    return {team_a: MATCHUP_TEAM_COLORS[0], team_b: MATCHUP_TEAM_COLORS[1]}
+
+
+def render_matchup_summary_cards(
+    team_a: str,
+    team_b: str,
+    prediction,
+    power_context: dict[str, object],
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+    edge_label: str,
+    team_colors: dict[str, str],
+) -> None:
+    favorite = str(power_context["predicted_winner"])
+    st.markdown(
+        f"{edge_badge(edge_label)} {confidence_badge(prediction.confidence_level)}",
+        unsafe_allow_html=True,
+    )
+    col1, col2 = st.columns(2)
+    cards = matchup_summary_card_data(team_a, team_b, prediction, power_context, power_ratings, trends)
+    for column, card in zip([col1, col2], cards, strict=True):
+        with column:
+            render_team_summary_card(card, favored=card["Team"] == favorite, color=team_colors[card["Team"]])
+
+
+def matchup_summary_card_data(
+    team_a: str,
+    team_b: str,
+    prediction,
+    power_context: dict[str, object],
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+) -> list[dict[str, str]]:
+    rows = []
+    for team, probability, projected_goals in [
+        (team_a, power_context["team_a_probability"], prediction.projected_team_a_goals),
+        (team_b, power_context["team_b_probability"], prediction.projected_team_b_goals),
+    ]:
+        power_row = find_team_row(power_ratings, team)
+        trend_row = find_team_row(trends, team)
+        rows.append(
+            {
+                "Team": team,
+                "Win Probability": f"{float(probability):.1%}",
+                "Projected Goals": f"{float(projected_goals):.1f}",
+                "Power Rank": format_optional_int(power_rank_value(power_row)),
+                "Recent Form": team_recent_form(trend_row),
+            }
+        )
+    return rows
+
+
+def render_team_summary_card(card: dict[str, str], *, favored: bool, color: str) -> None:
+    border = color if favored else "#e5e7eb"
+    label = "Favored" if favored else "Underdog"
+    st.markdown(
+        f"""
+        <div style="border:1px solid {border};border-left:6px solid {color};
+                    border-radius:8px;padding:0.85rem 0.9rem;margin-bottom:0.45rem;
+                    background:#ffffff;">
+          <div style="font-size:0.78rem;font-weight:700;color:{color};text-transform:uppercase;
+                      letter-spacing:0.03rem;">{label}</div>
+          <div style="font-size:1rem;font-weight:750;color:#111827;line-height:1.25;
+                      overflow-wrap:anywhere;margin:0.15rem 0 0.6rem;">
+            {card["Team"]}
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.45rem;">
+            <div><span style="font-size:0.72rem;color:#6b7280;">Win Prob</span><br>
+              <strong>{card["Win Probability"]}</strong></div>
+            <div><span style="font-size:0.72rem;color:#6b7280;">Proj Goals</span><br>
+              <strong>{card["Projected Goals"]}</strong></div>
+            <div><span style="font-size:0.72rem;color:#6b7280;">Power Rank</span><br>
+              <strong>{card["Power Rank"]}</strong></div>
+            <div><span style="font-size:0.72rem;color:#6b7280;">Recent Form</span><br>
+              <strong>{card["Recent Form"]}</strong></div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_projected_score_summary(
+    team_a: str,
+    team_b: str,
+    prediction,
+    team_colors: dict[str, str],
+) -> None:
+    st.markdown(
+        f"""
+        <div style="border:1px solid #e5e7eb;border-radius:8px;padding:0.85rem 1rem;
+                    background:#f9fafb;margin:0.5rem 0 0.8rem;">
+          <div style="font-size:0.78rem;font-weight:700;color:#4b5563;text-transform:uppercase;
+                      letter-spacing:0.03rem;">Projected Score</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:baseline;margin-top:0.25rem;">
+            <span style="color:{team_colors[team_a]};font-weight:750;overflow-wrap:anywhere;">
+              {team_a}: {prediction.projected_team_a_goals:.1f}
+            </span>
+            <span style="color:#6b7280;font-weight:650;">vs</span>
+            <span style="color:{team_colors[team_b]};font-weight:750;overflow-wrap:anywhere;">
+              {team_b}: {prediction.projected_team_b_goals:.1f}
+            </span>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_win_probability_bar(
+    team_a: str,
+    team_b: str,
+    power_context: dict[str, object],
+    team_colors: dict[str, str],
+) -> None:
+    probabilities = matchup_probability_data(team_a, team_b, power_context)
+    if probabilities.empty:
+        return
+    st.markdown("**Win Probability**")
+    st.altair_chart(matchup_probability_chart(probabilities, team_colors), use_container_width=True)
+
+
+def matchup_probability_data(
+    team_a: str,
+    team_b: str,
+    power_context: dict[str, object],
+) -> pd.DataFrame:
+    return pd.DataFrame(
+        [
+            {"Team": team_a, "Probability": float(power_context["team_a_probability"])},
+            {"Team": team_b, "Probability": float(power_context["team_b_probability"])},
+        ]
+    )
+
+
+def matchup_probability_chart(probabilities: pd.DataFrame, team_colors: dict[str, str]) -> alt.Chart:
+    ordered = probabilities.sort_values("Probability", ascending=False)
+    return (
+        alt.Chart(ordered)
+        .mark_bar(cornerRadiusTopRight=4, cornerRadiusBottomRight=4)
+        .encode(
+            y=alt.Y("Team:N", sort=ordered["Team"].tolist(), title=None),
+            x=alt.X("Probability:Q", title="Win Probability", axis=alt.Axis(format="%"), scale=alt.Scale(domain=[0, 1])),
+            color=alt.Color(
+                "Team:N",
+                scale=alt.Scale(domain=list(team_colors.keys()), range=list(team_colors.values())),
+                legend=None,
+            ),
+            tooltip=[
+                alt.Tooltip("Team:N", title="Team"),
+                alt.Tooltip("Probability:Q", title="Win Probability", format=".1%"),
+            ],
+        )
+        .properties(height=120)
+    )
+
+
+def render_projected_score_comparison(
+    team_a: str,
+    team_b: str,
+    prediction,
+    team_colors: dict[str, str],
+) -> None:
+    scores = projected_score_data(team_a, team_b, prediction)
+    st.markdown("**Projected Goals**")
+    st.altair_chart(projected_score_chart(scores, team_colors), use_container_width=True)
+
+
+def projected_score_data(team_a: str, team_b: str, prediction) -> pd.DataFrame:
+    return pd.DataFrame(
+        [
+            {"Team": team_a, "Projected Goals": float(prediction.projected_team_a_goals)},
+            {"Team": team_b, "Projected Goals": float(prediction.projected_team_b_goals)},
+        ]
+    )
+
+
+def projected_score_chart(scores: pd.DataFrame, team_colors: dict[str, str]) -> alt.Chart:
+    ordered = scores.sort_values("Projected Goals", ascending=False)
+    return (
+        alt.Chart(ordered)
+        .mark_bar(cornerRadiusTopRight=4, cornerRadiusBottomRight=4)
+        .encode(
+            y=alt.Y("Team:N", sort=ordered["Team"].tolist(), title=None),
+            x=alt.X("Projected Goals:Q", title="Projected Goals"),
+            color=alt.Color(
+                "Team:N",
+                scale=alt.Scale(domain=list(team_colors.keys()), range=list(team_colors.values())),
+                legend=None,
+            ),
+            tooltip=[
+                alt.Tooltip("Team:N", title="Team"),
+                alt.Tooltip("Projected Goals:Q", title="Projected Goals", format=".1f"),
+            ],
+        )
+        .properties(height=120)
+    )
+
+
+def render_team_profile_comparison(
+    team_a: str,
+    team_b: str,
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+    sos: pd.DataFrame,
+) -> None:
+    profile = team_profile_comparison_data(team_a, team_b, power_ratings, trends, sos)
+    if profile.empty:
+        return
+    st.markdown("**Team Profiles**")
+    st.dataframe(
+        profile,
+        use_container_width=True,
+        hide_index=True,
+    )
+
+
+def team_profile_comparison_data(
+    team_a: str,
+    team_b: str,
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+    sos: pd.DataFrame,
+) -> pd.DataFrame:
+    rows = []
+    for team in [team_a, team_b]:
+        power_row = find_team_row(power_ratings, team)
+        trend_row = find_team_row(trends, team)
+        sos_row = find_team_row(sos, team)
+        rows.append(
+            {
+                "Team": team,
+                "Power Rank": format_optional_int(power_rank_value(power_row)),
+                "Power Rating": format_optional_float(power_rating_value(power_row)),
+                "Recent Form": team_recent_form(trend_row),
+                "Recent Rank Move": team_recent_rank_move(trend_row),
+                "Offense Strength": format_row_float(power_row, "adjusted_offense_rating"),
+                "Defense Strength": format_row_float(power_row, "adjusted_defense_rating"),
+                "SOS Rank": format_row_int(sos_row, "sos_rank"),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def team_recent_form(row: pd.Series | None) -> str:
+    if row is None:
+        return "N/A"
+    if "momentum_label" not in row or "power_rank_movement" not in row:
+        return "N/A"
+    return display_form_state(row["momentum_label"], row["power_rank_movement"])
+
+
+def team_recent_rank_move(row: pd.Series | None) -> str:
+    if row is None or "power_rank_movement" not in row:
+        return "N/A"
+    return format_rank_movement(row["power_rank_movement"])
+
+
+def format_optional_float(value: float | None) -> str:
+    if value is None or pd.isna(value):
+        return "N/A"
+    return f"{float(value):.2f}"
+
+
+def format_optional_int(value: int | None) -> str:
+    if value is None or pd.isna(value):
+        return "N/A"
+    return str(int(value))
+
+
+def format_row_float(row: pd.Series | None, column: str) -> str:
+    if row is None or column not in row or pd.isna(row[column]):
+        return "N/A"
+    return f"{float(row[column]):.2f}"
+
+
+def format_row_int(row: pd.Series | None, column: str) -> str:
+    if row is None or column not in row or pd.isna(row[column]):
+        return "N/A"
+    return str(int(row[column]))
+
+
+def render_matchup_strength_comparison(
+    team_a: str,
+    team_b: str,
+    power_ratings: pd.DataFrame,
+    team_colors: dict[str, str],
+) -> None:
+    strengths = matchup_strength_data(team_a, team_b, power_ratings)
+    if strengths.empty:
+        return
+    st.markdown("**Offense vs Defense**")
+    st.caption(
+        "Offense Strength: higher is better. Defense Strength: higher is better here because it "
+        "rewards allowing fewer goals than opponents usually score."
+    )
+    st.altair_chart(matchup_strength_chart(strengths, team_colors), use_container_width=True)
+
+
+def matchup_strength_data(team_a: str, team_b: str, power_ratings: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for team in [team_a, team_b]:
+        row = find_team_row(power_ratings, team)
+        if row is None:
+            continue
+        for source_column, label in [
+            ("adjusted_offense_rating", "Offense Strength"),
+            ("adjusted_defense_rating", "Defense Strength"),
+        ]:
+            if source_column in row and pd.notna(row[source_column]):
+                rows.append({"Team": team, "Metric": label, "Rating": float(row[source_column])})
+    return pd.DataFrame(rows, columns=["Team", "Metric", "Rating"])
+
+
+def matchup_strength_chart(strengths: pd.DataFrame, team_colors: dict[str, str]) -> alt.Chart:
+    return (
+        alt.Chart(strengths)
+        .mark_bar(cornerRadiusTopLeft=3, cornerRadiusTopRight=3)
+        .encode(
+            x=alt.X("Metric:N", title=None),
+            y=alt.Y("Rating:Q", title="Rating"),
+            color=alt.Color(
+                "Team:N",
+                scale=alt.Scale(domain=list(team_colors.keys()), range=list(team_colors.values())),
+            ),
+            xOffset="Team:N",
+            tooltip=[
+                alt.Tooltip("Team:N", title="Team"),
+                alt.Tooltip("Metric:N", title="Metric"),
+                alt.Tooltip("Rating:Q", title="Rating", format=".2f"),
+            ],
+        )
+        .properties(height=240)
+    )
 
 
 def render_weekly_matchups(
@@ -1092,16 +1466,38 @@ def render_calibration_chart(calibration: pd.DataFrame) -> None:
     chart = calibration[list(required)].copy()
     chart["average_predicted_probability"] = chart["average_predicted_probability"] * 100.0
     chart["actual_win_rate"] = chart["actual_win_rate"] * 100.0
-    st.line_chart(
-        chart.rename(
-            columns={
-                "average_predicted_probability": "Predicted",
-                "actual_win_rate": "Actual",
-            }
-        ),
-        x="bucket",
-        y=["Predicted", "Actual"],
-        height=240,
+    chart = chart.rename(
+        columns={
+            "bucket": "Bucket",
+            "average_predicted_probability": "Predicted",
+            "actual_win_rate": "Actual",
+        }
+    )
+    melted = chart.melt("Bucket", var_name="Series", value_name="Rate")
+    st.altair_chart(
+        calibration_line_chart(melted),
+        use_container_width=True,
+    )
+
+
+def calibration_line_chart(calibration: pd.DataFrame) -> alt.Chart:
+    return (
+        alt.Chart(calibration)
+        .mark_line(point=alt.OverlayMarkDef(filled=True, size=70), strokeWidth=3)
+        .encode(
+            x=alt.X("Bucket:N", sort=calibration["Bucket"].drop_duplicates().tolist(), title=None),
+            y=alt.Y("Rate:Q", title="Win Rate", axis=alt.Axis(format=".0f"), scale=alt.Scale(domain=[0, 100])),
+            color=alt.Color(
+                "Series:N",
+                scale=alt.Scale(domain=["Predicted", "Actual"], range=["#2563eb", "#16a34a"]),
+            ),
+            tooltip=[
+                alt.Tooltip("Bucket:N", title="Bucket"),
+                alt.Tooltip("Series:N", title="Series"),
+                alt.Tooltip("Rate:Q", title="Rate", format=".1f"),
+            ],
+        )
+        .properties(height=260)
     )
 
 
