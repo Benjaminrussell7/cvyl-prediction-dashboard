@@ -46,36 +46,87 @@ def load_csv(filename: str) -> pd.DataFrame:
     return _read_csv(filename, modified_ns)
 
 
-def main() -> None:
-    st.set_page_config(page_title="CVYL U12 Boys Prediction Dashboard", layout="wide")
+def load_dashboard_data() -> dict[str, pd.DataFrame]:
+    return {
+        "games": load_csv("cvyl_games.csv"),
+        "scheduled_games": load_csv("cvyl_scheduled_games.csv"),
+        "ratings": load_csv("cvyl_elo_ratings.csv"),
+        "team_games": load_csv("cvyl_team_games.csv"),
+        "elo_history": load_csv("cvyl_elo_history.csv"),
+        "sos": load_csv("cvyl_sos.csv"),
+        "trends": load_csv("cvyl_trends.csv"),
+        "power_ratings": load_csv(PRIMARY_POWER_RATINGS_FILE),
+        "backtest": load_csv("cvyl_backtest.csv"),
+        "model_comparison_summary": load_csv(PRIMARY_MODEL_COMPARISON_SUMMARY_FILE),
+        "calibration": load_csv(PRIMARY_CALIBRATION_FILE),
+    }
 
-    games = load_csv("cvyl_games.csv")
-    scheduled_games = load_csv("cvyl_scheduled_games.csv")
-    ratings = load_csv("cvyl_elo_ratings.csv")
-    team_games = load_csv("cvyl_team_games.csv")
-    elo_history = load_csv("cvyl_elo_history.csv")
-    sos = load_csv("cvyl_sos.csv")
-    trends = load_csv("cvyl_trends.csv")
-    power_ratings = load_csv(PRIMARY_POWER_RATINGS_FILE)
-    backtest = load_csv("cvyl_backtest.csv")
-    model_comparison_summary = load_csv(PRIMARY_MODEL_COMPARISON_SUMMARY_FILE)
-    calibration = load_csv(PRIMARY_CALIBRATION_FILE)
-    log_model_comparison_summary(model_comparison_summary)
+
+def configure_page(title: str = "CVYL U12 Boys Prediction Dashboard") -> None:
+    st.set_page_config(page_title=title, layout="wide")
+
+
+def has_core_data(data: dict[str, pd.DataFrame]) -> bool:
+    return not (
+        data["games"].empty
+        or data["ratings"].empty
+        or data["team_games"].empty
+    )
+
+
+def render_missing_core_data_warning() -> None:
+    st.warning("Missing core processed CSVs. Run the scraper/model pipeline before using the dashboard.")
+
+
+def main() -> None:
+    configure_page()
+    if hasattr(st, "navigation") and hasattr(st, "Page"):
+        page = st.navigation(
+            [
+                st.Page(render_home_page, title="Home", default=True),
+                st.Page(ROOT / "pages" / "1_Team_Deep_Dive.py", title="Team Deep Dive"),
+                st.Page(ROOT / "pages" / "2_Rankings_and_Ratings.py", title="Rankings & Ratings"),
+                st.Page(ROOT / "pages" / "3_Model_Insights.py", title="Model Insights"),
+                st.Page(ROOT / "pages" / "4_Tournament_Simulator.py", title="Tournament Simulator"),
+            ],
+            position="sidebar",
+            expanded=True,
+        )
+        page.run()
+        return
+
+    render_home_page()
+
+
+def render_home_page() -> None:
+    data = load_dashboard_data()
+    log_model_comparison_summary(data["model_comparison_summary"])
 
     st.title("CVYL U12 Boys Prediction Dashboard")
     render_data_freshness()
 
-    if games.empty or ratings.empty or team_games.empty:
-        st.warning("Missing core processed CSVs. Run the scraper/model pipeline before using the dashboard.")
+    if not has_core_data(data):
+        render_missing_core_data_warning()
         return
 
-    render_summary_cards(games, ratings, model_comparison_summary)
-    render_matchup_predictor(ratings, team_games, sos, power_ratings, trends)
-    render_weekly_matchups(scheduled_games, ratings, team_games, sos, power_ratings, trends)
-    render_trending_teams(trends)
-    render_power_rankings(ratings, sos, power_ratings)
-    render_team_detail(games, ratings, team_games, elo_history, sos, power_ratings)
-    render_model_insights(model_comparison_summary, calibration, backtest)
+    render_summary_cards(data["games"], data["ratings"], data["model_comparison_summary"])
+    render_matchup_predictor(
+        data["ratings"],
+        data["team_games"],
+        data["sos"],
+        data["power_ratings"],
+        data["trends"],
+    )
+    render_weekly_matchups(
+        data["scheduled_games"],
+        data["ratings"],
+        data["team_games"],
+        data["sos"],
+        data["power_ratings"],
+        data["trends"],
+    )
+    render_trending_teams(data["trends"])
+    render_rankings_preview(data["ratings"], data["sos"], data["power_ratings"])
 
 
 def render_data_freshness() -> None:
@@ -123,6 +174,22 @@ def render_summary_cards(
 def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_ratings: pd.DataFrame) -> None:
     st.divider()
     st.subheader("Rankings")
+    rankings = rankings_display_data(ratings, sos, power_ratings)
+
+    team_filter = st.text_input("Search teams", "", key="power_filter")
+    if team_filter:
+        rankings = rankings[rankings["team"].str.contains(team_filter, case=False, na=False)]
+
+    display_columns = rankings_display_columns(rankings)
+    sort_column = POWER_RANK_COLUMN if POWER_RANK_COLUMN in rankings.columns else "elo"
+    ascending = sort_column == POWER_RANK_COLUMN
+    render_power_rating_chart(rankings, sort_column, ascending)
+    render_rankings_table(rankings, display_columns, sort_column, ascending)
+    with st.expander("Compact rankings", expanded=False):
+        render_compact_power_rankings(rankings, sort_column, ascending)
+
+
+def rankings_display_data(ratings: pd.DataFrame, sos: pd.DataFrame, power_ratings: pd.DataFrame) -> pd.DataFrame:
     rankings = power_ratings.copy() if not power_ratings.empty else pd.DataFrame()
     if rankings.empty:
         rankings = ratings.copy()
@@ -135,12 +202,11 @@ def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_rating
             on="team",
             how="left",
         )
+    return rankings
 
-    team_filter = st.text_input("Search teams", "", key="power_filter")
-    if team_filter:
-        rankings = rankings[rankings["team"].str.contains(team_filter, case=False, na=False)]
 
-    display_columns = [
+def rankings_display_columns(rankings: pd.DataFrame) -> list[str]:
+    return [
         column
         for column in [
             "power_rank_v2",
@@ -156,9 +222,14 @@ def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_rating
         ]
         if column in rankings.columns
     ]
-    sort_column = POWER_RANK_COLUMN if POWER_RANK_COLUMN in rankings.columns else "elo"
-    ascending = sort_column == POWER_RANK_COLUMN
-    render_power_rating_chart(rankings, sort_column, ascending)
+
+
+def render_rankings_table(
+    rankings: pd.DataFrame,
+    display_columns: list[str],
+    sort_column: str,
+    ascending: bool,
+) -> None:
     st.dataframe(
         rankings[display_columns].sort_values(sort_column, ascending=ascending),
         column_config={
@@ -179,8 +250,35 @@ def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_rating
         use_container_width=True,
         hide_index=True,
     )
-    with st.expander("Compact rankings", expanded=False):
-        render_compact_power_rankings(rankings, sort_column, ascending)
+
+
+def render_rankings_preview(ratings: pd.DataFrame, sos: pd.DataFrame, power_ratings: pd.DataFrame) -> None:
+    st.divider()
+    st.subheader("Rankings Preview")
+    rankings = rankings_display_data(ratings, sos, power_ratings)
+    if rankings.empty:
+        st.info("Rankings are not available.")
+        return
+    sort_column = POWER_RANK_COLUMN if POWER_RANK_COLUMN in rankings.columns else "elo"
+    ascending = sort_column == POWER_RANK_COLUMN
+    display_columns = [
+        column
+        for column in [POWER_RANK_COLUMN, "team", POWER_RATING_COLUMN, "confidence_tier", "games_played"]
+        if column in rankings.columns
+    ]
+    st.dataframe(
+        rankings[display_columns].sort_values(sort_column, ascending=ascending).head(10),
+        column_config={
+            POWER_RANK_COLUMN: "Rank",
+            "team": "Team",
+            POWER_RATING_COLUMN: st.column_config.NumberColumn("Power Rating", format="%.2f"),
+            "confidence_tier": "Confidence",
+            "games_played": "Games",
+        },
+        use_container_width=True,
+        hide_index=True,
+    )
+    st.caption("Open Rankings & Ratings from the sidebar for the full table and rating charts.")
 
 
 def render_power_rating_chart(rankings: pd.DataFrame, sort_column: str, ascending: bool) -> None:
