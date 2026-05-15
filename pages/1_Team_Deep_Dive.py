@@ -35,6 +35,7 @@ def render_team_headquarters(team: str, data: dict[str, pd.DataFrame]) -> None:
     st.divider()
     render_team_header(team, data)
     render_snapshot_cards(team, data)
+    render_team_story_sections(team, data)
     render_team_strengths(team, data)
     render_team_timeline(team, data)
     render_recent_results_cards(team, data)
@@ -97,13 +98,169 @@ def render_team_strengths(team: str, data: dict[str, pd.DataFrame]) -> None:
     insights = team_strength_insights(team, data)
     if not insights:
         return
-    st.subheader("Strengths & Watchouts")
+    st.subheader("Model Notes")
     columns = st.columns(min(3, len(insights)))
     for index, insight in enumerate(insights):
         with columns[index % len(columns)]:
             with st.container(border=True):
                 st.markdown(f"**{insight['title']}**")
                 st.caption(insight["detail"])
+
+
+def render_team_story_sections(team: str, data: dict[str, pd.DataFrame]) -> None:
+    story = team_storytelling(team, data)
+    st.subheader("Team Identity")
+    with st.container(border=True):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("**Identity**")
+            st.caption(story["identity"])
+            st.markdown("**Recent Storyline**")
+            st.caption(story["storyline"])
+        with col2:
+            st.markdown("**What the Model Sees**")
+            for observation in story["model_sees"][:3]:
+                st.caption(observation)
+
+    st.subheader("Strengths & Watchouts")
+    col1, col2 = st.columns(2)
+    with col1:
+        with st.container(border=True):
+            st.markdown("**Strengths**")
+            for strength in story["strengths"]:
+                st.caption(strength)
+    with col2:
+        with st.container(border=True):
+            st.markdown("**Watchouts**")
+            for watchout in story["watchouts"]:
+                st.caption(watchout)
+
+
+def team_storytelling(team: str, data: dict[str, pd.DataFrame]) -> dict[str, list[str] | str]:
+    power = data["power_ratings"]
+    power_row = dashboard.find_team_row(power, team)
+    trend_row = dashboard.find_team_row(data["trends"], team)
+    sos_row = dashboard.find_team_row(data["sos"], team)
+    completed = completed_games_for_team(team, data["team_games"])
+
+    offense_rank = metric_rank(power, "adjusted_offense_rating", team, ascending=False)
+    defense_rank = metric_rank(power, "adjusted_defense_rating", team, ascending=False)
+    rank = dashboard.power_rank_value(power_row)
+    form = dashboard.team_recent_form(trend_row)
+    rank_move = row_float(trend_row, "power_rank_movement")
+    avg_for = row_float(power_row, "avg_points_for")
+    avg_against = row_float(power_row, "avg_points_against")
+    avg_margin = row_float(power_row, "avg_margin")
+    sos_rank = row_float(sos_row, "sos_rank")
+
+    identity = team_identity_sentence(team, rank, offense_rank, defense_rank, avg_for, avg_against)
+    storyline = team_storyline_sentence(team, form, rank_move, completed)
+    strengths = team_story_strengths(team, rank, offense_rank, defense_rank, form, sos_rank, avg_margin)
+    watchouts = team_story_watchouts(team, avg_against, avg_for, avg_margin, completed, sos_rank)
+    model_sees = dashboard.dedupe_text([
+        identity,
+        storyline,
+        *strengths[:2],
+        *watchouts[:1],
+    ])
+    return {
+        "identity": identity,
+        "storyline": storyline,
+        "model_sees": model_sees,
+        "strengths": strengths or ["The profile is balanced without one obvious headline strength yet."],
+        "watchouts": watchouts or ["No major red flag stands out from currently reported results."],
+    }
+
+
+def team_identity_sentence(
+    team: str,
+    rank: int | None,
+    offense_rank: int | None,
+    defense_rank: int | None,
+    avg_for: float | None,
+    avg_against: float | None,
+) -> str:
+    if defense_rank is not None and defense_rank <= 5 and offense_rank is not None and offense_rank <= 8:
+        return f"{team} looks like a complete contender, pairing strong defense with enough scoring punch."
+    if defense_rank is not None and defense_rank <= 5:
+        return f"{team} wins with defense and consistency."
+    if offense_rank is not None and offense_rank <= 5:
+        return f"{team} is built around offensive pressure and scoring depth."
+    if rank is not None and rank <= 6:
+        return f"{team} has the profile of a division contender."
+    if avg_for is not None and avg_against is not None and avg_for > avg_against:
+        return f"{team} has been on the right side of the scoreboard more often than not."
+    return f"{team} has a developing profile as more scores are reported."
+
+
+def team_storyline_sentence(
+    team: str,
+    form: str,
+    rank_move: float | None,
+    completed: pd.DataFrame,
+) -> str:
+    if form in {"Surging", "Improving", "Recovering", "Steady", "Cooling"}:
+        phrase = dashboard.notification_phrase_for_team(team, form)
+        if rank_move is not None and rank_move >= 3:
+            return f"{phrase} Recent results have pushed them up the board."
+        if rank_move is not None and rank_move <= -3:
+            return f"{phrase} The recent rank movement still shows some turbulence."
+        return phrase
+    if completed.empty:
+        return "The current storyline is limited because few completed scores are available."
+    latest = completed.sort_values("game_date", ascending=False).iloc[0]
+    result = "a win" if bool(latest["win"]) else "a loss"
+    return f"{team} is coming off {result} against {latest['opponent']}."
+
+
+def team_story_strengths(
+    team: str,
+    rank: int | None,
+    offense_rank: int | None,
+    defense_rank: int | None,
+    form: str,
+    sos_rank: float | None,
+    avg_margin: float | None,
+) -> list[str]:
+    strengths: list[str] = []
+    if rank is not None and rank <= 5:
+        strengths.append(f"Top-tier overall profile: {team} sits inside the top five overall.")
+    if defense_rank is not None and defense_rank <= 5:
+        strengths.append("Defense continues to lead the way.")
+    if offense_rank is not None and offense_rank <= 5:
+        strengths.append("The offense has shown one of the stronger scoring profiles in the division.")
+    if form in {"Surging", "Improving"}:
+        strengths.append("Momentum is trending upward.")
+    if sos_rank is not None and sos_rank <= 8:
+        strengths.append("The schedule has been battle-tested.")
+    if avg_margin is not None and avg_margin >= 4:
+        strengths.append("Recent score margins suggest they can create separation.")
+    return strengths[:4]
+
+
+def team_story_watchouts(
+    team: str,
+    avg_against: float | None,
+    avg_for: float | None,
+    avg_margin: float | None,
+    completed: pd.DataFrame,
+    sos_rank: float | None,
+) -> list[str]:
+    del team
+    watchouts: list[str] = []
+    if avg_against is not None and avg_against >= 8:
+        watchouts.append("Goals allowed remain the main thing to tighten against stronger opponents.")
+    if avg_for is not None and avg_for <= 5:
+        watchouts.append("Scoring depth remains a question if the game turns into a track meet.")
+    if avg_margin is not None and abs(avg_margin) <= 1.5:
+        watchouts.append("Many games profile as close, so small swings can matter.")
+    if sos_rank is not None and sos_rank > 20:
+        watchouts.append("The schedule has not been as demanding as some top-ranked teams.")
+    if not completed.empty:
+        recent = completed.sort_values("game_date", ascending=False).head(3)
+        if len(recent) >= 3 and int(recent["win"].sum()) <= 1:
+            watchouts.append("Recent form has been uneven over the last few reported games.")
+    return watchouts[:4]
 
 
 def team_strength_insights(team: str, data: dict[str, pd.DataFrame]) -> list[dict[str, str]]:
@@ -574,10 +731,11 @@ def completed_games_for_team(team: str, team_games: pd.DataFrame) -> pd.DataFram
 
 
 def build_team_narrative(team: str, data: dict[str, pd.DataFrame]) -> str:
-    insights = team_strength_insights(team, data)
-    if not insights:
+    story = team_storytelling(team, data)
+    model_sees = story.get("model_sees", [])
+    if not model_sees:
         return "Current team profile is limited by available reported results."
-    return f"{team} profile: " + " ".join(insight["detail"] for insight in insights[:2])
+    return " ".join(str(item) for item in model_sees[:2])
 
 
 def metric_rank(frame: pd.DataFrame, column: str, team: str, *, ascending: bool) -> int | None:

@@ -110,6 +110,14 @@ def render_home_page() -> None:
         return
 
     render_summary_cards(data["games"], data["ratings"], data["model_comparison_summary"])
+    render_featured_insights(
+        data["scheduled_games"],
+        data["ratings"],
+        data["team_games"],
+        data["sos"],
+        data["power_ratings"],
+        data["trends"],
+    )
     render_matchup_predictor(
         data["ratings"],
         data["team_games"],
@@ -169,6 +177,239 @@ def render_summary_cards(
         col2.metric("Teams Rated", total_teams)
         col3.metric("Power Rating Accuracy", accuracy)
         col4.metric("Power Rating Brier", brier_score)
+
+
+def render_featured_insights(
+    scheduled_games: pd.DataFrame,
+    ratings: pd.DataFrame,
+    team_games: pd.DataFrame,
+    sos: pd.DataFrame,
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+) -> None:
+    cards = featured_insight_cards(scheduled_games, ratings, team_games, sos, power_ratings, trends)
+    if not cards:
+        return
+    st.subheader("Featured Insights")
+    first_row = cards[:2]
+    second_row = cards[2:]
+    for row_cards in [first_row, second_row]:
+        if not row_cards:
+            continue
+        columns = st.columns(len(row_cards))
+        for column, card in zip(columns, row_cards, strict=True):
+            with column:
+                render_featured_insight_card(card)
+
+
+def featured_insight_cards(
+    scheduled_games: pd.DataFrame,
+    ratings: pd.DataFrame,
+    team_games: pd.DataFrame,
+    sos: pd.DataFrame,
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+) -> list[dict[str, str]]:
+    cards: list[dict[str, str]] = []
+    weekly = build_weekly_matchups(scheduled_games, ratings, team_games, sos, power_ratings, trends)
+    game_of_week = select_game_of_week(weekly, power_ratings)
+    if game_of_week is not None:
+        cards.append(featured_game_card("Game of the Week", game_of_week))
+
+    upset = select_upset_watch(weekly)
+    if upset is not None:
+        cards.append(featured_game_card("Upset Watch", upset))
+
+    rising = fastest_rising_team_card(trends, power_ratings)
+    if rising is not None:
+        cards.append(rising)
+
+    defense = defense_to_watch_card(power_ratings)
+    if defense is not None:
+        cards.append(defense)
+
+    contender = quiet_contender_card(power_ratings, trends)
+    if contender is not None:
+        cards.append(contender)
+
+    return cards[:5]
+
+
+def render_featured_insight_card(card: dict[str, str]) -> None:
+    with st.container(border=True):
+        st.markdown(
+            f"""
+            <div style="min-height:9.5rem;">
+              <div style="font-size:0.76rem;font-weight:800;color:#4b5563;text-transform:uppercase;
+                          letter-spacing:0.04rem;margin-bottom:0.2rem;">{card['label']}</div>
+              <div style="font-size:1.05rem;font-weight:800;color:#111827;line-height:1.25;
+                          overflow-wrap:anywhere;margin-bottom:0.35rem;">{card['headline']}</div>
+              <div style="margin-bottom:0.35rem;">{story_badge(card['tag'])}</div>
+              <div style="font-size:0.9rem;color:#374151;line-height:1.35;">{card['body']}</div>
+              <div style="font-size:0.78rem;color:#6b7280;margin-top:0.45rem;">{card['detail']}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+
+def select_game_of_week(weekly: pd.DataFrame, power_ratings: pd.DataFrame) -> pd.Series | None:
+    if weekly.empty:
+        return None
+    candidates = weekly[weekly["Projected Winner"].astype(str).str.len() > 0].copy()
+    if candidates.empty:
+        return None
+    candidates["favorite_probability"] = candidates["Win Probability"].map(parse_percentage)
+    candidates["closeness_score"] = (candidates["favorite_probability"] - 0.5).abs()
+    candidates["team_quality"] = candidates.apply(
+        lambda row: matchup_quality_score(str(row["Home"]), str(row["Away"]), power_ratings),
+        axis=1,
+    )
+    candidates["interest_score"] = (
+        (1.0 - candidates["closeness_score"].fillna(0.5))
+        + candidates["team_quality"].fillna(0.0)
+        + candidates["Matchup Type"].isin(["Upset Watch", "Closer Than It Looks", "Tight Contest"]).astype(float) * 0.35
+    )
+    return candidates.sort_values(["interest_score", "Date", "Time"], ascending=[False, True, True]).iloc[0]
+
+
+def select_upset_watch(weekly: pd.DataFrame) -> pd.Series | None:
+    if weekly.empty or "Matchup Type" not in weekly:
+        return None
+    candidates = weekly[
+        weekly["Matchup Type"].isin(["Upset Watch", "Closer Than It Looks", "Tight Contest"])
+        | weekly["Edge"].isin(["Toss-up", "Slight Edge"])
+    ].copy()
+    if candidates.empty:
+        return None
+    candidates["favorite_probability"] = candidates["Win Probability"].map(parse_percentage)
+    candidates["upset_watch_score"] = (0.70 - candidates["favorite_probability"].fillna(0.70)).clip(lower=0)
+    return candidates.sort_values(["upset_watch_score", "Date", "Time"], ascending=[False, True, True]).iloc[0]
+
+
+def featured_game_card(label: str, matchup: pd.Series) -> dict[str, str]:
+    teams = f"{matchup['Home']} vs {matchup['Away']}"
+    favorite = str(matchup["Projected Winner"] or "No clear favorite")
+    tag = str(matchup.get("Matchup Type") or matchup.get("Edge") or label)
+    detail = f"{matchup['Date']} {matchup['Time']}".strip()
+    if label == "Upset Watch":
+        body = f"{favorite} is favored, but the matchup profile says this could stay tighter than expected."
+    else:
+        body = str(matchup.get("What Model Sees") or matchup.get("Explanation") or "")
+        if not body:
+            body = f"The model leans toward {favorite}, with enough intrigue to make this the lead matchup."
+    return {
+        "label": label,
+        "headline": teams,
+        "tag": tag,
+        "body": body,
+        "detail": detail,
+    }
+
+
+def fastest_rising_team_card(trends: pd.DataFrame, power_ratings: pd.DataFrame) -> dict[str, str] | None:
+    if trends.empty or "team" not in trends:
+        return None
+    candidates = trends.copy()
+    for column in ["power_rank_movement", "momentum_score", "games_played"]:
+        if column in candidates:
+            candidates[column] = pd.to_numeric(candidates[column], errors="coerce")
+    candidates = candidates[candidates["games_played"].fillna(0) >= 2] if "games_played" in candidates else candidates
+    if candidates.empty:
+        return None
+    sort_columns = [column for column in ["power_rank_movement", "momentum_score"] if column in candidates]
+    if not sort_columns:
+        return None
+    team_row = candidates.sort_values(sort_columns, ascending=[False] * len(sort_columns)).iloc[0]
+    team = str(team_row["team"])
+    form = team_recent_form(team_row)
+    power_row = find_team_row(power_ratings, team)
+    rank = power_rank_value(power_row)
+    move = team_recent_rank_move(team_row)
+    return {
+        "label": "Fastest Rising Team",
+        "headline": team,
+        "tag": "Momentum Clash" if form in {"Surging", "Improving"} else "Emerging Contender Matchup",
+        "body": notification_phrase_for_team(team, form),
+        "detail": f"Current rank {format_optional_int(rank)} | Rank move {move}",
+    }
+
+
+def defense_to_watch_card(power_ratings: pd.DataFrame) -> dict[str, str] | None:
+    if power_ratings.empty or "adjusted_defense_rating" not in power_ratings:
+        return None
+    candidates = power_ratings.copy()
+    candidates["adjusted_defense_rating"] = pd.to_numeric(candidates["adjusted_defense_rating"], errors="coerce")
+    candidates["games_played"] = pd.to_numeric(candidates.get("games_played"), errors="coerce")
+    candidates = candidates.dropna(subset=["adjusted_defense_rating"])
+    candidates = candidates[candidates["games_played"].fillna(0) >= 3]
+    if candidates.empty:
+        return None
+    row = candidates.sort_values(["adjusted_defense_rating", "team"], ascending=[False, True]).iloc[0]
+    return {
+        "label": "Defense to Watch",
+        "headline": str(row["team"]),
+        "tag": "Physical Defensive Battle",
+        "body": "Defense continues to lead the way, with one of the strongest recent profiles in the division.",
+        "detail": f"Power rank {format_optional_int(power_rank_value(row))} | Goals allowed {format_row_float(row, 'avg_points_against')}",
+    }
+
+
+def quiet_contender_card(power_ratings: pd.DataFrame, trends: pd.DataFrame) -> dict[str, str] | None:
+    if power_ratings.empty:
+        return None
+    candidates = power_ratings.copy()
+    if not trends.empty and "team" in trends:
+        candidates = candidates.merge(
+            trends[["team", "momentum_score", "momentum_label", "power_rank_movement"]],
+            on="team",
+            how="left",
+        )
+    for column in [POWER_RANK_COLUMN, "games_played", "momentum_score"]:
+        if column in candidates:
+            candidates[column] = pd.to_numeric(candidates[column], errors="coerce")
+    candidates = candidates[
+        (candidates[POWER_RANK_COLUMN] <= 10)
+        & (candidates["games_played"].fillna(0) >= 3)
+        & (candidates[POWER_RANK_COLUMN] > 3)
+    ].copy()
+    if candidates.empty:
+        return None
+    candidates["contender_score"] = (
+        (11 - candidates[POWER_RANK_COLUMN].astype(float))
+        + candidates.get("momentum_score", pd.Series(0, index=candidates.index)).fillna(0) / 5.0
+    )
+    row = candidates.sort_values(["contender_score", POWER_RANK_COLUMN], ascending=[False, True]).iloc[0]
+    team = str(row["team"])
+    form = team_recent_form(row)
+    return {
+        "label": "Quiet Contender",
+        "headline": team,
+        "tag": "Emerging Contender Matchup",
+        "body": f"{team} is quietly sitting in contender territory, with a profile that may be stronger than the headline record suggests.",
+        "detail": f"Power rank {format_optional_int(power_rank_value(row))} | {notification_phrase_for_team(team, form)}",
+    }
+
+
+def matchup_quality_score(team_a: str, team_b: str, power_ratings: pd.DataFrame) -> float:
+    ranks = [
+        power_rank_value(find_team_row(power_ratings, team_a)),
+        power_rank_value(find_team_row(power_ratings, team_b)),
+    ]
+    available = [rank for rank in ranks if rank is not None]
+    if not available:
+        return 0.0
+    return sum(max(0.0, (16.0 - float(rank)) / 15.0) for rank in available) / len(available)
+
+
+def parse_percentage(value: object) -> float | None:
+    text = str(value or "").strip().replace("%", "")
+    if not text:
+        return None
+    try:
+        return float(text) / 100.0
+    except ValueError:
+        return None
 
 
 def render_power_rankings(ratings: pd.DataFrame, sos: pd.DataFrame, power_ratings: pd.DataFrame) -> None:
@@ -667,6 +908,18 @@ def render_matchup_predictor(
     render_projected_score_summary(team_a, team_b, prediction, team_colors)
     render_win_probability_bar(team_a, team_b, power_context, team_colors)
     render_projected_score_comparison(team_a, team_b, prediction, team_colors)
+    render_what_model_sees(
+        matchup_story_observations(
+            team_a,
+            team_b,
+            prediction,
+            power_context,
+            power_ratings,
+            trends,
+            sos,
+        ),
+        title="What the Model Sees",
+    )
     render_team_profile_comparison(team_a, team_b, power_ratings, trends, sos)
     render_matchup_strength_comparison(team_a, team_b, power_ratings, team_colors)
 
@@ -702,10 +955,23 @@ def render_matchup_summary_cards(
     team_colors: dict[str, str],
 ) -> None:
     favorite = str(power_context["predicted_winner"])
+    archetype = matchup_archetype_label(
+        team_a,
+        team_b,
+        prediction,
+        power_context,
+        power_ratings,
+        trends,
+    )
+    fan_confidence = fan_confidence_label(prediction.confidence_level, max(
+        float(power_context["team_a_probability"]),
+        float(power_context["team_b_probability"]),
+    ))
     st.markdown(
-        f"{edge_badge(edge_label)} {confidence_badge(prediction.confidence_level)}",
+        f"{edge_badge(edge_label)} {story_badge(archetype)} {story_badge(fan_confidence)}",
         unsafe_allow_html=True,
     )
+    st.caption(matchup_preview_blurb(team_a, team_b, favorite, archetype, power_ratings, trends))
     col1, col2 = st.columns(2)
     cards = matchup_summary_card_data(team_a, team_b, prediction, power_context, power_ratings, trends)
     for column, card in zip([col1, col2], cards, strict=True):
@@ -1054,6 +1320,10 @@ def render_weekly_matchups(
 
     st.dataframe(
         weekly_matchups,
+        column_config={
+            "What Model Sees": st.column_config.TextColumn("What the Model Sees", width="large"),
+            "Explanation": st.column_config.TextColumn("Preview", width="large"),
+        },
         use_container_width=True,
         hide_index=True,
     )
@@ -1082,6 +1352,8 @@ def build_weekly_matchups(
         "Projected Spread",
         "Projected Total",
         "Confidence",
+        "Matchup Type",
+        "What Model Sees",
         "Explanation",
         "Note",
     ]
@@ -1119,6 +1391,8 @@ def build_weekly_matchups(
             "Projected Spread": "",
             "Projected Total": "",
             "Confidence": "",
+            "Matchup Type": "",
+            "What Model Sees": "",
             "Explanation": "Unavailable",
             "Note": "",
         }
@@ -1144,6 +1418,25 @@ def build_weekly_matchups(
                     "Projected Spread": prediction.projected_spread,
                     "Projected Total": f"{prediction.projected_total_goals:.1f}",
                     "Confidence": matchup_confidence_tier(home_team, away_team, power_ratings),
+                    "Matchup Type": matchup_archetype_label(
+                        home_team,
+                        away_team,
+                        prediction,
+                        power_context,
+                        power_ratings,
+                        trends,
+                    ),
+                    "What Model Sees": " ".join(
+                        matchup_story_observations(
+                            home_team,
+                            away_team,
+                            prediction,
+                            power_context,
+                            power_ratings,
+                            trends,
+                            sos,
+                        )[:2]
+                    ),
                     "Explanation": generate_matchup_explanation(
                         home_team,
                         away_team,
@@ -1177,7 +1470,8 @@ def render_weekly_matchup_cards(weekly_matchups: pd.DataFrame) -> None:
                 f"{matchup['Date']} {matchup['Time']}"
             )
             st.markdown(
-                f"{edge_badge(matchup['Edge'])} {confidence_badge(matchup['Confidence'])}",
+                f"{edge_badge(matchup['Edge'])} {story_badge(matchup.get('Matchup Type', ''))} "
+                f"{story_badge(fan_confidence_label(matchup['Confidence']))}",
                 unsafe_allow_html=True,
             )
             cols = st.columns(2)
@@ -1187,7 +1481,10 @@ def render_weekly_matchup_cards(weekly_matchups: pd.DataFrame) -> None:
             cols[0].metric("Edge", matchup["Edge"] or "Unavailable")
             cols[1].metric("Spread", matchup["Projected Spread"] or "N/A")
             cols[2].metric("Total", matchup["Projected Total"] or "N/A")
-            st.caption(f"Confidence: {matchup['Confidence'] or 'Unavailable'}")
+            if matchup.get("What Model Sees"):
+                st.markdown("**What the Model Sees**")
+                st.caption(matchup["What Model Sees"])
+            st.caption(f"Read: {fan_confidence_label(matchup['Confidence'])}")
             st.caption(matchup["Explanation"] or "Explanation unavailable.")
             if matchup["Note"]:
                 st.caption(matchup["Note"])
@@ -1229,6 +1526,44 @@ def edge_badge(label: object) -> str:
     return metric_badge(value, color=color, background=background)
 
 
+def story_badge(label: object) -> str:
+    value = str(label or "Unavailable")
+    tones = {
+        "Strong Edge": ("#166534", "#dcfce7"),
+        "Competitive Matchup": ("#075985", "#e0f2fe"),
+        "Toss-Up": ("#374151", "#f3f4f6"),
+        "Anything Can Happen": ("#92400e", "#fef3c7"),
+        "Defensive Grinder": ("#075985", "#e0f2fe"),
+        "Track Meet": ("#9a3412", "#ffedd5"),
+        "Heavyweight Battle": ("#166534", "#dcfce7"),
+        "Momentum Clash": ("#7c3aed", "#ede9fe"),
+        "Defense vs Firepower": ("#0f766e", "#ccfbf1"),
+        "Tight Contest": ("#374151", "#f3f4f6"),
+        "Upset Watch": ("#92400e", "#fef3c7"),
+        "Emerging Contender Matchup": ("#075985", "#e0f2fe"),
+        "Fast-Paced Battle": ("#9a3412", "#ffedd5"),
+        "Physical Defensive Battle": ("#075985", "#dbeafe"),
+        "Closer Than It Looks": ("#92400e", "#fef3c7"),
+        "Unavailable": ("#4b5563", "#f3f4f6"),
+    }
+    color, background = tones.get(value, ("#374151", "#f3f4f6"))
+    return metric_badge(value, color=color, background=background)
+
+
+def fan_confidence_label(confidence: object, favorite_probability: float | None = None) -> str:
+    if favorite_probability is not None and not pd.isna(favorite_probability):
+        if max(float(favorite_probability), 1.0 - float(favorite_probability)) < 0.55:
+            return "Toss-Up"
+    value = str(confidence or "").strip().casefold()
+    if value == "high":
+        return "Strong Edge"
+    if value == "medium":
+        return "Competitive Matchup"
+    if value in {"low", "very low"}:
+        return "Anything Can Happen"
+    return "Toss-Up" if value == "toss-up" else "Unavailable"
+
+
 def confidence_badge(label: object) -> str:
     value = str(label or "Unavailable").title()
     tones = {
@@ -1248,6 +1583,177 @@ def metric_badge(label: str, *, color: str, background: str) -> str:
         f"border-radius:999px;font-size:0.82rem;font-weight:650;"
         f"color:{color};background:{background};margin-right:0.25rem;'>{label}</span>"
     )
+
+
+def render_what_model_sees(observations: list[str], *, title: str = "What the Model Sees") -> None:
+    if not observations:
+        return
+    with st.container(border=True):
+        st.markdown(f"**{title}**")
+        for observation in observations[:4]:
+            st.caption(observation)
+
+
+def matchup_archetype_label(
+    team_a: str,
+    team_b: str,
+    prediction,
+    power_context: dict[str, object],
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+) -> str:
+    del team_a, team_b
+    favorite_probability = max(
+        float(power_context["team_a_probability"]),
+        float(power_context["team_b_probability"]),
+    )
+    expected_total = float(getattr(prediction, "projected_total_goals", 0.0) or 0.0)
+    spread = abs(float(getattr(prediction, "projected_margin", 0.0) or 0.0))
+    team_a_row = find_team_row(power_ratings, str(power_context.get("predicted_winner", "")))
+    favorite_rank = power_rank_value(team_a_row)
+    forms = [
+        team_recent_form(find_team_row(trends, str(power_context.get("predicted_winner", "")))),
+    ]
+
+    if favorite_probability < 0.55:
+        return "Tight Contest"
+    if favorite_probability < 0.62 and spread >= 3.0:
+        return "Closer Than It Looks"
+    if expected_total >= 14.0 and spread <= 4.0:
+        return "Track Meet"
+    if expected_total >= 14.0:
+        return "Fast-Paced Battle"
+    if expected_total <= 9.0 and spread <= 3.0:
+        return "Defensive Grinder"
+    if expected_total <= 9.0:
+        return "Physical Defensive Battle"
+    if favorite_probability < 0.65 and spread >= 4.5:
+        return "Upset Watch"
+    if favorite_rank is not None and favorite_rank <= 5 and favorite_probability >= 0.68:
+        return "Heavyweight Battle"
+    if any(form in {"Surging", "Improving"} for form in forms) and favorite_probability < 0.70:
+        return "Momentum Clash"
+    return "Defense vs Firepower" if spread >= 3.0 else "Emerging Contender Matchup"
+
+
+def matchup_story_observations(
+    team_a: str,
+    team_b: str,
+    prediction,
+    power_context: dict[str, object],
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+    sos: pd.DataFrame,
+) -> list[str]:
+    observations: list[str] = []
+    favorite = str(power_context["predicted_winner"])
+    underdog = team_b if favorite == team_a else team_a
+    favorite_probability = max(
+        float(power_context["team_a_probability"]),
+        float(power_context["team_b_probability"]),
+    )
+    expected_total = float(getattr(prediction, "projected_total_goals", 0.0) or 0.0)
+    spread = abs(float(getattr(prediction, "projected_margin", 0.0) or 0.0))
+
+    favorite_row = find_team_row(power_ratings, favorite)
+    underdog_row = find_team_row(power_ratings, underdog)
+    favorite_trend = find_team_row(trends, favorite)
+    underdog_trend = find_team_row(trends, underdog)
+    favorite_sos = find_team_row(sos, favorite)
+
+    favorite_rank = power_rank_value(favorite_row)
+    if favorite_rank is not None and favorite_rank <= 5:
+        observations.append(f"{favorite} brings one of the division's strongest overall profiles into this game.")
+
+    defense_rank = metric_rank_for_dashboard(power_ratings, "adjusted_defense_rating", favorite, ascending=False)
+    offense_rank = metric_rank_for_dashboard(power_ratings, "adjusted_offense_rating", favorite, ascending=False)
+    underdog_offense_rank = metric_rank_for_dashboard(power_ratings, "adjusted_offense_rating", underdog, ascending=False)
+    if defense_rank is not None and defense_rank <= 5 and underdog_offense_rank is not None and underdog_offense_rank <= 8:
+        observations.append("This has a Defense vs Firepower feel: a strong defensive profile meets a team that can score.")
+    elif defense_rank is not None and defense_rank <= 5:
+        observations.append(f"{favorite}'s defense continues to be one of the matchup's clearest strengths.")
+    elif offense_rank is not None and offense_rank <= 5:
+        observations.append(f"{favorite} has the firepower to put pressure on the scoreboard early.")
+
+    favorite_form = team_recent_form(favorite_trend)
+    underdog_form = team_recent_form(underdog_trend)
+    if favorite_form in {"Surging", "Improving"} and underdog_form in {"Surging", "Improving"}:
+        observations.append("Both teams come in with positive momentum, giving this a momentum-clash feel.")
+    elif favorite_form in {"Surging", "Improving"}:
+        observations.append(notification_phrase_for_team(favorite, favorite_form))
+    elif underdog_form in {"Surging", "Improving"}:
+        observations.append(f"{underdog} has enough recent momentum to make this more interesting than the ranking gap suggests.")
+
+    sos_rank = row_int_for_dashboard(favorite_sos, "sos_rank")
+    if sos_rank is not None and sos_rank <= 8:
+        observations.append(f"{favorite} looks battle-tested against a tougher schedule.")
+
+    if favorite_probability < 0.55:
+        observations.append("The model sees a tight contest where small swings could decide it.")
+    elif favorite_probability < 0.62 or (spread >= 4.0 and favorite_probability < 0.68):
+        observations.append("This one is closer than it looks on paper, so the favorite should not feel automatic.")
+
+    if expected_total >= 14.0:
+        observations.append("The scoring environment points toward a faster-paced game.")
+    elif expected_total <= 9.0:
+        observations.append("Goals may be harder to come by, with defense likely shaping the game.")
+
+    return dedupe_text(observations)[:4]
+
+
+def matchup_preview_blurb(
+    team_a: str,
+    team_b: str,
+    favorite: str,
+    archetype: str,
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+) -> str:
+    favorite_trend = team_recent_form(find_team_row(trends, favorite))
+    favorite_row = find_team_row(power_ratings, favorite)
+    rank = power_rank_value(favorite_row)
+    if favorite_trend in {"Surging", "Improving"}:
+        return f"{favorite} enters with momentum, but the {archetype.lower()} profile keeps the matchup worth watching."
+    if rank is not None and rank <= 5:
+        return f"{favorite} brings a top-tier profile into a {archetype.lower()} against {team_b if favorite == team_a else team_a}."
+    return f"{team_a} and {team_b} profile as a {archetype.lower()} with the model leaning toward {favorite}."
+
+
+def notification_phrase_for_team(team: str, form: str) -> str:
+    phrases = {
+        "Surging": f"{team} is one of the hotter teams in the division right now.",
+        "Improving": f"{team} has momentum trending upward.",
+        "Recovering": f"{team} is starting to steady itself after a tougher stretch.",
+        "Steady": f"{team} has been consistent in recent results.",
+        "Cooling": f"{team} is looking to reverse a cooling stretch.",
+    }
+    return phrases.get(form, f"{team} has a balanced recent profile.")
+
+
+def metric_rank_for_dashboard(frame: pd.DataFrame, column: str, team: str, *, ascending: bool) -> int | None:
+    if frame.empty or column not in frame.columns or "team" not in frame.columns:
+        return None
+    ranked = frame.dropna(subset=[column]).sort_values([column, "team"], ascending=[ascending, True]).reset_index(drop=True)
+    matches = ranked[ranked["team"].map(normalize_team_name) == normalize_team_name(team)]
+    if matches.empty:
+        return None
+    return int(matches.index[0]) + 1
+
+
+def row_int_for_dashboard(row: pd.Series | None, column: str) -> int | None:
+    if row is None or column not in row or pd.isna(row[column]):
+        return None
+    return int(row[column])
+
+
+def dedupe_text(items: list[str]) -> list[str]:
+    seen: set[str] = set()
+    output: list[str] = []
+    for item in items:
+        if item not in seen:
+            output.append(item)
+            seen.add(item)
+    return output
 
 
 def build_matchup_prediction(
