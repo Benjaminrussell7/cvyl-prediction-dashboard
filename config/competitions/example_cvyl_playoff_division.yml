@@ -1,0 +1,30 @@
+competition_name: "2026 CVYL U12 Boys Playoff Example"
+competition_type: "playoffs"
+division_name: "U12 Boys Division A"
+teams:
+  - "Avon 12U"
+  - "Granby 12U"
+  - "RHAM 12U"
+  - "West Hartford 12U Green"
+seeds:
+  "Avon 12U": 1
+  "Granby 12U": 4
+  "RHAM 12U": 2
+  "West Hartford 12U Green": 3
+game_format: "standard"
+game_minutes: 48
+scoring_environment_multiplier: 1.0
+bracket_rounds:
+  - name: "Semifinals"
+    matchups:
+      - matchup_id: "sf1"
+        team_a: "Avon 12U"
+        team_b: "Granby 12U"
+      - matchup_id: "sf2"
+        team_a: "RHAM 12U"
+        team_b: "West Hartford 12U Green"
+  - name: "Final"
+    matchups:
+      - matchup_id: "final"
+        team_a: "Avon 12U"
+        team_b: "RHAM 12U"
