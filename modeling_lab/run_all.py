@@ -21,6 +21,7 @@ SCRIPTS = [
     "10_disagreement_analysis.py",
     "11_game_archetypes.py",
     "12_modeling_lab_summary.py",
+    "13_rolling_backtest.py",
 ]
 
 

@@ -48,6 +48,10 @@ Outputs:
 - `outputs/modeling_lab_summary.csv`
 - `outputs/production_readiness_recommendations.csv`
 - `outputs/modeling_lab_key_findings.md`
+- `outputs/rolling_backtest_summary.csv`
+- `outputs/rolling_backtest_by_window.csv`
+- `outputs/rolling_backtest_by_model.csv`
+- `outputs/rolling_backtest_by_archetype.csv`
 
 Interpretable ML baselines:
 - Ridge regression predicts home scoring margin.
@@ -63,3 +67,4 @@ Interpretable ML baselines:
 - The disagreement analysis layer audits when calibrated Power v3 and calibrated Poisson disagree, whether that disagreement predicts lower accuracy or confidence, and which games are most useful for review.
 - The game archetype layer assigns interpretable matchup labels such as stable favorite, deceptive toss-up, shootout, grinder, upset-prone, high-variance, and consensus pick, then evaluates archetype reliability and example games.
 - The executive summary layer condenses lab findings into production readiness recommendations, key decisions, and next experiments.
+- The rolling backtest layer evaluates Power v3, calibrated Poisson, hybrid predictions, confidence tiers, disagreement tiers, and archetypes across expanding chronological test windows.
