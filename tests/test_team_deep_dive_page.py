@@ -189,16 +189,92 @@ def test_team_historical_snapshots_filters_and_sorts_snapshots() -> None:
 
     rows = team_page.team_historical_snapshots("Avon", snapshots)
 
+    assert rows["Team"].tolist() == ["Avon", "Avon"]
     assert rows["Snapshot"].tolist() == ["Week 1", "Week 2"]
     assert rows["Power Rank"].tolist() == [4, 2]
     assert rows["Power Rating"].tolist() == [0.8, 1.4]
 
 
+def test_historical_trajectory_data_limits_comparison_teams_and_labels_points() -> None:
+    snapshots = pd.DataFrame(
+        [
+            {"snapshot_date": "2026-04-07", "snapshot_label": "Week 1", "team": "Avon", "power_rank": 4, "power_rating": 0.8},
+            {"snapshot_date": "2026-04-14", "snapshot_label": "Week 2", "team": "Avon", "power_rank": 2, "power_rating": 1.4},
+            {"snapshot_date": "2026-04-07", "snapshot_label": "Week 1", "team": "RHAM", "power_rank": 1, "power_rating": 1.8},
+            {"snapshot_date": "2026-04-14", "snapshot_label": "Week 2", "team": "RHAM", "power_rank": 3, "power_rating": 1.0},
+            {"snapshot_date": "2026-04-07", "snapshot_label": "Week 1", "team": "Granby", "power_rank": 8, "power_rating": -0.2},
+            {"snapshot_date": "2026-04-14", "snapshot_label": "Week 2", "team": "Granby", "power_rank": 5, "power_rating": 0.4},
+            {"snapshot_date": "2026-04-07", "snapshot_label": "Week 1", "team": "Simsbury", "power_rank": 9, "power_rating": -0.4},
+            {"snapshot_date": "2026-04-14", "snapshot_label": "Week 2", "team": "Simsbury", "power_rank": 6, "power_rating": 0.2},
+            {"snapshot_date": "2026-04-07", "snapshot_label": "Week 1", "team": "Windsor", "power_rank": 10, "power_rating": -0.8},
+            {"snapshot_date": "2026-04-14", "snapshot_label": "Week 2", "team": "Windsor", "power_rank": 7, "power_rating": 0.1},
+        ]
+    )
+
+    rows = team_page.historical_trajectory_data(
+        snapshots,
+        "Avon",
+        ["RHAM", "Granby", "Simsbury", "Windsor"],
+    )
+
+    assert set(rows["Team"]) == {"Avon", "RHAM", "Granby", "Simsbury"}
+    assert set(rows[rows["Team"] == "Avon"]["Point Type"]) == {"Selected Team"}
+    assert set(rows[rows["Team"] != "Avon"]["Point Type"]) == {"Comparison Team"}
+
+
+def test_season_trajectory_summary_and_callouts() -> None:
+    snapshots = pd.DataFrame(
+        [
+            {"Snapshot Date": pd.Timestamp("2026-04-07"), "Snapshot": "Week 1", "Power Rank": 9, "Power Rating": 0.1},
+            {"Snapshot Date": pd.Timestamp("2026-04-14"), "Snapshot": "Week 2", "Power Rank": 6, "Power Rating": 0.7},
+            {"Snapshot Date": pd.Timestamp("2026-04-21"), "Snapshot": "Week 3", "Power Rank": 3, "Power Rating": 1.5},
+        ]
+    )
+
+    summary = team_page.season_trajectory_summary(snapshots)
+    callouts = {item["label"]: item["value"] for item in team_page.season_trajectory_callouts(summary)}
+
+    assert summary["start_rank"] == 9
+    assert summary["current_rank"] == 3
+    assert summary["net_movement"] == 6
+    assert summary["best_rank"] == 3
+    assert summary["worst_rank"] == 9
+    assert callouts["Started Week 1"] == "#9"
+    assert callouts["Current Rank"] == "#3"
+    assert callouts["Net Movement"] == "↑ 6"
+    assert team_page.season_trajectory_narrative(summary) == "Climbing steadily."
+
+
+def test_season_trajectory_narrative_handles_cooling_and_top_tier() -> None:
+    assert (
+        team_page.season_trajectory_narrative(
+            {
+                "start_rank": 3,
+                "current_rank": 4,
+                "net_movement": -1,
+                "recent_movement": -1,
+            }
+        )
+        == "Holding near the top."
+    )
+    assert (
+        team_page.season_trajectory_narrative(
+            {
+                "start_rank": 4,
+                "current_rank": 10,
+                "net_movement": -6,
+                "recent_movement": -2,
+            }
+        )
+        == "Cooling after a strong start."
+    )
+
+
 def test_historical_snapshot_chart_reverses_rank_axis() -> None:
     snapshots = pd.DataFrame(
         [
-            {"Snapshot Date": pd.Timestamp("2026-04-07"), "Snapshot": "Week 1", "Power Rank": 4, "Power Rating": 0.8},
-            {"Snapshot Date": pd.Timestamp("2026-04-14"), "Snapshot": "Week 2", "Power Rank": 2, "Power Rating": 1.4},
+            {"Team": "Avon", "Snapshot Date": pd.Timestamp("2026-04-07"), "Snapshot": "Week 1", "Power Rank": 4, "Power Rating": 0.8},
+            {"Team": "Avon", "Snapshot Date": pd.Timestamp("2026-04-14"), "Snapshot": "Week 2", "Power Rank": 2, "Power Rating": 1.4},
         ]
     )
 

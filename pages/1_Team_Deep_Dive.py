@@ -400,28 +400,52 @@ def team_strength_insights(team: str, data: dict[str, pd.DataFrame]) -> list[dic
 
 def render_team_timeline(team: str, data: dict[str, pd.DataFrame]) -> None:
     st.subheader("Trend Timeline")
-    render_historical_snapshot_preview(team, data)
+    render_season_trajectory(team, data)
     render_elo_timeline(team, data["elo_history"])
     render_league_comparison(team, data)
 
 
-def render_historical_snapshot_preview(team: str, data: dict[str, pd.DataFrame]) -> None:
-    snapshots = team_historical_snapshots(team, data.get("historical_snapshots", pd.DataFrame()))
+def render_season_trajectory(team: str, data: dict[str, pd.DataFrame]) -> None:
+    source = historical_snapshot_source(data)
+    snapshots = team_historical_snapshots(team, source)
+    st.subheader("Season Trajectory")
     if snapshots.empty or snapshots["Snapshot"].nunique() < 2:
+        st.info("Season trajectory is limited until this team has multiple weekly snapshots.")
         return
-    with st.expander("Trend Over Time", expanded=False):
-        st.caption(
-            "Weekly league snapshots show how this team's rank and Power Rating have moved during the season."
+
+    summary = season_trajectory_summary(snapshots)
+    with st.container(border=True):
+        st.caption(season_trajectory_narrative(summary))
+        columns = st.columns(5)
+        for column, item in zip(columns, season_trajectory_callouts(summary), strict=True):
+            column.metric(item["label"], item["value"])
+
+        options = historical_comparison_options(source, team)
+        comparison_teams = st.multiselect(
+            "Compare trajectory with up to 3 teams",
+            options,
+            default=[],
+            key="season_trajectory_comparison",
         )
-        st.altair_chart(historical_snapshot_chart(snapshots), use_container_width=True)
+        comparison_teams = comparison_teams[:3]
+        trajectory = historical_trajectory_data(source, team, comparison_teams)
+        st.altair_chart(historical_snapshot_chart(trajectory), use_container_width=True)
+
+
+def historical_snapshot_source(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    snapshots = data.get("historical_snapshots", pd.DataFrame())
+    if not snapshots.empty:
+        return snapshots
+    return dashboard.load_csv("cvyl_historical_snapshots.csv")
 
 
 def team_historical_snapshots(team: str, snapshots: pd.DataFrame) -> pd.DataFrame:
     if snapshots.empty or "team" not in snapshots.columns:
-        return pd.DataFrame(columns=["Snapshot Date", "Snapshot", "Power Rank", "Power Rating"])
+        return pd.DataFrame(columns=["Team", "Snapshot Date", "Snapshot", "Power Rank", "Power Rating"])
     rows = snapshots[snapshots["team"] == team].copy()
     if rows.empty:
-        return pd.DataFrame(columns=["Snapshot Date", "Snapshot", "Power Rank", "Power Rating"])
+        return pd.DataFrame(columns=["Team", "Snapshot Date", "Snapshot", "Power Rank", "Power Rating"])
+    rows["Team"] = rows["team"].astype(str)
     rows["Snapshot Date"] = pd.to_datetime(rows["snapshot_date"], errors="coerce")
     rows["Snapshot"] = rows["snapshot_label"].astype(str) if "snapshot_label" in rows.columns else ""
     rows["Power Rank"] = (
@@ -431,17 +455,130 @@ def team_historical_snapshots(team: str, snapshots: pd.DataFrame) -> pd.DataFram
         pd.to_numeric(rows["power_rating"], errors="coerce") if "power_rating" in rows.columns else pd.NA
     )
     rows = rows.dropna(subset=["Snapshot Date"]).sort_values("Snapshot Date")
-    return rows[["Snapshot Date", "Snapshot", "Power Rank", "Power Rating"]]
+    return rows[["Team", "Snapshot Date", "Snapshot", "Power Rank", "Power Rating"]]
+
+
+def historical_comparison_options(snapshots: pd.DataFrame, selected_team: str) -> list[str]:
+    if snapshots.empty or "team" not in snapshots.columns:
+        return []
+    return sorted(
+        team
+        for team in snapshots["team"].dropna().astype(str).unique().tolist()
+        if team != selected_team
+    )
+
+
+def historical_trajectory_data(
+    snapshots: pd.DataFrame,
+    selected_team: str,
+    comparison_teams: list[str],
+) -> pd.DataFrame:
+    teams = [selected_team, *comparison_teams[:3]]
+    rows = pd.concat(
+        [team_historical_snapshots(team, snapshots) for team in teams],
+        ignore_index=True,
+    )
+    if rows.empty:
+        return rows
+    rows["Point Type"] = rows["Team"].map(lambda value: "Selected Team" if value == selected_team else "Comparison Team")
+    return rows
+
+
+def season_trajectory_summary(snapshots: pd.DataFrame) -> dict[str, object]:
+    ranked = snapshots.dropna(subset=["Power Rank"]).sort_values("Snapshot Date")
+    if ranked.empty:
+        return {
+            "start_label": "N/A",
+            "start_rank": None,
+            "current_rank": None,
+            "net_movement": None,
+            "best_rank": None,
+            "worst_rank": None,
+            "recent_movement": None,
+        }
+    start = ranked.iloc[0]
+    current = ranked.iloc[-1]
+    recent_start = ranked.iloc[-min(3, len(ranked))]
+    return {
+        "start_label": str(start["Snapshot"]),
+        "start_rank": int(start["Power Rank"]),
+        "current_rank": int(current["Power Rank"]),
+        "net_movement": int(start["Power Rank"] - current["Power Rank"]),
+        "best_rank": int(ranked["Power Rank"].min()),
+        "worst_rank": int(ranked["Power Rank"].max()),
+        "recent_movement": int(recent_start["Power Rank"] - current["Power Rank"]),
+    }
+
+
+def season_trajectory_callouts(summary: dict[str, object]) -> list[dict[str, str]]:
+    start_label = str(summary.get("start_label") or "Week 1")
+    return [
+        {"label": f"Started {start_label}", "value": format_rank(summary.get("start_rank"))},
+        {"label": "Current Rank", "value": format_rank(summary.get("current_rank"))},
+        {"label": "Net Movement", "value": format_net_movement(summary.get("net_movement"))},
+        {"label": "Best Rank", "value": format_rank(summary.get("best_rank"))},
+        {"label": "Worst Rank", "value": format_rank(summary.get("worst_rank"))},
+    ]
+
+
+def season_trajectory_narrative(summary: dict[str, object]) -> str:
+    current_rank = summary.get("current_rank")
+    net_movement = summary.get("net_movement")
+    recent_movement = summary.get("recent_movement")
+    start_rank = summary.get("start_rank")
+    if current_rank is None or net_movement is None:
+        return "Season trajectory is still taking shape."
+    current_rank = int(current_rank)
+    net_movement = int(net_movement)
+    recent_movement = int(recent_movement or 0)
+    if current_rank <= 5 and abs(net_movement) <= 2:
+        return "Holding near the top."
+    if net_movement >= 4:
+        return "Climbing steadily."
+    if recent_movement >= 3:
+        return "Finding momentum late."
+    if net_movement <= -4 and start_rank is not None and int(start_rank) <= 8:
+        return "Cooling after a strong start."
+    if net_movement > 0:
+        return "Moving in the right direction."
+    if net_movement < 0:
+        return "Trying to regain earlier form."
+    return "Holding steady."
+
+
+def format_rank(value: object) -> str:
+    if value is None or pd.isna(value):
+        return "N/A"
+    return f"#{int(value)}"
+
+
+def format_net_movement(value: object) -> str:
+    if value is None or pd.isna(value):
+        return "N/A"
+    movement = int(value)
+    if movement > 0:
+        return f"↑ {movement}"
+    if movement < 0:
+        return f"↓ {abs(movement)}"
+    return "→ 0"
 
 
 def historical_snapshot_chart(snapshots: pd.DataFrame) -> alt.Chart:
+    if "Point Type" not in snapshots.columns:
+        snapshots = snapshots.copy()
+        snapshots["Point Type"] = "Selected Team"
+    snapshot_order = snapshots.sort_values("Snapshot Date")["Snapshot"].drop_duplicates().tolist()
     rank_chart = (
         alt.Chart(snapshots)
-        .mark_line(point=alt.OverlayMarkDef(filled=True, size=70), strokeWidth=3, color="#2563eb")
+        .mark_line(point=alt.OverlayMarkDef(filled=True, size=65), strokeWidth=3)
         .encode(
-            x=alt.X("Snapshot:N", sort=list(snapshots["Snapshot"]), title=None),
+            x=alt.X("Snapshot:N", sort=snapshot_order, title=None),
             y=alt.Y("Power Rank:Q", title="Power Rank", scale=alt.Scale(reverse=True, zero=False)),
+            color=historical_team_color(),
+            strokeDash=historical_team_stroke_dash(),
+            opacity=historical_team_opacity(),
             tooltip=[
+                alt.Tooltip("Team:N", title="Team"),
                 alt.Tooltip("Snapshot:N", title="Snapshot"),
                 alt.Tooltip("Snapshot Date:T", title="Date"),
                 alt.Tooltip("Power Rank:Q", title="Power Rank", format=".0f"),
@@ -452,11 +589,15 @@ def historical_snapshot_chart(snapshots: pd.DataFrame) -> alt.Chart:
     )
     rating_chart = (
         alt.Chart(snapshots)
-        .mark_line(point=alt.OverlayMarkDef(filled=True, size=70), strokeWidth=3, color="#16a34a")
+        .mark_line(point=alt.OverlayMarkDef(filled=True, size=65), strokeWidth=3)
         .encode(
-            x=alt.X("Snapshot:N", sort=list(snapshots["Snapshot"]), title=None),
+            x=alt.X("Snapshot:N", sort=snapshot_order, title=None),
             y=alt.Y("Power Rating:Q", title="Power Rating", scale=alt.Scale(zero=False)),
+            color=historical_team_color(),
+            strokeDash=historical_team_stroke_dash(),
+            opacity=historical_team_opacity(),
             tooltip=[
+                alt.Tooltip("Team:N", title="Team"),
                 alt.Tooltip("Snapshot:N", title="Snapshot"),
                 alt.Tooltip("Snapshot Date:T", title="Date"),
                 alt.Tooltip("Power Rank:Q", title="Power Rank", format=".0f"),
@@ -466,6 +607,39 @@ def historical_snapshot_chart(snapshots: pd.DataFrame) -> alt.Chart:
         .properties(height=220)
     )
     return alt.vconcat(rank_chart, rating_chart).resolve_scale(y="independent")
+
+
+def historical_team_color() -> alt.Color:
+    return alt.Color(
+        "Point Type:N",
+        scale=alt.Scale(
+            domain=["Selected Team", "Comparison Team"],
+            range=["#dc2626", "#64748b"],
+        ),
+        legend=alt.Legend(title=None),
+    )
+
+
+def historical_team_stroke_dash() -> alt.StrokeDash:
+    return alt.StrokeDash(
+        "Point Type:N",
+        scale=alt.Scale(
+            domain=["Selected Team", "Comparison Team"],
+            range=[[1, 0], [5, 4]],
+        ),
+        legend=None,
+    )
+
+
+def historical_team_opacity() -> alt.Opacity:
+    return alt.Opacity(
+        "Point Type:N",
+        scale=alt.Scale(
+            domain=["Selected Team", "Comparison Team"],
+            range=[1.0, 0.65],
+        ),
+        legend=None,
+    )
 
 
 def render_elo_timeline(team: str, elo_history: pd.DataFrame) -> None:
