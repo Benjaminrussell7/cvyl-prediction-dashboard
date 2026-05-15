@@ -400,8 +400,72 @@ def team_strength_insights(team: str, data: dict[str, pd.DataFrame]) -> list[dic
 
 def render_team_timeline(team: str, data: dict[str, pd.DataFrame]) -> None:
     st.subheader("Trend Timeline")
+    render_historical_snapshot_preview(team, data)
     render_elo_timeline(team, data["elo_history"])
     render_league_comparison(team, data)
+
+
+def render_historical_snapshot_preview(team: str, data: dict[str, pd.DataFrame]) -> None:
+    snapshots = team_historical_snapshots(team, data.get("historical_snapshots", pd.DataFrame()))
+    if snapshots.empty or snapshots["Snapshot"].nunique() < 2:
+        return
+    with st.expander("Trend Over Time", expanded=False):
+        st.caption(
+            "Weekly league snapshots show how this team's rank and Power Rating have moved during the season."
+        )
+        st.altair_chart(historical_snapshot_chart(snapshots), use_container_width=True)
+
+
+def team_historical_snapshots(team: str, snapshots: pd.DataFrame) -> pd.DataFrame:
+    if snapshots.empty or "team" not in snapshots.columns:
+        return pd.DataFrame(columns=["Snapshot Date", "Snapshot", "Power Rank", "Power Rating"])
+    rows = snapshots[snapshots["team"] == team].copy()
+    if rows.empty:
+        return pd.DataFrame(columns=["Snapshot Date", "Snapshot", "Power Rank", "Power Rating"])
+    rows["Snapshot Date"] = pd.to_datetime(rows["snapshot_date"], errors="coerce")
+    rows["Snapshot"] = rows["snapshot_label"].astype(str) if "snapshot_label" in rows.columns else ""
+    rows["Power Rank"] = (
+        pd.to_numeric(rows["power_rank"], errors="coerce") if "power_rank" in rows.columns else pd.NA
+    )
+    rows["Power Rating"] = (
+        pd.to_numeric(rows["power_rating"], errors="coerce") if "power_rating" in rows.columns else pd.NA
+    )
+    rows = rows.dropna(subset=["Snapshot Date"]).sort_values("Snapshot Date")
+    return rows[["Snapshot Date", "Snapshot", "Power Rank", "Power Rating"]]
+
+
+def historical_snapshot_chart(snapshots: pd.DataFrame) -> alt.Chart:
+    rank_chart = (
+        alt.Chart(snapshots)
+        .mark_line(point=alt.OverlayMarkDef(filled=True, size=70), strokeWidth=3, color="#2563eb")
+        .encode(
+            x=alt.X("Snapshot:N", sort=list(snapshots["Snapshot"]), title=None),
+            y=alt.Y("Power Rank:Q", title="Power Rank", scale=alt.Scale(reverse=True, zero=False)),
+            tooltip=[
+                alt.Tooltip("Snapshot:N", title="Snapshot"),
+                alt.Tooltip("Snapshot Date:T", title="Date"),
+                alt.Tooltip("Power Rank:Q", title="Power Rank", format=".0f"),
+                alt.Tooltip("Power Rating:Q", title="Power Rating", format=".2f"),
+            ],
+        )
+        .properties(height=220)
+    )
+    rating_chart = (
+        alt.Chart(snapshots)
+        .mark_line(point=alt.OverlayMarkDef(filled=True, size=70), strokeWidth=3, color="#16a34a")
+        .encode(
+            x=alt.X("Snapshot:N", sort=list(snapshots["Snapshot"]), title=None),
+            y=alt.Y("Power Rating:Q", title="Power Rating", scale=alt.Scale(zero=False)),
+            tooltip=[
+                alt.Tooltip("Snapshot:N", title="Snapshot"),
+                alt.Tooltip("Snapshot Date:T", title="Date"),
+                alt.Tooltip("Power Rank:Q", title="Power Rank", format=".0f"),
+                alt.Tooltip("Power Rating:Q", title="Power Rating", format=".2f"),
+            ],
+        )
+        .properties(height=220)
+    )
+    return alt.vconcat(rank_chart, rating_chart).resolve_scale(y="independent")
 
 
 def render_elo_timeline(team: str, elo_history: pd.DataFrame) -> None:

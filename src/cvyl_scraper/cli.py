@@ -12,6 +12,7 @@ from cvyl_scraper.config import load_sources, load_team_aliases
 from cvyl_scraper.discovery import discover_team_sources
 from cvyl_scraper.elo import build_elo_outputs
 from cvyl_scraper.export import export_csv
+from cvyl_scraper.historical_snapshots import build_historical_snapshots
 from cvyl_scraper.model_comparison import build_model_comparison_outputs
 from cvyl_scraper.model_comparison_v3 import build_model_comparison_v3_outputs
 from cvyl_scraper.modeling import build_team_games
@@ -136,6 +137,11 @@ def main() -> None:
         "--trends-output",
         default="data/processed/cvyl_trends.csv",
         help="Recent team trend and momentum CSV output path.",
+    )
+    parser.add_argument(
+        "--historical-snapshots-output",
+        default="data/processed/cvyl_historical_snapshots.csv",
+        help="Weekly league historical snapshots CSV output path.",
     )
     parser.add_argument(
         "--elo-k-factor",
@@ -311,6 +317,7 @@ def main() -> None:
     )
     sos = build_sos(team_games, elo_ratings)
     trends = build_trends(team_games)
+    historical_snapshots = build_historical_snapshots(team_games)
     power_ratings_v2 = build_power_ratings_v2(team_games)
     power_ratings_v3_recency = build_power_ratings_v3_recency(team_games)
     model_comparison, model_comparison_summary = build_model_comparison_outputs(
@@ -342,6 +349,7 @@ def main() -> None:
     export_csv(backtest_summary, args.backtest_summary_output)
     export_csv(sos, args.sos_output)
     export_csv(trends, args.trends_output)
+    export_csv(historical_snapshots, args.historical_snapshots_output)
     export_csv(power_ratings_v2, args.power_ratings_v2_output)
     export_csv(power_ratings_v3_recency, args.power_ratings_v3_recency_output)
     export_csv(model_comparison, args.model_comparison_output)
@@ -366,6 +374,10 @@ def main() -> None:
     print(f"Exported backtest summary to {args.backtest_summary_output}")
     print(f"Exported {len(sos)} SOS rows to {args.sos_output}")
     print(f"Exported {len(trends)} trend rows to {args.trends_output}")
+    print(
+        f"Exported {len(historical_snapshots)} historical snapshot rows "
+        f"to {args.historical_snapshots_output}"
+    )
     print(f"Exported {len(power_ratings_v2)} Power Ratings v2 rows to {args.power_ratings_v2_output}")
     print(
         f"Exported {len(power_ratings_v3_recency)} Power Ratings v3 recency rows "

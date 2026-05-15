@@ -160,6 +160,54 @@ def test_rank_and_sos_axes_are_reversed() -> None:
     assert team_page.axis_scale_for_metric("Power Rating").reverse is alt.Undefined
 
 
+def test_team_historical_snapshots_filters_and_sorts_snapshots() -> None:
+    snapshots = pd.DataFrame(
+        [
+            {
+                "snapshot_date": "2026-04-14",
+                "snapshot_label": "Week 2",
+                "team": "Avon",
+                "power_rank": 2,
+                "power_rating": 1.4,
+            },
+            {
+                "snapshot_date": "2026-04-07",
+                "snapshot_label": "Week 1",
+                "team": "Avon",
+                "power_rank": 4,
+                "power_rating": 0.8,
+            },
+            {
+                "snapshot_date": "2026-04-07",
+                "snapshot_label": "Week 1",
+                "team": "RHAM",
+                "power_rank": 1,
+                "power_rating": 1.8,
+            },
+        ]
+    )
+
+    rows = team_page.team_historical_snapshots("Avon", snapshots)
+
+    assert rows["Snapshot"].tolist() == ["Week 1", "Week 2"]
+    assert rows["Power Rank"].tolist() == [4, 2]
+    assert rows["Power Rating"].tolist() == [0.8, 1.4]
+
+
+def test_historical_snapshot_chart_reverses_rank_axis() -> None:
+    snapshots = pd.DataFrame(
+        [
+            {"Snapshot Date": pd.Timestamp("2026-04-07"), "Snapshot": "Week 1", "Power Rank": 4, "Power Rating": 0.8},
+            {"Snapshot Date": pd.Timestamp("2026-04-14"), "Snapshot": "Week 2", "Power Rank": 2, "Power Rating": 1.4},
+        ]
+    )
+
+    chart = team_page.historical_snapshot_chart(snapshots)
+    chart_dict = chart.to_dict()
+
+    assert chart_dict["vconcat"][0]["encoding"]["y"]["scale"]["reverse"] is True
+
+
 def test_comparison_point_type_labels_selected_comparison_and_league() -> None:
     assert team_page.comparison_point_type("Avon", "Avon", ["Granby"]) == "Selected Team"
     assert team_page.comparison_point_type("Granby", "Avon", ["Granby"]) == "Comparison Team"

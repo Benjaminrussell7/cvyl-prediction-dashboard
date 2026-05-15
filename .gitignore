@@ -9,5 +9,6 @@ data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+!data/processed/cvyl_historical_snapshots.csv
 
 config/sources.yml

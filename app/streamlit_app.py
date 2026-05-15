@@ -55,6 +55,7 @@ def load_dashboard_data() -> dict[str, pd.DataFrame]:
         "elo_history": load_csv("cvyl_elo_history.csv"),
         "sos": load_csv("cvyl_sos.csv"),
         "trends": load_csv("cvyl_trends.csv"),
+        "historical_snapshots": load_csv("cvyl_historical_snapshots.csv"),
         "power_ratings": load_csv(PRIMARY_POWER_RATINGS_FILE),
         "backtest": load_csv("cvyl_backtest.csv"),
         "model_comparison_summary": load_csv(PRIMARY_MODEL_COMPARISON_SUMMARY_FILE),
