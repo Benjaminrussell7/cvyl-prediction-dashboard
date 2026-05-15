@@ -166,6 +166,137 @@ def test_comparison_point_type_labels_selected_comparison_and_league() -> None:
     assert team_page.comparison_point_type("RHAM", "Avon", ["Granby"]) == "League Team"
 
 
+def test_team_storyline_falls_back_when_dashboard_notification_helper_missing(monkeypatch) -> None:
+    monkeypatch.delattr(team_page.dashboard, "notification_phrase_for_team", raising=False)
+
+    storyline = team_page.team_storyline_sentence(
+        "Avon",
+        "Improving",
+        2,
+        pd.DataFrame(),
+    )
+
+    assert storyline == "Momentum is trending upward."
+
+
+def test_team_storytelling_uses_deterministic_narrative() -> None:
+    data = {
+        "power_ratings": pd.DataFrame(
+            [
+                {
+                    "team": "Avon",
+                    "power_rank_v3_recency": 4,
+                    "avg_points_for": 7.0,
+                    "avg_points_against": 3.0,
+                    "avg_margin": 4.0,
+                    "adjusted_offense_rating": 2.0,
+                    "adjusted_defense_rating": 3.0,
+                }
+            ]
+        ),
+        "trends": pd.DataFrame(
+            [{"team": "Avon", "momentum_label": "Steady", "power_rank_movement": 1}]
+        ),
+        "sos": pd.DataFrame([{"team": "Avon", "sos_rank": 4}]),
+        "team_games": pd.DataFrame(
+            [
+                {
+                    "team": "Avon",
+                    "status": "completed",
+                    "game_date": "2026-05-01",
+                    "opponent": "Granby",
+                    "points_for": 7,
+                    "points_against": 3,
+                    "win": True,
+                }
+            ]
+        ),
+    }
+
+    story = team_page.team_storytelling("Avon", data)
+
+    assert "headline" in story
+    assert "identity" in story
+    assert story["model_sees"]
+    assert story == team_page.team_storytelling("Avon", data)
+    sections = [story["headline"], story["identity"], story["storyline"], *story["model_sees"]]
+    assert len(sections) == len(set(sections))
+
+
+def test_team_storytelling_does_not_require_dashboard_text_helpers(monkeypatch) -> None:
+    monkeypatch.delattr(team_page.dashboard, "notification_phrase_for_team", raising=False)
+    monkeypatch.delattr(team_page.dashboard, "dedupe_text", raising=False)
+    data = {
+        "power_ratings": pd.DataFrame(
+            [
+                {
+                    "team": "Avon",
+                    "power_rank_v3_recency": 4,
+                    "avg_points_for": 7.0,
+                    "avg_points_against": 3.0,
+                    "avg_margin": 4.0,
+                    "adjusted_offense_rating": 2.0,
+                    "adjusted_defense_rating": 3.0,
+                }
+            ]
+        ),
+        "trends": pd.DataFrame(
+            [{"team": "Avon", "momentum_label": "Steady", "power_rank_movement": 1}]
+        ),
+        "sos": pd.DataFrame([{"team": "Avon", "sos_rank": 4}]),
+        "team_games": pd.DataFrame(),
+    }
+
+    story = team_page.team_storytelling("Avon", data)
+
+    assert story["storyline"] == "Momentum is trending upward."
+    assert len(story["model_sees"]) == len(set(story["model_sees"]))
+    assert story["headline"] not in story["model_sees"]
+    assert story["identity"] not in story["model_sees"]
+    assert story["storyline"] not in story["model_sees"]
+
+
+def test_local_dedupe_text_preserves_order() -> None:
+    assert team_page.dedupe_text(["A", "B", "A", "C", "B"]) == ["A", "B", "C"]
+
+
+def test_local_dedupe_text_excludes_existing_section_text() -> None:
+    assert team_page.dedupe_text(
+        ["Strong defense.", "Momentum is trending upward.", "Strong defense."],
+        excluded=["Momentum is trending upward."],
+    ) == ["Strong defense."]
+
+
+def test_build_team_narrative_uses_distinct_headline() -> None:
+    data = {
+        "power_ratings": pd.DataFrame(
+            [
+                {
+                    "team": "Avon",
+                    "power_rank_v3_recency": 4,
+                    "avg_points_for": 7.0,
+                    "avg_points_against": 3.0,
+                    "avg_margin": 4.0,
+                    "adjusted_offense_rating": 2.0,
+                    "adjusted_defense_rating": 3.0,
+                }
+            ]
+        ),
+        "trends": pd.DataFrame(
+            [{"team": "Avon", "momentum_label": "Steady", "power_rank_movement": 1}]
+        ),
+        "sos": pd.DataFrame([{"team": "Avon", "sos_rank": 4}]),
+        "team_games": pd.DataFrame(),
+    }
+
+    story = team_page.team_storytelling("Avon", data)
+    headline = team_page.build_team_narrative("Avon", data)
+
+    assert headline == story["headline"]
+    assert headline != story["identity"]
+    assert headline != story["storyline"]
+
+
 def test_league_comparison_chart_uses_point_type_encoding() -> None:
     comparison = pd.DataFrame(
         [

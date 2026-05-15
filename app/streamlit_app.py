@@ -895,6 +895,15 @@ def render_matchup_predictor(
         sos=sos,
     )
     team_colors = matchup_team_colors(team_a, team_b)
+    render_game_preview_card(
+        team_a,
+        team_b,
+        prediction,
+        power_context,
+        power_ratings,
+        trends,
+        sos,
+    )
     render_matchup_summary_cards(
         team_a,
         team_b,
@@ -908,18 +917,6 @@ def render_matchup_predictor(
     render_projected_score_summary(team_a, team_b, prediction, team_colors)
     render_win_probability_bar(team_a, team_b, power_context, team_colors)
     render_projected_score_comparison(team_a, team_b, prediction, team_colors)
-    render_what_model_sees(
-        matchup_story_observations(
-            team_a,
-            team_b,
-            prediction,
-            power_context,
-            power_ratings,
-            trends,
-            sos,
-        ),
-        title="What the Model Sees",
-    )
     render_team_profile_comparison(team_a, team_b, power_ratings, trends, sos)
     render_matchup_strength_comparison(team_a, team_b, power_ratings, team_colors)
 
@@ -942,6 +939,168 @@ def render_matchup_predictor(
 
 def matchup_team_colors(team_a: str, team_b: str) -> dict[str, str]:
     return {team_a: MATCHUP_TEAM_COLORS[0], team_b: MATCHUP_TEAM_COLORS[1]}
+
+
+def render_game_preview_card(
+    team_a: str,
+    team_b: str,
+    prediction,
+    power_context: dict[str, object],
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+    sos: pd.DataFrame,
+) -> None:
+    preview = game_preview_data(team_a, team_b, prediction, power_context, power_ratings, trends, sos)
+    with st.container(border=True):
+        st.markdown(
+            f"""
+            <div style="padding:0.15rem 0 0.35rem;">
+              <div style="font-size:0.76rem;font-weight:800;color:#4b5563;text-transform:uppercase;
+                          letter-spacing:0.04rem;">Game Preview</div>
+              <div style="font-size:1.35rem;font-weight:850;color:#111827;line-height:1.2;
+                          overflow-wrap:anywhere;margin:0.15rem 0 0.35rem;">
+                {preview['headline']}
+              </div>
+              <div style="margin-bottom:0.45rem;">
+                {story_badge(preview['game_style'])}
+                {edge_badge(preview['edge_label'])}
+                {story_badge(preview['fan_outlook'])}
+              </div>
+              <div style="font-size:0.95rem;color:#374151;line-height:1.35;">
+                {preview['outlook']}
+              </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(f"**{team_a}**")
+            st.metric("Win Probability", preview["team_a_probability"])
+            st.metric("Projected Goals", preview["team_a_score"])
+        with col2:
+            st.markdown(f"**{team_b}**")
+            st.metric("Win Probability", preview["team_b_probability"])
+            st.metric("Projected Goals", preview["team_b_score"])
+
+        st.markdown("**What the Model Sees**")
+        for observation in preview["observations"]:
+            st.caption(observation)
+
+        st.markdown("**Keys to the Game**")
+        key_columns = st.columns(min(3, len(preview["keys"])))
+        for index, key in enumerate(preview["keys"]):
+            with key_columns[index % len(key_columns)]:
+                st.caption(key)
+
+
+def game_preview_data(
+    team_a: str,
+    team_b: str,
+    prediction,
+    power_context: dict[str, object],
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+    sos: pd.DataFrame,
+) -> dict[str, object]:
+    favorite = str(power_context["predicted_winner"])
+    favorite_probability = max(
+        float(power_context["team_a_probability"]),
+        float(power_context["team_b_probability"]),
+    )
+    game_style = matchup_archetype_label(team_a, team_b, prediction, power_context, power_ratings, trends)
+    edge_label = prediction_edge_label(favorite_probability)
+    fan_outlook = fan_confidence_label(getattr(prediction, "confidence_level", ""), favorite_probability)
+    observations = matchup_story_observations(team_a, team_b, prediction, power_context, power_ratings, trends, sos)
+    keys = keys_to_game(team_a, team_b, prediction, power_context, power_ratings, trends, sos)
+    return {
+        "headline": f"{team_a} vs {team_b}: {game_style}",
+        "favorite": favorite,
+        "outlook": game_preview_outlook(team_a, team_b, favorite, game_style, favorite_probability),
+        "game_style": game_style,
+        "edge_label": edge_label,
+        "fan_outlook": fan_outlook,
+        "team_a_probability": f"{float(power_context['team_a_probability']):.1%}",
+        "team_b_probability": f"{float(power_context['team_b_probability']):.1%}",
+        "team_a_score": f"{float(getattr(prediction, 'projected_team_a_goals', 0.0) or 0.0):.1f}",
+        "team_b_score": f"{float(getattr(prediction, 'projected_team_b_goals', 0.0) or 0.0):.1f}",
+        "spread": str(getattr(prediction, "projected_spread", "")),
+        "observations": observations,
+        "keys": keys,
+    }
+
+
+def game_preview_outlook(
+    team_a: str,
+    team_b: str,
+    favorite: str,
+    game_style: str,
+    favorite_probability: float,
+) -> str:
+    if favorite_probability < 0.55:
+        return f"The model sees {team_a} and {team_b} as tightly matched, with the game likely coming down to execution."
+    if game_style in {"Upset Watch", "Closer Than It Looks", "Tight Contest"}:
+        return f"{favorite} gets the edge, but this has the feel of a game that could stay close into the second half."
+    if game_style in {"Track Meet", "Fast-Paced Battle"}:
+        return f"{favorite} is the pick in a matchup that could open up if the pace gets loose."
+    if game_style in {"Defensive Grinder", "Physical Defensive Battle"}:
+        return f"{favorite} is favored, but goals may be earned the hard way."
+    return f"The model leans toward {favorite}, with {game_style.lower()} as the matchup theme."
+
+
+def keys_to_game(
+    team_a: str,
+    team_b: str,
+    prediction,
+    power_context: dict[str, object],
+    power_ratings: pd.DataFrame,
+    trends: pd.DataFrame,
+    sos: pd.DataFrame,
+) -> list[str]:
+    favorite = str(power_context["predicted_winner"])
+    underdog = team_b if favorite == team_a else team_a
+    favorite_probability = max(
+        float(power_context["team_a_probability"]),
+        float(power_context["team_b_probability"]),
+    )
+    expected_total = float(getattr(prediction, "projected_total_goals", 0.0) or 0.0)
+    spread = abs(float(getattr(prediction, "projected_margin", 0.0) or 0.0))
+    keys: list[str] = []
+
+    defense_rank = metric_rank_for_dashboard(power_ratings, "adjusted_defense_rating", favorite, ascending=False)
+    offense_rank = metric_rank_for_dashboard(power_ratings, "adjusted_offense_rating", underdog, ascending=False)
+    favorite_form = team_recent_form(find_team_row(trends, favorite))
+    underdog_form = team_recent_form(find_team_row(trends, underdog))
+    favorite_sos = row_int_for_dashboard(find_team_row(sos, favorite), "sos_rank")
+
+    if favorite_probability < 0.55:
+        keys.append("Which team settles in first? In a tight matchup, the early run could matter.")
+    elif spread >= 4.0 and favorite_probability < 0.68:
+        keys.append("Can the lower-ranked team keep it close early and make the favorite uncomfortable?")
+    else:
+        keys.append(f"Can {favorite} turn its edge into separation before the game tightens up?")
+
+    if defense_rank is not None and defense_rank <= 5:
+        keys.append(f"Can {favorite}'s defense control the pace and limit clean looks?")
+    elif offense_rank is not None and offense_rank <= 6:
+        keys.append(f"Can {favorite} slow down {underdog}'s scoring bursts?")
+    else:
+        keys.append("Can either team create a clear scoring run, or does this stay possession by possession?")
+
+    if underdog_form in {"Surging", "Improving"}:
+        keys.append(f"Can {underdog}'s recent momentum carry over against a stronger profile?")
+    elif favorite_form in {"Surging", "Improving"}:
+        keys.append(f"Can {favorite} keep its recent form rolling?")
+    elif favorite_sos is not None and favorite_sos <= 8:
+        keys.append(f"Does {favorite}'s tougher schedule show up in close-game moments?")
+    elif expected_total >= 14.0:
+        keys.append("If the game opens up, which side handles the pace better?")
+    elif expected_total <= 9.0:
+        keys.append("In a lower-scoring game, ground balls and clears could swing momentum.")
+    else:
+        keys.append("The middle stretch may decide whether this becomes a run or a grind.")
+
+    return dedupe_text(keys)[:3]
 
 
 def render_matchup_summary_cards(

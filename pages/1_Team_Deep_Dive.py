@@ -157,13 +157,20 @@ def team_storytelling(team: str, data: dict[str, pd.DataFrame]) -> dict[str, lis
     storyline = team_storyline_sentence(team, form, rank_move, completed)
     strengths = team_story_strengths(team, rank, offense_rank, defense_rank, form, sos_rank, avg_margin)
     watchouts = team_story_watchouts(team, avg_against, avg_for, avg_margin, completed, sos_rank)
-    model_sees = dashboard.dedupe_text([
-        identity,
-        storyline,
-        *strengths[:2],
-        *watchouts[:1],
-    ])
+    headline = team_headline_sentence(team, rank, form, rank_move, avg_margin)
+    model_sees = team_model_observations(
+        rank=rank,
+        offense_rank=offense_rank,
+        defense_rank=defense_rank,
+        form=form,
+        sos_rank=sos_rank,
+        avg_margin=avg_margin,
+        avg_for=avg_for,
+        avg_against=avg_against,
+        excluded=[headline, identity, storyline],
+    )
     return {
+        "headline": headline,
         "identity": identity,
         "storyline": storyline,
         "model_sees": model_sees,
@@ -181,16 +188,16 @@ def team_identity_sentence(
     avg_against: float | None,
 ) -> str:
     if defense_rank is not None and defense_rank <= 5 and offense_rank is not None and offense_rank <= 8:
-        return f"{team} looks like a complete contender, pairing strong defense with enough scoring punch."
+        return "Profiles as a balanced contender with strength on both ends."
     if defense_rank is not None and defense_rank <= 5:
-        return f"{team} wins with defense and consistency."
+        return "Wins with defense and control."
     if offense_rank is not None and offense_rank <= 5:
-        return f"{team} is built around offensive pressure and scoring depth."
+        return "Leans on scoring strength."
     if rank is not None and rank <= 6:
-        return f"{team} has the profile of a division contender."
+        return "Profiles as an upper-tier contender."
     if avg_for is not None and avg_against is not None and avg_for > avg_against:
-        return f"{team} has been on the right side of the scoreboard more often than not."
-    return f"{team} has a developing profile as more scores are reported."
+        return "Profiles as a balanced, steady team."
+    return "Still searching for consistency."
 
 
 def team_storyline_sentence(
@@ -200,17 +207,109 @@ def team_storyline_sentence(
     completed: pd.DataFrame,
 ) -> str:
     if form in {"Surging", "Improving", "Recovering", "Steady", "Cooling"}:
-        phrase = dashboard.notification_phrase_for_team(team, form)
         if rank_move is not None and rank_move >= 3:
-            return f"{phrase} Recent results have pushed them up the board."
+            return "Trending upward after recent strong results."
         if rank_move is not None and rank_move <= -3:
-            return f"{phrase} The recent rank movement still shows some turbulence."
-        return phrase
+            return "Trying to reverse a cooling stretch."
+        return {
+            "Surging": "Riding one of the stronger recent runs in the division.",
+            "Improving": "Momentum is trending upward.",
+            "Recovering": "Starting to steady after a tougher stretch.",
+            "Steady": "Holding steady in the middle of the table.",
+            "Cooling": "Trying to reverse a cooling stretch.",
+        }.get(form, "Recent form is still taking shape.")
     if completed.empty:
         return "The current storyline is limited because few completed scores are available."
     latest = completed.sort_values("game_date", ascending=False).iloc[0]
     result = "a win" if bool(latest["win"]) else "a loss"
     return f"{team} is coming off {result} against {latest['opponent']}."
+
+
+def notification_phrase_for_team(team: str, form: str) -> str:
+    shared_helper = getattr(dashboard, "notification_phrase_for_team", None)
+    if callable(shared_helper):
+        return str(shared_helper(team, form))
+    phrases = {
+        "Surging": f"{team} is one of the hotter teams in the division right now.",
+        "Improving": f"{team} has momentum trending upward.",
+        "Recovering": f"{team} is starting to steady itself after a tougher stretch.",
+        "Steady": f"{team} has been consistent in recent results.",
+        "Cooling": f"{team} is looking to reverse a cooling stretch.",
+    }
+    return phrases.get(form, f"{team} has a balanced recent profile.")
+
+
+def team_headline_sentence(
+    team: str,
+    rank: int | None,
+    form: str,
+    rank_move: float | None,
+    avg_margin: float | None,
+) -> str:
+    if rank is not None and rank <= 3:
+        return f"{team} sits firmly in the contender tier."
+    if rank_move is not None and rank_move >= 3:
+        return f"{team} is climbing quickly."
+    if form in {"Surging", "Improving"}:
+        return f"{team} is building momentum."
+    if avg_margin is not None and avg_margin >= 4:
+        return f"{team} has been creating separation on the scoreboard."
+    if form == "Cooling":
+        return f"{team} is looking for a response."
+    return f"{team} has a profile worth tracking."
+
+
+def team_model_observations(
+    *,
+    rank: int | None,
+    offense_rank: int | None,
+    defense_rank: int | None,
+    form: str,
+    sos_rank: float | None,
+    avg_margin: float | None,
+    avg_for: float | None,
+    avg_against: float | None,
+    excluded: list[str],
+) -> list[str]:
+    observations: list[str] = []
+    if defense_rank is not None and defense_rank <= 5:
+        observations.append("Strong recent defensive profile.")
+    if offense_rank is not None and offense_rank <= 5:
+        observations.append("Scoring profile sits among the stronger groups.")
+    if rank is not None and rank <= 6:
+        observations.append("Power Rating still places them in the upper tier.")
+    if sos_rank is not None and sos_rank <= 8:
+        observations.append("Tougher schedule than most teams around them.")
+    elif sos_rank is not None and sos_rank > 20:
+        observations.append("Lower schedule difficulty than other top teams.")
+    if form in {"Cooling", "Recovering"}:
+        observations.append("Recent results show some volatility.")
+    if avg_margin is not None and avg_margin >= 4:
+        observations.append("Recent margins suggest they can pull away.")
+    elif avg_margin is not None and abs(avg_margin) <= 1.5:
+        observations.append("Several results point toward close-game margins.")
+    if avg_against is not None and avg_against >= 8:
+        observations.append("Goals allowed remain a watchout.")
+    if avg_for is not None and avg_for <= 5:
+        observations.append("Scoring consistency is still a question.")
+    return dedupe_text(observations, excluded=excluded)[:4]
+
+
+def dedupe_text(items: list[str], *, excluded: list[str] | None = None) -> list[str]:
+    seen: set[str] = set()
+    for item in excluded or []:
+        seen.add(normalize_sentence(item))
+    output: list[str] = []
+    for item in items:
+        key = normalize_sentence(item)
+        if key and key not in seen:
+            output.append(item)
+            seen.add(key)
+    return output
+
+
+def normalize_sentence(value: object) -> str:
+    return " ".join(str(value).strip().casefold().rstrip(".").split())
 
 
 def team_story_strengths(
@@ -732,10 +831,10 @@ def completed_games_for_team(team: str, team_games: pd.DataFrame) -> pd.DataFram
 
 def build_team_narrative(team: str, data: dict[str, pd.DataFrame]) -> str:
     story = team_storytelling(team, data)
-    model_sees = story.get("model_sees", [])
-    if not model_sees:
+    headline = story.get("headline")
+    if not headline:
         return "Current team profile is limited by available reported results."
-    return " ".join(str(item) for item in model_sees[:2])
+    return str(headline)
 
 
 def metric_rank(frame: pd.DataFrame, column: str, team: str, *, ascending: bool) -> int | None:

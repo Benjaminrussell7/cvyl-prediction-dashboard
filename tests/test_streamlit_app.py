@@ -619,6 +619,89 @@ def test_matchup_summary_card_data_includes_both_teams() -> None:
     assert cards[0]["Recent Form"] == "Surging"
 
 
+def test_game_preview_data_is_deterministic_and_fan_friendly() -> None:
+    class Prediction:
+        confidence_level = "high"
+        projected_team_a_goals = 8.2
+        projected_team_b_goals = 5.1
+        projected_total_goals = 13.3
+        projected_margin = 3.1
+        projected_spread = "Avon by 3.1"
+
+    power_ratings = pd.DataFrame(
+        [
+            {
+                "team": "Avon",
+                "power_rank_v3_recency": 2,
+                "adjusted_defense_rating": 4.0,
+                "adjusted_offense_rating": 3.0,
+            },
+            {
+                "team": "Granby",
+                "power_rank_v3_recency": 9,
+                "adjusted_defense_rating": 1.0,
+                "adjusted_offense_rating": 2.0,
+            },
+        ]
+    )
+    trends = pd.DataFrame(
+        [
+            {"team": "Avon", "momentum_label": "Surging", "power_rank_movement": 2},
+            {"team": "Granby", "momentum_label": "Steady", "power_rank_movement": 0},
+        ]
+    )
+    sos = pd.DataFrame([{"team": "Avon", "sos_rank": 4}, {"team": "Granby", "sos_rank": 15}])
+    context = {
+        "team_a_probability": 0.71,
+        "team_b_probability": 0.29,
+        "predicted_winner": "Avon",
+    }
+
+    first = dashboard.game_preview_data("Avon", "Granby", Prediction(), context, power_ratings, trends, sos)
+    second = dashboard.game_preview_data("Avon", "Granby", Prediction(), context, power_ratings, trends, sos)
+
+    assert first == second
+    assert first["favorite"] == "Avon"
+    assert first["team_a_probability"] == "71.0%"
+    assert first["team_a_score"] == "8.2"
+    assert first["fan_outlook"] == "Strong Edge"
+    assert first["game_style"] in {
+        "Heavyweight Battle",
+        "Defense vs Firepower",
+        "Momentum Clash",
+        "Emerging Contender Matchup",
+    }
+    assert first["observations"]
+    assert len(first["keys"]) == 3
+    assert all("Brier" not in key and "probability" not in key.lower() for key in first["keys"])
+
+
+def test_keys_to_game_handles_missing_context_gracefully() -> None:
+    class Prediction:
+        projected_total_goals = 8.0
+        projected_margin = 1.0
+
+    context = {
+        "team_a_probability": 0.52,
+        "team_b_probability": 0.48,
+        "predicted_winner": "Avon",
+    }
+
+    keys = dashboard.keys_to_game(
+        "Avon",
+        "Granby",
+        Prediction(),
+        context,
+        pd.DataFrame(),
+        pd.DataFrame(),
+        pd.DataFrame(),
+    )
+
+    assert len(keys) == 3
+    assert keys[0].startswith("Which team settles in first?")
+    assert any("lower-scoring" in key for key in keys)
+
+
 def test_form_distribution_data_uses_display_form_states() -> None:
     trends = pd.DataFrame(
         [
