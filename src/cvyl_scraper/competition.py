@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+import re
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -78,6 +79,153 @@ def load_competition_config(path: str | Path) -> CompetitionConfig:
     config = competition_config_from_dict(payload)
     validate_competition_config(config)
     return config
+
+
+def save_competition_config(config: CompetitionConfig, path: str | Path) -> Path:
+    validate_competition_config(config)
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8") as file:
+        yaml.safe_dump(competition_config_to_dict(config), file, sort_keys=False)
+    return output_path
+
+
+def competition_config_to_dict(config: CompetitionConfig) -> dict[str, Any]:
+    return {
+        "competition_name": config.competition_name,
+        "competition_type": config.competition_type,
+        "division_name": config.division_name,
+        "teams": config.teams,
+        "seeds": config.seeds,
+        "game_format": config.game_format,
+        "game_minutes": config.game_minutes,
+        "scoring_environment_multiplier": config.scoring_environment_multiplier,
+        "bracket_rounds": [
+            {
+                "name": bracket_round.name,
+                "matchups": [
+                    {
+                        key: value
+                        for key, value in {
+                            "matchup_id": matchup.matchup_id,
+                            "team_a": matchup.team_a,
+                            "team_b": matchup.team_b,
+                            "completed_winner": matchup.completed_winner,
+                        }.items()
+                        if value is not None
+                    }
+                    for matchup in bracket_round.matchups
+                ],
+            }
+            for bracket_round in config.bracket_rounds
+        ],
+    }
+
+
+def safe_competition_id(name: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "_", name.strip().casefold()).strip("_")
+    return slug or "competition"
+
+
+def build_seeded_competition_config(
+    *,
+    competition_name: str,
+    competition_type: str,
+    division_name: str,
+    seeded_teams: list[tuple[str, int]],
+    game_format: str = DEFAULT_GAME_FORMAT,
+    game_minutes: int = DEFAULT_GAME_MINUTES,
+    scoring_environment_multiplier: float = DEFAULT_SCORING_ENVIRONMENT_MULTIPLIER,
+) -> CompetitionConfig:
+    validate_builder_inputs(
+        competition_name=competition_name,
+        competition_type=competition_type,
+        division_name=division_name,
+        seeded_teams=seeded_teams,
+        game_minutes=game_minutes,
+    )
+    ordered = sorted(seeded_teams, key=lambda item: (item[1], item[0]))
+    teams = [team for team, _seed in ordered]
+    seeds = {team: int(seed) for team, seed in ordered}
+    return CompetitionConfig(
+        competition_name=competition_name.strip(),
+        competition_type=competition_type.strip().casefold(),
+        division_name=division_name.strip(),
+        teams=teams,
+        seeds=seeds,
+        bracket_rounds=build_seeded_bracket_rounds(ordered),
+        game_format=game_format,
+        game_minutes=int(game_minutes),
+        scoring_environment_multiplier=float(scoring_environment_multiplier),
+    )
+
+
+def validate_builder_inputs(
+    *,
+    competition_name: str,
+    competition_type: str,
+    division_name: str,
+    seeded_teams: list[tuple[str, int]],
+    game_minutes: int,
+) -> None:
+    if not competition_name.strip():
+        raise ValueError("competition name is required.")
+    if competition_type.strip().casefold() not in VALID_COMPETITION_TYPES:
+        raise ValueError("competition type must be playoffs or tournament.")
+    if not division_name.strip():
+        raise ValueError("division name is required.")
+    teams = [team.strip() for team, _seed in seeded_teams]
+    if len(teams) < 2:
+        raise ValueError("at least two teams are required.")
+    if any(not team for team in teams):
+        raise ValueError("all selected teams must have names.")
+    if len(set(teams)) != len(teams):
+        raise ValueError("duplicate teams are not allowed.")
+    seeds = [int(seed) for _team, seed in seeded_teams]
+    if sorted(seeds) != list(range(1, len(seeds) + 1)):
+        raise ValueError("seeds must be unique and numbered from 1 through the number of teams.")
+    if int(game_minutes) <= 0:
+        raise ValueError("game length must be positive.")
+
+
+def build_seeded_bracket_rounds(seeded_teams: list[tuple[str, int]]) -> list[BracketRoundConfig]:
+    ordered = sorted(seeded_teams, key=lambda item: (item[1], item[0]))
+    teams = [team for team, _seed in ordered]
+    rounds: list[BracketRoundConfig] = []
+    first_round_matchups = [
+        MatchupConfig(
+            matchup_id=f"r1_m{index + 1}",
+            team_a=teams[index],
+            team_b=teams[-(index + 1)],
+        )
+        for index in range(len(teams) // 2)
+    ]
+    rounds.append(BracketRoundConfig(name=round_name_for_matchups(len(first_round_matchups)), matchups=first_round_matchups))
+
+    matchup_count = len(first_round_matchups) // 2
+    round_index = 2
+    while matchup_count >= 1:
+        representative_teams = teams[: max(2, matchup_count * 2)]
+        matchups = [
+            MatchupConfig(
+                matchup_id=f"r{round_index}_m{index + 1}",
+                team_a=representative_teams[index],
+                team_b=representative_teams[-(index + 1)],
+            )
+            for index in range(matchup_count)
+        ]
+        rounds.append(BracketRoundConfig(name=round_name_for_matchups(matchup_count), matchups=matchups))
+        matchup_count //= 2
+        round_index += 1
+    return rounds
+
+
+def round_name_for_matchups(matchup_count: int) -> str:
+    if matchup_count >= 4:
+        return "Quarterfinals"
+    if matchup_count == 2:
+        return "Semifinals"
+    return "Championship"
 
 
 def competition_config_from_dict(payload: dict[str, Any]) -> CompetitionConfig:

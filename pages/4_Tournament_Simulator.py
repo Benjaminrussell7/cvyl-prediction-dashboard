@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -10,8 +11,11 @@ if str(APP_DIR) not in sys.path:
 import altair as alt
 import pandas as pd
 import streamlit as st
+import yaml
 
+import cvyl_scraper.competition as competition
 from cvyl_scraper.competition import (
+    BracketRoundConfig,
     CompetitionConfig,
     MatchupConfig,
     build_competition_simulation,
@@ -36,6 +40,16 @@ def main() -> None:
     st.divider()
     configs = available_competition_configs(COMPETITIONS_DIR)
     st.caption(f"Competition config status: {competition_config_status(configs)}")
+
+    try:
+        data = dashboard.load_dashboard_data()
+    except Exception as exc:
+        st.error(f"Dashboard data could not be loaded: {exc}")
+        st.info("Run the data pipeline, then refresh this page.")
+        data = {}
+
+    render_competition_builder(data, configs)
+
     if not configs:
         render_no_configs_message()
         return
@@ -51,13 +65,6 @@ def main() -> None:
     except ValueError as exc:
         st.error(f"Competition config is invalid: {exc}")
         st.info("Fix the YAML config, then refresh this page to preview the tournament.")
-        return
-
-    try:
-        data = dashboard.load_dashboard_data()
-    except Exception as exc:
-        st.error(f"Dashboard data could not be loaded: {exc}")
-        st.info("Run the data pipeline, then refresh this page.")
         return
     if data.get("power_ratings", pd.DataFrame()).empty:
         st.warning("Power Rating data is not available yet, so the preview cannot run.")
@@ -112,6 +119,548 @@ def render_no_configs_message() -> None:
             "Configs support playoffs, tournament divisions, seeds, matchup pairs, persisted winners, "
             "and configurable game formats."
         )
+
+
+def render_competition_builder(data: dict[str, pd.DataFrame], configs: list[Path]) -> None:
+    st.subheader("Competition Builder")
+    with st.expander("Create or update a saved competition", expanded=not configs):
+        team_options = league_team_options(data)
+        if not team_options:
+            st.info("Team list is unavailable until processed Power Rating or ELO data exists.")
+            return
+        initial_config = load_builder_initial_config(configs)
+        initial_teams, initial_seeds = builder_initial_teams_and_seeds(initial_config, team_options)
+        col1, col2 = st.columns(2)
+        competition_name = col1.text_input(
+            "Competition name",
+            initial_config.competition_name if initial_config else "New CVYL Playoff Division",
+            key=builder_field_key(initial_config, "competition_name"),
+        )
+        competition_type_options = ["Playoffs", "Tournament"]
+        initial_type = "Tournament" if initial_config and initial_config.competition_type == "tournament" else "Playoffs"
+        competition_type_label = col2.selectbox(
+            "Competition type",
+            competition_type_options,
+            index=competition_type_options.index(initial_type),
+            key=builder_field_key(initial_config, "competition_type"),
+        )
+        division_name = st.text_input(
+            "Division name",
+            initial_config.division_name if initial_config else "U12 Boys Division",
+            key=builder_field_key(initial_config, "division_name"),
+        )
+        selected_teams = st.multiselect(
+            "Teams",
+            team_options,
+            default=initial_teams,
+            key=builder_multiselect_key(initial_config),
+            help="Seed controls update immediately when teams are added or removed.",
+        )
+        st.caption("Assign seeds as 1 through the number of selected teams. Seed 1 is the top seed.")
+
+        seed_values = render_reactive_seed_controls(selected_teams, initial_seeds, initial_config)
+        seed_errors = validate_seed_values(selected_teams, seed_values)
+        for error in seed_errors:
+            st.error(error)
+
+        col1, col2, col3 = st.columns(3)
+        initial_game_format = (
+            "Running-time game"
+            if initial_config and initial_config.game_format == "running_time"
+            else "Standard game"
+        )
+        game_format_label = col1.selectbox(
+            "Game format",
+            ["Standard game", "Running-time game"],
+            index=0 if initial_game_format == "Standard game" else 1,
+            key=builder_field_key(initial_config, "game_format"),
+            help="Running-time games use a lower scoring environment multiplier for tournament previews.",
+        )
+        game_minutes = int(
+            col2.number_input(
+                "Game length",
+                min_value=1,
+                max_value=120,
+                value=initial_config.game_minutes
+                if initial_config
+                else 48
+                if game_format_label == "Standard game"
+                else 32,
+                step=1,
+                key=builder_field_key(initial_config, "game_minutes"),
+            )
+        )
+        simulation_depth = int(
+            col3.number_input(
+                "Simulation Depth",
+                min_value=100,
+                max_value=10000,
+                value=1000,
+                step=100,
+                key=builder_field_key(initial_config, "simulation_depth"),
+                help="Number of Monte Carlo runs used when previewing this competition.",
+            )
+        )
+        random_seed = int(
+            st.number_input(
+                "Random Seed",
+                min_value=1,
+                max_value=999999,
+                value=42,
+                step=1,
+                key=builder_field_key(initial_config, "random_seed"),
+                help="Using the same seed makes the Monte Carlo preview repeatable.",
+            )
+        )
+        filename = st.text_input(
+            "Config filename",
+            f"{safe_competition_id(competition_name)}.yml"
+            if initial_config is None
+            else f"{safe_competition_id(initial_config.competition_name)}.yml",
+            key=builder_field_key(initial_config, "filename"),
+        )
+        overwrite = st.checkbox(
+            "Overwrite existing config if it already exists",
+            value=True,
+            key=builder_field_key(initial_config, "overwrite"),
+        )
+        if competition_type_label == "Tournament":
+            st.info("Pool-stage tournament simulation coming soon. Builder currently creates a bracket-style preview config.")
+
+        if st.button("Save competition config", key=builder_field_key(initial_config, "save")):
+            if seed_errors:
+                st.error("Fix seed/order errors before saving.")
+            else:
+                save_builder_submission(
+                    competition_name=competition_name,
+                    competition_type_label=competition_type_label,
+                    division_name=division_name,
+                    selected_teams=selected_teams,
+                    seed_values=seed_values,
+                    game_format_label=game_format_label,
+                    game_minutes=game_minutes,
+                    filename=filename,
+                    overwrite=overwrite,
+                    simulation_depth=simulation_depth,
+                    random_seed=random_seed,
+                )
+
+    if configs:
+        with st.expander("Manage saved competitions", expanded=False):
+            selected = st.selectbox(
+                "Saved competition",
+                configs,
+                format_func=lambda path: path.name,
+                key="manage_competition_config",
+            )
+            st.caption("Existing competitions can be selected above for immediate simulation.")
+            if st.checkbox("Enable delete for selected config"):
+                if st.button("Delete selected competition config"):
+                    try:
+                        selected.unlink()
+                        st.success(f"Deleted {selected.name}. Refresh the page to update the config list.")
+                    except OSError as exc:
+                        st.error(f"Could not delete config: {exc}")
+
+
+def save_builder_submission(
+    *,
+    competition_name: str,
+    competition_type_label: str,
+    division_name: str,
+    selected_teams: list[str],
+    seed_values: dict[str, int],
+    game_format_label: str,
+    game_minutes: int,
+    filename: str,
+    overwrite: bool,
+    simulation_depth: int,
+    random_seed: int,
+) -> Path | None:
+    try:
+        config = competition_config_from_builder_inputs(
+            competition_name=competition_name,
+            competition_type_label=competition_type_label,
+            division_name=division_name,
+            selected_teams=selected_teams,
+            seed_values=seed_values,
+            game_format_label=game_format_label,
+            game_minutes=game_minutes,
+        )
+        output_path = competition_config_path(filename or f"{safe_competition_id(competition_name)}.yml")
+        if output_path.exists() and not overwrite:
+            st.error("That config already exists. Enable overwrite or choose another filename.")
+            return None
+        save_competition_config(config, output_path)
+    except ValueError as exc:
+        st.error(f"Competition config could not be saved: {exc}")
+        return None
+    st.success(
+        f"Saved {output_path.name}. Select it from the dropdown to simulate with "
+        f"{simulation_depth} runs and seed {random_seed}."
+    )
+    return output_path
+
+
+def load_builder_initial_config(configs: list[Path]) -> CompetitionConfig | None:
+    if not configs:
+        return None
+    try:
+        return load_competition_config(configs[0])
+    except ValueError:
+        return None
+
+
+def builder_initial_teams_and_seeds(
+    config: CompetitionConfig | None,
+    team_options: list[str],
+) -> tuple[list[str], dict[str, int]]:
+    if config is None:
+        teams = team_options[: min(4, len(team_options))]
+        return teams, {team: index + 1 for index, team in enumerate(teams)}
+    available = set(team_options)
+    teams = [team for team in config.teams if team in available]
+    seeds = reconcile_seed_values(teams, config.seeds)
+    return teams, seeds
+
+
+def builder_multiselect_key(config: CompetitionConfig | None) -> str:
+    suffix = safe_competition_id(config.competition_name) if config else "new"
+    return f"builder_selected_teams_{suffix}"
+
+
+def builder_seed_key(config: CompetitionConfig | None, team: str) -> str:
+    suffix = safe_competition_id(config.competition_name) if config else "new"
+    return f"builder_seed_{suffix}_{safe_competition_id(team)}"
+
+
+def builder_field_key(config: CompetitionConfig | None, field: str) -> str:
+    suffix = safe_competition_id(config.competition_name) if config else "new"
+    return f"builder_{field}_{suffix}"
+
+
+def render_reactive_seed_controls(
+    selected_teams: list[str],
+    initial_seeds: dict[str, int],
+    initial_config: CompetitionConfig | None,
+) -> dict[str, int]:
+    seed_values = reconcile_seed_state(selected_teams, initial_seeds, initial_config)
+    if not selected_teams:
+        return seed_values
+    seed_columns = st.columns(min(4, max(1, len(selected_teams))))
+    for index, team in enumerate(selected_teams):
+        key = builder_seed_key(initial_config, team)
+        with seed_columns[index % len(seed_columns)]:
+            seed_values[team] = int(
+                st.number_input(
+                    f"Seed: {team}",
+                    min_value=1,
+                    max_value=max(1, len(selected_teams)),
+                    value=bounded_seed(st.session_state.get(key, seed_values.get(team, index + 1)), len(selected_teams)),
+                    step=1,
+                    key=key,
+                )
+            )
+    return {team: seed_values[team] for team in selected_teams}
+
+
+def reconcile_seed_state(
+    selected_teams: list[str],
+    initial_seeds: dict[str, int],
+    initial_config: CompetitionConfig | None,
+) -> dict[str, int]:
+    current = {}
+    for team in selected_teams:
+        key = builder_seed_key(initial_config, team)
+        if key in st.session_state:
+            current[team] = int(st.session_state[key])
+        elif team in initial_seeds:
+            current[team] = int(initial_seeds[team])
+    reconciled = reconcile_seed_values(selected_teams, current)
+    selected_keys = {builder_seed_key(initial_config, team) for team in selected_teams}
+    suffix = safe_competition_id(initial_config.competition_name) if initial_config else "new"
+    prefix = f"builder_seed_{suffix}_"
+    for key in list(st.session_state.keys()):
+        if str(key).startswith(prefix) and key not in selected_keys:
+            del st.session_state[key]
+    for team, seed in reconciled.items():
+        key = builder_seed_key(initial_config, team)
+        if key not in st.session_state:
+            st.session_state[key] = seed
+    return reconciled
+
+
+def reconciled_seed_values(selected_teams: list[str], seed_values: dict[str, int]) -> dict[str, int]:
+    return reconcile_seed_values(selected_teams, seed_values)
+
+
+def reconcile_seed_values(selected_teams: list[str], existing_seeds: dict[str, int]) -> dict[str, int]:
+    reconciled: dict[str, int] = {}
+    used: set[int] = set()
+    for team in selected_teams:
+        seed = existing_seeds.get(team)
+        if seed is not None and 1 <= int(seed) <= len(selected_teams) and int(seed) not in used:
+            reconciled[team] = int(seed)
+            used.add(int(seed))
+    next_seed = 1
+    for team in selected_teams:
+        if team in reconciled:
+            continue
+        while next_seed in used:
+            next_seed += 1
+        reconciled[team] = next_seed
+        used.add(next_seed)
+    return reconciled
+
+
+def validate_seed_values(selected_teams: list[str], seed_values: dict[str, int]) -> list[str]:
+    errors: list[str] = []
+    if len(selected_teams) < 2:
+        errors.append("Select at least two teams.")
+    if len(set(selected_teams)) != len(selected_teams):
+        errors.append("Duplicate teams are not allowed.")
+    missing = [team for team in selected_teams if team not in seed_values or pd.isna(seed_values.get(team))]
+    if missing:
+        errors.append(f"Missing seed values for: {', '.join(missing)}.")
+    seeds = [int(seed_values[team]) for team in selected_teams if team in seed_values and not pd.isna(seed_values[team])]
+    if len(seeds) != len(set(seeds)):
+        errors.append("Duplicate seeds are not allowed.")
+    invalid = [seed for seed in seeds if seed < 1 or seed > max(1, len(selected_teams))]
+    if invalid:
+        errors.append("Seeds must be between 1 and the number of selected teams.")
+    return errors
+
+
+def bounded_seed(seed: object, team_count: int) -> int:
+    try:
+        value = int(seed)
+    except (TypeError, ValueError):
+        value = 1
+    return max(1, min(max(1, team_count), value))
+
+
+def competition_config_from_builder_inputs(
+    *,
+    competition_name: str,
+    competition_type_label: str,
+    division_name: str,
+    selected_teams: list[str],
+    seed_values: dict[str, int],
+    game_format_label: str,
+    game_minutes: int,
+) -> CompetitionConfig:
+    seeded_teams = [(team, int(seed_values.get(team, index + 1))) for index, team in enumerate(selected_teams)]
+    return build_seeded_competition_config(
+        competition_name=competition_name,
+        competition_type=competition_type_from_label(competition_type_label),
+        division_name=division_name,
+        seeded_teams=seeded_teams,
+        game_format=game_format_from_label(game_format_label),
+        game_minutes=game_minutes,
+        scoring_environment_multiplier=scoring_multiplier_from_game_format(game_format_label),
+    )
+
+
+def competition_config_path(filename: str) -> Path:
+    safe_name = Path(filename).name
+    if not safe_name.endswith((".yml", ".yaml")):
+        safe_name = f"{safe_name}.yml"
+    return COMPETITIONS_DIR / safe_name
+
+
+def league_team_options(data: dict[str, pd.DataFrame]) -> list[str]:
+    for key in ["power_ratings", "ratings"]:
+        frame = data.get(key, pd.DataFrame())
+        if not frame.empty and "team" in frame.columns:
+            return sorted(frame["team"].dropna().astype(str).unique().tolist())
+    return []
+
+
+def competition_type_from_label(label: str) -> str:
+    return "tournament" if str(label).strip().casefold().startswith("tournament") else "playoffs"
+
+
+def game_format_from_label(label: str) -> str:
+    return "running_time" if "running" in str(label).casefold() else "standard"
+
+
+def scoring_multiplier_from_game_format(label: str) -> float:
+    return 0.75 if game_format_from_label(label) == "running_time" else 1.0
+
+
+def safe_competition_id(name: str) -> str:
+    shared_helper = getattr(competition, "safe_competition_id", None)
+    if callable(shared_helper):
+        return str(shared_helper(name))
+    slug = re.sub(r"[^a-z0-9]+", "_", str(name).strip().casefold()).strip("_")
+    return slug or "competition"
+
+
+def build_seeded_competition_config(
+    *,
+    competition_name: str,
+    competition_type: str,
+    division_name: str,
+    seeded_teams: list[tuple[str, int]],
+    game_format: str = "standard",
+    game_minutes: int = 48,
+    scoring_environment_multiplier: float = 1.0,
+) -> CompetitionConfig:
+    shared_helper = getattr(competition, "build_seeded_competition_config", None)
+    if callable(shared_helper):
+        return shared_helper(
+            competition_name=competition_name,
+            competition_type=competition_type,
+            division_name=division_name,
+            seeded_teams=seeded_teams,
+            game_format=game_format,
+            game_minutes=game_minutes,
+            scoring_environment_multiplier=scoring_environment_multiplier,
+        )
+    validate_builder_inputs(
+        competition_name=competition_name,
+        competition_type=competition_type,
+        division_name=division_name,
+        seeded_teams=seeded_teams,
+        game_minutes=game_minutes,
+    )
+    ordered = sorted(seeded_teams, key=lambda item: (item[1], item[0]))
+    teams = [team for team, _seed in ordered]
+    seeds = {team: int(seed) for team, seed in ordered}
+    return CompetitionConfig(
+        competition_name=competition_name.strip(),
+        competition_type=competition_type.strip().casefold(),
+        division_name=division_name.strip(),
+        teams=teams,
+        seeds=seeds,
+        bracket_rounds=build_seeded_bracket_rounds(ordered),
+        game_format=game_format,
+        game_minutes=int(game_minutes),
+        scoring_environment_multiplier=float(scoring_environment_multiplier),
+    )
+
+
+def validate_builder_inputs(
+    *,
+    competition_name: str,
+    competition_type: str,
+    division_name: str,
+    seeded_teams: list[tuple[str, int]],
+    game_minutes: int,
+) -> None:
+    shared_helper = getattr(competition, "validate_builder_inputs", None)
+    if callable(shared_helper):
+        shared_helper(
+            competition_name=competition_name,
+            competition_type=competition_type,
+            division_name=division_name,
+            seeded_teams=seeded_teams,
+            game_minutes=game_minutes,
+        )
+        return
+    if not competition_name.strip():
+        raise ValueError("competition name is required.")
+    if competition_type.strip().casefold() not in {"playoffs", "tournament"}:
+        raise ValueError("competition type must be playoffs or tournament.")
+    if not division_name.strip():
+        raise ValueError("division name is required.")
+    teams = [team.strip() for team, _seed in seeded_teams]
+    if len(teams) < 2:
+        raise ValueError("at least two teams are required.")
+    if any(not team for team in teams):
+        raise ValueError("all selected teams must have names.")
+    if len(set(teams)) != len(teams):
+        raise ValueError("duplicate teams are not allowed.")
+    seeds = [int(seed) for _team, seed in seeded_teams]
+    if sorted(seeds) != list(range(1, len(seeds) + 1)):
+        raise ValueError("seeds must be unique and numbered from 1 through the number of teams.")
+    if int(game_minutes) <= 0:
+        raise ValueError("game length must be positive.")
+
+
+def build_seeded_bracket_rounds(seeded_teams: list[tuple[str, int]]) -> list[BracketRoundConfig]:
+    shared_helper = getattr(competition, "build_seeded_bracket_rounds", None)
+    if callable(shared_helper):
+        return shared_helper(seeded_teams)
+    ordered = sorted(seeded_teams, key=lambda item: (item[1], item[0]))
+    teams = [team for team, _seed in ordered]
+    rounds: list[BracketRoundConfig] = []
+    matchup_count = len(teams) // 2
+    round_index = 1
+    while matchup_count >= 1:
+        representatives = teams[: max(2, matchup_count * 2)]
+        matchups = [
+            MatchupConfig(
+                matchup_id=f"r{round_index}_m{index + 1}",
+                team_a=representatives[index],
+                team_b=representatives[-(index + 1)],
+            )
+            for index in range(matchup_count)
+        ]
+        rounds.append(BracketRoundConfig(name=round_name_for_matchups(matchup_count), matchups=matchups))
+        matchup_count //= 2
+        round_index += 1
+    return rounds
+
+
+def round_name_for_matchups(matchup_count: int) -> str:
+    shared_helper = getattr(competition, "round_name_for_matchups", None)
+    if callable(shared_helper):
+        return str(shared_helper(matchup_count))
+    if matchup_count >= 4:
+        return "Quarterfinals"
+    if matchup_count == 2:
+        return "Semifinals"
+    return "Championship"
+
+
+def save_competition_config(config: CompetitionConfig, path: str | Path) -> Path:
+    shared_helper = getattr(competition, "save_competition_config", None)
+    if callable(shared_helper):
+        return shared_helper(config, path)
+    validate_helper = getattr(competition, "validate_competition_config", None)
+    if callable(validate_helper):
+        validate_helper(config)
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8") as file:
+        yaml.safe_dump(competition_config_to_dict(config), file, sort_keys=False)
+    return output_path
+
+
+def competition_config_to_dict(config: CompetitionConfig) -> dict[str, object]:
+    shared_helper = getattr(competition, "competition_config_to_dict", None)
+    if callable(shared_helper):
+        return shared_helper(config)
+    return {
+        "competition_name": config.competition_name,
+        "competition_type": config.competition_type,
+        "division_name": config.division_name,
+        "teams": config.teams,
+        "seeds": config.seeds,
+        "game_format": config.game_format,
+        "game_minutes": config.game_minutes,
+        "scoring_environment_multiplier": config.scoring_environment_multiplier,
+        "bracket_rounds": [
+            {
+                "name": bracket_round.name,
+                "matchups": [
+                    {
+                        key: value
+                        for key, value in {
+                            "matchup_id": matchup.matchup_id,
+                            "team_a": matchup.team_a,
+                            "team_b": matchup.team_b,
+                            "completed_winner": matchup.completed_winner,
+                        }.items()
+                        if value is not None
+                    }
+                    for matchup in bracket_round.matchups
+                ],
+            }
+            for bracket_round in config.bracket_rounds
+        ],
+    }
 
 
 def render_competition_overview(config: CompetitionConfig) -> None:

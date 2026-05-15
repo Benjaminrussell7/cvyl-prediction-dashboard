@@ -1,0 +1,32 @@
+competition_name: 2026 CVYL U12 Boys Playoff Example
+competition_type: playoffs
+division_name: U12 Boys Division A
+teams:
+- Bristol 12U
+- RHAM 12U
+- West Hartford 12U Green
+- Granby 12U
+- Tolland 12U
+seeds:
+  Bristol 12U: 1
+  RHAM 12U: 2
+  West Hartford 12U Green: 3
+  Granby 12U: 4
+  Tolland 12U: 5
+game_format: standard
+game_minutes: 48
+scoring_environment_multiplier: 1.0
+bracket_rounds:
+- name: Semifinals
+  matchups:
+  - matchup_id: r1_m1
+    team_a: Bristol 12U
+    team_b: Granby 12U
+  - matchup_id: r1_m2
+    team_a: RHAM 12U
+    team_b: West Hartford 12U Green
+- name: Championship
+  matchups:
+  - matchup_id: r2_m1
+    team_a: Bristol 12U
+    team_b: RHAM 12U

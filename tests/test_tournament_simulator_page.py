@@ -128,6 +128,236 @@ def test_competition_config_status_is_visible() -> None:
     ) == "2 saved competition configs found."
 
 
+def test_builder_input_helpers_create_valid_config() -> None:
+    config = tournament_page.competition_config_from_builder_inputs(
+        competition_name="Builder Cup",
+        competition_type_label="Tournament",
+        division_name="U12 Blue",
+        selected_teams=["Avon", "Granby", "RHAM", "Simsbury"],
+        seed_values={"Avon": 1, "Granby": 4, "RHAM": 2, "Simsbury": 3},
+        game_format_label="Running-time game",
+        game_minutes=32,
+    )
+
+    assert config.competition_type == "tournament"
+    assert config.game_format == "running_time"
+    assert config.scoring_environment_multiplier == 0.75
+    assert config.bracket_rounds[0].name == "Semifinals"
+
+
+def test_builder_initial_teams_and_seeds_use_loaded_config() -> None:
+    config = _config()
+
+    teams, seeds = tournament_page.builder_initial_teams_and_seeds(
+        config,
+        ["Avon", "Granby", "RHAM", "Simsbury", "Other"],
+    )
+
+    assert teams == ["Avon", "Granby", "RHAM", "Simsbury"]
+    assert seeds == {"Avon": 1, "Granby": 4, "RHAM": 2, "Simsbury": 3}
+
+
+def test_reconcile_seed_values_keeps_existing_and_assigns_new_teams() -> None:
+    selected = ["Avon", "RHAM", "New Team"]
+    existing = {"Avon": 1, "Granby": 4, "RHAM": 2}
+
+    seeds = tournament_page.reconcile_seed_values(selected, existing)
+
+    assert seeds == {"Avon": 1, "RHAM": 2, "New Team": 3}
+
+
+def test_reconcile_seed_values_removes_unselected_and_repairs_duplicate_existing_seeds() -> None:
+    selected = ["Avon", "Granby", "RHAM"]
+    existing = {"Avon": 1, "Granby": 1, "RHAM": 5, "Removed": 2}
+
+    seeds = tournament_page.reconcile_seed_values(selected, existing)
+
+    assert seeds == {"Avon": 1, "Granby": 2, "RHAM": 3}
+
+
+def test_validate_seed_values_reports_dynamic_builder_errors() -> None:
+    assert tournament_page.validate_seed_values(["Avon"], {"Avon": 1}) == ["Select at least two teams."]
+    duplicate_seed_errors = tournament_page.validate_seed_values(
+        ["Avon", "Granby"],
+        {"Avon": 1, "Granby": 1},
+    )
+    missing_seed_errors = tournament_page.validate_seed_values(
+        ["Avon", "Granby"],
+        {"Avon": 1},
+    )
+
+    assert "Duplicate seeds are not allowed." in duplicate_seed_errors
+    assert "Missing seed values for: Granby." in missing_seed_errors
+
+
+def test_builder_seed_keys_are_team_specific_and_stable() -> None:
+    config = _config()
+
+    assert tournament_page.builder_seed_key(config, "Avon 12U") == tournament_page.builder_seed_key(config, "Avon 12U")
+    assert tournament_page.builder_seed_key(config, "Avon 12U") != tournament_page.builder_seed_key(config, "Granby 12U")
+
+
+def test_reconcile_seed_state_preserves_and_cleans_session_state(monkeypatch) -> None:
+    state = {
+        tournament_page.builder_seed_key(None, "Avon"): 2,
+        tournament_page.builder_seed_key(None, "Removed"): 1,
+    }
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    seeds = tournament_page.reconcile_seed_state(["Avon", "Granby"], {"Avon": 1}, None)
+
+    assert seeds == {"Avon": 2, "Granby": 1}
+    assert tournament_page.builder_seed_key(None, "Removed") not in state
+    assert state[tournament_page.builder_seed_key(None, "Avon")] == 2
+    assert state[tournament_page.builder_seed_key(None, "Granby")] == 1
+
+
+def test_render_reactive_seed_controls_creates_control_for_each_selected_team(monkeypatch) -> None:
+    calls: list[str] = []
+    state: dict[str, int] = {}
+
+    class FakeColumn:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
+    def fake_columns(count):
+        return [FakeColumn() for _ in range(count)]
+
+    def fake_number_input(label, **kwargs):
+        calls.append(label)
+        return kwargs["value"]
+
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+    monkeypatch.setattr(tournament_page.st, "columns", fake_columns)
+    monkeypatch.setattr(tournament_page.st, "number_input", fake_number_input)
+
+    seeds = tournament_page.render_reactive_seed_controls(
+        ["Avon", "Granby", "RHAM", "Simsbury", "Windsor"],
+        {},
+        None,
+    )
+
+    assert len(calls) == 5
+    assert calls[-1] == "Seed: Windsor"
+    assert seeds == {"Avon": 1, "Granby": 2, "RHAM": 3, "Simsbury": 4, "Windsor": 5}
+
+
+def test_builder_helpers_fall_back_when_competition_module_lacks_new_helpers(monkeypatch) -> None:
+    monkeypatch.delattr(tournament_page.competition, "build_seeded_competition_config", raising=False)
+    monkeypatch.delattr(tournament_page.competition, "safe_competition_id", raising=False)
+    monkeypatch.delattr(tournament_page.competition, "save_competition_config", raising=False)
+    monkeypatch.delattr(tournament_page.competition, "competition_config_to_dict", raising=False)
+
+    config = tournament_page.build_seeded_competition_config(
+        competition_name="Fallback Cup",
+        competition_type="playoffs",
+        division_name="U12",
+        seeded_teams=[("Avon", 1), ("Granby", 2)],
+    )
+
+    assert tournament_page.safe_competition_id("Fallback Cup!") == "fallback_cup"
+    assert config.competition_name == "Fallback Cup"
+    assert config.bracket_rounds[0].name == "Championship"
+    assert tournament_page.competition_config_to_dict(config)["teams"] == ["Avon", "Granby"]
+
+
+def test_builder_save_fallback_writes_valid_yaml(monkeypatch, tmp_path) -> None:
+    monkeypatch.delattr(tournament_page.competition, "save_competition_config", raising=False)
+    monkeypatch.delattr(tournament_page.competition, "competition_config_to_dict", raising=False)
+    config = tournament_page.build_seeded_competition_config(
+        competition_name="Fallback Save",
+        competition_type="playoffs",
+        division_name="U12",
+        seeded_teams=[("Avon", 1), ("Granby", 2)],
+    )
+
+    path = tournament_page.save_competition_config(config, tmp_path / "fallback.yml")
+    loaded = tournament_page.load_competition_config(path)
+
+    assert loaded.competition_name == "Fallback Save"
+    assert loaded.teams == ["Avon", "Granby"]
+
+
+def test_builder_path_and_team_options_are_safe(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr(tournament_page, "COMPETITIONS_DIR", tmp_path)
+
+    path = tournament_page.competition_config_path("../Bad Name")
+    teams = tournament_page.league_team_options(
+        {
+            "power_ratings": pd.DataFrame([{"team": "Granby"}, {"team": "Avon"}]),
+            "ratings": pd.DataFrame([{"team": "Fallback"}]),
+        }
+    )
+
+    assert path == tmp_path / "Bad Name.yml"
+    assert teams == ["Avon", "Granby"]
+
+
+def test_game_format_and_type_mapping() -> None:
+    assert tournament_page.competition_type_from_label("Tournament") == "tournament"
+    assert tournament_page.competition_type_from_label("Playoffs") == "playoffs"
+    assert tournament_page.game_format_from_label("Running-time game") == "running_time"
+    assert tournament_page.game_format_from_label("Standard game") == "standard"
+    assert tournament_page.scoring_multiplier_from_game_format("Running-time game") == 0.75
+    assert tournament_page.scoring_multiplier_from_game_format("Standard game") == 1.0
+
+
+def test_save_builder_submission_handles_overwrite_and_validation(monkeypatch, tmp_path) -> None:
+    calls: list[tuple[str, str]] = []
+    monkeypatch.setattr(tournament_page, "COMPETITIONS_DIR", tmp_path)
+    monkeypatch.setattr(tournament_page.st, "success", lambda text: calls.append(("success", text)))
+    monkeypatch.setattr(tournament_page.st, "error", lambda text: calls.append(("error", text)))
+
+    saved = tournament_page.save_builder_submission(
+        competition_name="Builder Cup",
+        competition_type_label="Playoffs",
+        division_name="U12",
+        selected_teams=["Avon", "Granby"],
+        seed_values={"Avon": 1, "Granby": 2},
+        game_format_label="Standard game",
+        game_minutes=48,
+        filename="builder_cup.yml",
+        overwrite=True,
+        simulation_depth=1000,
+        random_seed=42,
+    )
+    blocked = tournament_page.save_builder_submission(
+        competition_name="Builder Cup",
+        competition_type_label="Playoffs",
+        division_name="U12",
+        selected_teams=["Avon", "Granby"],
+        seed_values={"Avon": 1, "Granby": 2},
+        game_format_label="Standard game",
+        game_minutes=48,
+        filename="builder_cup.yml",
+        overwrite=False,
+        simulation_depth=1000,
+        random_seed=42,
+    )
+    invalid = tournament_page.save_builder_submission(
+        competition_name="Bad",
+        competition_type_label="Playoffs",
+        division_name="U12",
+        selected_teams=["Avon"],
+        seed_values={"Avon": 1},
+        game_format_label="Standard game",
+        game_minutes=48,
+        filename="bad.yml",
+        overwrite=True,
+        simulation_depth=1000,
+        random_seed=42,
+    )
+
+    assert saved == tmp_path / "builder_cup.yml"
+    assert blocked is None
+    assert invalid is None
+    assert any(kind == "success" for kind, _text in calls)
+    assert sum(1 for kind, _text in calls if kind == "error") == 2
+
+
 def test_main_renders_basic_shell_when_no_configs(monkeypatch, tmp_path) -> None:
     calls: list[tuple[str, str]] = []
 
@@ -137,11 +367,14 @@ def test_main_renders_basic_shell_when_no_configs(monkeypatch, tmp_path) -> None
     monkeypatch.setattr(tournament_page.st, "caption", lambda text: calls.append(("caption", text)))
     monkeypatch.setattr(tournament_page.st, "divider", lambda: calls.append(("divider", "")))
     monkeypatch.setattr(tournament_page, "render_no_configs_message", lambda: calls.append(("fallback", "")))
+    monkeypatch.setattr(tournament_page.dashboard, "load_dashboard_data", lambda: {"power_ratings": pd.DataFrame()})
+    monkeypatch.setattr(tournament_page, "render_competition_builder", lambda data, configs: calls.append(("builder", "")))
 
     tournament_page.main()
 
     assert ("title", "Tournament Simulator") in calls
     assert any(kind == "caption" and "Competition config status" in text for kind, text in calls)
+    assert ("builder", "") in calls
     assert ("fallback", "") in calls
 
 

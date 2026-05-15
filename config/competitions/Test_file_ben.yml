@@ -1,0 +1,59 @@
+competition_name: Test_ben
+competition_type: playoffs
+division_name: U12 Boys Division A_test_ben
+teams:
+- RHAM 12U
+- Avon 12U B
+- West Hartford 12U Green
+- Granby 12U
+- Tolland 12U
+- Glastonbury 12U Blue
+- Colchester 12U
+- Bristol 12U
+- Berlin 12U A
+- West Springfield 12U
+seeds:
+  RHAM 12U: 1
+  Avon 12U B: 2
+  West Hartford 12U Green: 3
+  Granby 12U: 4
+  Tolland 12U: 5
+  Glastonbury 12U Blue: 6
+  Colchester 12U: 7
+  Bristol 12U: 8
+  Berlin 12U A: 9
+  West Springfield 12U: 10
+game_format: standard
+game_minutes: 48
+scoring_environment_multiplier: 1.0
+bracket_rounds:
+- name: Quarterfinals
+  matchups:
+  - matchup_id: r1_m1
+    team_a: RHAM 12U
+    team_b: West Springfield 12U
+  - matchup_id: r1_m2
+    team_a: Avon 12U B
+    team_b: Berlin 12U A
+  - matchup_id: r1_m3
+    team_a: West Hartford 12U Green
+    team_b: Bristol 12U
+  - matchup_id: r1_m4
+    team_a: Granby 12U
+    team_b: Colchester 12U
+  - matchup_id: r1_m5
+    team_a: Tolland 12U
+    team_b: Glastonbury 12U Blue
+- name: Semifinals
+  matchups:
+  - matchup_id: r2_m1
+    team_a: RHAM 12U
+    team_b: Granby 12U
+  - matchup_id: r2_m2
+    team_a: Avon 12U B
+    team_b: West Hartford 12U Green
+- name: Championship
+  matchups:
+  - matchup_id: r3_m1
+    team_a: RHAM 12U
+    team_b: Avon 12U B

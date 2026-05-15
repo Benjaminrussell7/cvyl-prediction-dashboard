@@ -9,12 +9,17 @@ from cvyl_scraper.competition import (
     CompetitionConfig,
     MatchupConfig,
     BracketRoundConfig,
+    build_seeded_competition_config,
     build_competition_simulation,
     competition_config_from_dict,
+    competition_config_to_dict,
     deterministic_competition_advancement,
     load_competition_config,
     matchup_win_probability,
     monte_carlo_competition_advancement,
+    safe_competition_id,
+    save_competition_config,
+    validate_builder_inputs,
     validate_competition_config,
 )
 
@@ -182,3 +187,61 @@ def test_build_competition_simulation_summary_is_deterministic() -> None:
     assert first_summary["championship_probability"].between(0, 1).all()
     assert first_summary["round_advancement_probabilities"].astype(str).str.len().gt(0).any()
     assert "Avon" in set(first_summary["team"])
+
+
+def test_save_competition_config_round_trips_yaml(tmp_path) -> None:
+    path = tmp_path / "saved.yml"
+
+    saved_path = save_competition_config(_config(), path)
+    loaded = load_competition_config(saved_path)
+
+    assert loaded == _config()
+    assert competition_config_to_dict(loaded)["competition_name"] == "CVYL Playoff Test"
+
+
+def test_build_seeded_competition_config_creates_simple_bracket() -> None:
+    config = build_seeded_competition_config(
+        competition_name="Builder Test",
+        competition_type="Playoffs",
+        division_name="Division A",
+        seeded_teams=[("Avon", 1), ("Granby", 4), ("RHAM", 2), ("Simsbury", 3)],
+    )
+
+    assert config.teams == ["Avon", "RHAM", "Simsbury", "Granby"]
+    assert config.bracket_rounds[0].name == "Semifinals"
+    assert config.bracket_rounds[0].matchups[0].team_a == "Avon"
+    assert config.bracket_rounds[0].matchups[0].team_b == "Granby"
+    assert config.bracket_rounds[1].name == "Championship"
+
+
+def test_validate_builder_inputs_rejects_bad_seed_and_team_data() -> None:
+    with pytest.raises(ValueError, match="duplicate teams"):
+        validate_builder_inputs(
+            competition_name="Bad",
+            competition_type="playoffs",
+            division_name="Division A",
+            seeded_teams=[("Avon", 1), ("Avon", 2)],
+            game_minutes=48,
+        )
+
+    with pytest.raises(ValueError, match="seeds"):
+        validate_builder_inputs(
+            competition_name="Bad",
+            competition_type="playoffs",
+            division_name="Division A",
+            seeded_teams=[("Avon", 1), ("Granby", 1)],
+            game_minutes=48,
+        )
+
+    with pytest.raises(ValueError, match="game length"):
+        validate_builder_inputs(
+            competition_name="Bad",
+            competition_type="playoffs",
+            division_name="Division A",
+            seeded_teams=[("Avon", 1), ("Granby", 2)],
+            game_minutes=0,
+        )
+
+
+def test_safe_competition_id_is_filename_friendly() -> None:
+    assert safe_competition_id("2026 CVYL Boys / Division A!") == "2026_cvyl_boys_division_a"
