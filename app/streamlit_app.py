@@ -119,6 +119,7 @@ def render_home_page() -> None:
         data["power_ratings"],
         data["trends"],
     )
+    render_historical_storylines(data["historical_snapshots"])
     render_matchup_predictor(
         data["ratings"],
         data["team_games"],
@@ -201,6 +202,347 @@ def render_featured_insights(
         for column, card in zip(columns, row_cards, strict=True):
             with column:
                 render_featured_insight_card(card)
+
+
+def render_historical_storylines(snapshots: pd.DataFrame) -> None:
+    history = historical_snapshot_display_data(snapshots)
+    cards = historical_storyline_cards(history)
+    if not cards:
+        return
+    st.subheader("This Week's Storylines")
+    st.caption("Weekly snapshots highlight how the league picture is shifting over the season.")
+    first_row = cards[:3]
+    second_row = cards[3:]
+    for row_cards in [first_row, second_row]:
+        if not row_cards:
+            continue
+        columns = st.columns(len(row_cards))
+        for column, card in zip(columns, row_cards, strict=True):
+            with column:
+                render_historical_storyline_card(card, history)
+
+
+def historical_snapshot_display_data(snapshots: pd.DataFrame) -> pd.DataFrame:
+    required = {"snapshot_date", "snapshot_label", "team", "power_rank"}
+    if snapshots.empty or not required.issubset(snapshots.columns):
+        return pd.DataFrame()
+    history = snapshots.copy()
+    history["snapshot_date"] = pd.to_datetime(history["snapshot_date"], errors="coerce")
+    for column in [
+        "power_rank",
+        "power_rating",
+        "offense_strength",
+        "defense_strength",
+        "momentum_score",
+        "last3_win_pct",
+        "last5_win_pct",
+        "wins",
+        "losses",
+        "games_played",
+    ]:
+        if column in history.columns:
+            history[column] = pd.to_numeric(history[column], errors="coerce")
+    return history.dropna(subset=["snapshot_date", "team"]).sort_values(
+        ["snapshot_date", "team"],
+        ignore_index=True,
+    )
+
+
+def historical_storyline_cards(history: pd.DataFrame) -> list[dict[str, str]]:
+    if history.empty or history["snapshot_date"].nunique() < 2:
+        return []
+    cards: list[dict[str, str]] = []
+    movement = historical_rank_movement(history, snapshots_back=3)
+    latest = latest_historical_snapshot(history)
+    previous = previous_historical_snapshot(history)
+
+    climber = first_supported_row(movement[movement["rank_move"] > 0], "rank_move", ascending=False)
+    if climber is not None:
+        move = int(climber["rank_move"])
+        cards.append(
+            historical_card(
+                "Biggest Climber",
+                str(climber["team"]),
+                "Climbing fast",
+                f"Climbed {move} spot{'s' if move != 1 else ''} over the last {int(climber['snapshots_used'])} snapshots.",
+                f"Current rank {format_historical_rank(climber['current_rank'])}",
+            )
+        )
+
+    faller = first_supported_row(movement[movement["rank_move"] < 0], "rank_move", ascending=True)
+    if faller is not None:
+        move = abs(int(faller["rank_move"]))
+        cards.append(
+            historical_card(
+                "Biggest Fall",
+                str(faller["team"]),
+                "Cooling off",
+                f"Slid {move} spot{'s' if move != 1 else ''} over the last {int(faller['snapshots_used'])} snapshots.",
+                f"Current rank {format_historical_rank(faller['current_rank'])}",
+            )
+        )
+
+    top_spot = holding_top_spot_card(history, latest)
+    if top_spot is not None:
+        cards.append(top_spot)
+
+    offense = fastest_rising_metric_card(
+        latest,
+        previous,
+        metric="offense_strength",
+        label="Fastest Rising Offense",
+        tag="Scoring surge",
+        body_template="The offense is trending up compared with the prior weekly snapshot.",
+    )
+    if offense is not None:
+        cards.append(offense)
+
+    defense = defensive_team_to_watch_card(latest)
+    if defense is not None:
+        cards.append(defense)
+
+    heating = quietly_heating_up_card(movement, latest)
+    if heating is not None and heating["headline"] not in {card["headline"] for card in cards}:
+        cards.append(heating)
+
+    cooling = cooling_off_card(history)
+    if cooling is not None and cooling["headline"] not in {card["headline"] for card in cards}:
+        cards.append(cooling)
+
+    return cards[:6]
+
+
+def historical_rank_movement(history: pd.DataFrame, *, snapshots_back: int) -> pd.DataFrame:
+    dates = sorted(history["snapshot_date"].dropna().unique())
+    if len(dates) < 2:
+        return pd.DataFrame(columns=["team", "starting_rank", "current_rank", "rank_move", "snapshots_used"])
+    selected_dates = dates[-snapshots_back:] if len(dates) >= snapshots_back else dates
+    start = history[history["snapshot_date"] == selected_dates[0]][["team", "power_rank"]].rename(
+        columns={"power_rank": "starting_rank"}
+    )
+    current = history[history["snapshot_date"] == selected_dates[-1]][["team", "power_rank"]].rename(
+        columns={"power_rank": "current_rank"}
+    )
+    movement = current.merge(start, on="team", how="inner").dropna(
+        subset=["starting_rank", "current_rank"]
+    )
+    movement["rank_move"] = movement["starting_rank"] - movement["current_rank"]
+    movement["snapshots_used"] = len(selected_dates)
+    return movement.sort_values(["rank_move", "team"], ascending=[False, True], ignore_index=True)
+
+
+def latest_historical_snapshot(history: pd.DataFrame) -> pd.DataFrame:
+    if history.empty:
+        return pd.DataFrame()
+    latest_date = history["snapshot_date"].max()
+    return history[history["snapshot_date"] == latest_date].copy()
+
+
+def previous_historical_snapshot(history: pd.DataFrame) -> pd.DataFrame:
+    dates = sorted(history["snapshot_date"].dropna().unique())
+    if len(dates) < 2:
+        return pd.DataFrame()
+    return history[history["snapshot_date"] == dates[-2]].copy()
+
+
+def holding_top_spot_card(history: pd.DataFrame, latest: pd.DataFrame) -> dict[str, str] | None:
+    if latest.empty:
+        return None
+    latest_ranked = latest.dropna(subset=["power_rank"]).sort_values(["power_rank", "team"])
+    if latest_ranked.empty:
+        return None
+    row = latest_ranked.iloc[0]
+    team = str(row["team"])
+    team_history = history[history["team"] == team].dropna(subset=["power_rank"])
+    if team_history.empty:
+        return None
+    top3_weeks = int((team_history["power_rank"] <= 3).sum())
+    total_weeks = int(len(team_history))
+    if top3_weeks == total_weeks and total_weeks >= 2:
+        body = "Holding a top-3 position all season."
+    else:
+        body = "Still setting the pace at the top of the league picture."
+    return historical_card(
+        "Holding the Top Spot",
+        team,
+        "Holding the top tier",
+        body,
+        f"Current rank {format_historical_rank(row['power_rank'])} | Top-3 weeks {top3_weeks}/{total_weeks}",
+    )
+
+
+def fastest_rising_metric_card(
+    latest: pd.DataFrame,
+    previous: pd.DataFrame,
+    *,
+    metric: str,
+    label: str,
+    tag: str,
+    body_template: str,
+) -> dict[str, str] | None:
+    if latest.empty or previous.empty or metric not in latest.columns or metric not in previous.columns:
+        return None
+    movement = latest[["team", metric, "power_rank"]].merge(
+        previous[["team", metric]].rename(columns={metric: f"previous_{metric}"}),
+        on="team",
+        how="inner",
+    )
+    movement = movement.dropna(subset=[metric, f"previous_{metric}"])
+    if movement.empty:
+        return None
+    movement["metric_change"] = movement[metric] - movement[f"previous_{metric}"]
+    row = first_supported_row(movement[movement["metric_change"] > 0], "metric_change", ascending=False)
+    if row is None:
+        return None
+    return historical_card(
+        label,
+        str(row["team"]),
+        tag,
+        body_template,
+        f"Current rank {format_historical_rank(row['power_rank'])} | Change {float(row['metric_change']):+.2f}",
+    )
+
+
+def defensive_team_to_watch_card(latest: pd.DataFrame) -> dict[str, str] | None:
+    if latest.empty or "defense_strength" not in latest.columns:
+        return None
+    candidates = latest.dropna(subset=["defense_strength"]).copy()
+    if "games_played" in candidates.columns:
+        candidates = candidates[candidates["games_played"].fillna(0) >= 2]
+    if candidates.empty:
+        return None
+    row = candidates.sort_values(["defense_strength", "team"], ascending=[False, True]).iloc[0]
+    return historical_card(
+        "Defensive Team to Watch",
+        str(row["team"]),
+        "Defense leads the way",
+        "Defense continues to anchor their season profile.",
+        f"Current rank {format_historical_rank(row.get('power_rank'))} | Defense {float(row['defense_strength']):.2f}",
+    )
+
+
+def quietly_heating_up_card(movement: pd.DataFrame, latest: pd.DataFrame) -> dict[str, str] | None:
+    if movement.empty or latest.empty:
+        return None
+    candidates = movement[movement["rank_move"] > 0].merge(
+        latest[["team", "power_rank", "momentum_score"]],
+        on="team",
+        how="left",
+    )
+    candidates = candidates[
+        (candidates["current_rank"] > 5)
+        & (candidates["current_rank"] <= 16)
+        & (candidates["rank_move"] >= 2)
+    ].copy()
+    if candidates.empty:
+        return None
+    if "momentum_score" in candidates:
+        candidates["momentum_score"] = pd.to_numeric(candidates["momentum_score"], errors="coerce")
+    row = candidates.sort_values(["rank_move", "momentum_score", "team"], ascending=[False, False, True]).iloc[0]
+    return historical_card(
+        "Quietly Heating Up",
+        str(row["team"]),
+        "Finding momentum",
+        "The season trajectory is starting to point upward.",
+        f"Moved {format_historical_move(row['rank_move'])} | Current rank {format_historical_rank(row['current_rank'])}",
+    )
+
+
+def cooling_off_card(history: pd.DataFrame) -> dict[str, str] | None:
+    movement = historical_rank_movement(history, snapshots_back=3)
+    faller = first_supported_row(movement[movement["rank_move"] <= -2], "rank_move", ascending=True)
+    if faller is None:
+        return None
+    return historical_card(
+        "Cooling Off",
+        str(faller["team"]),
+        "Needs a response",
+        "Momentum has cooled after an earlier surge.",
+        f"Moved {format_historical_move(faller['rank_move'])} | Current rank {format_historical_rank(faller['current_rank'])}",
+    )
+
+
+def first_supported_row(frame: pd.DataFrame, sort_column: str, *, ascending: bool) -> pd.Series | None:
+    if frame.empty or sort_column not in frame.columns:
+        return None
+    candidates = frame.dropna(subset=[sort_column]).copy()
+    if candidates.empty:
+        return None
+    return candidates.sort_values([sort_column, "team"], ascending=[ascending, True]).iloc[0]
+
+
+def historical_card(label: str, headline: str, tag: str, body: str, detail: str) -> dict[str, str]:
+    return {
+        "label": label,
+        "headline": headline,
+        "tag": tag,
+        "body": body,
+        "detail": detail,
+    }
+
+
+def render_historical_storyline_card(card: dict[str, str], history: pd.DataFrame) -> None:
+    with st.container(border=True):
+        st.markdown(
+            f"""
+            <div>
+              <div style="font-size:0.72rem;font-weight:800;color:#4b5563;text-transform:uppercase;
+                          letter-spacing:0.04rem;margin-bottom:0.2rem;">{card['label']}</div>
+              <div style="font-size:1rem;font-weight:800;color:#111827;line-height:1.25;
+                          overflow-wrap:anywhere;margin-bottom:0.35rem;">{card['headline']}</div>
+              <div style="margin-bottom:0.35rem;">{story_badge(card['tag'])}</div>
+              <div style="font-size:0.88rem;color:#374151;line-height:1.35;">{card['body']}</div>
+              <div style="font-size:0.76rem;color:#6b7280;margin-top:0.35rem;">{card['detail']}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        spark = historical_rank_sparkline_data(history, card["headline"])
+        if not spark.empty:
+            st.altair_chart(historical_rank_sparkline(spark), use_container_width=True)
+
+
+def historical_rank_sparkline_data(history: pd.DataFrame, team: str) -> pd.DataFrame:
+    if history.empty:
+        return pd.DataFrame(columns=["snapshot_label", "snapshot_date", "power_rank"])
+    rows = history[history["team"] == team].dropna(subset=["power_rank"]).copy()
+    if rows.empty:
+        return pd.DataFrame(columns=["snapshot_label", "snapshot_date", "power_rank"])
+    return rows.sort_values("snapshot_date")[["snapshot_label", "snapshot_date", "power_rank"]]
+
+
+def historical_rank_sparkline(rows: pd.DataFrame) -> alt.Chart:
+    order = rows["snapshot_label"].astype(str).drop_duplicates().tolist()
+    return (
+        alt.Chart(rows)
+        .mark_line(point=alt.OverlayMarkDef(filled=True, size=38), color="#2563eb", strokeWidth=2)
+        .encode(
+            x=alt.X("snapshot_label:N", sort=order, title=None, axis=alt.Axis(labels=False, ticks=False)),
+            y=alt.Y("power_rank:Q", title=None, scale=alt.Scale(reverse=True, zero=False), axis=None),
+            tooltip=[
+                alt.Tooltip("snapshot_label:N", title="Snapshot"),
+                alt.Tooltip("power_rank:Q", title="Rank", format=".0f"),
+            ],
+        )
+        .properties(height=56)
+    )
+
+
+def format_historical_rank(value: object) -> str:
+    if value is None or pd.isna(value):
+        return "N/A"
+    return f"#{int(value)}"
+
+
+def format_historical_move(value: object) -> str:
+    if value is None or pd.isna(value):
+        return "→ 0"
+    move = int(value)
+    if move > 0:
+        return f"↑ {move}"
+    if move < 0:
+        return f"↓ {abs(move)}"
+    return "→ 0"
 
 
 def featured_insight_cards(

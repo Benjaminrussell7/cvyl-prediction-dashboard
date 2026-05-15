@@ -755,3 +755,60 @@ def test_display_form_state_simplifies_mixed_momentum_labels() -> None:
     assert dashboard.display_form_state("Steady", 0) == "Steady"
     assert dashboard.display_form_state("Cooling", 1) == "Recovering"
     assert dashboard.display_form_state("Cooling", -1) == "Cooling"
+
+
+def _historical_storyline_rows() -> pd.DataFrame:
+    return pd.DataFrame(
+        [
+            {"snapshot_date": "2026-04-01", "snapshot_label": "Week 1", "team": "Avon", "power_rank": 10, "power_rating": -0.2, "offense_strength": 1.0, "defense_strength": 1.0, "momentum_score": 1.0, "games_played": 3},
+            {"snapshot_date": "2026-04-01", "snapshot_label": "Week 1", "team": "RHAM", "power_rank": 1, "power_rating": 2.0, "offense_strength": 3.0, "defense_strength": 3.0, "momentum_score": 4.0, "games_played": 3},
+            {"snapshot_date": "2026-04-01", "snapshot_label": "Week 1", "team": "Granby", "power_rank": 4, "power_rating": 1.0, "offense_strength": 1.0, "defense_strength": 5.0, "momentum_score": 2.0, "games_played": 3},
+            {"snapshot_date": "2026-04-01", "snapshot_label": "Week 1", "team": "Simsbury", "power_rank": 8, "power_rating": 0.4, "offense_strength": 2.0, "defense_strength": 0.5, "momentum_score": 2.0, "games_played": 3},
+            {"snapshot_date": "2026-04-08", "snapshot_label": "Week 2", "team": "Avon", "power_rank": 7, "power_rating": 0.6, "offense_strength": 2.0, "defense_strength": 2.0, "momentum_score": 3.0, "games_played": 4},
+            {"snapshot_date": "2026-04-08", "snapshot_label": "Week 2", "team": "RHAM", "power_rank": 1, "power_rating": 2.1, "offense_strength": 3.1, "defense_strength": 3.5, "momentum_score": 4.2, "games_played": 4},
+            {"snapshot_date": "2026-04-08", "snapshot_label": "Week 2", "team": "Granby", "power_rank": 5, "power_rating": 0.8, "offense_strength": 1.1, "defense_strength": 5.5, "momentum_score": 1.5, "games_played": 4},
+            {"snapshot_date": "2026-04-08", "snapshot_label": "Week 2", "team": "Simsbury", "power_rank": 9, "power_rating": 0.2, "offense_strength": 1.7, "defense_strength": 0.4, "momentum_score": 0.5, "games_played": 4},
+            {"snapshot_date": "2026-04-15", "snapshot_label": "Week 3", "team": "Avon", "power_rank": 3, "power_rating": 1.8, "offense_strength": 4.0, "defense_strength": 2.5, "momentum_score": 6.0, "games_played": 5},
+            {"snapshot_date": "2026-04-15", "snapshot_label": "Week 3", "team": "RHAM", "power_rank": 1, "power_rating": 2.3, "offense_strength": 3.2, "defense_strength": 4.0, "momentum_score": 4.4, "games_played": 5},
+            {"snapshot_date": "2026-04-15", "snapshot_label": "Week 3", "team": "Granby", "power_rank": 6, "power_rating": 0.6, "offense_strength": 1.2, "defense_strength": 6.0, "momentum_score": 0.0, "games_played": 5},
+            {"snapshot_date": "2026-04-15", "snapshot_label": "Week 3", "team": "Simsbury", "power_rank": 12, "power_rating": -0.5, "offense_strength": 1.4, "defense_strength": 0.1, "momentum_score": -2.0, "games_played": 5},
+        ]
+    )
+
+
+def test_historical_storyline_cards_are_snapshot_based_and_deterministic() -> None:
+    history = dashboard.historical_snapshot_display_data(_historical_storyline_rows())
+
+    first = dashboard.historical_storyline_cards(history)
+    second = dashboard.historical_storyline_cards(history)
+    labels = {card["label"] for card in first}
+
+    assert first == second
+    assert "Biggest Climber" in labels
+    assert "Biggest Fall" in labels
+    assert "Holding the Top Spot" in labels
+    assert "Fastest Rising Offense" in labels
+    assert "Defensive Team to Watch" in labels
+    climber = next(card for card in first if card["label"] == "Biggest Climber")
+    assert climber["headline"] == "Avon"
+    assert "Climbed 7 spots" in climber["body"]
+
+
+def test_historical_storylines_handle_limited_snapshot_history() -> None:
+    one_week = _historical_storyline_rows()
+    one_week = one_week[one_week["snapshot_label"] == "Week 1"]
+    history = dashboard.historical_snapshot_display_data(one_week)
+
+    assert dashboard.historical_storyline_cards(history) == []
+
+
+def test_historical_rank_movement_and_sparkline_data() -> None:
+    history = dashboard.historical_snapshot_display_data(_historical_storyline_rows())
+
+    movement = dashboard.historical_rank_movement(history, snapshots_back=3)
+    sparkline = dashboard.historical_rank_sparkline_data(history, "Avon")
+
+    assert movement.set_index("team").loc["Avon", "rank_move"] == 7
+    assert movement.set_index("team").loc["Simsbury", "rank_move"] == -4
+    assert sparkline["snapshot_label"].tolist() == ["Week 1", "Week 2", "Week 3"]
+    assert sparkline["power_rank"].tolist() == [10, 7, 3]
