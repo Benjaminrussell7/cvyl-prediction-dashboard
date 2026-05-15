@@ -134,3 +134,5 @@ game_date,home_team,away_team,actual_winner,elo_predicted_winner,elo_win_probabi
 2026-05-13,Farmington 12U Red,Glastonbury 12U Blue,Farmington 12U Red,Farmington 12U Red,0.5975729598132394,Farmington 12U Red,0.6578706488570188,Farmington 12U Red,0.6189464785165082,True,True,True
 2026-05-13,Wethersfield 12U A,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6184832507804425,West Hartford 12U Gold,0.6466089943284299,West Hartford 12U Gold,0.6144705338652325,True,True,True
 2026-05-13,Newington 12U,Berlin 12U A,Berlin 12U A,Berlin 12U A,0.5115756625087975,Berlin 12U A,0.5181494552304633,Berlin 12U A,0.5135588569732377,True,True,True
+2026-05-14,Meriden 12U,Bristol 12U,Tie,Meriden 12U,0.5817085017324339,Meriden 12U,0.5762057083736889,Meriden 12U,0.5621321938766011,False,False,False
+2026-05-14,Westfield 12U Red,Suffield 12U,Westfield 12U Red,Westfield 12U Red,0.5074216684840198,Westfield 12U Red,0.5238646544969672,Westfield 12U Red,0.5166458661934705,True,True,True

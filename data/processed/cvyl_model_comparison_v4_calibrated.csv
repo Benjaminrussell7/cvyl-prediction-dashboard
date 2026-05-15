@@ -134,3 +134,5 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-13,Farmington 12U Red,Glastonbury 12U Blue,Farmington 12U Red,Farmington 12U Red,0.6622993198960526,Farmington 12U Red,0.7105541398615889,True,True
 2026-05-13,Wethersfield 12U A,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6429736371211838,West Hartford 12U Gold,0.6866259460478394,True,True
 2026-05-13,Newington 12U,Berlin 12U A,Berlin 12U A,Berlin 12U A,0.513232287050083,Berlin 12U A,0.5176398460533325,True,True
+2026-05-14,Meriden 12U,Bristol 12U,Tie,Meriden 12U,0.5953331585925317,Meriden 12U,0.6259176266004628,False,False
+2026-05-14,Westfield 12U Red,Suffield 12U,Westfield 12U Red,Westfield 12U Red,0.5248823521040082,Westfield 12U Red,0.5331551739695654,True,True
