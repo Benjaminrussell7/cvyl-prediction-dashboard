@@ -1,0 +1,9 @@
+component,readiness,use_now,recommended_role,rationale
+calibrated_power_v3_probability,production_ready,yes,Primary winner probability and displayed model confidence.,"Best current blend of accuracy, Brier score, and interpretability."
+calibrated_poisson_scores,experimental,limited,"Expected score, total, and simulation distribution context.","Calibration improves score MAE from 3.759 to 3.270, but standalone winner accuracy is only 62.1%."
+hybrid_prediction_layer,experimental_but_safe,yes_for_analysis,Decision layer that keeps Power v3 as anchor and attaches Poisson/confidence context.,Does not let Poisson override winner probability unless validation materially improves.
+confidence_engine,experimental_but_useful,yes_as_warning_label,Reliability tier and upset-risk language.,Useful for reducing certainty in low-confidence and high-disagreement games.
+disagreement_analysis,production_candidate,yes_as_guardrail,Warn when Power and Poisson disagree or when confidence should be reduced.,High disagreement accuracy is 70.0%; extreme disagreement average confidence is 52.089.
+archetype_labels,production_candidate,yes_for_explanations,"Short interpretation labels for reliable, volatile, upset-prone, and toss-up games.",toss_up has misleading-confidence rate 12.1%; use archetypes to temper language.
+advanced_ml_baselines,not_recommended_yet,no,Research only.,Current Ridge/logistic/random-forest baselines do not clearly beat calibrated Power v3.
+raw_poisson_probabilities,not_recommended,no,Audit baseline only.,Raw Poisson produced unrealistic extremes and worse score/winner calibration.

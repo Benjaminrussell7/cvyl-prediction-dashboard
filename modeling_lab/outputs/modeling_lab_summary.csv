@@ -1,0 +1,9 @@
+decision_area,best_current_choice,status,evidence,recommendation
+winner_prediction,power_v3_calibrated_baseline,production_ready,Highest chronological test accuracy at 77.5%; Brier 0.184.,Keep calibrated Power v3 as the primary winner probability model.
+probability_calibration,power_v3_calibrated_baseline,production_ready,Lowest Brier score in model comparison at 0.184; log loss 0.551.,Use calibrated Power v3 probabilities for displayed win probabilities.
+score_projection,calibrated_poisson,experimental,Calibrated Poisson score MAE 3.270; total goals MAE 3.712.,"Use calibrated Poisson as score context only, not as the winner engine."
+confidence_uncertainty,hybrid confidence + disagreement analysis,experimental_but_useful,Hybrid confidence tiers segment outcomes; overall hybrid accuracy 75.7%. Directional disagreement rate is 34.0%.,"Use confidence and disagreement as warning labels, not as automatic model overrides."
+reliable_archetypes,stable_favorite,production_candidate,stable_favorite accuracy 95.7% across 23 games.,Use reliable archetypes to explain when model confidence is more trustworthy.
+volatile_archetypes,offensive_shootout,warning_signal,offensive_shootout margin MAE 7.553; upset rate 12.5%.,"Show volatile archetypes as caution flags, not strong picks."
+upset_archetypes,toss_up,warning_signal,toss_up upset rate 39.4%.,Use upset-prone archetypes to lower narrative certainty.
+recommended_architecture,Power v3 calibrated + Poisson score context + confidence warnings,recommended,Power/hybrid winner accuracy 75.7%; Poisson adds score distribution but has weaker standalone winner accuracy.,"Promote Power v3 calibrated for probabilities, calibrated Poisson for score projections, and confidence/disagreement/archetype layers for interpretation."
