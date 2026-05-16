@@ -5,6 +5,7 @@ from pathlib import Path
 
 import altair as alt
 import pandas as pd
+from cvyl_scraper import club_branding
 
 PAGE_PATH = Path(__file__).resolve().parents[1] / "pages" / "1_Team_Deep_Dive.py"
 SPEC = importlib.util.spec_from_file_location("team_deep_dive_page", PAGE_PATH)
@@ -54,6 +55,138 @@ def test_team_snapshot_includes_record_and_core_metrics() -> None:
     assert values["Current Rank"] == "4"
     assert values["Record"] == "1-1"
     assert values["Momentum"] == "Improving"
+
+
+def test_club_branding_records_from_frame_preserves_aliases_and_colors() -> None:
+    frame = pd.DataFrame(
+        [
+            {
+                "club_name": "Avon Youth Lacrosse",
+                "aliases": "Avon; Avon 12U; Avon 12U B",
+                "logo_url": "https://example.com/avon.png",
+                "logo_path": "assets/logos/avon.png",
+                "primary_color": "#002040",
+                "secondary_color": "#c00020",
+                "color_source": "extracted_logo",
+                "notes": "reviewed",
+            }
+        ]
+    )
+
+    records = club_branding.club_branding_records_from_frame(frame)
+
+    assert records[0].club_name == "Avon Youth Lacrosse"
+    assert records[0].aliases == ("Avon", "Avon 12U", "Avon 12U B")
+    assert records[0].primary_color == "#002040"
+
+
+def test_resolve_team_branding_uses_loaded_club_mapping(monkeypatch) -> None:
+    clubs = [
+        team_page.ClubBranding(
+            club_name="Avon Youth Lacrosse",
+            aliases=("Avon", "Avon 12U", "Avon 12U B"),
+            primary_color="#002040",
+        )
+    ]
+    monkeypatch.setattr(team_page, "load_team_deep_dive_club_branding", lambda: clubs)
+
+    branding = team_page.resolve_team_branding("Avon 12U B")
+
+    assert branding is not None
+    assert branding.club_name == "Avon Youth Lacrosse"
+
+
+def test_team_branding_debug_reports_resolution_and_path_status(monkeypatch, tmp_path) -> None:
+    logo_path = tmp_path / "club.png"
+    logo_path.write_bytes(b"fake")
+    clubs = [
+        team_page.ClubBranding(
+            club_name="Granby Youth Lacrosse",
+            aliases=("Granby", "Granby 12U", "Granby 12U Blue"),
+            logo_path=str(logo_path),
+            primary_color="#400020",
+            secondary_color="#400000",
+        )
+    ]
+    monkeypatch.setattr(team_page, "load_team_deep_dive_club_branding", lambda: clubs)
+
+    debug = team_page.team_branding_debug("Granby 12U Blue")
+
+    assert debug["resolved_club_name"] == "Granby Youth Lacrosse"
+    assert debug["resolved_logo_path"] == str(logo_path)
+    assert debug["logo_path_exists"] is True
+    assert debug["branding_applied"] is True
+    assert debug["primary_color"] == "#400020"
+    assert debug["resolver_path"] == "cvyl_scraper.club_branding.resolve_club_for_team"
+    assert debug["branding_rows_loaded"] == 1
+    assert debug["branding_csv_path"].endswith("data/processed/cvyl_club_branding.csv")
+    assert debug["loaded_club_names"] == ["Granby Youth Lacrosse"]
+
+
+def test_load_team_deep_dive_club_branding_reads_processed_csv_directly() -> None:
+    clubs = team_page.load_team_deep_dive_club_branding()
+
+    assert len(clubs) >= 30
+    assert any(club.club_name == "Glastonbury Lacrosse Club" for club in clubs)
+    assert any(club.club_name == "West Hartford Youth Lacrosse" for club in clubs)
+    assert any(club.club_name == "Colchester Youth Lacrosse" for club in clubs)
+
+
+def test_safe_branding_accent_falls_back_from_near_white_to_secondary() -> None:
+    assert team_page.safe_branding_accent("#f8f8f8", "#006020") == "#006020"
+
+
+def test_safe_branding_accent_returns_empty_for_missing_or_invalid_color() -> None:
+    assert team_page.safe_branding_accent("", "not-a-color") == ""
+
+
+def test_contrast_text_color_and_rgba_are_deterministic() -> None:
+    assert team_page.contrast_text_color("#002040") == "#ffffff"
+    assert team_page.contrast_text_color("#e0e0c0") == "#111827"
+    assert team_page.hex_to_rgba("#006020", 0.12) == "rgba(0, 96, 32, 0.12)"
+
+
+def test_branding_logo_source_uses_existing_local_file_and_skips_missing(tmp_path) -> None:
+    logo_path = tmp_path / "logo.png"
+    logo_path.write_bytes(b"fake")
+    branding = team_page.ClubBranding(club_name="Avon Youth Lacrosse", aliases=(), logo_path=str(logo_path))
+    missing = team_page.ClubBranding(club_name="Missing", aliases=(), logo_path=str(tmp_path / "missing.png"))
+
+    assert team_page.branding_logo_source(branding) == str(logo_path)
+    assert team_page.branding_logo_source(missing) == ""
+
+
+def test_team_branding_debug_handles_unresolved_team(monkeypatch) -> None:
+    monkeypatch.setattr(team_page, "load_team_deep_dive_club_branding", lambda: [])
+
+    debug = team_page.team_branding_debug("Unknown 12U")
+
+    assert debug["resolved_club_name"] == ""
+    assert debug["branding_applied"] is False
+    assert "club branding records were loaded" in debug["notes"] or debug["notes"]
+
+
+def test_team_branding_debug_uses_shared_resolver_path(monkeypatch) -> None:
+    clubs = [team_page.ClubBranding(club_name="Glastonbury Lacrosse Club", aliases=("Glastonbury Lacrosse Club",))]
+    called = {}
+
+    def fake_loader() -> list[team_page.ClubBranding]:
+        return clubs
+
+    def fake_resolver(team: str, loaded_clubs: list[team_page.ClubBranding]):
+        called["team"] = team
+        called["clubs"] = loaded_clubs
+        return club_branding.ClubResolution(team_name=team, club=clubs[0], notes="shared resolver")
+
+    monkeypatch.setattr(team_page, "load_team_deep_dive_club_branding", fake_loader)
+    monkeypatch.setattr(team_page.club_branding, "resolve_club_for_team", fake_resolver)
+
+    debug = team_page.team_branding_debug("Glastonbury 12U Blue")
+
+    assert called["team"] == "Glastonbury 12U Blue"
+    assert called["clubs"] == clubs
+    assert debug["resolved_club_name"] == "Glastonbury Lacrosse Club"
+    assert debug["notes"] == "shared resolver"
 
 
 def test_recent_result_cards_adds_upset_indicator() -> None:

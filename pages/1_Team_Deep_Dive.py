@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import html
+import logging
 import math
 import sys
 from pathlib import Path
@@ -13,6 +15,14 @@ import pandas as pd
 import streamlit as st
 
 import streamlit_app as dashboard
+from cvyl_scraper import club_branding
+from cvyl_scraper.club_branding import ClubBranding
+
+
+ROOT_DIR = Path(__file__).resolve().parents[1]
+CLUB_BRANDING_CSV = ROOT_DIR / "data" / "processed" / "cvyl_club_branding.csv"
+BRANDING_RESOLVER_PATH = "cvyl_scraper.club_branding.resolve_club_for_team"
+LOGGER = logging.getLogger(__name__)
 
 
 def main() -> None:
@@ -47,8 +57,29 @@ def render_team_headquarters(team: str, data: dict[str, pd.DataFrame]) -> None:
 def render_team_header(team: str, data: dict[str, pd.DataFrame]) -> None:
     power_row = dashboard.find_team_row(data["power_ratings"], team)
     trend_row = dashboard.find_team_row(data["trends"], team)
+    branding_debug = team_branding_debug(team)
+    branding = branding_debug["branding"]
+    accent = safe_branding_accent(
+        str(branding.primary_color if branding else ""),
+        str(branding.secondary_color if branding else ""),
+    )
+    logo_source = branding_logo_source(branding)
     with st.container(border=True):
-        st.subheader(team)
+        if accent:
+            st.markdown(
+                f"<div style='height:4px;border-radius:999px;background:{accent};margin-bottom:0.85rem;'></div>",
+                unsafe_allow_html=True,
+            )
+        if logo_source:
+            logo_column, text_column = st.columns([0.14, 0.86])
+            with logo_column:
+                st.image(logo_source, width=58)
+            with text_column:
+                st.subheader(team)
+                render_branding_caption(branding, accent)
+        else:
+            st.subheader(team)
+            render_branding_caption(branding, accent)
         badges = [
             dashboard.confidence_badge(format_row_text(power_row, "confidence_tier")),
             dashboard.metric_badge(
@@ -59,6 +90,187 @@ def render_team_header(team: str, data: dict[str, pd.DataFrame]) -> None:
         ]
         st.markdown(" ".join(badges), unsafe_allow_html=True)
         st.caption(build_team_narrative(team, data))
+        with st.expander("Branding Debug", expanded=False):
+            st.write(f"Branding CSV path: {branding_debug['branding_csv_path']}")
+            st.write(f"Branding rows loaded: {branding_debug['branding_rows_loaded']}")
+            st.write(f"First 5 clubs loaded: {', '.join(branding_debug['loaded_club_names']) or 'N/A'}")
+            st.write(f"Selected team: {branding_debug['team']}")
+            st.write(f"Resolved club: {branding_debug['resolved_club_name']}")
+            st.write(f"Resolved logo_path: {branding_debug['resolved_logo_path'] or 'N/A'}")
+            st.write(f"logo_path exists on disk: {branding_debug['logo_path_exists']}")
+            st.write(f"primary_color: {branding_debug['primary_color'] or 'N/A'}")
+            st.write(f"secondary_color: {branding_debug['secondary_color'] or 'N/A'}")
+            st.write(f"branding applied: {branding_debug['branding_applied']}")
+            if branding_debug["notes"]:
+                st.write(f"Reason: {branding_debug['notes']}")
+
+
+def render_branding_caption(branding: ClubBranding | None, accent: str) -> None:
+    if branding is None:
+        return
+    club_name = html.escape(branding.club_name)
+    if accent:
+        text_color = contrast_text_color(accent)
+        st.markdown(
+            (
+                "<span style='display:inline-block;padding:0.18rem 0.5rem;border-radius:999px;"
+                f"background:{hex_to_rgba(accent, 0.12)};color:{text_color};border:1px solid {hex_to_rgba(accent, 0.32)};"
+                "font-size:0.82rem;font-weight:600;'>"
+                f"{club_name}</span>"
+            ),
+            unsafe_allow_html=True,
+        )
+    else:
+        st.caption(club_name)
+
+
+def resolve_team_branding(team: str) -> ClubBranding | None:
+    clubs = load_team_deep_dive_club_branding()
+    if not clubs:
+        return None
+    return club_branding.resolve_club_for_team(team, clubs).club
+
+
+def team_branding_debug(team: str) -> dict[str, object]:
+    clubs = load_team_deep_dive_club_branding()
+    if not clubs:
+        LOGGER.debug("Branding debug for %s: no clubs loaded", team)
+        return {
+            "team": team,
+            "resolver_path": BRANDING_RESOLVER_PATH,
+            "branding_csv_path": str(CLUB_BRANDING_CSV),
+            "branding_rows_loaded": 0,
+            "loaded_club_names": [],
+            "branding": None,
+            "resolved_club_name": "",
+            "resolved_logo_path": "",
+            "logo_path_exists": False,
+            "primary_color": "",
+            "secondary_color": "",
+            "branding_applied": False,
+            "notes": "No club branding records were loaded.",
+        }
+    resolution = club_branding.resolve_club_for_team(team, clubs)
+    branding = resolution.club
+    logo_path = ""
+    logo_path_exists = False
+    if branding is not None:
+        logo_path = branding.logo_path
+        logo_path_exists = resolved_logo_path_exists(branding)
+    LOGGER.debug(
+        "Branding debug for %s: resolved=%s logo_path=%s exists=%s notes=%s",
+        team,
+        bool(branding),
+        logo_path,
+        logo_path_exists,
+        resolution.notes,
+    )
+    return {
+        "team": team,
+        "resolver_path": BRANDING_RESOLVER_PATH,
+        "branding_csv_path": str(CLUB_BRANDING_CSV),
+        "branding_rows_loaded": len(clubs),
+        "loaded_club_names": [club.club_name for club in clubs[:5]],
+        "branding": branding,
+        "resolved_club_name": branding.club_name if branding else "",
+        "resolved_logo_path": logo_path,
+        "logo_path_exists": logo_path_exists,
+        "primary_color": branding.primary_color if branding else "",
+        "secondary_color": branding.secondary_color if branding else "",
+        "branding_applied": bool(branding and (logo_path_exists or branding.logo_url)),
+        "notes": resolution.notes or ("Branding resolved." if branding else "Branding not resolved."),
+    }
+
+
+def load_team_deep_dive_club_branding() -> list[ClubBranding]:
+    return club_branding.load_club_branding_registry(csv_path=CLUB_BRANDING_CSV)
+
+
+def branding_logo_source(branding: ClubBranding | None) -> str:
+    if branding is None:
+        return ""
+    if branding.logo_path:
+        logo_path = Path(branding.logo_path)
+        if not logo_path.is_absolute():
+            logo_path = ROOT_DIR / logo_path
+        if logo_path.exists():
+            return str(logo_path)
+    if branding.logo_url.startswith(("http://", "https://")):
+        return branding.logo_url
+    return ""
+
+
+def resolved_logo_path_exists(branding: ClubBranding) -> bool:
+    if not branding.logo_path:
+        return False
+    logo_path = Path(branding.logo_path)
+    if not logo_path.is_absolute():
+        logo_path = ROOT_DIR / logo_path
+    return logo_path.exists()
+
+
+def safe_branding_accent(primary_color: str, secondary_color: str = "") -> str:
+    for color in (primary_color, secondary_color):
+        normalized = normalize_hex_color(color)
+        if normalized and is_safe_accent_color(normalized):
+            return normalized
+    for color in (primary_color, secondary_color):
+        normalized = normalize_hex_color(color)
+        if normalized and not is_near_white(normalized):
+            return normalized
+    return ""
+
+
+def normalize_hex_color(value: str) -> str:
+    color = str(value or "").strip()
+    if not color:
+        return ""
+    if not color.startswith("#"):
+        color = f"#{color}"
+    if len(color) == 4:
+        color = "#" + "".join(character * 2 for character in color[1:])
+    if len(color) != 7:
+        return ""
+    try:
+        int(color[1:], 16)
+    except ValueError:
+        return ""
+    return color.lower()
+
+
+def is_safe_accent_color(color: str) -> bool:
+    red, green, blue = hex_to_rgb(color)
+    if is_near_white(color):
+        return False
+    if max(red, green, blue) - min(red, green, blue) < 18 and relative_luminance(color) > 0.62:
+        return False
+    return True
+
+
+def is_near_white(color: str) -> bool:
+    red, green, blue = hex_to_rgb(color)
+    return red >= 235 and green >= 235 and blue >= 235
+
+
+def hex_to_rgb(color: str) -> tuple[int, int, int]:
+    normalized = normalize_hex_color(color)
+    if not normalized:
+        return (0, 0, 0)
+    return (int(normalized[1:3], 16), int(normalized[3:5], 16), int(normalized[5:7], 16))
+
+
+def relative_luminance(color: str) -> float:
+    red, green, blue = [channel / 255 for channel in hex_to_rgb(color)]
+    return 0.2126 * red + 0.7152 * green + 0.0722 * blue
+
+
+def contrast_text_color(color: str) -> str:
+    return "#111827" if relative_luminance(color) >= 0.55 else "#ffffff"
+
+
+def hex_to_rgba(color: str, alpha: float) -> str:
+    red, green, blue = hex_to_rgb(color)
+    return f"rgba({red}, {green}, {blue}, {max(0.0, min(1.0, alpha)):.2f})"
 
 
 def render_snapshot_cards(team: str, data: dict[str, pd.DataFrame]) -> None:

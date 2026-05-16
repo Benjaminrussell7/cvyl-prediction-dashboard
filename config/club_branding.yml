@@ -1,0 +1,51 @@
+clubs:
+  - club_name: Avon Youth Lacrosse
+    aliases:
+      - Avon
+      - Avon 12U
+      - Avon 12U A
+      - Avon 12U B
+    logo_url: ""
+    logo_path: ""
+    primary_color: ""
+    secondary_color: ""
+    color_source: ""
+    notes: "Initial manual club mapping for CVYL U12 Boys branding review."
+
+  - club_name: Granby Youth Lacrosse
+    aliases:
+      - Granby
+      - Granby 12U
+      - Granby 12U Blue
+    logo_url: ""
+    logo_path: ""
+    primary_color: ""
+    secondary_color: ""
+    color_source: ""
+    notes: "Generic youth club entry; safe for boys teams unless a boys-specific entry is added."
+
+  - club_name: Simsbury Youth Lacrosse
+    aliases:
+      - Simsbury
+      - Simsbury 12U
+      - Simsbury 12U A
+      - Simsbury 12U Blue
+    logo_url: ""
+    logo_path: ""
+    primary_color: ""
+    secondary_color: ""
+    color_source: ""
+    notes: "Generic youth club entry; safe for boys teams unless a boys-specific entry is added."
+
+  - club_name: West Hartford Youth Lacrosse
+    aliases:
+      - West Hartford
+      - West Hartford 12U
+      - West Hartford 12U Green
+      - West Hartford 12U Gold
+    logo_url: ""
+    logo_path: ""
+    primary_color: ""
+    secondary_color: ""
+    color_source: ""
+    notes: "Generic youth club entry; safe for boys teams unless a boys-specific entry is added."
