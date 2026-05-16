@@ -3,30 +3,50 @@ competition_type: playoffs
 division_name: U12 Boys Division A
 teams:
 - Bristol 12U
-- RHAM 12U
-- West Hartford 12U Green
 - Granby 12U
+- West Hartford 12U Green
+- Colchester 12U
+- Suffield 12U White
 - Tolland 12U
+- Glastonbury 12U Blue
+- Avon 12U B
 seeds:
   Bristol 12U: 1
-  RHAM 12U: 2
+  Granby 12U: 2
   West Hartford 12U Green: 3
-  Granby 12U: 4
-  Tolland 12U: 5
+  Colchester 12U: 4
+  Suffield 12U White: 5
+  Tolland 12U: 6
+  Glastonbury 12U Blue: 7
+  Avon 12U B: 8
 game_format: standard
 game_minutes: 48
 scoring_environment_multiplier: 1.0
 bracket_rounds:
-- name: Semifinals
+- name: Quarterfinals
   matchups:
   - matchup_id: r1_m1
     team_a: Bristol 12U
-    team_b: Granby 12U
+    team_b: Avon 12U B
   - matchup_id: r1_m2
-    team_a: RHAM 12U
-    team_b: West Hartford 12U Green
-- name: Championship
+    team_a: Granby 12U
+    team_b: Glastonbury 12U Blue
+  - matchup_id: r1_m3
+    team_a: West Hartford 12U Green
+    team_b: Tolland 12U
+  - matchup_id: r1_m4
+    team_a: Colchester 12U
+    team_b: Suffield 12U White
+- name: Semifinals
   matchups:
   - matchup_id: r2_m1
     team_a: Bristol 12U
-    team_b: RHAM 12U
+    team_b: Colchester 12U
+  - matchup_id: r2_m2
+    team_a: Granby 12U
+    team_b: West Hartford 12U Green
+- name: Championship
+  matchups:
+  - matchup_id: r3_m1
+    team_a: Bristol 12U
+    team_b: Granby 12U

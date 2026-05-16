@@ -349,8 +349,6 @@ def test_save_builder_submission_handles_overwrite_and_validation(monkeypatch, t
         game_minutes=48,
         filename="builder_cup.yml",
         overwrite=True,
-        simulation_depth=1000,
-        random_seed=42,
     )
     blocked = tournament_page.save_builder_submission(
         competition_name="Builder Cup",
@@ -362,8 +360,6 @@ def test_save_builder_submission_handles_overwrite_and_validation(monkeypatch, t
         game_minutes=48,
         filename="builder_cup.yml",
         overwrite=False,
-        simulation_depth=1000,
-        random_seed=42,
     )
     invalid = tournament_page.save_builder_submission(
         competition_name="Bad",
@@ -375,8 +371,6 @@ def test_save_builder_submission_handles_overwrite_and_validation(monkeypatch, t
         game_minutes=48,
         filename="bad.yml",
         overwrite=True,
-        simulation_depth=1000,
-        random_seed=42,
     )
 
     assert saved == tmp_path / "builder_cup.yml"
@@ -384,6 +378,98 @@ def test_save_builder_submission_handles_overwrite_and_validation(monkeypatch, t
     assert invalid is None
     assert any(kind == "success" for kind, _text in calls)
     assert sum(1 for kind, _text in calls if kind == "error") == 2
+
+
+def test_simulation_depth_runs_use_friendly_options() -> None:
+    assert tournament_page.simulation_depth_runs("Quick") == 300
+    assert tournament_page.simulation_depth_runs("Standard recommended") == 1000
+    assert tournament_page.simulation_depth_runs("Deep") == 5000
+    assert tournament_page.simulation_depth_runs("Unknown") == 1000
+
+
+def test_simulation_settings_include_seed_depth_and_config_path() -> None:
+    settings = tournament_page.simulation_settings(
+        config_path=Path("config/competitions/example.yml"),
+        depth_label="Deep",
+        random_seed=123,
+        config=_config(),
+    )
+
+    assert settings["config_path"] == "config/competitions/example.yml"
+    assert settings["config_signature"] == tournament_page.competition_simulation_signature(_config())
+    assert settings["depth_label"] == "Deep"
+    assert settings["runs"] == 5000
+    assert settings["random_seed"] == 123
+
+
+def test_simulation_settings_changed_detects_stale_results(monkeypatch) -> None:
+    settings = tournament_page.simulation_settings(
+        config_path=Path("config/competitions/example.yml"),
+        depth_label="Standard recommended",
+        random_seed=42,
+        config=_config(),
+    )
+    state = {tournament_page.SIMULATION_SETTINGS_KEY: settings.copy()}
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    assert tournament_page.simulation_settings_changed(settings) is False
+
+    changed = settings.copy()
+    changed["random_seed"] = 99
+    assert tournament_page.simulation_settings_changed(changed) is True
+
+    changed_config = settings.copy()
+    changed_config["config_signature"] = ("different",)
+    assert tournament_page.simulation_settings_changed(changed_config) is True
+
+
+def test_store_and_load_simulation_result_is_config_scoped(monkeypatch) -> None:
+    state: dict[str, object] = {}
+    simulation = _simulation()
+    summary = _summary()
+    config_path = Path("config/competitions/example.yml")
+    settings = tournament_page.simulation_settings(
+        config_path=config_path,
+        depth_label="Quick",
+        random_seed=42,
+        config=_config(),
+    )
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    tournament_page.store_simulation_result(settings, simulation, summary)
+
+    stored = tournament_page.stored_simulation_result(config_path)
+    assert stored is not None
+    assert stored[0] is simulation
+    assert stored[1] is summary
+    assert tournament_page.stored_simulation_result(Path("config/competitions/other.yml")) is None
+
+
+def test_should_run_simulation_requires_explicit_click_and_valid_config() -> None:
+    assert tournament_page.should_run_simulation(False) is False
+    assert tournament_page.should_run_simulation(True) is True
+    assert tournament_page.should_run_simulation(True, "Select at least two teams.") is False
+
+
+def test_validate_simulation_ready_blocks_incomplete_configs() -> None:
+    valid = _config()
+    ratings = pd.DataFrame([{"team": "Avon", "power_rating_v3_recency": 1.0}])
+    empty_bracket = CompetitionConfig(
+        competition_name="Incomplete",
+        competition_type="playoffs",
+        division_name="Division A",
+        teams=["Avon", "Granby"],
+        seeds={"Avon": 1, "Granby": 2},
+        bracket_rounds=[],
+    )
+
+    tournament_page.validate_simulation_ready(valid, ratings)
+    try:
+        tournament_page.validate_simulation_ready(empty_bracket, ratings)
+    except ValueError as exc:
+        assert "bracket rounds" in str(exc)
+    else:
+        raise AssertionError("Expected invalid bracket to be blocked")
 
 
 def test_main_renders_basic_shell_when_no_configs(monkeypatch, tmp_path) -> None:

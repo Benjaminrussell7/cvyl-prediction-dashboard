@@ -28,6 +28,22 @@ import streamlit_app as dashboard
 
 ROOT = Path(__file__).resolve().parents[1]
 COMPETITIONS_DIR = ROOT / "config" / "competitions"
+SIMULATION_DEPTH_OPTIONS = {
+    "Quick": 300,
+    "Standard recommended": 1000,
+    "Deep": 5000,
+}
+SIMULATION_DEPTH_HELP = (
+    "This uses a Monte Carlo simulation, which runs the tournament many times to estimate "
+    "advancement and championship chances. Higher depth means more stable results but may "
+    "take longer. Standard is a good starting point."
+)
+RANDOM_SEED_HELP = (
+    "The seed makes the simulation repeatable. Using the same seed and settings gives "
+    "the same results, which is helpful when comparing scenarios. Most users can leave this alone."
+)
+SIMULATION_SETTINGS_KEY = "competition_simulation_settings"
+SIMULATION_RESULT_KEY = "competition_simulation_result"
 
 
 def main() -> None:
@@ -70,18 +86,11 @@ def main() -> None:
         st.warning("Power Rating data is not available yet, so the preview cannot run.")
         return
 
-    simulations = st.slider("Monte Carlo runs", min_value=100, max_value=10000, value=1000, step=100)
-    random_seed = st.number_input("Random seed", min_value=1, max_value=999999, value=42, step=1)
-    st.button("Re-run simulation", key="rerun_competition_simulation")
-
-    simulation, summary = build_competition_simulation(
-        config,
-        data["power_ratings"],
-        simulations=int(simulations),
-        random_seed=int(random_seed),
-    )
-
     render_competition_overview(config)
+    result = render_simulation_settings(config, data["power_ratings"], selected)
+    if result is None:
+        return
+    simulation, summary = result
     render_tournament_outlook(config, simulation, summary)
     render_road_to_championship(config, simulation, summary)
     render_competition_visuals(summary)
@@ -163,7 +172,7 @@ def render_competition_builder(data: dict[str, pd.DataFrame], configs: list[Path
         for error in seed_errors:
             st.error(error)
 
-        col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(2)
         initial_game_format = (
             "Running-time game"
             if initial_config and initial_config.game_format == "running_time"
@@ -188,28 +197,6 @@ def render_competition_builder(data: dict[str, pd.DataFrame], configs: list[Path
                 else 32,
                 step=1,
                 key=builder_field_key(initial_config, "game_minutes"),
-            )
-        )
-        simulation_depth = int(
-            col3.number_input(
-                "Simulation Depth",
-                min_value=100,
-                max_value=10000,
-                value=1000,
-                step=100,
-                key=builder_field_key(initial_config, "simulation_depth"),
-                help="Number of Monte Carlo runs used when previewing this competition.",
-            )
-        )
-        random_seed = int(
-            st.number_input(
-                "Random Seed",
-                min_value=1,
-                max_value=999999,
-                value=42,
-                step=1,
-                key=builder_field_key(initial_config, "random_seed"),
-                help="Using the same seed makes the Monte Carlo preview repeatable.",
             )
         )
         filename = st.text_input(
@@ -241,8 +228,6 @@ def render_competition_builder(data: dict[str, pd.DataFrame], configs: list[Path
                     game_minutes=game_minutes,
                     filename=filename,
                     overwrite=overwrite,
-                    simulation_depth=simulation_depth,
-                    random_seed=random_seed,
                 )
 
     if configs:
@@ -274,8 +259,6 @@ def save_builder_submission(
     game_minutes: int,
     filename: str,
     overwrite: bool,
-    simulation_depth: int,
-    random_seed: int,
 ) -> Path | None:
     try:
         config = competition_config_from_builder_inputs(
@@ -296,10 +279,159 @@ def save_builder_submission(
         st.error(f"Competition config could not be saved: {exc}")
         return None
     st.success(
-        f"Saved {output_path.name}. Select it from the dropdown to simulate with "
-        f"{simulation_depth} runs and seed {random_seed}."
+        f"Saved {output_path.name}. Select it from the dropdown, then run the simulation when ready."
     )
     return output_path
+
+
+def render_simulation_settings(
+    config: CompetitionConfig,
+    power_ratings: pd.DataFrame,
+    config_path: Path,
+) -> tuple[pd.DataFrame, pd.DataFrame] | None:
+    st.subheader("Simulation Settings")
+    with st.container(border=True):
+        depth_label = st.selectbox(
+            "Simulation Depth",
+            list(SIMULATION_DEPTH_OPTIONS.keys()),
+            index=1,
+            key="competition_simulation_depth",
+            help=SIMULATION_DEPTH_HELP,
+        )
+        if depth_label == "Deep":
+            st.caption("Deep simulations may take a little longer on Streamlit Cloud.")
+        with st.expander("Advanced simulation options", expanded=False):
+            random_seed = int(
+                st.number_input(
+                    "Random Seed",
+                    min_value=1,
+                    max_value=999999,
+                    value=42,
+                    step=1,
+                    key="competition_random_seed",
+                    help=RANDOM_SEED_HELP,
+                )
+            )
+        settings = simulation_settings(
+            config_path=config_path,
+            depth_label=depth_label,
+            random_seed=random_seed,
+            config=config,
+        )
+        result = stored_simulation_result(config_path)
+        if result is not None and simulation_settings_changed(settings):
+            st.caption("Settings changed. Run simulation again to update results.")
+        run = st.button("Run Tournament Simulation", key="run_tournament_simulation")
+        if run:
+            try:
+                validate_simulation_ready(config, power_ratings)
+            except ValueError as exc:
+                st.error(str(exc))
+                return result
+            with st.spinner("Simulating playoff paths..."):
+                simulation, summary = build_competition_simulation(
+                    config,
+                    power_ratings,
+                    simulations=simulation_depth_runs(depth_label),
+                    random_seed=random_seed,
+                )
+            store_simulation_result(settings, simulation, summary)
+            return simulation, summary
+        if result is None:
+            st.info("Choose settings, then run the tournament simulation to preview playoff paths.")
+            return None
+        return result
+
+
+def simulation_depth_runs(label: str) -> int:
+    return SIMULATION_DEPTH_OPTIONS.get(str(label), SIMULATION_DEPTH_OPTIONS["Standard recommended"])
+
+
+def simulation_settings(
+    *,
+    config_path: Path,
+    depth_label: str,
+    random_seed: int,
+    config: CompetitionConfig | None = None,
+) -> dict[str, object]:
+    return {
+        "config_path": str(config_path),
+        "config_signature": competition_simulation_signature(config) if config is not None else None,
+        "depth_label": str(depth_label),
+        "runs": simulation_depth_runs(depth_label),
+        "random_seed": int(random_seed),
+    }
+
+
+def competition_simulation_signature(config: CompetitionConfig) -> tuple[object, ...]:
+    rounds = tuple(
+        (
+            bracket_round.name,
+            tuple(
+                (
+                    matchup.matchup_id,
+                    matchup.team_a,
+                    matchup.team_b,
+                    matchup.completed_winner,
+                )
+                for matchup in bracket_round.matchups
+            ),
+        )
+        for bracket_round in config.bracket_rounds
+    )
+    return (
+        config.competition_name,
+        config.competition_type,
+        config.division_name,
+        tuple(config.teams),
+        tuple(sorted(config.seeds.items())),
+        rounds,
+        config.game_format,
+        int(config.game_minutes),
+        float(config.scoring_environment_multiplier),
+    )
+
+
+def stored_simulation_result(config_path: Path) -> tuple[pd.DataFrame, pd.DataFrame] | None:
+    payload = st.session_state.get(SIMULATION_RESULT_KEY)
+    if not isinstance(payload, dict) or payload.get("config_path") != str(config_path):
+        return None
+    simulation = payload.get("simulation")
+    summary = payload.get("summary")
+    if isinstance(simulation, pd.DataFrame) and isinstance(summary, pd.DataFrame):
+        return simulation, summary
+    return None
+
+
+def store_simulation_result(
+    settings: dict[str, object],
+    simulation: pd.DataFrame,
+    summary: pd.DataFrame,
+) -> None:
+    st.session_state[SIMULATION_SETTINGS_KEY] = settings
+    st.session_state[SIMULATION_RESULT_KEY] = {
+        "config_path": settings["config_path"],
+        "simulation": simulation,
+        "summary": summary,
+    }
+
+
+def simulation_settings_changed(settings: dict[str, object]) -> bool:
+    previous = st.session_state.get(SIMULATION_SETTINGS_KEY)
+    return previous is not None and previous != settings
+
+
+def should_run_simulation(run_clicked: bool, validation_error: str | None = None) -> bool:
+    return bool(run_clicked) and not validation_error
+
+
+def validate_simulation_ready(config: CompetitionConfig, power_ratings: pd.DataFrame) -> None:
+    if not config.teams or len(config.teams) < 2:
+        raise ValueError("Select at least two teams before running a simulation.")
+    if not config.bracket_rounds:
+        raise ValueError("This config does not include bracket rounds yet.")
+    if power_ratings.empty:
+        raise ValueError("Power Rating data is unavailable. Run the data pipeline first.")
 
 
 def load_builder_initial_config(configs: list[Path]) -> CompetitionConfig | None:
