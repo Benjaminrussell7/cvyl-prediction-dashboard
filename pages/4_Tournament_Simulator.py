@@ -77,7 +77,7 @@ def main() -> None:
         key="competition_config",
     )
     try:
-        config = load_competition_config(selected)
+        config = resolved_competition_config(load_competition_config(selected), selected, placeholders=False)
     except ValueError as exc:
         st.error(f"Competition config is invalid: {exc}")
         st.info("Fix the YAML config, then refresh this page to preview the tournament.")
@@ -92,9 +92,10 @@ def main() -> None:
         return
     simulation, summary = result
     render_tournament_outlook(config, simulation, summary)
-    render_road_to_championship(config, simulation, summary)
+    display_config = resolved_competition_config(config, selected, placeholders=True)
+    render_road_to_championship(display_config, simulation, summary, selected, data)
     render_competition_visuals(summary)
-    render_current_round_matchups(config, simulation)
+    render_current_round_matchups(display_config, simulation, selected, data)
 
 
 def available_competition_configs(directory: Path) -> list[Path]:
@@ -320,7 +321,10 @@ def render_simulation_settings(
         )
         result = stored_simulation_result(config_path)
         if result is not None and simulation_settings_changed(settings):
-            st.caption("Settings changed. Run simulation again to update results.")
+            if simulation_results_changed_due_to_bracket(settings):
+                st.caption("Bracket results updated. Run simulation again to refresh projected paths.")
+            else:
+                st.caption("Settings changed. Run simulation again to update results.")
         run = st.button("Run Tournament Simulation", key="run_tournament_simulation")
         if run:
             try:
@@ -392,6 +396,181 @@ def competition_simulation_signature(config: CompetitionConfig) -> tuple[object,
     )
 
 
+def recorded_winners_key(config_path: Path) -> str:
+    return f"competition_recorded_winners::{Path(config_path).resolve()}"
+
+
+def recorded_winners(config_path: Path) -> dict[str, dict[str, object]]:
+    payload = st.session_state.get(recorded_winners_key(config_path), {})
+    return payload if isinstance(payload, dict) else {}
+
+
+def recorded_matchup_result(config_path: Path, matchup_id: str) -> dict[str, object]:
+    result = recorded_winners(config_path).get(matchup_id, {})
+    return result if isinstance(result, dict) else {}
+
+
+def record_matchup_winner(
+    config_path: Path,
+    matchup: MatchupConfig,
+    winner: str,
+    *,
+    team_a_score: int | None = None,
+    team_b_score: int | None = None,
+) -> None:
+    if winner not in {matchup.team_a, matchup.team_b}:
+        raise ValueError("Winner must be one of the two matchup teams.")
+    winners = dict(recorded_winners(config_path))
+    winners[matchup.matchup_id] = {
+        "winner": winner,
+        "team_a_score": team_a_score,
+        "team_b_score": team_b_score,
+    }
+    st.session_state[recorded_winners_key(config_path)] = winners
+
+
+def clear_matchup_winner(config_path: Path, matchup_id: str) -> None:
+    winners = dict(recorded_winners(config_path))
+    winners.pop(matchup_id, None)
+    st.session_state[recorded_winners_key(config_path)] = winners
+
+
+def effective_completed_winner(config_path: Path, matchup: MatchupConfig) -> str | None:
+    session_winner = recorded_matchup_result(config_path, matchup.matchup_id).get("winner")
+    return str(session_winner) if session_winner else matchup.completed_winner
+
+
+def matchup_widget_key(prefix: str, config_path: Path, matchup_id: str) -> str:
+    return f"{prefix}_{safe_competition_id(Path(config_path).stem)}_{safe_competition_id(matchup_id)}"
+
+
+def apply_recorded_winners_to_config(config: CompetitionConfig, config_path: Path) -> CompetitionConfig:
+    return resolved_competition_config(config, config_path, placeholders=False)
+
+
+def resolved_competition_config(
+    config: CompetitionConfig,
+    config_path: Path,
+    *,
+    placeholders: bool,
+) -> CompetitionConfig:
+    winners = recorded_winners(config_path)
+    rounds: list[BracketRoundConfig] = []
+    completed_by_id: dict[str, str] = {}
+    previous_round_matchups: list[MatchupConfig] | None = None
+    for bracket_round in config.bracket_rounds:
+        matchups: list[MatchupConfig] = []
+        for index, matchup in enumerate(bracket_round.matchups):
+            team_a, team_b = resolved_matchup_teams(
+                matchup,
+                previous_round_matchups,
+                completed_by_id,
+                index,
+                placeholders=placeholders,
+            )
+            winner = winners.get(matchup.matchup_id, {}).get("winner") or matchup.completed_winner
+            if winner and winner not in {team_a, team_b}:
+                winner = None if placeholders else matchup.completed_winner
+            matchups.append(
+                MatchupConfig(
+                    matchup_id=matchup.matchup_id,
+                    team_a=team_a,
+                    team_b=team_b,
+                    completed_winner=str(winner) if winner else None,
+                )
+            )
+            if winner and winner in {team_a, team_b}:
+                completed_by_id[matchup.matchup_id] = str(winner)
+        rounds.append(BracketRoundConfig(bracket_round.name, matchups))
+        previous_round_matchups = matchups
+    return CompetitionConfig(
+        competition_name=config.competition_name,
+        competition_type=config.competition_type,
+        division_name=config.division_name,
+        teams=config.teams,
+        seeds=config.seeds,
+        bracket_rounds=rounds,
+        game_format=config.game_format,
+        game_minutes=config.game_minutes,
+        scoring_environment_multiplier=config.scoring_environment_multiplier,
+    )
+
+
+def resolved_matchup_teams(
+    matchup: MatchupConfig,
+    previous_round_matchups: list[MatchupConfig] | None,
+    completed_by_id: dict[str, str],
+    index: int,
+    *,
+    placeholders: bool,
+) -> tuple[str, str]:
+    if previous_round_matchups is None:
+        return matchup.team_a, matchup.team_b
+    first_default = prior_matchup_id_for_slot(previous_round_matchups, index)
+    second_index = len(previous_round_matchups) - index - 1
+    second_default = prior_matchup_id_for_slot(previous_round_matchups, second_index)
+    return (
+        resolved_team_slot(matchup.team_a, first_default, previous_round_matchups, completed_by_id, placeholders),
+        resolved_team_slot(matchup.team_b, second_default, previous_round_matchups, completed_by_id, placeholders),
+    )
+
+
+def prior_matchup_id_for_slot(previous_round_matchups: list[MatchupConfig], index: int) -> str | None:
+    if 0 <= index < len(previous_round_matchups):
+        return previous_round_matchups[index].matchup_id
+    return None
+
+
+def resolved_team_slot(
+    slot_text: str,
+    default_matchup_id: str | None,
+    previous_round_matchups: list[MatchupConfig],
+    completed_by_id: dict[str, str],
+    placeholders: bool,
+) -> str:
+    matchup_id = referenced_matchup_id(slot_text, previous_round_matchups) or default_matchup_id
+    if matchup_id and matchup_id in completed_by_id:
+        return completed_by_id[matchup_id]
+    if matchup_id and placeholders:
+        return friendly_waiting_placeholder(matchup_id, previous_round_matchups)
+    return str(slot_text)
+
+
+def referenced_matchup_id(slot_text: object, previous_round_matchups: list[MatchupConfig]) -> str | None:
+    text = str(slot_text or "").strip()
+    if not text:
+        return None
+    ids = {matchup.matchup_id for matchup in previous_round_matchups}
+    for matchup_id in ids:
+        if matchup_id in text:
+            return matchup_id
+    prior_match = re.search(r"prior matchup\s+(\d+)", text, flags=re.IGNORECASE)
+    if prior_match:
+        index = int(prior_match.group(1)) - 1
+        return prior_matchup_id_for_slot(previous_round_matchups, index)
+    numeric_match = re.search(r"winner of\s+(\d+)", text, flags=re.IGNORECASE)
+    if numeric_match:
+        index = int(numeric_match.group(1)) - 1
+        return prior_matchup_id_for_slot(previous_round_matchups, index)
+    return None
+
+
+def friendly_waiting_placeholder(matchup_id: str, previous_round_matchups: list[MatchupConfig]) -> str:
+    for index, matchup in enumerate(previous_round_matchups, start=1):
+        if matchup.matchup_id == matchup_id:
+            return f"Winner of prior matchup {index}"
+    return f"Winner of {matchup_id}"
+
+
+def competition_champion(config: CompetitionConfig) -> str | None:
+    if not config.bracket_rounds:
+        return None
+    final_round = config.bracket_rounds[-1]
+    if len(final_round.matchups) != 1:
+        return None
+    return final_round.matchups[0].completed_winner
+
+
 def stored_simulation_result(config_path: Path) -> tuple[pd.DataFrame, pd.DataFrame] | None:
     payload = st.session_state.get(SIMULATION_RESULT_KEY)
     if not isinstance(payload, dict) or payload.get("config_path") != str(config_path):
@@ -419,6 +598,15 @@ def store_simulation_result(
 def simulation_settings_changed(settings: dict[str, object]) -> bool:
     previous = st.session_state.get(SIMULATION_SETTINGS_KEY)
     return previous is not None and previous != settings
+
+
+def simulation_results_changed_due_to_bracket(settings: dict[str, object]) -> bool:
+    previous = st.session_state.get(SIMULATION_SETTINGS_KEY)
+    if not isinstance(previous, dict):
+        return False
+    comparable_keys = {"config_path", "depth_label", "runs", "random_seed"}
+    same_controls = all(previous.get(key) == settings.get(key) for key in comparable_keys)
+    return same_controls and previous.get("config_signature") != settings.get("config_signature")
 
 
 def should_run_simulation(run_clicked: bool, validation_error: str | None = None) -> bool:
@@ -957,14 +1145,19 @@ def render_road_to_championship(
     config: CompetitionConfig,
     simulation: pd.DataFrame,
     summary: pd.DataFrame,
+    config_path: Path,
+    data: dict[str, pd.DataFrame],
 ) -> None:
     st.subheader("Road to the Championship")
     if simulation.empty:
         st.info("Bracket path preview is not available for this competition yet.")
         return
     with st.container(border=True):
+        champion = competition_champion(config)
+        if champion:
+            st.success(f"Champion recorded: {champion}")
         st.caption(most_likely_path_story(config, simulation, summary))
-        render_bracket_progression(config, simulation, summary)
+        render_bracket_progression(config, simulation, summary, config_path, data)
 
     roadblocks = roadblock_cards(config, simulation, summary)
     if roadblocks:
@@ -987,39 +1180,65 @@ def render_bracket_progression(
     config: CompetitionConfig,
     simulation: pd.DataFrame,
     summary: pd.DataFrame,
+    config_path: Path,
+    data: dict[str, pd.DataFrame],
 ) -> None:
     columns = st.columns(max(1, len(config.bracket_rounds)))
     for column, bracket_round in zip(columns, config.bracket_rounds, strict=False):
         with column:
             st.markdown(f"**{bracket_round.name}**")
-            round_rows = simulation[simulation["round"] == bracket_round.name]
-            if round_rows.empty:
+            if not bracket_round.matchups:
                 st.caption("No matchups configured.")
                 continue
-            for _, matchup in round_rows.iterrows():
-                render_bracket_matchup_card(matchup, config, summary)
+            for matchup_config in bracket_round.matchups:
+                matchup = matchup_simulation_row(simulation, bracket_round.name, matchup_config)
+                render_bracket_matchup_card(matchup, config, summary, matchup_config, config_path, data)
 
 
 def render_bracket_matchup_card(
     matchup: pd.Series,
     config: CompetitionConfig,
     summary: pd.DataFrame,
+    matchup_config: MatchupConfig | None = None,
+    config_path: Path | None = None,
+    data: dict[str, pd.DataFrame] | None = None,
 ) -> None:
     favorite = str(matchup["expected_winner"])
     team_a = str(matchup["team_a"])
     team_b = str(matchup["team_b"])
     team_a_probability = float(matchup.get("team_a_win_probability", 0.5))
-    upset_watch = float(matchup.get("upset_likelihood", 0.0)) >= 0.35
+    completed_winner = completed_winner_for_matchup(matchup, matchup_config, config_path)
     with st.container(border=True):
-        st.markdown(bracket_team_line(team_a, config, summary, team_a == favorite, team_a_probability), unsafe_allow_html=True)
-        st.markdown(
-            bracket_team_line(team_b, config, summary, team_b == favorite, 1.0 - team_a_probability),
-            unsafe_allow_html=True,
-        )
-        badges = [story_badge("Upset Watch" if upset_watch else "Playoff Edge")]
-        if str(matchup.get("completed_winner", "")) and str(matchup.get("completed_winner")) != "nan":
-            badges.append(story_badge("Completed"))
+        if completed_winner:
+            score_text = recorded_score_text(config_path, matchup_config) if config_path and matchup_config else ""
+            score_margin = recorded_score_margin(config_path, matchup_config) if config_path and matchup_config else None
+            st.markdown(
+                result_bracket_team_line(team_a, config, completed_winner, score_text),
+                unsafe_allow_html=True,
+            )
+            st.markdown(
+                result_bracket_team_line(team_b, config, completed_winner, score_text),
+                unsafe_allow_html=True,
+            )
+            if score_text:
+                st.caption(score_text)
+            badges = [story_badge(completed_matchup_badge(matchup, completed_winner, score_margin))]
+        else:
+            st.markdown(bracket_team_line(team_a, config, summary, team_a == favorite, team_a_probability), unsafe_allow_html=True)
+            st.markdown(
+                bracket_team_line(team_b, config, summary, team_b == favorite, 1.0 - team_a_probability),
+                unsafe_allow_html=True,
+            )
+            badges = [story_badge(road_matchup_badge(matchup))]
         st.markdown(" ".join(badges), unsafe_allow_html=True)
+        if is_playable_matchup(team_a, team_b) and data is not None:
+            render_compact_matchup_preview(matchup, data)
+        elif not is_playable_matchup(team_a, team_b):
+            st.caption("Waiting on an earlier result before this matchup is ready.")
+        if matchup_config is not None and config_path is not None and is_playable_matchup(team_a, team_b):
+            completed_winner = render_record_result_controls(matchup_config, config_path, completed_winner)
+            if completed_winner:
+                st.success(f"Winner recorded: {completed_winner}")
 
 
 def bracket_team_line(
@@ -1031,6 +1250,13 @@ def bracket_team_line(
 ) -> str:
     seed = format_seed(config.seeds.get(team))
     title_probability = team_summary_probability(summary, team, "championship_probability")
+    if is_placeholder_team(team):
+        return (
+            "<div style='border-left:4px solid #d1d5db;background:#f9fafb;padding:0.35rem 0.45rem;"
+            "margin-bottom:0.3rem;border-radius:6px;'>"
+            f"<div style='font-weight:650;color:#6b7280;overflow-wrap:anywhere;'>{team}</div>"
+            "<div style='font-size:0.78rem;color:#6b7280;'>Waiting on prior result</div></div>"
+        )
     border = "#16a34a" if favored else "#d1d5db"
     background = "#f0fdf4" if favored else "#ffffff"
     return (
@@ -1038,8 +1264,140 @@ def bracket_team_line(
         f"margin-bottom:0.3rem;border-radius:6px;'>"
         f"<div style='font-weight:800;color:#111827;overflow-wrap:anywhere;'>{seed} {team}</div>"
         f"<div style='font-size:0.78rem;color:#4b5563;'>"
-        f"Matchup {probability:.0%} | Title {title_probability:.0%}</div></div>"
+        f"Win Probability {probability:.0%} | Title {title_probability:.0%}</div></div>"
     )
+
+
+def is_placeholder_team(team: object) -> bool:
+    return str(team).startswith("Winner of prior matchup")
+
+
+def is_playable_matchup(team_a: object, team_b: object) -> bool:
+    return not is_placeholder_team(team_a) and not is_placeholder_team(team_b)
+
+
+def completed_winner_for_matchup(
+    matchup: pd.Series,
+    matchup_config: MatchupConfig | None = None,
+    config_path: Path | None = None,
+) -> str | None:
+    if matchup_config is not None and config_path is not None:
+        winner = effective_completed_winner(config_path, matchup_config)
+        if winner:
+            return winner
+    value = matchup.get("completed_winner")
+    if value is None or pd.isna(value) or str(value) == "":
+        return None
+    return str(value)
+
+
+def recorded_score_text(config_path: Path | None, matchup: MatchupConfig | None) -> str:
+    if config_path is None or matchup is None:
+        return ""
+    result = recorded_matchup_result(config_path, matchup.matchup_id)
+    team_a_score = result.get("team_a_score")
+    team_b_score = result.get("team_b_score")
+    if team_a_score is None or team_b_score is None:
+        return ""
+    try:
+        return f"Final: {matchup.team_a} {int(team_a_score)}, {matchup.team_b} {int(team_b_score)}"
+    except (TypeError, ValueError):
+        return ""
+
+
+def recorded_score_margin(config_path: Path | None, matchup: MatchupConfig | None) -> int | None:
+    if config_path is None or matchup is None:
+        return None
+    result = recorded_matchup_result(config_path, matchup.matchup_id)
+    try:
+        return abs(int(result["team_a_score"]) - int(result["team_b_score"]))
+    except (KeyError, TypeError, ValueError):
+        return None
+
+
+def result_bracket_team_line(
+    team: str,
+    config: CompetitionConfig,
+    completed_winner: str,
+    score_text: str = "",
+) -> str:
+    seed = format_seed(config.seeds.get(team))
+    won = team == completed_winner
+    border = "#16a34a" if won else "#d1d5db"
+    background = "#f0fdf4" if won else "#f9fafb"
+    text_color = "#111827" if won else "#6b7280"
+    weight = "850" if won else "600"
+    detail = "Advanced" if won else "Eliminated"
+    if score_text:
+        detail = f"{detail} | {score_text.removeprefix('Final: ')}"
+    return (
+        f"<div style='border-left:4px solid {border};background:{background};padding:0.35rem 0.45rem;"
+        f"margin-bottom:0.3rem;border-radius:6px;opacity:{'1' if won else '0.72'};'>"
+        f"<div style='font-weight:{weight};color:{text_color};overflow-wrap:anywhere;'>{seed} {team}</div>"
+        f"<div style='font-size:0.78rem;color:#4b5563;'>{detail}</div></div>"
+    )
+
+
+def completed_matchup_badge(matchup: pd.Series, completed_winner: str, score_margin: int | None = None) -> str:
+    favorite = str(matchup.get("expected_winner", ""))
+    probability = favorite_probability(matchup)
+    if completed_winner != favorite:
+        return "Upset Complete"
+    if score_margin is not None and score_margin >= 5:
+        return "Statement Win"
+    if score_margin is not None and score_margin <= 1:
+        return "Narrow Escape"
+    if probability < 0.58:
+        return "Survived Scare"
+    return "Favorite Advanced"
+
+
+def road_matchup_badge(matchup: pd.Series) -> str:
+    team_a = matchup.get("team_a", "")
+    team_b = matchup.get("team_b", "")
+    if not is_playable_matchup(team_a, team_b):
+        return awaiting_results_badge(matchup)
+    probability = favorite_probability(matchup)
+    label = matchup_interpretation_label(probability)
+    if label in {"Heavy Favorite", "Strong Edge", "Toss-Up"}:
+        return label
+    if is_upset_watch_matchup(matchup, probability):
+        return "Upset Watch"
+    return label
+
+
+def matchup_interpretation_label(win_probability: float | None) -> str:
+    if win_probability is None or pd.isna(win_probability):
+        return "Unavailable"
+    probability = max(float(win_probability), 1.0 - float(win_probability))
+    if probability < 0.55:
+        return "Toss-Up"
+    if probability < 0.62:
+        return "Competitive Matchup"
+    if probability < 0.70:
+        return "Slight Edge"
+    if probability < 0.78:
+        return "Strong Edge"
+    return "Heavy Favorite"
+
+
+def awaiting_results_badge(matchup: pd.Series) -> str:
+    round_name = str(matchup.get("round", "")).casefold()
+    if "championship" in round_name or "final" in round_name:
+        return "Awaiting Semifinal Winners"
+    return "Awaiting Results"
+
+
+def is_upset_watch_matchup(matchup: pd.Series, probability: float | None = None) -> bool:
+    if not is_playable_matchup(matchup.get("team_a", ""), matchup.get("team_b", "")):
+        return False
+    favorite_probability_value = favorite_probability(matchup) if probability is None else float(probability)
+    if favorite_probability_value >= 0.65:
+        return False
+    upset_likelihood = pd.to_numeric(matchup.get("upset_likelihood", 0.0), errors="coerce")
+    if pd.isna(upset_likelihood):
+        upset_likelihood = 0.0
+    return favorite_probability_value < 0.58 or float(upset_likelihood) >= 0.40
 
 
 def most_likely_path_story(
@@ -1249,25 +1607,84 @@ def advancement_probability_chart(summary: pd.DataFrame) -> alt.Chart:
     )
 
 
-def render_current_round_matchups(config: CompetitionConfig, simulation: pd.DataFrame) -> None:
+def render_current_round_matchups(
+    config: CompetitionConfig,
+    simulation: pd.DataFrame,
+    config_path: Path,
+    data: dict[str, pd.DataFrame],
+) -> None:
     current_round = first_unresolved_round(config)
-    rows = simulation[simulation["round"] == current_round.name] if current_round is not None else pd.DataFrame()
-    st.subheader("Current Round Preview")
-    if current_round is None or rows.empty:
-        st.info("No unresolved matchup round is available in this config.")
+    st.subheader("Current Round Summary")
+    if current_round is None:
+        champion = competition_champion(config)
+        if champion:
+            st.success(f"Bracket complete. Champion: {champion}")
+        else:
+            st.info("No unresolved matchup round is available in this config.")
         return
+    st.caption("Use Road to the Championship to preview matchups and record results.")
 
-    columns = st.columns(min(2, len(rows)))
-    for index, (_, matchup) in enumerate(rows.iterrows()):
+    matchups = current_round.matchups
+    columns = st.columns(min(2, len(matchups)))
+    for index, matchup_config in enumerate(matchups):
+        matchup = matchup_simulation_row(simulation, current_round.name, matchup_config)
         with columns[index % len(columns)]:
             render_matchup_preview_card(matchup)
 
 
-def render_matchup_preview_card(matchup: pd.Series) -> None:
+def matchup_simulation_row(
+    simulation: pd.DataFrame,
+    round_name: str,
+    matchup: MatchupConfig,
+) -> pd.Series:
+    if not simulation.empty and "matchup_id" in simulation.columns:
+        matches = simulation[
+            (simulation["round"].astype(str) == round_name)
+            & (simulation["matchup_id"].astype(str) == matchup.matchup_id)
+        ]
+        if not matches.empty:
+            row = matches.iloc[0].copy()
+            row["team_a"] = matchup.team_a
+            row["team_b"] = matchup.team_b
+            row["completed_winner"] = matchup.completed_winner
+            if matchup.completed_winner:
+                row["expected_winner"] = matchup.completed_winner
+            elif is_playable_matchup(matchup.team_a, matchup.team_b):
+                row["note"] = str(row.get("note", ""))
+            else:
+                row["note"] = "Waiting on an earlier result before this matchup is ready."
+            return row
+    return pd.Series(
+        {
+            "round": round_name,
+            "matchup_id": matchup.matchup_id,
+            "team_a": matchup.team_a,
+            "team_b": matchup.team_b,
+            "team_a_win_probability": 0.5,
+            "team_b_win_probability": 0.5,
+            "expected_winner": matchup.completed_winner or matchup.team_a,
+            "completed_winner": matchup.completed_winner,
+            "upset_likelihood": 0.5,
+            "note": "Run the simulation to update this matchup preview.",
+        }
+    )
+
+
+def render_matchup_preview_card(
+    matchup: pd.Series,
+    matchup_config: MatchupConfig | None = None,
+    config_path: Path | None = None,
+    data: dict[str, pd.DataFrame] | None = None,
+) -> None:
     favorite = str(matchup["expected_winner"])
     probability = favorite_probability(matchup)
-    edge = prediction_edge_label(probability)
-    upset_watch = float(matchup.get("upset_likelihood", 0.0)) >= 0.35
+    interpretation = road_matchup_badge(matchup)
+    upset_watch = interpretation == "Upset Watch"
+    completed_winner = (
+        effective_completed_winner(config_path, matchup_config)
+        if config_path is not None and matchup_config is not None
+        else matchup.get("completed_winner")
+    )
     with st.container(border=True):
         st.markdown(f"**{matchup['team_a']} vs {matchup['team_b']}**")
         st.caption(f"{matchup['round']} | {matchup['matchup_id']}")
@@ -1275,13 +1692,150 @@ def render_matchup_preview_card(matchup: pd.Series) -> None:
         cols[0].metric("Favorite", favorite)
         cols[1].metric("Win Probability", f"{probability:.1%}")
         st.markdown(
-            f"{edge_badge(edge)} "
-            f"{story_badge('Upset Watch' if upset_watch else 'Playoff Edge')}",
+            story_badge(interpretation),
             unsafe_allow_html=True,
         )
         st.caption(matchup_outlook_sentence(matchup, probability, upset_watch))
         if str(matchup.get("note", "")):
             st.warning(str(matchup["note"]))
+        if data is not None and is_playable_matchup(matchup["team_a"], matchup["team_b"]):
+            render_compact_matchup_preview(matchup, data)
+        if matchup_config is not None and config_path is not None:
+            completed_winner = render_record_result_controls(matchup_config, config_path, completed_winner)
+        if completed_winner:
+            st.success(f"Winner recorded: {completed_winner}")
+
+
+def render_compact_matchup_preview(matchup: pd.Series, data: dict[str, pd.DataFrame]) -> None:
+    team_a = str(matchup["team_a"])
+    team_b = str(matchup["team_b"])
+    with st.expander("Preview Matchup", expanded=False):
+        preview = tournament_matchup_preview_data(team_a, team_b, data)
+        if preview.get("unavailable"):
+            st.info(str(preview["unavailable"]))
+            return
+        st.markdown(story_badge(preview["interpretation_label"]), unsafe_allow_html=True)
+        cols = st.columns(2)
+        cols[0].metric(f"{team_a} Win Probability", f"{float(preview['team_a_probability']):.1%}")
+        cols[1].metric(f"{team_b} Win Probability", f"{float(preview['team_b_probability']):.1%}")
+        score_cols = st.columns(2)
+        score_cols[0].metric(f"{team_a} projected goals", preview["team_a_score"])
+        score_cols[1].metric(f"{team_b} projected goals", preview["team_b_score"])
+        st.caption(f"Favorite: {preview['favorite']}")
+        st.markdown("**What the Model Sees**")
+        for observation in preview["observations"]:
+            st.caption(observation)
+        st.markdown("**Keys to the Game**")
+        for key in preview["keys"]:
+            st.caption(key)
+
+
+def tournament_matchup_preview_data(
+    team_a: str,
+    team_b: str,
+    data: dict[str, pd.DataFrame],
+) -> dict[str, object]:
+    try:
+        ratings = data.get("ratings", pd.DataFrame())
+        team_games = data.get("team_games", pd.DataFrame())
+        sos = data.get("sos", pd.DataFrame())
+        power_ratings = data.get("power_ratings", pd.DataFrame())
+        trends = data.get("trends", pd.DataFrame())
+        if ratings.empty or team_games.empty or power_ratings.empty:
+            return {"unavailable": "Matchup preview needs current ratings, team games, and Power Rating data."}
+        prediction = dashboard.build_matchup_prediction(team_a, team_b, ratings, team_games, sos, power_ratings)
+        power_context = dashboard.matchup_power_context(team_a, team_b, power_ratings)
+        if hasattr(dashboard, "game_preview_data"):
+            preview = dashboard.game_preview_data(team_a, team_b, prediction, power_context, power_ratings, trends, sos)
+            favorite_probability = max(float(power_context["team_a_probability"]), float(power_context["team_b_probability"]))
+            return {
+                "favorite": preview["favorite"],
+                "team_a_probability": float(power_context["team_a_probability"]),
+                "team_b_probability": float(power_context["team_b_probability"]),
+                "team_a_score": preview["team_a_score"],
+                "team_b_score": preview["team_b_score"],
+                "interpretation_label": matchup_interpretation_label(favorite_probability),
+                "game_style": preview["game_style"],
+                "observations": list(preview["observations"])[:3],
+                "keys": list(preview["keys"])[:3],
+            }
+        team_a_probability = float(power_context["team_a_probability"])
+        team_b_probability = float(power_context["team_b_probability"])
+        favorite_probability = max(team_a_probability, team_b_probability)
+        return {
+            "favorite": str(power_context["predicted_winner"]),
+            "team_a_probability": team_a_probability,
+            "team_b_probability": team_b_probability,
+            "team_a_score": f"{float(getattr(prediction, 'projected_team_a_goals', 0.0) or 0.0):.1f}",
+            "team_b_score": f"{float(getattr(prediction, 'projected_team_b_goals', 0.0) or 0.0):.1f}",
+            "interpretation_label": matchup_interpretation_label(favorite_probability),
+            "game_style": "Tight Contest" if favorite_probability < 0.55 else "Bracket Matchup",
+            "observations": ["The model leans on current Power Rating, recent form, and schedule context."],
+            "keys": ["Can the underdog keep the game tight early?", "Can the favorite turn its edge into separation?"],
+        }
+    except Exception as exc:
+        return {"unavailable": f"Matchup preview is unavailable for this pairing: {exc}"}
+
+
+def render_record_result_controls(
+    matchup: MatchupConfig,
+    config_path: Path,
+    completed_winner: object,
+) -> object:
+    with st.expander("Record Result", expanded=False):
+        st.caption("Recording a winner advances the bracket state. Re-run the simulation to update the projected paths.")
+        winner_options = [matchup.team_a, matchup.team_b]
+        default_index = winner_options.index(completed_winner) if completed_winner in winner_options else 0
+        winner = st.selectbox(
+            "Winner",
+            winner_options,
+            index=default_index,
+            key=matchup_widget_key("winner", config_path, matchup.matchup_id),
+        )
+        score_cols = st.columns(2)
+        team_a_score = score_cols[0].number_input(
+            f"{matchup.team_a} optional score",
+            min_value=0,
+            max_value=99,
+            value=0,
+            step=1,
+            key=matchup_widget_key("score_a", config_path, matchup.matchup_id),
+        )
+        team_b_score = score_cols[1].number_input(
+            f"{matchup.team_b} optional score",
+            min_value=0,
+            max_value=99,
+            value=0,
+            step=1,
+            key=matchup_widget_key("score_b", config_path, matchup.matchup_id),
+        )
+        col1, col2 = st.columns(2)
+        if col1.button("Save Result", key=matchup_widget_key("save_winner", config_path, matchup.matchup_id)):
+            try:
+                record_matchup_winner(
+                    config_path,
+                    matchup,
+                    str(winner),
+                    team_a_score=int(team_a_score),
+                    team_b_score=int(team_b_score),
+                )
+                st.success("Result saved. Run simulation again to refresh projections.")
+                request_page_rerun()
+                return winner
+            except ValueError as exc:
+                st.error(str(exc))
+        if completed_winner and col2.button("Clear Result", key=matchup_widget_key("clear_winner", config_path, matchup.matchup_id)):
+            clear_matchup_winner(config_path, matchup.matchup_id)
+            st.success("Recorded winner cleared. Re-run the simulation when ready.")
+            request_page_rerun()
+            return None
+    return completed_winner
+
+
+def request_page_rerun() -> None:
+    rerun = getattr(st, "rerun", None)
+    if callable(rerun):
+        rerun()
 
 
 def matchup_outlook_sentence(matchup: pd.Series, probability: float, upset_watch: bool) -> str:
@@ -1298,7 +1852,7 @@ def first_unresolved_round(config: CompetitionConfig):
     for bracket_round in config.bracket_rounds:
         if any(not matchup.completed_winner for matchup in bracket_round.matchups):
             return bracket_round
-    return config.bracket_rounds[-1] if config.bracket_rounds else None
+    return None
 
 
 def highest_upset_risk_matchup(simulation: pd.DataFrame) -> pd.Series | None:
@@ -1420,10 +1974,13 @@ def story_badge(label: object) -> str:
     value = str(label or "Unavailable")
     tones = {
         "Upset Watch": ("#92400e", "#fef3c7"),
-        "Playoff Edge": ("#075985", "#e0f2fe"),
         "Strong Edge": ("#166534", "#dcfce7"),
         "Competitive Matchup": ("#075985", "#e0f2fe"),
+        "Slight Edge": ("#92400e", "#fef3c7"),
+        "Heavy Favorite": ("#14532d", "#bbf7d0"),
         "Toss-Up": ("#374151", "#f3f4f6"),
+        "Awaiting Results": ("#4b5563", "#f3f4f6"),
+        "Awaiting Semifinal Winners": ("#4b5563", "#f3f4f6"),
         "Anything Can Happen": ("#92400e", "#fef3c7"),
         "Unavailable": ("#4b5563", "#f3f4f6"),
     }

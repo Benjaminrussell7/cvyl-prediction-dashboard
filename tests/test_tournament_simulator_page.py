@@ -421,6 +421,13 @@ def test_simulation_settings_changed_detects_stale_results(monkeypatch) -> None:
     changed_config = settings.copy()
     changed_config["config_signature"] = ("different",)
     assert tournament_page.simulation_settings_changed(changed_config) is True
+    assert tournament_page.simulation_results_changed_due_to_bracket(changed_config) is True
+
+    changed_depth = settings.copy()
+    changed_depth["depth_label"] = "Deep"
+    changed_depth["runs"] = 5000
+    changed_depth["config_signature"] = ("different",)
+    assert tournament_page.simulation_results_changed_due_to_bracket(changed_depth) is False
 
 
 def test_store_and_load_simulation_result_is_config_scoped(monkeypatch) -> None:
@@ -443,6 +450,272 @@ def test_store_and_load_simulation_result_is_config_scoped(monkeypatch) -> None:
     assert stored[0] is simulation
     assert stored[1] is summary
     assert tournament_page.stored_simulation_result(Path("config/competitions/other.yml")) is None
+
+
+def test_recorded_winners_apply_to_config_and_can_clear(monkeypatch, tmp_path) -> None:
+    state: dict[str, object] = {}
+    config_path = tmp_path / "division.yml"
+    matchup = MatchupConfig("sf1", "Avon", "Granby")
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    tournament_page.record_matchup_winner(config_path, matchup, "Granby", team_a_score=4, team_b_score=5)
+    effective = tournament_page.apply_recorded_winners_to_config(_config(), config_path)
+
+    assert tournament_page.recorded_winners(config_path)["sf1"]["winner"] == "Granby"
+    assert effective.bracket_rounds[0].matchups[0].completed_winner == "Granby"
+
+    tournament_page.clear_matchup_winner(config_path, "sf1")
+    cleared = tournament_page.apply_recorded_winners_to_config(_config(), config_path)
+
+    assert "sf1" not in tournament_page.recorded_winners(config_path)
+    assert cleared.bracket_rounds[0].matchups[0].completed_winner is None
+
+
+def test_recorded_winners_propagate_through_quarterfinals_and_semifinals(monkeypatch, tmp_path) -> None:
+    state: dict[str, object] = {}
+    config_path = tmp_path / "eight_team.yml"
+    config = tournament_page.build_seeded_competition_config(
+        competition_name="Eight Team",
+        competition_type="playoffs",
+        division_name="U12",
+        seeded_teams=[
+            ("Seed 1", 1),
+            ("Seed 2", 2),
+            ("Seed 3", 3),
+            ("Seed 4", 4),
+            ("Seed 5", 5),
+            ("Seed 6", 6),
+            ("Seed 7", 7),
+            ("Seed 8", 8),
+        ],
+    )
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    tournament_page.record_matchup_winner(config_path, config.bracket_rounds[0].matchups[0], "Seed 1")
+    tournament_page.record_matchup_winner(config_path, config.bracket_rounds[0].matchups[3], "Seed 5")
+    resolved = tournament_page.resolved_competition_config(config, config_path, placeholders=True)
+
+    assert resolved.bracket_rounds[1].matchups[0].team_a == "Seed 1"
+    assert resolved.bracket_rounds[1].matchups[0].team_b == "Seed 5"
+    assert resolved.bracket_rounds[1].matchups[1].team_a == "Winner of prior matchup 2"
+
+
+def test_recorded_winners_propagate_to_championship_and_champion(monkeypatch, tmp_path) -> None:
+    state: dict[str, object] = {}
+    config_path = tmp_path / "division.yml"
+    config = _config()
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    tournament_page.record_matchup_winner(config_path, config.bracket_rounds[0].matchups[0], "Avon")
+    tournament_page.record_matchup_winner(config_path, config.bracket_rounds[0].matchups[1], "Simsbury")
+    semifinal_resolved = tournament_page.resolved_competition_config(config, config_path, placeholders=True)
+
+    assert semifinal_resolved.bracket_rounds[1].matchups[0].team_a == "Avon"
+    assert semifinal_resolved.bracket_rounds[1].matchups[0].team_b == "Simsbury"
+
+    tournament_page.record_matchup_winner(config_path, semifinal_resolved.bracket_rounds[1].matchups[0], "Simsbury")
+    final_resolved = tournament_page.resolved_competition_config(config, config_path, placeholders=True)
+
+    assert final_resolved.bracket_rounds[1].matchups[0].completed_winner == "Simsbury"
+    assert tournament_page.competition_champion(final_resolved) == "Simsbury"
+
+
+def test_first_round_winners_populate_championship_slots_by_matchup_id(monkeypatch, tmp_path) -> None:
+    state: dict[str, object] = {}
+    config_path = tmp_path / "division.yml"
+    config = CompetitionConfig(
+        competition_name="Four Team",
+        competition_type="playoffs",
+        division_name="U12",
+        teams=["Avon", "Granby", "RHAM", "Simsbury"],
+        seeds={"Avon": 1, "Granby": 4, "RHAM": 2, "Simsbury": 3},
+        bracket_rounds=[
+            BracketRoundConfig(
+                "Semifinals",
+                [
+                    MatchupConfig("r1_m1", "Avon", "Granby"),
+                    MatchupConfig("r1_m2", "RHAM", "Simsbury"),
+                ],
+            ),
+            BracketRoundConfig("Championship", [MatchupConfig("r2_m1", "Winner of r1_m1", "Winner of r1_m2")]),
+        ],
+    )
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    tournament_page.record_matchup_winner(config_path, config.bracket_rounds[0].matchups[0], "Avon")
+    one_winner = tournament_page.resolved_competition_config(config, config_path, placeholders=True)
+
+    assert one_winner.bracket_rounds[1].matchups[0].team_a == "Avon"
+    assert one_winner.bracket_rounds[1].matchups[0].team_b == "Winner of prior matchup 2"
+
+    tournament_page.record_matchup_winner(config_path, config.bracket_rounds[0].matchups[1], "RHAM")
+    both_winners = tournament_page.resolved_competition_config(config, config_path, placeholders=True)
+
+    assert both_winners.bracket_rounds[1].matchups[0].team_a == "Avon"
+    assert both_winners.bracket_rounds[1].matchups[0].team_b == "RHAM"
+
+
+def test_clearing_prior_winner_reverts_dependent_slot(monkeypatch, tmp_path) -> None:
+    state: dict[str, object] = {}
+    config_path = tmp_path / "division.yml"
+    config = CompetitionConfig(
+        competition_name="Four Team",
+        competition_type="playoffs",
+        division_name="U12",
+        teams=["Avon", "Granby", "RHAM", "Simsbury"],
+        seeds={},
+        bracket_rounds=[
+            BracketRoundConfig("Semifinals", [MatchupConfig("r1_m1", "Avon", "Granby"), MatchupConfig("r1_m2", "RHAM", "Simsbury")]),
+            BracketRoundConfig("Championship", [MatchupConfig("r2_m1", "Winner of r1_m1", "Winner of r1_m2")]),
+        ],
+    )
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    tournament_page.record_matchup_winner(config_path, config.bracket_rounds[0].matchups[0], "Avon")
+    tournament_page.clear_matchup_winner(config_path, "r1_m1")
+    resolved = tournament_page.resolved_competition_config(config, config_path, placeholders=True)
+
+    assert resolved.bracket_rounds[1].matchups[0].team_a == "Winner of prior matchup 1"
+
+
+def test_resolver_handles_display_only_prior_matchup_fallback(monkeypatch, tmp_path) -> None:
+    state: dict[str, object] = {}
+    config_path = tmp_path / "division.yml"
+    config = CompetitionConfig(
+        competition_name="Display Only",
+        competition_type="playoffs",
+        division_name="U12",
+        teams=["Avon", "Granby", "RHAM", "Simsbury"],
+        seeds={},
+        bracket_rounds=[
+            BracketRoundConfig("Semifinals", [MatchupConfig("sf1", "Avon", "Granby"), MatchupConfig("sf2", "RHAM", "Simsbury")]),
+            BracketRoundConfig("Championship", [MatchupConfig("final", "Winner of prior matchup 1", "Winner of prior matchup 2")]),
+        ],
+    )
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    tournament_page.record_matchup_winner(config_path, config.bracket_rounds[0].matchups[0], "Avon")
+    resolved = tournament_page.resolved_competition_config(config, config_path, placeholders=True)
+
+    assert resolved.bracket_rounds[1].matchups[0].team_a == "Avon"
+    assert resolved.bracket_rounds[1].matchups[0].team_b == "Winner of prior matchup 2"
+
+
+def test_partial_bracket_uses_placeholders_for_waiting_matchups(monkeypatch, tmp_path) -> None:
+    state: dict[str, object] = {}
+    config_path = tmp_path / "division.yml"
+    config = CompetitionConfig(
+        competition_name="Partial",
+        competition_type="playoffs",
+        division_name="U12",
+        teams=["Avon", "Granby", "RHAM", "Simsbury"],
+        seeds={"Avon": 1, "Granby": 4, "RHAM": 2, "Simsbury": 3},
+        bracket_rounds=[
+            BracketRoundConfig(
+                "Semifinals",
+                [
+                    MatchupConfig("sf1", "Avon", "Granby"),
+                    MatchupConfig("sf2", "RHAM", "Simsbury"),
+                ],
+            ),
+            BracketRoundConfig("Championship", [MatchupConfig("final", "Avon", "RHAM")]),
+        ],
+    )
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    tournament_page.record_matchup_winner(config_path, config.bracket_rounds[0].matchups[0], "Avon")
+    resolved = tournament_page.resolved_competition_config(config, config_path, placeholders=True)
+
+    assert resolved.bracket_rounds[1].matchups[0].team_a == "Avon"
+    assert resolved.bracket_rounds[1].matchups[0].team_b == "Winner of prior matchup 2"
+    assert tournament_page.is_playable_matchup(
+        resolved.bracket_rounds[1].matchups[0].team_a,
+        resolved.bracket_rounds[1].matchups[0].team_b,
+    ) is False
+
+
+def test_record_matchup_winner_rejects_invalid_winner(monkeypatch, tmp_path) -> None:
+    monkeypatch.setattr(tournament_page.st, "session_state", {})
+
+    try:
+        tournament_page.record_matchup_winner(tmp_path / "division.yml", MatchupConfig("m1", "Avon", "Granby"), "RHAM")
+    except ValueError as exc:
+        assert "Winner must be one of the two matchup teams" in str(exc)
+    else:
+        raise AssertionError("Expected invalid winner to be rejected")
+
+
+def test_matchup_simulation_row_falls_back_for_missing_simulation() -> None:
+    row = tournament_page.matchup_simulation_row(pd.DataFrame(), "Semifinals", MatchupConfig("m1", "Avon", "Granby"))
+
+    assert row["team_a"] == "Avon"
+    assert row["team_b"] == "Granby"
+    assert row["team_a_win_probability"] == 0.5
+    assert "Run the simulation" in row["note"]
+
+
+def test_matchup_simulation_row_handles_waiting_placeholder() -> None:
+    row = tournament_page.matchup_simulation_row(
+        _simulation(),
+        "Final",
+        MatchupConfig("final", "Avon", "Winner of prior matchup 2"),
+    )
+
+    assert row["team_b"] == "Winner of prior matchup 2"
+    assert "Waiting on an earlier result" in row["note"]
+
+
+def test_tournament_matchup_preview_data_uses_existing_dashboard_helpers(monkeypatch) -> None:
+    class Prediction:
+        projected_team_a_goals = 4.8
+        projected_team_b_goals = 5.2
+
+    def fake_prediction(team_a, team_b, ratings, team_games, sos, power_ratings):
+        del team_a, team_b, ratings, team_games, sos, power_ratings
+        return Prediction()
+
+    def fake_context(team_a, team_b, power_ratings):
+        del power_ratings
+        return {
+            "predicted_winner": team_b,
+            "team_a_probability": 0.44,
+            "team_b_probability": 0.56,
+        }
+
+    def fake_preview(team_a, team_b, prediction, power_context, power_ratings, trends, sos):
+        del prediction, power_context, power_ratings, trends, sos
+        return {
+            "favorite": team_b,
+            "team_a_probability": "44.0%",
+            "team_b_probability": "56.0%",
+            "team_a_score": "4.8",
+            "team_b_score": "5.2",
+            "edge_label": "Slight Edge",
+            "fan_outlook": "Competitive Matchup",
+            "game_style": "Tight Contest",
+            "observations": [f"{team_b} has a narrow edge."],
+            "keys": ["Can the underdog keep it close?"],
+        }
+
+    monkeypatch.setattr(tournament_page.dashboard, "build_matchup_prediction", fake_prediction)
+    monkeypatch.setattr(tournament_page.dashboard, "matchup_power_context", fake_context)
+    monkeypatch.setattr(tournament_page.dashboard, "game_preview_data", fake_preview)
+
+    data = {
+        "ratings": pd.DataFrame([{"team": "Avon"}, {"team": "Granby"}]),
+        "team_games": pd.DataFrame([{"team": "Avon"}, {"team": "Granby"}]),
+        "power_ratings": pd.DataFrame([{"team": "Avon"}, {"team": "Granby"}]),
+        "sos": pd.DataFrame(),
+        "trends": pd.DataFrame(),
+    }
+
+    preview = tournament_page.tournament_matchup_preview_data("Avon", "Granby", data)
+
+    assert preview["favorite"] == "Granby"
+    assert preview["team_a_probability"] == 0.44
+    assert preview["team_b_probability"] == 0.56
+    assert preview["interpretation_label"] == "Competitive Matchup"
+    assert preview["game_style"] == "Tight Contest"
 
 
 def test_should_run_simulation_requires_explicit_click_and_valid_config() -> None:
@@ -605,7 +878,7 @@ def test_matchup_preview_card_renders_without_shared_badge_helpers(monkeypatch) 
     tournament_page.render_matchup_preview_card(_simulation().iloc[0])
 
     assert ("Favorite", "Avon") in calls
-    assert any(kind == "markdown" and "Playoff Edge" in str(value) for kind, value in calls)
+    assert any(kind == "markdown" and "Heavy Favorite" in str(value) for kind, value in calls)
 
 
 def test_most_likely_path_story_and_toughest_path_are_deterministic() -> None:
@@ -640,9 +913,222 @@ def test_bracket_team_line_highlights_favorite_and_probabilities() -> None:
     line = tournament_page.bracket_team_line("Avon", _config(), _summary(), True, 0.78)
 
     assert "#1 Avon" in line
-    assert "Matchup 78%" in line
+    assert "Win Probability 78%" in line
     assert "Title 58%" in line
     assert "#f0fdf4" in line
+
+
+def test_result_bracket_team_line_switches_to_result_mode() -> None:
+    winner = tournament_page.result_bracket_team_line("Avon", _config(), "Avon", "Final: Avon 6, Granby 2")
+    loser = tournament_page.result_bracket_team_line("Granby", _config(), "Avon", "Final: Avon 6, Granby 2")
+
+    assert "Advanced" in winner
+    assert "Eliminated" in loser
+    assert "Matchup" not in winner
+    assert "#f0fdf4" in winner
+    assert "opacity:0.72" in loser
+
+
+def test_completed_matchup_badge_logic_is_contextual() -> None:
+    favorite_row = _simulation().iloc[0]
+    upset_row = favorite_row.copy()
+    upset_row["expected_winner"] = "Avon"
+
+    assert tournament_page.completed_matchup_badge(favorite_row, "Avon", 4) == "Favorite Advanced"
+    assert tournament_page.completed_matchup_badge(favorite_row, "Avon", 6) == "Statement Win"
+    assert tournament_page.completed_matchup_badge(favorite_row, "Avon", 1) == "Narrow Escape"
+    assert tournament_page.completed_matchup_badge(upset_row, "Granby", 2) == "Upset Complete"
+
+
+def test_road_matchup_badge_avoids_upset_watch_for_unresolved_championship() -> None:
+    row = pd.Series(
+        {
+            "round": "Championship",
+            "team_a": "Winner of prior matchup 1",
+            "team_b": "Winner of prior matchup 2",
+            "team_a_win_probability": 0.5,
+            "upset_likelihood": 0.5,
+        }
+    )
+
+    assert tournament_page.road_matchup_badge(row) == "Awaiting Semifinal Winners"
+
+
+def test_road_matchup_badge_avoids_upset_watch_for_strong_favorite() -> None:
+    row = pd.Series(
+        {
+            "round": "Quarterfinals",
+            "team_a": "Granby",
+            "team_b": "West Hartford Green",
+            "team_a_win_probability": 0.18,
+            "upset_likelihood": 0.45,
+        }
+    )
+
+    assert tournament_page.road_matchup_badge(row) == "Heavy Favorite"
+
+
+def test_road_matchup_badge_allows_upset_watch_for_vulnerable_favorite() -> None:
+    row = pd.Series(
+        {
+            "round": "Quarterfinals",
+            "team_a": "Avon",
+            "team_b": "RHAM",
+            "team_a_win_probability": 0.57,
+            "upset_likelihood": 0.43,
+        }
+    )
+
+    assert tournament_page.road_matchup_badge(row) == "Upset Watch"
+
+
+def test_road_matchup_badge_aligns_with_preview_edge_label() -> None:
+    strong = pd.Series({"team_a": "A", "team_b": "B", "team_a_win_probability": 0.78, "upset_likelihood": 0.45})
+    solid = pd.Series({"team_a": "A", "team_b": "B", "team_a_win_probability": 0.70, "upset_likelihood": 0.45})
+    toss_up = pd.Series({"team_a": "A", "team_b": "B", "team_a_win_probability": 0.53, "upset_likelihood": 0.47})
+
+    assert tournament_page.matchup_interpretation_label(tournament_page.favorite_probability(strong)) == "Heavy Favorite"
+    assert tournament_page.road_matchup_badge(strong) == "Heavy Favorite"
+    assert tournament_page.matchup_interpretation_label(tournament_page.favorite_probability(solid)) == "Strong Edge"
+    assert tournament_page.road_matchup_badge(solid) == "Strong Edge"
+    assert tournament_page.matchup_interpretation_label(tournament_page.favorite_probability(toss_up)) == "Toss-Up"
+    assert tournament_page.road_matchup_badge(toss_up) == "Toss-Up"
+
+
+def test_compact_preview_uses_single_interpretation_label_and_win_probability(monkeypatch) -> None:
+    calls: list[tuple[str, object]] = []
+
+    class FakeExpander:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
+    class FakeColumn:
+        def metric(self, label, value):
+            calls.append(("metric", label))
+
+    monkeypatch.setattr(tournament_page.st, "expander", lambda *args, **kwargs: FakeExpander())
+    monkeypatch.setattr(tournament_page.st, "info", lambda text: calls.append(("info", text)))
+    monkeypatch.setattr(tournament_page.st, "markdown", lambda text, **kwargs: calls.append(("markdown", text)))
+    monkeypatch.setattr(tournament_page.st, "columns", lambda count: [FakeColumn() for _ in range(count)])
+    monkeypatch.setattr(tournament_page.st, "caption", lambda text: calls.append(("caption", text)))
+    monkeypatch.setattr(
+        tournament_page,
+        "tournament_matchup_preview_data",
+        lambda team_a, team_b, data: {
+            "favorite": team_a,
+            "team_a_probability": 0.64,
+            "team_b_probability": 0.36,
+            "team_a_score": "6.1",
+            "team_b_score": "4.8",
+            "interpretation_label": "Slight Edge",
+            "observations": ["One clear note."],
+            "keys": ["One key."],
+        },
+    )
+
+    tournament_page.render_compact_matchup_preview(
+        pd.Series({"team_a": "West Hartford Green", "team_b": "Colchester"}),
+        {},
+    )
+
+    markdown = " ".join(str(value) for kind, value in calls if kind == "markdown")
+    assert "Slight Edge" in markdown
+    assert "Competitive Matchup" not in markdown
+    assert "Playoff Edge" not in markdown
+    assert "West Hartford Green Win Probability" in [value for kind, value in calls if kind == "metric"]
+
+
+def test_recorded_score_helpers_return_score_and_margin(monkeypatch, tmp_path) -> None:
+    state: dict[str, object] = {}
+    config_path = tmp_path / "division.yml"
+    matchup = MatchupConfig("sf1", "Avon 12U", "Granby 12U")
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    tournament_page.record_matchup_winner(config_path, matchup, "Avon 12U", team_a_score=6, team_b_score=4)
+
+    assert tournament_page.recorded_score_text(config_path, matchup) == "Final: Avon 12U 6, Granby 12U 4"
+    assert tournament_page.recorded_score_margin(config_path, matchup) == 2
+
+
+def test_road_matchup_card_includes_preview_and_completed_result_mode(monkeypatch, tmp_path) -> None:
+    calls: list[tuple[str, object]] = []
+
+    class FakeContainer:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
+    monkeypatch.setattr(tournament_page.st, "container", lambda **kwargs: FakeContainer())
+    monkeypatch.setattr(tournament_page.st, "markdown", lambda text, **kwargs: calls.append(("markdown", text)))
+    monkeypatch.setattr(tournament_page.st, "caption", lambda text: calls.append(("caption", text)))
+    monkeypatch.setattr(tournament_page.st, "success", lambda text: calls.append(("success", text)))
+    monkeypatch.setattr(tournament_page, "render_compact_matchup_preview", lambda matchup, data: calls.append(("preview", matchup["matchup_id"])))
+    monkeypatch.setattr(tournament_page, "render_record_result_controls", lambda matchup, config_path, completed_winner: completed_winner)
+
+    tournament_page.render_bracket_matchup_card(
+        _simulation().iloc[1],
+        _config(),
+        _summary(),
+        _config().bracket_rounds[0].matchups[1],
+        tmp_path / "division.yml",
+        {"ratings": pd.DataFrame()},
+    )
+
+    assert ("preview", "sf2") in calls
+    assert any(kind == "markdown" and "Eliminated" in str(value) for kind, value in calls)
+    assert any(kind == "success" and "Winner recorded: Simsbury" in str(value) for kind, value in calls)
+
+
+def test_current_round_summary_does_not_render_duplicate_result_controls(monkeypatch, tmp_path) -> None:
+    calls: list[tuple[str, object]] = []
+
+    class FakeColumn:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
+    monkeypatch.setattr(tournament_page.st, "subheader", lambda text: calls.append(("subheader", text)))
+    monkeypatch.setattr(tournament_page.st, "caption", lambda text: calls.append(("caption", text)))
+    monkeypatch.setattr(tournament_page.st, "columns", lambda count: [FakeColumn() for _ in range(count)])
+    monkeypatch.setattr(tournament_page, "render_matchup_preview_card", lambda *args, **kwargs: calls.append(("card_args", len(args))))
+    monkeypatch.setattr(
+        tournament_page,
+        "render_record_result_controls",
+        lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("duplicate controls rendered")),
+    )
+
+    tournament_page.render_current_round_matchups(_config(), _simulation(), tmp_path / "division.yml", {})
+
+    assert ("subheader", "Current Round Summary") in calls
+    assert all(value == 1 for kind, value in calls if kind == "card_args")
+
+
+def test_current_round_summary_handles_completed_bracket_without_bottom_crash(monkeypatch, tmp_path) -> None:
+    calls: list[tuple[str, object]] = []
+    complete = CompetitionConfig(
+        competition_name="Complete",
+        competition_type="playoffs",
+        division_name="U12",
+        teams=["Avon", "Granby"],
+        seeds={"Avon": 1, "Granby": 2},
+        bracket_rounds=[
+            BracketRoundConfig("Championship", [MatchupConfig("final", "Avon", "Granby", completed_winner="Avon")])
+        ],
+    )
+
+    monkeypatch.setattr(tournament_page.st, "subheader", lambda text: calls.append(("subheader", text)))
+    monkeypatch.setattr(tournament_page.st, "success", lambda text: calls.append(("success", text)))
+
+    tournament_page.render_current_round_matchups(complete, pd.DataFrame(), tmp_path / "division.yml", {})
+
+    assert ("success", "Bracket complete. Champion: Avon") in calls
 
 
 def test_highest_round_advancement_probability_parses_rounds() -> None:
