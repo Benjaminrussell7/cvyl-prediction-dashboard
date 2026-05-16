@@ -879,7 +879,11 @@ def test_matchup_preview_card_renders_without_shared_badge_helpers(monkeypatch) 
     monkeypatch.setattr(tournament_page.st, "markdown", lambda *args, **kwargs: calls.append(("markdown", args[0])))
     monkeypatch.setattr(tournament_page.st, "caption", lambda text: calls.append(("caption", text)))
     monkeypatch.setattr(tournament_page.st, "warning", lambda text: calls.append(("warning", text)))
-    monkeypatch.setattr(tournament_page.st, "columns", lambda count: [FakeColumn() for _ in range(count)])
+    monkeypatch.setattr(
+        tournament_page.st,
+        "columns",
+        lambda count: [FakeColumn() for _ in range(len(count) if isinstance(count, (list, tuple)) else count)],
+    )
 
     tournament_page.render_matchup_preview_card(_simulation().iloc[0])
 
@@ -1024,7 +1028,11 @@ def test_compact_preview_uses_single_interpretation_label_and_win_probability(mo
     monkeypatch.setattr(tournament_page.st, "expander", lambda *args, **kwargs: FakeExpander())
     monkeypatch.setattr(tournament_page.st, "info", lambda text: calls.append(("info", text)))
     monkeypatch.setattr(tournament_page.st, "markdown", lambda text, **kwargs: calls.append(("markdown", text)))
-    monkeypatch.setattr(tournament_page.st, "columns", lambda count: [FakeColumn() for _ in range(count)])
+    monkeypatch.setattr(
+        tournament_page.st,
+        "columns",
+        lambda count: [FakeColumn() for _ in range(len(count) if isinstance(count, (list, tuple)) else count)],
+    )
     monkeypatch.setattr(tournament_page.st, "caption", lambda text: calls.append(("caption", text)))
     monkeypatch.setattr(
         tournament_page,
@@ -1050,7 +1058,9 @@ def test_compact_preview_uses_single_interpretation_label_and_win_probability(mo
     assert "Slight Edge" in markdown
     assert "Competitive Matchup" not in markdown
     assert "Playoff Edge" not in markdown
-    assert "West Hartford Green Win Probability" in [value for kind, value in calls if kind == "metric"]
+    rendered_text = " ".join(str(value) for _, value in calls)
+    assert "Win Probability" in rendered_text
+    assert "Projected goals" in rendered_text
 
 
 def test_recorded_score_helpers_return_score_and_margin(monkeypatch, tmp_path) -> None:
@@ -1108,7 +1118,11 @@ def test_current_round_summary_does_not_render_duplicate_result_controls(monkeyp
 
     monkeypatch.setattr(tournament_page.st, "subheader", lambda text: calls.append(("subheader", text)))
     monkeypatch.setattr(tournament_page.st, "caption", lambda text: calls.append(("caption", text)))
-    monkeypatch.setattr(tournament_page.st, "columns", lambda count: [FakeColumn() for _ in range(count)])
+    monkeypatch.setattr(
+        tournament_page.st,
+        "columns",
+        lambda count: [FakeColumn() for _ in range(len(count) if isinstance(count, (list, tuple)) else count)],
+    )
     monkeypatch.setattr(tournament_page, "render_matchup_preview_card", lambda *args, **kwargs: calls.append(("card_args", len(args))))
     monkeypatch.setattr(
         tournament_page,
@@ -1181,4 +1195,30 @@ def test_tournament_branding_context_falls_back_when_shared_helpers_missing(monk
         context["Glastonbury 12U Blue"],
         favored=True,
         compact=True,
+    )
+
+
+def test_render_compact_bracket_team_row_handles_missing_branding(monkeypatch) -> None:
+    class FakeContainer:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
+    monkeypatch.setattr(tournament_page.st, "container", lambda *args, **kwargs: FakeContainer())
+    monkeypatch.setattr(tournament_page.st, "columns", lambda spec: [FakeContainer() for _ in range(len(spec))])
+    monkeypatch.setattr(tournament_page.st, "image", lambda *args, **kwargs: None)
+    monkeypatch.setattr(tournament_page.st, "markdown", lambda *args, **kwargs: None)
+    monkeypatch.setattr(tournament_page.st, "caption", lambda *args, **kwargs: None)
+
+    tournament_page.render_compact_bracket_team_row(
+        "Unbranded Team",
+        {
+            "logo_path": "",
+            "primary_color": "",
+            "secondary_color": "",
+        },
+        "1 Unbranded Team",
+        "Win Probability 50% | Title 10%",
     )

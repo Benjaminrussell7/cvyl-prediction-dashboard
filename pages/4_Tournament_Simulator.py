@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import html
 import re
 import sys
 from pathlib import Path
@@ -200,6 +201,51 @@ def render_tournament_branding_header(
             if club_name:
                 st.caption(club_name)
         st.markdown("</div>", unsafe_allow_html=True)
+
+
+def render_compact_bracket_team_row(
+    team: str,
+    branding_context: dict[str, object],
+    primary_text: str,
+    secondary_text: str,
+    *,
+    favored: bool = False,
+    completed: bool = False,
+    subdued: bool = False,
+) -> None:
+    logo_path = str(branding_context.get("logo_path") or "")
+    accent = choose_safe_branding_accent(
+        str(branding_context.get("primary_color") or ""),
+        str(branding_context.get("secondary_color") or ""),
+    )
+    text_color = accent or "#111827"
+    stripe = accent if accent else ("#16a34a" if favored else "#d1d5db")
+    background = "#f0fdf4" if completed and favored else "#f9fafb" if completed else "#ffffff"
+    opacity = "0.72" if subdued and not favored else "1"
+    with st.container():
+        if stripe:
+            st.markdown(
+                f"<div style='height:2px;background:{stripe};border-radius:999px;margin-bottom:0.35rem;'></div>",
+                unsafe_allow_html=True,
+            )
+        cols = st.columns([0.08, 0.92])
+        with cols[0]:
+            if logo_path and Path(logo_path).exists():
+                st.image(logo_path, width=22)
+            else:
+                st.markdown("<div style='width:22px;height:22px;'></div>", unsafe_allow_html=True)
+        with cols[1]:
+            st.markdown(
+                (
+                    f"<div style='background:{background};opacity:{opacity};padding:0.02rem 0.05rem;border-radius:6px;'>"
+                    f"<div style='font-weight:850;color:{text_color};line-height:1.08;overflow-wrap:anywhere;'>"
+                    f"{html.escape(primary_text)}</div>"
+                    f"<div style='font-size:0.78rem;color:#4b5563;line-height:1.1;'>"
+                    f"{html.escape(secondary_text)}</div>"
+                    "</div>"
+                ),
+                unsafe_allow_html=True,
+            )
 
 
 def choose_safe_branding_accent(primary_color: str, secondary_color: str = "") -> str:
@@ -1333,37 +1379,48 @@ def render_bracket_matchup_card(
     team_a_probability = float(matchup.get("team_a_win_probability", 0.5))
     completed_winner = completed_winner_for_matchup(matchup, matchup_config, config_path)
     branding_contexts = tournament_matchup_branding_context(team_a, team_b)
+    seed_a = format_seed(config.seeds.get(team_a))
+    seed_b = format_seed(config.seeds.get(team_b))
     with st.container(border=True):
         if completed_winner:
             score_text = recorded_score_text(config_path, matchup_config) if config_path and matchup_config else ""
             score_margin = recorded_score_margin(config_path, matchup_config) if config_path and matchup_config else None
-            cols = st.columns(2)
-            with cols[0]:
-                render_tournament_branding_header(team_a, branding_contexts[team_a], favored=team_a == completed_winner, compact=True)
-                st.markdown(
-                    result_bracket_team_line(team_a, config, completed_winner, score_text),
-                    unsafe_allow_html=True,
-                )
-            with cols[1]:
-                render_tournament_branding_header(team_b, branding_contexts[team_b], favored=team_b == completed_winner, compact=True)
-                st.markdown(
-                    result_bracket_team_line(team_b, config, completed_winner, score_text),
-                    unsafe_allow_html=True,
-                )
+            render_compact_bracket_team_row(
+                team_a,
+                branding_contexts[team_a],
+                f"{seed_a} {team_a}",
+                completed_matchup_secondary_text(team_a, completed_winner, score_text),
+                favored=team_a == completed_winner,
+                completed=True,
+                subdued=team_a != completed_winner,
+            )
+            render_compact_bracket_team_row(
+                team_b,
+                branding_contexts[team_b],
+                f"{seed_b} {team_b}",
+                completed_matchup_secondary_text(team_b, completed_winner, score_text),
+                favored=team_b == completed_winner,
+                completed=True,
+                subdued=team_b != completed_winner,
+            )
             if score_text:
                 st.caption(score_text)
             badges = [story_badge(completed_matchup_badge(matchup, completed_winner, score_margin))]
         else:
-            cols = st.columns(2)
-            with cols[0]:
-                render_tournament_branding_header(team_a, branding_contexts[team_a], favored=team_a == favorite, compact=True)
-                st.markdown(bracket_team_line(team_a, config, summary, team_a == favorite, team_a_probability), unsafe_allow_html=True)
-            with cols[1]:
-                render_tournament_branding_header(team_b, branding_contexts[team_b], favored=team_b == favorite, compact=True)
-                st.markdown(
-                    bracket_team_line(team_b, config, summary, team_b == favorite, 1.0 - team_a_probability),
-                    unsafe_allow_html=True,
-                )
+            render_compact_bracket_team_row(
+                team_a,
+                branding_contexts[team_a],
+                f"{seed_a} {team_a}",
+                bracket_matchup_secondary_text(team_a, summary, team_a_probability),
+                favored=team_a == favorite,
+            )
+            render_compact_bracket_team_row(
+                team_b,
+                branding_contexts[team_b],
+                f"{seed_b} {team_b}",
+                bracket_matchup_secondary_text(team_b, summary, 1.0 - team_a_probability),
+                favored=team_b == favorite,
+            )
             badges = [story_badge(road_matchup_badge(matchup))]
         st.markdown(" ".join(badges), unsafe_allow_html=True)
         if is_playable_matchup(team_a, team_b) and data is not None:
@@ -1471,6 +1528,20 @@ def result_bracket_team_line(
         f"<div style='font-weight:{weight};color:{text_color};overflow-wrap:anywhere;'>{seed} {team}</div>"
         f"<div style='font-size:0.78rem;color:#4b5563;'>{detail}</div></div>"
     )
+
+
+def bracket_matchup_secondary_text(team: str, summary: pd.DataFrame, probability: float) -> str:
+    if is_placeholder_team(team):
+        return "Waiting on prior result"
+    title_probability = team_summary_probability(summary, team, "championship_probability")
+    return f"Win Probability {probability:.0%} | Title {title_probability:.0%}"
+
+
+def completed_matchup_secondary_text(team: str, completed_winner: str, score_text: str = "") -> str:
+    status = "Advanced" if team == completed_winner else "Eliminated"
+    if score_text:
+        status = f"{status} | {score_text.removeprefix('Final: ')}"
+    return status
 
 
 def completed_matchup_badge(matchup: pd.Series, completed_winner: str, score_margin: int | None = None) -> str:
@@ -1869,15 +1940,21 @@ def render_compact_matchup_preview(matchup: pd.Series, data: dict[str, pd.DataFr
         st.markdown(story_badge(preview["interpretation_label"]), unsafe_allow_html=True)
         branding_cols = st.columns(2)
         with branding_cols[0]:
-            render_tournament_branding_header(team_a, branding_contexts[team_a], favored=preview["favorite"] == team_a, compact=True)
+            render_compact_bracket_team_row(
+                team_a,
+                branding_contexts[team_a],
+                team_a,
+                f"Win Probability {float(preview['team_a_probability']):.1%} | Projected goals {preview['team_a_score']}",
+                favored=preview["favorite"] == team_a,
+            )
         with branding_cols[1]:
-            render_tournament_branding_header(team_b, branding_contexts[team_b], favored=preview["favorite"] == team_b, compact=True)
-        cols = st.columns(2)
-        cols[0].metric(f"{team_a} Win Probability", f"{float(preview['team_a_probability']):.1%}")
-        cols[1].metric(f"{team_b} Win Probability", f"{float(preview['team_b_probability']):.1%}")
-        score_cols = st.columns(2)
-        score_cols[0].metric(f"{team_a} projected goals", preview["team_a_score"])
-        score_cols[1].metric(f"{team_b} projected goals", preview["team_b_score"])
+            render_compact_bracket_team_row(
+                team_b,
+                branding_contexts[team_b],
+                team_b,
+                f"Win Probability {float(preview['team_b_probability']):.1%} | Projected goals {preview['team_b_score']}",
+                favored=preview["favorite"] == team_b,
+            )
         st.caption(f"Favorite: {preview['favorite']}")
         st.markdown("**What the Model Sees**")
         for observation in preview["observations"]:

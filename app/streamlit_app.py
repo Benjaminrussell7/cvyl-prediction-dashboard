@@ -170,6 +170,43 @@ def render_team_branding_header(
         )
 
 
+def render_matchup_team_card(
+    team: str,
+    branding_context: dict[str, object],
+    probability_text: str,
+    projected_goals_text: str,
+    *,
+    favored: bool = False,
+) -> None:
+    logo_source = str(branding_context.get("logo_source") or "")
+    accent = str(branding_context.get("matchup_color") or branding_context.get("accent_color") or "")
+    club_name = str(branding_context.get("club_name") or "")
+    with st.container():
+        if accent:
+            st.markdown(
+                f"<div style='height:2px;background:{accent};border-radius:999px;margin-bottom:0.32rem;'></div>",
+                unsafe_allow_html=True,
+            )
+        cols = st.columns([0.14, 0.86])
+        with cols[0]:
+            if logo_source:
+                st.image(logo_source, width=24)
+            else:
+                st.markdown("<div style='width:24px;height:24px;'></div>", unsafe_allow_html=True)
+        with cols[1]:
+            st.markdown(
+                (
+                    f"<div style='font-weight:850;color:{accent or '#111827'};line-height:1.08;"
+                    "overflow-wrap:anywhere;'>"
+                    f"{html.escape(team)}</div>"
+                ),
+                unsafe_allow_html=True,
+            )
+            if club_name:
+                st.caption(club_name)
+            st.caption(f"{probability_text} | Projected goals {projected_goals_text}")
+
+
 def branding_logo_source(branding: club_branding.ClubBranding | None) -> str:
     if branding is None:
         return ""
@@ -1534,13 +1571,21 @@ def render_game_preview_card(
         )
         col1, col2 = st.columns(2)
         with col1:
-            render_team_branding_header(team_a, branding_contexts[team_a], favored=preview["favorite"] == team_a, compact=True)
-            st.metric("Win Probability", preview["team_a_probability"])
-            st.metric("Projected Goals", preview["team_a_score"])
+            render_matchup_team_card(
+                team_a,
+                branding_contexts[team_a],
+                f"Win Probability {preview['team_a_probability']}",
+                preview["team_a_score"],
+                favored=preview["favorite"] == team_a,
+            )
         with col2:
-            render_team_branding_header(team_b, branding_contexts[team_b], favored=preview["favorite"] == team_b, compact=True)
-            st.metric("Win Probability", preview["team_b_probability"])
-            st.metric("Projected Goals", preview["team_b_score"])
+            render_matchup_team_card(
+                team_b,
+                branding_contexts[team_b],
+                f"Win Probability {preview['team_b_probability']}",
+                preview["team_b_score"],
+                favored=preview["favorite"] == team_b,
+            )
 
         st.markdown("**What the Model Sees**")
         for observation in preview["observations"]:

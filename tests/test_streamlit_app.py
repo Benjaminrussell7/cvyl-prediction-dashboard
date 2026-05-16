@@ -546,6 +546,34 @@ def test_team_branding_context_and_matchup_colors_use_shared_club_resolution() -
     assert colors["Glastonbury 12U Blue"] != ""
 
 
+def test_render_matchup_team_card_handles_missing_branding(monkeypatch) -> None:
+    class FakeContainer:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
+    monkeypatch.setattr(dashboard.st, "container", lambda *args, **kwargs: FakeContainer())
+    monkeypatch.setattr(dashboard.st, "columns", lambda spec: [FakeContainer() for _ in range(len(spec))])
+    monkeypatch.setattr(dashboard.st, "image", lambda *args, **kwargs: None)
+    monkeypatch.setattr(dashboard.st, "markdown", lambda *args, **kwargs: None)
+    monkeypatch.setattr(dashboard.st, "caption", lambda *args, **kwargs: None)
+
+    dashboard.render_matchup_team_card(
+        "Unbranded Team",
+        {
+            "logo_source": "",
+            "matchup_color": "",
+            "accent_color": "",
+            "club_name": "",
+        },
+        "Win Probability 50.0%",
+        "4.8",
+        favored=False,
+    )
+
+
 def test_matchup_strength_data_reads_power_rating_context() -> None:
     power_ratings = pd.DataFrame(
         [
