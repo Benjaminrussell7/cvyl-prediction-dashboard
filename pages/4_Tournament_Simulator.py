@@ -356,7 +356,7 @@ def render_reactive_seed_controls(
                     f"Seed: {team}",
                     min_value=1,
                     max_value=max(1, len(selected_teams)),
-                    value=bounded_seed(st.session_state.get(key, seed_values.get(team, index + 1)), len(selected_teams)),
+                    value=bounded_seed(seed_values.get(team, index + 1), len(selected_teams)),
                     step=1,
                     key=key,
                 )
@@ -377,17 +377,37 @@ def reconcile_seed_state(
         elif team in initial_seeds:
             current[team] = int(initial_seeds[team])
     reconciled = reconcile_seed_values(selected_teams, current)
+    apply_reconciled_seed_state(selected_teams, reconciled, initial_config)
+    return reconciled
+
+
+def apply_reconciled_seed_state(
+    selected_teams: list[str],
+    reconciled: dict[str, int],
+    initial_config: CompetitionConfig | None,
+) -> None:
     selected_keys = {builder_seed_key(initial_config, team) for team in selected_teams}
     suffix = safe_competition_id(initial_config.competition_name) if initial_config else "new"
     prefix = f"builder_seed_{suffix}_"
-    for key in list(st.session_state.keys()):
-        if str(key).startswith(prefix) and key not in selected_keys:
+    signature_key = f"builder_seed_signature_{suffix}"
+    signature = seed_selection_signature(selected_teams)
+    state_changed = st.session_state.get(signature_key) != signature
+
+    for key in [key for key in list(st.session_state.keys()) if str(key).startswith(prefix)]:
+        if key not in selected_keys and state_changed:
             del st.session_state[key]
+
     for team, seed in reconciled.items():
         key = builder_seed_key(initial_config, team)
-        if key not in st.session_state:
+        if st.session_state.get(key) != seed:
             st.session_state[key] = seed
-    return reconciled
+            state_changed = True
+    if st.session_state.get(signature_key) != signature:
+        st.session_state[signature_key] = signature
+
+
+def seed_selection_signature(selected_teams: list[str]) -> tuple[str, ...]:
+    return tuple(selected_teams)
 
 
 def reconciled_seed_values(selected_teams: list[str], seed_values: dict[str, int]) -> dict[str, int]:

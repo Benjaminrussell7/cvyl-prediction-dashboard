@@ -212,6 +212,34 @@ def test_reconcile_seed_state_preserves_and_cleans_session_state(monkeypatch) ->
     assert state[tournament_page.builder_seed_key(None, "Granby")] == 1
 
 
+def test_reconcile_seed_state_is_idempotent(monkeypatch) -> None:
+    class TrackingState(dict):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.writes = 0
+            self.deletes = 0
+
+        def __setitem__(self, key, value):
+            self.writes += 1
+            super().__setitem__(key, value)
+
+        def __delitem__(self, key):
+            self.deletes += 1
+            super().__delitem__(key)
+
+    state = TrackingState()
+    monkeypatch.setattr(tournament_page.st, "session_state", state)
+
+    first = tournament_page.reconcile_seed_state(["Avon", "Granby"], {"Avon": 1}, None)
+    writes_after_first = state.writes
+    deletes_after_first = state.deletes
+    second = tournament_page.reconcile_seed_state(["Avon", "Granby"], {"Avon": 1}, None)
+
+    assert first == second == {"Avon": 1, "Granby": 2}
+    assert state.writes == writes_after_first
+    assert state.deletes == deletes_after_first
+
+
 def test_render_reactive_seed_controls_creates_control_for_each_selected_team(monkeypatch) -> None:
     calls: list[str] = []
     state: dict[str, int] = {}
