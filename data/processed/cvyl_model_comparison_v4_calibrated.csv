@@ -130,9 +130,11 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-12,Glastonbury 12U White,Suffield 12U,Suffield 12U,Suffield 12U,0.6226844134279904,Suffield 12U,0.6610426019839188,True,True
 2026-05-12,Somers 12U White,Agawam 12U,Somers 12U White,Somers 12U White,0.6421538048481882,Somers 12U White,0.6856009612950014,True,True
 2026-05-12,West Springfield 12U,South Hadley 12U,West Springfield 12U,West Springfield 12U,0.760728007158831,West Springfield 12U,0.8237891378678717,True,True
-2026-05-13,RHAM 12U,Granby 12U,RHAM 12U,RHAM 12U,0.7262216816033458,RHAM 12U,0.7859553686707011,True,True
-2026-05-13,Farmington 12U Red,Glastonbury 12U Blue,Farmington 12U Red,Farmington 12U Red,0.6622993198960526,Farmington 12U Red,0.7105541398615889,True,True
-2026-05-13,Wethersfield 12U A,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6429736371211838,West Hartford 12U Gold,0.6866259460478394,True,True
-2026-05-13,Newington 12U,Berlin 12U A,Berlin 12U A,Berlin 12U A,0.513232287050083,Berlin 12U A,0.5176398460533325,True,True
-2026-05-14,Meriden 12U,Bristol 12U,Tie,Meriden 12U,0.5953331585925317,Meriden 12U,0.6259176266004628,False,False
-2026-05-14,Westfield 12U Red,Suffield 12U,Westfield 12U Red,Westfield 12U Red,0.5248823521040082,Westfield 12U Red,0.5331551739695654,True,True
+2026-05-12,Wolcott 12U,Southington 12U Blue,Southington 12U Blue,Wolcott 12U,0.5654679414121062,Wolcott 12U,0.5869033340456404,False,False
+2026-05-13,RHAM 12U,Granby 12U,RHAM 12U,RHAM 12U,0.7262727563974803,RHAM 12U,0.7860129871807195,True,True
+2026-05-13,Farmington 12U Red,Glastonbury 12U Blue,Farmington 12U Red,Farmington 12U Red,0.6622715881457578,Farmington 12U Red,0.7105201381587749,True,True
+2026-05-13,Wethersfield 12U A,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6429979961653336,West Hartford 12U Gold,0.6866563887987654,True,True
+2026-05-13,Newington 12U,Berlin 12U A,Berlin 12U A,Berlin 12U A,0.5136224626153176,Berlin 12U A,0.5181597883511833,True,True
+2026-05-14,Meriden 12U,Bristol 12U,Tie,Meriden 12U,0.5955438591119974,Meriden 12U,0.6261906522806574,False,False
+2026-05-14,Westfield 12U Red,Suffield 12U,Westfield 12U Red,Westfield 12U Red,0.5248763364217097,Westfield 12U Red,0.5331471684987962,True,True
+2026-05-15,Wolcott 12U,Meriden 12U,Wolcott 12U,Wolcott 12U,0.5924076846972245,Wolcott 12U,0.6221232505699461,True,True
