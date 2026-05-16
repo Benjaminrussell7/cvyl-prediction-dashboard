@@ -1146,3 +1146,39 @@ def test_current_round_summary_handles_completed_bracket_without_bottom_crash(mo
 def test_highest_round_advancement_probability_parses_rounds() -> None:
     assert tournament_page.highest_round_advancement_probability("Semifinals: 78.0%; Final: 62.0%") == 0.78
     assert tournament_page.highest_round_advancement_probability("") == 0.0
+
+
+def test_tournament_branding_context_falls_back_when_shared_helpers_missing(monkeypatch) -> None:
+    monkeypatch.setattr(tournament_page.dashboard, "matchup_branding_context", None, raising=False)
+    monkeypatch.setattr(tournament_page.dashboard, "render_team_branding_header", None, raising=False)
+    monkeypatch.setattr(tournament_page.dashboard, "load_club_branding_registry", None, raising=False)
+
+    registry = tournament_page.load_tournament_branding_registry()
+    context = tournament_page.tournament_matchup_branding_context(
+        "Glastonbury 12U Blue",
+        "RHAM 12U",
+        registry,
+    )
+
+    assert context["Glastonbury 12U Blue"]["club_name"] == "Glastonbury Lacrosse Club"
+    assert context["Glastonbury 12U Blue"]["branding_applied"] is True
+
+    class FakeContainer:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
+    monkeypatch.setattr(tournament_page.st, "container", lambda *args, **kwargs: FakeContainer())
+    monkeypatch.setattr(tournament_page.st, "columns", lambda spec: [FakeContainer() for _ in range(len(spec))])
+    monkeypatch.setattr(tournament_page.st, "image", lambda *args, **kwargs: None)
+    monkeypatch.setattr(tournament_page.st, "markdown", lambda *args, **kwargs: None)
+    monkeypatch.setattr(tournament_page.st, "caption", lambda *args, **kwargs: None)
+
+    tournament_page.render_tournament_branding_header(
+        "Glastonbury 12U Blue",
+        context["Glastonbury 12U Blue"],
+        favored=True,
+        compact=True,
+    )

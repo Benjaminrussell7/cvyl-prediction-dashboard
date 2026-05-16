@@ -14,6 +14,7 @@ import streamlit as st
 import yaml
 
 import cvyl_scraper.competition as competition
+import cvyl_scraper.club_branding as club_branding
 from cvyl_scraper.competition import (
     BracketRoundConfig,
     CompetitionConfig,
@@ -27,6 +28,7 @@ import streamlit_app as dashboard
 
 
 ROOT = Path(__file__).resolve().parents[1]
+CLUB_BRANDING_CSV = ROOT / "data" / "processed" / "cvyl_club_branding.csv"
 COMPETITIONS_DIR = ROOT / "config" / "competitions"
 SIMULATION_DEPTH_OPTIONS = {
     "Quick": 300,
@@ -96,6 +98,128 @@ def main() -> None:
     render_road_to_championship(display_config, simulation, summary, selected, data)
     render_competition_visuals(summary)
     render_current_round_matchups(display_config, simulation, selected, data)
+
+
+def load_tournament_branding_registry() -> list[club_branding.ClubBranding]:
+    shared_loader = getattr(dashboard, "load_club_branding_registry", None)
+    if callable(shared_loader):
+        try:
+            registry = shared_loader()
+            if registry:
+                return registry
+        except Exception:
+            pass
+    try:
+        return club_branding.load_club_branding_registry(csv_path=CLUB_BRANDING_CSV)
+    except Exception:
+        return []
+
+
+def tournament_team_branding_context(
+    team: str,
+    registry: list[club_branding.ClubBranding] | None = None,
+) -> dict[str, object]:
+    clubs = registry if registry is not None else load_tournament_branding_registry()
+    shared_helper = getattr(dashboard, "team_branding_context", None)
+    if callable(shared_helper):
+        try:
+            return shared_helper(team, clubs)
+        except Exception:
+            pass
+    resolution = club_branding.resolve_club_for_team(team, clubs)
+    club = resolution.club
+    return {
+        "team": team,
+        "club_name": club.club_name if club is not None else "",
+        "logo_url": club.logo_url if club is not None else "",
+        "logo_path": club.logo_path if club is not None else "",
+        "primary_color": club.primary_color if club is not None else "",
+        "secondary_color": club.secondary_color if club is not None else "",
+        "logo_source": club.logo_path if club is not None else "",
+        "accent_color": choose_safe_branding_accent(club.primary_color if club is not None else "", club.secondary_color if club is not None else ""),
+        "matchup_color": choose_safe_branding_accent(club.primary_color if club is not None else "", club.secondary_color if club is not None else ""),
+        "branding_applied": club is not None,
+        "club_resolution_notes": resolution.notes,
+        "resolver": "tournament_page_fallback",
+    }
+
+
+def tournament_matchup_branding_context(
+    team_a: str,
+    team_b: str,
+    registry: list[club_branding.ClubBranding] | None = None,
+) -> dict[str, dict[str, object]]:
+    clubs = registry if registry is not None else load_tournament_branding_registry()
+    shared_helper = getattr(dashboard, "matchup_branding_context", None)
+    if callable(shared_helper):
+        try:
+            return shared_helper(team_a, team_b, clubs)
+        except Exception:
+            pass
+    return {
+        team_a: tournament_team_branding_context(team_a, clubs),
+        team_b: tournament_team_branding_context(team_b, clubs),
+    }
+
+
+def render_tournament_branding_header(
+    team: str,
+    branding_context: dict[str, object],
+    *,
+    favored: bool = False,
+    compact: bool = False,
+) -> None:
+    shared_helper = getattr(dashboard, "render_team_branding_header", None)
+    if callable(shared_helper):
+        try:
+            shared_helper(team, branding_context, favored=favored, compact=compact)
+            return
+        except Exception:
+            pass
+    accent = str(branding_context.get("matchup_color") or branding_context.get("accent_color") or "")
+    club_name = str(branding_context.get("club_name") or "")
+    logo_path = str(branding_context.get("logo_path") or "")
+    border = accent or ("#16a34a" if favored else "#d1d5db")
+    background = "#f0fdf4" if favored else "#ffffff"
+    padding = "0.30rem 0.45rem" if compact else "0.45rem 0.60rem"
+    with st.container(border=True):
+        st.markdown(
+            f"<div style='border-left:4px solid {border};background:{background};padding:{padding};"
+            f"border-radius:6px;margin-bottom:0.25rem;'>",
+            unsafe_allow_html=True,
+        )
+        cols = st.columns([0.18, 0.82]) if logo_path and Path(logo_path).exists() else st.columns([0.01, 0.99])
+        with cols[0]:
+            if logo_path and Path(logo_path).exists():
+                st.image(logo_path, width=24)
+        with cols[1]:
+            st.markdown(
+                f"<div style='font-weight:800;color:#111827;overflow-wrap:anywhere;'>{team}</div>",
+                unsafe_allow_html=True,
+            )
+            if club_name:
+                st.caption(club_name)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+
+def choose_safe_branding_accent(primary_color: str, secondary_color: str = "") -> str:
+    for color in (primary_color, secondary_color):
+        if color and not is_near_white_color(color):
+            return color
+    return ""
+
+
+def is_near_white_color(color: str) -> bool:
+    text = str(color).strip().lstrip("#")
+    if len(text) != 6:
+        return False
+    try:
+        red = int(text[0:2], 16)
+        green = int(text[2:4], 16)
+        blue = int(text[4:6], 16)
+    except ValueError:
+        return False
+    return red >= 230 and green >= 230 and blue >= 230
 
 
 def available_competition_configs(directory: Path) -> list[Path]:
@@ -1208,20 +1332,20 @@ def render_bracket_matchup_card(
     team_b = str(matchup["team_b"])
     team_a_probability = float(matchup.get("team_a_win_probability", 0.5))
     completed_winner = completed_winner_for_matchup(matchup, matchup_config, config_path)
-    branding_contexts = dashboard.matchup_branding_context(team_a, team_b)
+    branding_contexts = tournament_matchup_branding_context(team_a, team_b)
     with st.container(border=True):
         if completed_winner:
             score_text = recorded_score_text(config_path, matchup_config) if config_path and matchup_config else ""
             score_margin = recorded_score_margin(config_path, matchup_config) if config_path and matchup_config else None
             cols = st.columns(2)
             with cols[0]:
-                dashboard.render_team_branding_header(team_a, branding_contexts[team_a], favored=team_a == completed_winner, compact=True)
+                render_tournament_branding_header(team_a, branding_contexts[team_a], favored=team_a == completed_winner, compact=True)
                 st.markdown(
                     result_bracket_team_line(team_a, config, completed_winner, score_text),
                     unsafe_allow_html=True,
                 )
             with cols[1]:
-                dashboard.render_team_branding_header(team_b, branding_contexts[team_b], favored=team_b == completed_winner, compact=True)
+                render_tournament_branding_header(team_b, branding_contexts[team_b], favored=team_b == completed_winner, compact=True)
                 st.markdown(
                     result_bracket_team_line(team_b, config, completed_winner, score_text),
                     unsafe_allow_html=True,
@@ -1232,10 +1356,10 @@ def render_bracket_matchup_card(
         else:
             cols = st.columns(2)
             with cols[0]:
-                dashboard.render_team_branding_header(team_a, branding_contexts[team_a], favored=team_a == favorite, compact=True)
+                render_tournament_branding_header(team_a, branding_contexts[team_a], favored=team_a == favorite, compact=True)
                 st.markdown(bracket_team_line(team_a, config, summary, team_a == favorite, team_a_probability), unsafe_allow_html=True)
             with cols[1]:
-                dashboard.render_team_branding_header(team_b, branding_contexts[team_b], favored=team_b == favorite, compact=True)
+                render_tournament_branding_header(team_b, branding_contexts[team_b], favored=team_b == favorite, compact=True)
                 st.markdown(
                     bracket_team_line(team_b, config, summary, team_b == favorite, 1.0 - team_a_probability),
                     unsafe_allow_html=True,
@@ -1691,7 +1815,7 @@ def render_matchup_preview_card(
     probability = favorite_probability(matchup)
     interpretation = road_matchup_badge(matchup)
     upset_watch = interpretation == "Upset Watch"
-    branding_contexts = dashboard.matchup_branding_context(str(matchup["team_a"]), str(matchup["team_b"]))
+    branding_contexts = tournament_matchup_branding_context(str(matchup["team_a"]), str(matchup["team_b"]))
     completed_winner = (
         effective_completed_winner(config_path, matchup_config)
         if config_path is not None and matchup_config is not None
@@ -1700,14 +1824,14 @@ def render_matchup_preview_card(
     with st.container(border=True):
         branding_cols = st.columns(2)
         with branding_cols[0]:
-            dashboard.render_team_branding_header(
+            render_tournament_branding_header(
                 str(matchup["team_a"]),
                 branding_contexts[str(matchup["team_a"])],
                 favored=str(matchup["team_a"]) == favorite,
                 compact=True,
             )
         with branding_cols[1]:
-            dashboard.render_team_branding_header(
+            render_tournament_branding_header(
                 str(matchup["team_b"]),
                 branding_contexts[str(matchup["team_b"])],
                 favored=str(matchup["team_b"]) == favorite,
@@ -1737,7 +1861,7 @@ def render_compact_matchup_preview(matchup: pd.Series, data: dict[str, pd.DataFr
     team_a = str(matchup["team_a"])
     team_b = str(matchup["team_b"])
     with st.expander("Preview Matchup", expanded=False):
-        branding_contexts = dashboard.matchup_branding_context(team_a, team_b)
+        branding_contexts = tournament_matchup_branding_context(team_a, team_b)
         preview = tournament_matchup_preview_data(team_a, team_b, data)
         if preview.get("unavailable"):
             st.info(str(preview["unavailable"]))
@@ -1745,9 +1869,9 @@ def render_compact_matchup_preview(matchup: pd.Series, data: dict[str, pd.DataFr
         st.markdown(story_badge(preview["interpretation_label"]), unsafe_allow_html=True)
         branding_cols = st.columns(2)
         with branding_cols[0]:
-            dashboard.render_team_branding_header(team_a, branding_contexts[team_a], favored=preview["favorite"] == team_a, compact=True)
+            render_tournament_branding_header(team_a, branding_contexts[team_a], favored=preview["favorite"] == team_a, compact=True)
         with branding_cols[1]:
-            dashboard.render_team_branding_header(team_b, branding_contexts[team_b], favored=preview["favorite"] == team_b, compact=True)
+            render_tournament_branding_header(team_b, branding_contexts[team_b], favored=preview["favorite"] == team_b, compact=True)
         cols = st.columns(2)
         cols[0].metric(f"{team_a} Win Probability", f"{float(preview['team_a_probability']):.1%}")
         cols[1].metric(f"{team_b} Win Probability", f"{float(preview['team_b_probability']):.1%}")
