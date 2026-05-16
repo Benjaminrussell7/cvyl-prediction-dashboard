@@ -1208,27 +1208,38 @@ def render_bracket_matchup_card(
     team_b = str(matchup["team_b"])
     team_a_probability = float(matchup.get("team_a_win_probability", 0.5))
     completed_winner = completed_winner_for_matchup(matchup, matchup_config, config_path)
+    branding_contexts = dashboard.matchup_branding_context(team_a, team_b)
     with st.container(border=True):
         if completed_winner:
             score_text = recorded_score_text(config_path, matchup_config) if config_path and matchup_config else ""
             score_margin = recorded_score_margin(config_path, matchup_config) if config_path and matchup_config else None
-            st.markdown(
-                result_bracket_team_line(team_a, config, completed_winner, score_text),
-                unsafe_allow_html=True,
-            )
-            st.markdown(
-                result_bracket_team_line(team_b, config, completed_winner, score_text),
-                unsafe_allow_html=True,
-            )
+            cols = st.columns(2)
+            with cols[0]:
+                dashboard.render_team_branding_header(team_a, branding_contexts[team_a], favored=team_a == completed_winner, compact=True)
+                st.markdown(
+                    result_bracket_team_line(team_a, config, completed_winner, score_text),
+                    unsafe_allow_html=True,
+                )
+            with cols[1]:
+                dashboard.render_team_branding_header(team_b, branding_contexts[team_b], favored=team_b == completed_winner, compact=True)
+                st.markdown(
+                    result_bracket_team_line(team_b, config, completed_winner, score_text),
+                    unsafe_allow_html=True,
+                )
             if score_text:
                 st.caption(score_text)
             badges = [story_badge(completed_matchup_badge(matchup, completed_winner, score_margin))]
         else:
-            st.markdown(bracket_team_line(team_a, config, summary, team_a == favorite, team_a_probability), unsafe_allow_html=True)
-            st.markdown(
-                bracket_team_line(team_b, config, summary, team_b == favorite, 1.0 - team_a_probability),
-                unsafe_allow_html=True,
-            )
+            cols = st.columns(2)
+            with cols[0]:
+                dashboard.render_team_branding_header(team_a, branding_contexts[team_a], favored=team_a == favorite, compact=True)
+                st.markdown(bracket_team_line(team_a, config, summary, team_a == favorite, team_a_probability), unsafe_allow_html=True)
+            with cols[1]:
+                dashboard.render_team_branding_header(team_b, branding_contexts[team_b], favored=team_b == favorite, compact=True)
+                st.markdown(
+                    bracket_team_line(team_b, config, summary, team_b == favorite, 1.0 - team_a_probability),
+                    unsafe_allow_html=True,
+                )
             badges = [story_badge(road_matchup_badge(matchup))]
         st.markdown(" ".join(badges), unsafe_allow_html=True)
         if is_playable_matchup(team_a, team_b) and data is not None:
@@ -1680,12 +1691,28 @@ def render_matchup_preview_card(
     probability = favorite_probability(matchup)
     interpretation = road_matchup_badge(matchup)
     upset_watch = interpretation == "Upset Watch"
+    branding_contexts = dashboard.matchup_branding_context(str(matchup["team_a"]), str(matchup["team_b"]))
     completed_winner = (
         effective_completed_winner(config_path, matchup_config)
         if config_path is not None and matchup_config is not None
         else matchup.get("completed_winner")
     )
     with st.container(border=True):
+        branding_cols = st.columns(2)
+        with branding_cols[0]:
+            dashboard.render_team_branding_header(
+                str(matchup["team_a"]),
+                branding_contexts[str(matchup["team_a"])],
+                favored=str(matchup["team_a"]) == favorite,
+                compact=True,
+            )
+        with branding_cols[1]:
+            dashboard.render_team_branding_header(
+                str(matchup["team_b"]),
+                branding_contexts[str(matchup["team_b"])],
+                favored=str(matchup["team_b"]) == favorite,
+                compact=True,
+            )
         st.markdown(f"**{matchup['team_a']} vs {matchup['team_b']}**")
         st.caption(f"{matchup['round']} | {matchup['matchup_id']}")
         cols = st.columns(2)
@@ -1710,11 +1737,17 @@ def render_compact_matchup_preview(matchup: pd.Series, data: dict[str, pd.DataFr
     team_a = str(matchup["team_a"])
     team_b = str(matchup["team_b"])
     with st.expander("Preview Matchup", expanded=False):
+        branding_contexts = dashboard.matchup_branding_context(team_a, team_b)
         preview = tournament_matchup_preview_data(team_a, team_b, data)
         if preview.get("unavailable"):
             st.info(str(preview["unavailable"]))
             return
         st.markdown(story_badge(preview["interpretation_label"]), unsafe_allow_html=True)
+        branding_cols = st.columns(2)
+        with branding_cols[0]:
+            dashboard.render_team_branding_header(team_a, branding_contexts[team_a], favored=preview["favorite"] == team_a, compact=True)
+        with branding_cols[1]:
+            dashboard.render_team_branding_header(team_b, branding_contexts[team_b], favored=preview["favorite"] == team_b, compact=True)
         cols = st.columns(2)
         cols[0].metric(f"{team_a} Win Probability", f"{float(preview['team_a_probability']):.1%}")
         cols[1].metric(f"{team_b} Win Probability", f"{float(preview['team_b_probability']):.1%}")

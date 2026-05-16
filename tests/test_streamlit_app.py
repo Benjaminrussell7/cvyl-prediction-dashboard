@@ -527,6 +527,25 @@ def test_matchup_team_colors_are_consistent_across_charts() -> None:
     assert probability_spec["encoding"]["color"]["scale"]["range"] == score_spec["encoding"]["color"]["scale"]["range"]
 
 
+def test_branding_registry_loads_processed_csv_directly() -> None:
+    registry = dashboard.load_club_branding_registry()
+
+    assert len(registry) >= 30
+    assert any(club.club_name == "West Hartford Youth Lacrosse" for club in registry)
+    assert any(club.logo_path for club in registry)
+
+
+def test_team_branding_context_and_matchup_colors_use_shared_club_resolution() -> None:
+    context = dashboard.team_branding_context("Glastonbury 12U Blue")
+    colors = dashboard.matchup_team_colors("Glastonbury 12U Blue", "West Hartford 12U Green")
+
+    assert context["club_name"] == "Glastonbury Lacrosse Club"
+    assert context["logo_source"]
+    assert context["branding_applied"] is True
+    assert colors["Glastonbury 12U Blue"] != colors["West Hartford 12U Green"]
+    assert colors["Glastonbury 12U Blue"] != ""
+
+
 def test_matchup_strength_data_reads_power_rating_context() -> None:
     power_ratings = pd.DataFrame(
         [

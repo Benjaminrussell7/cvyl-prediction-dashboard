@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import html
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -9,6 +10,7 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
+from cvyl_scraper import club_branding
 from cvyl_scraper.explanations import generate_matchup_explanation
 from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup
 from cvyl_scraper.probability_calibration import calibrated_power_v3_probability
@@ -20,6 +22,7 @@ MODEL_COMPARISON_SUMMARY_FILE = "cvyl_model_comparison_summary.csv"
 PRIMARY_POWER_RATINGS_FILE = "cvyl_power_ratings_v3_recency.csv"
 PRIMARY_MODEL_COMPARISON_SUMMARY_FILE = "cvyl_model_comparison_v4_calibrated_summary.csv"
 PRIMARY_CALIBRATION_FILE = "cvyl_calibration_power_rating_v4.csv"
+BRANDING_CSV_FILE = "cvyl_club_branding.csv"
 POWER_ACCURACY_KEY = "power_v3_calibrated_accuracy"
 POWER_BRIER_KEY = "power_v3_calibrated_brier_score"
 POWER_RATING_COLUMN = "power_rating_v3_recency"
@@ -61,6 +64,218 @@ def load_dashboard_data() -> dict[str, pd.DataFrame]:
         "model_comparison_summary": load_csv(PRIMARY_MODEL_COMPARISON_SUMMARY_FILE),
         "calibration": load_csv(PRIMARY_CALIBRATION_FILE),
     }
+
+
+def load_club_branding_registry() -> list[club_branding.ClubBranding]:
+    path = PROCESSED / BRANDING_CSV_FILE
+    return club_branding.load_club_branding_registry(csv_path=path)
+
+
+def team_branding_context(team: str, registry: list[club_branding.ClubBranding] | None = None) -> dict[str, object]:
+    clubs = registry if registry is not None else load_club_branding_registry()
+    if not clubs:
+        return {
+            "team": team,
+            "club_name": "",
+            "club": None,
+            "logo_source": "",
+            "primary_color": "",
+            "secondary_color": "",
+            "accent_color": "",
+            "branding_applied": False,
+            "notes": "No branding registry loaded.",
+        }
+    resolution = club_branding.resolve_club_for_team(team, clubs)
+    branding = resolution.club
+    logo_source = branding_logo_source(branding)
+    primary_color = safe_branding_color(branding.primary_color if branding else "")
+    secondary_color = safe_branding_color(branding.secondary_color if branding else "")
+    accent_color = choose_branding_accent(primary_color, secondary_color)
+    return {
+        "team": team,
+        "club_name": branding.club_name if branding else "",
+        "club": branding,
+        "logo_source": logo_source,
+        "primary_color": primary_color,
+        "secondary_color": secondary_color,
+        "accent_color": accent_color,
+        "branding_applied": bool(branding and (logo_source or accent_color)),
+        "notes": resolution.notes,
+    }
+
+
+def matchup_branding_context(
+    team_a: str,
+    team_b: str,
+    registry: list[club_branding.ClubBranding] | None = None,
+) -> dict[str, dict[str, object]]:
+    clubs = registry if registry is not None else load_club_branding_registry()
+    context_a = team_branding_context(team_a, clubs)
+    context_b = team_branding_context(team_b, clubs)
+    color_a = choose_matchup_color(context_a, avoid_color="", fallback=MATCHUP_TEAM_COLORS[0])
+    color_b = choose_matchup_color(context_b, avoid_color=color_a, fallback=MATCHUP_TEAM_COLORS[1])
+    if colors_too_similar(color_a, color_b):
+        color_b = choose_matchup_color(context_b, avoid_color=color_a, fallback=secondary_fallback_color(color_a))
+    context_a["matchup_color"] = color_a
+    context_b["matchup_color"] = color_b
+    return {team_a: context_a, team_b: context_b}
+
+
+def matchup_team_colors(
+    team_a: str,
+    team_b: str,
+    registry: list[club_branding.ClubBranding] | None = None,
+) -> dict[str, str]:
+    contexts = matchup_branding_context(team_a, team_b, registry)
+    return {
+        team_a: str(contexts[team_a]["matchup_color"]),
+        team_b: str(contexts[team_b]["matchup_color"]),
+    }
+
+
+def render_team_branding_header(
+    team: str,
+    branding_context: dict[str, object],
+    *,
+    favored: bool = False,
+    compact: bool = False,
+) -> None:
+    logo_source = str(branding_context.get("logo_source") or "")
+    accent = str(branding_context.get("matchup_color") or branding_context.get("accent_color") or "")
+    club_name = str(branding_context.get("club_name") or "")
+    title_color = accent if accent else "#111827"
+    background = hex_to_rgba(accent, 0.10) if accent else "#f9fafb"
+    border = accent if accent else "#d1d5db"
+    logo_width = 28 if compact else 36
+    cols = st.columns(2)
+    with cols[0]:
+        if logo_source:
+            st.image(logo_source, width=logo_width)
+    with cols[1]:
+        st.markdown(
+            (
+                f"<div style='border-left:4px solid {border};background:{background};padding:0.3rem 0.55rem;"
+                "border-radius:7px;margin-bottom:0.3rem;'>"
+                f"<div style='font-weight:850;color:{title_color};line-height:1.1;overflow-wrap:anywhere;'>"
+                f"{html.escape(team)}</div>"
+                + (
+                    f"<div style='font-size:0.74rem;color:#6b7280;overflow-wrap:anywhere;'>"
+                    f"{html.escape(club_name)}</div>"
+                    if club_name
+                    else ""
+                )
+                + "</div>"
+            ),
+            unsafe_allow_html=True,
+        )
+
+
+def branding_logo_source(branding: club_branding.ClubBranding | None) -> str:
+    if branding is None:
+        return ""
+    if branding.logo_path:
+        path = Path(branding.logo_path)
+        if not path.is_absolute():
+            path = ROOT / path
+        if path.exists():
+            return str(path)
+    if branding.logo_url.startswith(("http://", "https://")):
+        return branding.logo_url
+    return ""
+
+
+def choose_branding_accent(primary_color: str, secondary_color: str = "") -> str:
+    for color in (primary_color, secondary_color):
+        normalized = safe_branding_color(color)
+        if normalized:
+            return normalized
+    return ""
+
+
+def choose_matchup_color(
+    context: dict[str, object],
+    *,
+    avoid_color: str = "",
+    fallback: str,
+) -> str:
+    candidates = [
+        str(context.get("primary_color") or ""),
+        str(context.get("secondary_color") or ""),
+        fallback,
+    ]
+    for candidate in candidates:
+        normalized = safe_branding_color(candidate)
+        if normalized and not colors_too_similar(normalized, avoid_color):
+            return normalized
+    for candidate in candidates:
+        normalized = safe_branding_color(candidate)
+        if normalized:
+            return normalized
+    return fallback
+
+
+def secondary_fallback_color(color: str) -> str:
+    normalized = safe_branding_color(color)
+    if normalized == MATCHUP_TEAM_COLORS[0]:
+        return MATCHUP_TEAM_COLORS[1]
+    return MATCHUP_TEAM_COLORS[0]
+
+
+def safe_branding_color(color: str) -> str:
+    normalized = normalize_hex_color(color)
+    if not normalized or is_near_white(normalized):
+        return ""
+    if max(hex_to_rgb(normalized)) - min(hex_to_rgb(normalized)) < 18 and relative_luminance(normalized) > 0.62:
+        return ""
+    return normalized
+
+
+def normalize_hex_color(value: str) -> str:
+    color = str(value or "").strip()
+    if not color:
+        return ""
+    if not color.startswith("#"):
+        color = f"#{color}"
+    if len(color) == 4:
+        color = "#" + "".join(character * 2 for character in color[1:])
+    if len(color) != 7:
+        return ""
+    try:
+        int(color[1:], 16)
+    except ValueError:
+        return ""
+    return color.lower()
+
+
+def is_near_white(color: str) -> bool:
+    red, green, blue = hex_to_rgb(color)
+    return red >= 235 and green >= 235 and blue >= 235
+
+
+def colors_too_similar(color_a: str, color_b: str) -> bool:
+    if not color_a or not color_b:
+        return False
+    red_a, green_a, blue_a = hex_to_rgb(color_a)
+    red_b, green_b, blue_b = hex_to_rgb(color_b)
+    distance = ((red_a - red_b) ** 2 + (green_a - green_b) ** 2 + (blue_a - blue_b) ** 2) ** 0.5
+    return distance < 96
+
+
+def hex_to_rgb(color: str) -> tuple[int, int, int]:
+    normalized = normalize_hex_color(color)
+    if not normalized:
+        return (0, 0, 0)
+    return (int(normalized[1:3], 16), int(normalized[3:5], 16), int(normalized[5:7], 16))
+
+
+def relative_luminance(color: str) -> float:
+    red, green, blue = [channel / 255 for channel in hex_to_rgb(color)]
+    return 0.2126 * red + 0.7152 * green + 0.0722 * blue
+
+
+def hex_to_rgba(color: str, alpha: float) -> str:
+    red, green, blue = hex_to_rgb(color)
+    return f"rgba({red}, {green}, {blue}, {max(0.0, min(1.0, alpha)):.2f})"
 
 
 def configure_page(title: str = "CVYL U12 Boys Prediction Dashboard") -> None:
@@ -1197,6 +1412,7 @@ def render_matchup_predictor(
     power_ratings: pd.DataFrame,
     trends: pd.DataFrame,
 ) -> None:
+    branding_registry = load_club_branding_registry()
     st.divider()
     st.subheader("Matchup Predictor")
     teams = ratings["team"].dropna().sort_values().tolist()
@@ -1227,6 +1443,7 @@ def render_matchup_predictor(
         power_context["team_b_probability"],
     )
     edge_label = prediction_edge_label(favorite_probability)
+    team_colors = matchup_team_colors(team_a, team_b, branding_registry)
     explanation = generate_matchup_explanation(
         team_a,
         team_b,
@@ -1237,7 +1454,6 @@ def render_matchup_predictor(
         trends=trends,
         sos=sos,
     )
-    team_colors = matchup_team_colors(team_a, team_b)
     render_game_preview_card(
         team_a,
         team_b,
@@ -1246,6 +1462,7 @@ def render_matchup_predictor(
         power_ratings,
         trends,
         sos,
+        branding_registry,
     )
     render_matchup_summary_cards(
         team_a,
@@ -1256,8 +1473,9 @@ def render_matchup_predictor(
         trends,
         edge_label,
         team_colors,
+        branding_registry,
     )
-    render_projected_score_summary(team_a, team_b, prediction, team_colors)
+    render_projected_score_summary(team_a, team_b, prediction, team_colors, branding_registry)
     render_win_probability_bar(team_a, team_b, power_context, team_colors)
     render_projected_score_comparison(team_a, team_b, prediction, team_colors)
     render_team_profile_comparison(team_a, team_b, power_ratings, trends, sos)
@@ -1280,10 +1498,6 @@ def render_matchup_predictor(
         st.text(format_matchup_prediction(prediction))
 
 
-def matchup_team_colors(team_a: str, team_b: str) -> dict[str, str]:
-    return {team_a: MATCHUP_TEAM_COLORS[0], team_b: MATCHUP_TEAM_COLORS[1]}
-
-
 def render_game_preview_card(
     team_a: str,
     team_b: str,
@@ -1292,8 +1506,10 @@ def render_game_preview_card(
     power_ratings: pd.DataFrame,
     trends: pd.DataFrame,
     sos: pd.DataFrame,
+    branding_registry: list[club_branding.ClubBranding] | None = None,
 ) -> None:
     preview = game_preview_data(team_a, team_b, prediction, power_context, power_ratings, trends, sos)
+    branding_contexts = matchup_branding_context(team_a, team_b, branding_registry)
     with st.container(border=True):
         st.markdown(
             f"""
@@ -1318,11 +1534,11 @@ def render_game_preview_card(
         )
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown(f"**{team_a}**")
+            render_team_branding_header(team_a, branding_contexts[team_a], favored=preview["favorite"] == team_a, compact=True)
             st.metric("Win Probability", preview["team_a_probability"])
             st.metric("Projected Goals", preview["team_a_score"])
         with col2:
-            st.markdown(f"**{team_b}**")
+            render_team_branding_header(team_b, branding_contexts[team_b], favored=preview["favorite"] == team_b, compact=True)
             st.metric("Win Probability", preview["team_b_probability"])
             st.metric("Projected Goals", preview["team_b_score"])
 
@@ -1455,6 +1671,7 @@ def render_matchup_summary_cards(
     trends: pd.DataFrame,
     edge_label: str,
     team_colors: dict[str, str],
+    branding_registry: list[club_branding.ClubBranding] | None = None,
 ) -> None:
     favorite = str(power_context["predicted_winner"])
     archetype = matchup_archetype_label(
@@ -1476,8 +1693,10 @@ def render_matchup_summary_cards(
     st.caption(matchup_preview_blurb(team_a, team_b, favorite, archetype, power_ratings, trends))
     col1, col2 = st.columns(2)
     cards = matchup_summary_card_data(team_a, team_b, prediction, power_context, power_ratings, trends)
+    branding_contexts = matchup_branding_context(team_a, team_b, branding_registry)
     for column, card in zip([col1, col2], cards, strict=True):
         with column:
+            render_team_branding_header(card["Team"], branding_contexts[card["Team"]], favored=card["Team"] == favorite)
             render_team_summary_card(card, favored=card["Team"] == favorite, color=team_colors[card["Team"]])
 
 
@@ -1543,7 +1762,9 @@ def render_projected_score_summary(
     team_b: str,
     prediction,
     team_colors: dict[str, str],
+    branding_registry: list[club_branding.ClubBranding] | None = None,
 ) -> None:
+    branding_contexts = matchup_branding_context(team_a, team_b, branding_registry)
     st.markdown(
         f"""
         <div style="border:1px solid #e5e7eb;border-radius:8px;padding:0.85rem 1rem;
@@ -1563,6 +1784,11 @@ def render_projected_score_summary(
         """,
         unsafe_allow_html=True,
     )
+    cols = st.columns(2)
+    with cols[0]:
+        render_team_branding_header(team_a, branding_contexts[team_a], favored=team_a == str(getattr(prediction, "predicted_winner", "")), compact=True)
+    with cols[1]:
+        render_team_branding_header(team_b, branding_contexts[team_b], favored=team_b == str(getattr(prediction, "predicted_winner", "")), compact=True)
 
 
 def render_win_probability_bar(
@@ -1830,7 +2056,7 @@ def render_weekly_matchups(
         hide_index=True,
     )
     with st.expander("Compact matchup cards", expanded=False):
-        render_weekly_matchup_cards(weekly_matchups)
+        render_weekly_matchup_cards(weekly_matchups, load_club_branding_registry())
 
 
 def build_weekly_matchups(
@@ -1964,13 +2190,29 @@ def build_weekly_matchups(
     return pd.DataFrame(rows, columns=columns)
 
 
-def render_weekly_matchup_cards(weekly_matchups: pd.DataFrame) -> None:
+def render_weekly_matchup_cards(
+    weekly_matchups: pd.DataFrame,
+    branding_registry: list[club_branding.ClubBranding] | None = None,
+) -> None:
     for _, matchup in weekly_matchups.iterrows():
+        branding_contexts = matchup_branding_context(str(matchup["Home"]), str(matchup["Away"]), branding_registry)
         with st.container(border=True):
-            st.markdown(
-                f"**{matchup['Home']} vs {matchup['Away']}**  \n"
-                f"{matchup['Date']} {matchup['Time']}"
-            )
+            cols = st.columns(2)
+            with cols[0]:
+                render_team_branding_header(
+                    str(matchup["Home"]),
+                    branding_contexts[str(matchup["Home"])],
+                    favored=str(matchup["Projected Winner"]) == str(matchup["Home"]),
+                    compact=True,
+                )
+            with cols[1]:
+                render_team_branding_header(
+                    str(matchup["Away"]),
+                    branding_contexts[str(matchup["Away"])],
+                    favored=str(matchup["Projected Winner"]) == str(matchup["Away"]),
+                    compact=True,
+                )
+            st.caption(f"{matchup['Date']} {matchup['Time']}")
             st.markdown(
                 f"{edge_badge(matchup['Edge'])} {story_badge(matchup.get('Matchup Type', ''))} "
                 f"{story_badge(fan_confidence_label(matchup['Confidence']))}",

@@ -57,8 +57,7 @@ def render_team_headquarters(team: str, data: dict[str, pd.DataFrame]) -> None:
 def render_team_header(team: str, data: dict[str, pd.DataFrame]) -> None:
     power_row = dashboard.find_team_row(data["power_ratings"], team)
     trend_row = dashboard.find_team_row(data["trends"], team)
-    branding_debug = team_branding_debug(team)
-    branding = branding_debug["branding"]
+    branding = resolve_team_branding(team)
     accent = safe_branding_accent(
         str(branding.primary_color if branding else ""),
         str(branding.secondary_color if branding else ""),
@@ -90,19 +89,6 @@ def render_team_header(team: str, data: dict[str, pd.DataFrame]) -> None:
         ]
         st.markdown(" ".join(badges), unsafe_allow_html=True)
         st.caption(build_team_narrative(team, data))
-        with st.expander("Branding Debug", expanded=False):
-            st.write(f"Branding CSV path: {branding_debug['branding_csv_path']}")
-            st.write(f"Branding rows loaded: {branding_debug['branding_rows_loaded']}")
-            st.write(f"First 5 clubs loaded: {', '.join(branding_debug['loaded_club_names']) or 'N/A'}")
-            st.write(f"Selected team: {branding_debug['team']}")
-            st.write(f"Resolved club: {branding_debug['resolved_club_name']}")
-            st.write(f"Resolved logo_path: {branding_debug['resolved_logo_path'] or 'N/A'}")
-            st.write(f"logo_path exists on disk: {branding_debug['logo_path_exists']}")
-            st.write(f"primary_color: {branding_debug['primary_color'] or 'N/A'}")
-            st.write(f"secondary_color: {branding_debug['secondary_color'] or 'N/A'}")
-            st.write(f"branding applied: {branding_debug['branding_applied']}")
-            if branding_debug["notes"]:
-                st.write(f"Reason: {branding_debug['notes']}")
 
 
 def render_branding_caption(branding: ClubBranding | None, accent: str) -> None:

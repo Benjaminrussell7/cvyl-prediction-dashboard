@@ -856,6 +856,12 @@ def test_matchup_preview_card_renders_without_shared_badge_helpers(monkeypatch) 
     calls: list[tuple[str, object]] = []
 
     class FakeColumn:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
         def metric(self, label, value):
             calls.append((str(label), value))
 
@@ -1006,6 +1012,12 @@ def test_compact_preview_uses_single_interpretation_label_and_win_probability(mo
             return False
 
     class FakeColumn:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
         def metric(self, label, value):
             calls.append(("metric", label))
 
