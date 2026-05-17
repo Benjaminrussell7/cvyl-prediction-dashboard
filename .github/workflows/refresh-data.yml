@@ -2,7 +2,11 @@ name: Refresh CVYL Data
 
 on:
   schedule:
-    - cron: "0 */4 * * *"
+    - cron: "0 11 * * *"  # 7 AM ET
+    - cron: "0 15 * * *"  # 11 AM ET
+    - cron: "0 19 * * *"  # 3 PM ET
+    - cron: "0 23 * * *"  # 7 PM ET
+    - cron: "0 3 * * *"   # 11 PM ET
   workflow_dispatch:
 
 permissions:
