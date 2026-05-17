@@ -140,6 +140,7 @@ game_date,home_team,away_team,actual_winner,elo_predicted_winner,elo_win_probabi
 2026-05-14,East Longmeadow 12U A,Agawam 12U,Agawam 12U,Agawam 12U,0.5314419252665223,Agawam 12U,0.5182372890287387,Agawam 12U,0.5224560975815671,True,True,True
 2026-05-14,Meriden 12U,Bristol 12U,Tie,Meriden 12U,0.5816869256788999,Meriden 12U,0.5763082307217824,Meriden 12U,0.5953095332838195,False,False,False
 2026-05-14,Westfield 12U Red,Suffield 12U,Westfield 12U Red,Westfield 12U Red,0.5072845070903372,Westfield 12U Red,0.5294010178410835,Westfield 12U Red,0.5295365094352226,True,True,True
-2026-05-15,Wolcott 12U,Meriden 12U,Wolcott 12U,Wolcott 12U,0.5945627785251258,Wolcott 12U,0.6050034962233989,Wolcott 12U,0.5924596351190534,True,True,True
-2026-05-15,East Longmeadow 12U A,South Hadley 12U,East Longmeadow 12U A,East Longmeadow 12U A,0.5740822482856196,East Longmeadow 12U A,0.6000874638360101,East Longmeadow 12U A,0.5980639809102922,True,True,True
-2026-05-16,Belchertown 12U,Northampton 12U,Belchertown 12U,Belchertown 12U,0.5797955448971404,Belchertown 12U,0.5518976073480961,Belchertown 12U,0.5519484849780544,True,True,True
+2026-05-15,Berlin 12U A,Middletown 12U,Berlin 12U A,Berlin 12U A,0.575493633006302,Berlin 12U A,0.5879756059349632,Berlin 12U A,0.5940722724575057,True,True,True
+2026-05-15,Wolcott 12U,Meriden 12U,Wolcott 12U,Wolcott 12U,0.5945627785251258,Wolcott 12U,0.604513071062778,Wolcott 12U,0.5918396956537482,True,True,True
+2026-05-15,East Longmeadow 12U A,South Hadley 12U,East Longmeadow 12U A,East Longmeadow 12U A,0.5740822482856196,East Longmeadow 12U A,0.6000874638360101,East Longmeadow 12U A,0.5980756865773894,True,True,True
+2026-05-16,Belchertown 12U,Northampton 12U,Belchertown 12U,Belchertown 12U,0.5797955448971404,Belchertown 12U,0.5518976073480961,Belchertown 12U,0.5519497953621239,True,True,True
