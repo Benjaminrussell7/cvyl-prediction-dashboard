@@ -144,3 +144,5 @@ game_date,home_team,away_team,actual_winner,elo_predicted_winner,elo_win_probabi
 2026-05-15,Wolcott 12U,Meriden 12U,Wolcott 12U,Wolcott 12U,0.5945627785251258,Wolcott 12U,0.604513071062778,Wolcott 12U,0.5918396956537482,True,True,True
 2026-05-15,East Longmeadow 12U A,South Hadley 12U,East Longmeadow 12U A,East Longmeadow 12U A,0.5740822482856196,East Longmeadow 12U A,0.6000874638360101,East Longmeadow 12U A,0.5980756865773894,True,True,True
 2026-05-16,Belchertown 12U,Northampton 12U,Belchertown 12U,Belchertown 12U,0.5797955448971404,Belchertown 12U,0.5518976073480961,Belchertown 12U,0.5519497953621239,True,True,True
+2026-05-17,Wethersfield 12U A,Avon 12U,Avon 12U,Avon 12U,0.5024229398252447,Avon 12U,0.552870553707612,Avon 12U,0.5561103956276747,True,True,True
+2026-05-17,Wethersfield 12U B,Avon 12U,Wethersfield 12U B,Avon 12U,0.5620666944288197,Avon 12U,0.6040537729803859,Avon 12U,0.6060024041707566,False,False,False

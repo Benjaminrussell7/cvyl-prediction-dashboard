@@ -144,3 +144,5 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-15,Wolcott 12U,Meriden 12U,Wolcott 12U,Wolcott 12U,0.5918396956537482,Wolcott 12U,0.62138580423513,True,True
 2026-05-15,East Longmeadow 12U A,South Hadley 12U,East Longmeadow 12U A,East Longmeadow 12U A,0.5980756865773894,East Longmeadow 12U A,0.6294686564046207,True,True
 2026-05-16,Belchertown 12U,Northampton 12U,Belchertown 12U,Belchertown 12U,0.5519497953621239,Belchertown 12U,0.5690727670136045,True,True
+2026-05-17,Wethersfield 12U A,Avon 12U,Avon 12U,Avon 12U,0.5561103956276747,Avon 12U,0.5745699349816032,True,True
+2026-05-17,Wethersfield 12U B,Avon 12U,Wethersfield 12U B,Avon 12U,0.6060024041707566,Avon 12U,0.639697671184307,False,False
