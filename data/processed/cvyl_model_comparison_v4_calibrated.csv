@@ -145,10 +145,12 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-15,Berlin 12U A,Middletown 12U,Berlin 12U A,Berlin 12U A,0.5941583485030135,Berlin 12U A,0.6243946747894148,True,True
 2026-05-15,Wolcott 12U,Meriden 12U,Wolcott 12U,Wolcott 12U,0.5919543940257932,Wolcott 12U,0.6215347420278197,True,True
 2026-05-15,Suffield 12U White,Glastonbury 12U Blue,Suffield 12U White,Suffield 12U White,0.6626749469398572,Suffield 12U White,0.7110145950835728,True,True
-2026-05-15,East Longmeadow 12U A,South Hadley 12U,East Longmeadow 12U A,East Longmeadow 12U A,0.5981172384809814,East Longmeadow 12U A,0.6295224118790236,True,True
-2026-05-16,Belchertown 12U,Northampton 12U,Belchertown 12U,Belchertown 12U,0.5519527066593795,Belchertown 12U,0.5690766162144217,True,True
-2026-05-17,Suffield 12U,Minnechaug 12U,Suffield 12U,Minnechaug 12U,0.5655880319272133,Minnechaug 12U,0.5870613224433516,False,False
-2026-05-17,Wethersfield 12U A,Avon 12U,Avon 12U,Avon 12U,0.5561203104509884,Avon 12U,0.5745830255362455,True,True
-2026-05-17,Suffield 12U White,Minnechaug 12U White,Tie,Minnechaug 12U White,0.5215070487492766,Minnechaug 12U White,0.5286623123539574,False,False
-2026-05-17,Wethersfield 12U B,Avon 12U,Wethersfield 12U B,Avon 12U,0.6050609250626848,Avon 12U,0.6384855099969383,False,False
-2026-05-17,RHAM 12U,West Hartford 12U Green,RHAM 12U,RHAM 12U,0.5505421547281437,RHAM 12U,0.5672112184850596,True,True
+2026-05-15,Glastonbury 12U White,Simsbury 12U A,Glastonbury 12U White,Glastonbury 12U White,0.5988739097582594,Glastonbury 12U White,0.6305010704393539,True,True
+2026-05-15,East Longmeadow 12U A,South Hadley 12U,East Longmeadow 12U A,East Longmeadow 12U A,0.5981283709484937,East Longmeadow 12U A,0.6295368136570351,True,True
+2026-05-16,Belchertown 12U,Northampton 12U,Belchertown 12U,Belchertown 12U,0.5519539104289594,Belchertown 12U,0.5690782077893619,True,True
+2026-05-17,Suffield 12U,Minnechaug 12U,Suffield 12U,Minnechaug 12U,0.562604226335035,Minnechaug 12U,0.5831336203382824,False,False
+2026-05-17,Wethersfield 12U A,Avon 12U,Avon 12U,Avon 12U,0.5529321739919353,Avon 12U,0.5703714209306454,True,True
+2026-05-17,Suffield 12U White,Minnechaug 12U White,Tie,Minnechaug 12U White,0.521519735336349,Minnechaug 12U White,0.5286792034551182,False,False
+2026-05-17,Wethersfield 12U B,Avon 12U,Wethersfield 12U B,Avon 12U,0.6053170778087267,Avon 12U,0.6388153840941144,False,False
+2026-05-17,RHAM 12U,West Hartford 12U Green,RHAM 12U,RHAM 12U,0.5505529368925206,RHAM 12U,0.567225480641915,True,True
+2026-05-17,Simsbury 12U A,Glastonbury 12U White,Glastonbury 12U White,Glastonbury 12U White,0.6471649439582094,Glastonbury 12U White,0.6918538788024649,True,True
