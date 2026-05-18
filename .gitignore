@@ -12,3 +12,4 @@ data/processed/*
 !data/processed/cvyl_historical_snapshots.csv
 
 config/sources.yml
+modeling_lab/outputs/*.csv
