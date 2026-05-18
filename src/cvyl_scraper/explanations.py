@@ -25,10 +25,7 @@ def generate_matchup_explanation(
     favorite_sos = _team_row(sos, predicted_winner)
     underdog_sos = _team_row(sos, underdog)
 
-    power_diff = _value(favorite_power, "power_rating_v3_recency") - _value(
-        underdog_power,
-        "power_rating_v3_recency",
-    )
+    power_diff = _power_rating_value(favorite_power) - _power_rating_value(underdog_power)
     offense_diff = _value(favorite_trend, "recent_offense_rating") - _value(
         underdog_trend,
         "recent_offense_rating",
@@ -107,6 +104,13 @@ def _value(row: pd.Series | None, column: str) -> float:
     if row is None or column not in row or pd.isna(row[column]):
         return 0.0
     return float(row[column])
+
+
+def _power_rating_value(row: pd.Series | None) -> float:
+    for column in ["power_rating_v4", "power_rating_v3_recency"]:
+        if row is not None and column in row and pd.notna(row[column]):
+            return float(row[column])
+    return 0.0
 
 
 def _label(row: pd.Series | None, column: str) -> str:

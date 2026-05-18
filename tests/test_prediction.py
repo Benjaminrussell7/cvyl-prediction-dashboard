@@ -171,6 +171,31 @@ def test_predict_matchup_includes_power_v2_context_when_available() -> None:
     assert "Hybrid prediction:" in output
 
 
+def test_predict_matchup_resolves_known_scheduled_team_aliases() -> None:
+    ratings = pd.DataFrame(
+        [
+            {"team": "Minnechaug 12U", "elo": 1550.0, "games_played": 6},
+            {"team": "Somers 12U Red", "elo": 1480.0, "games_played": 6},
+        ]
+    )
+    team_games = pd.DataFrame(
+        [
+            _team_game("Minnechaug 12U", 9, 5),
+            _team_game("Minnechaug 12U", 8, 6),
+            _team_game("Somers 12U Red", 5, 9),
+            _team_game("Somers 12U Red", 6, 8),
+        ]
+    )
+
+    prediction = predict_matchup("Minnechaug", "Somers Red", ratings, team_games)
+
+    assert prediction.team_a == "Minnechaug"
+    assert prediction.team_b == "Somers Red"
+    assert prediction.team_a_elo == 1550.0
+    assert prediction.team_b_elo == 1480.0
+    assert prediction.projected_total_goals > 0
+
+
 def test_predict_matchup_hybrid_responds_to_stronger_team() -> None:
     prediction = predict_matchup(
         "Avon 12U",

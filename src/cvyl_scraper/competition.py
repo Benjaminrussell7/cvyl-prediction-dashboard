@@ -9,7 +9,7 @@ import pandas as pd
 import yaml
 
 from cvyl_scraper.export import export_csv
-from cvyl_scraper.probability_calibration import calibrated_power_v3_probability
+from cvyl_scraper.probability_calibration import calibrated_power_v4_probability
 
 
 DEFAULT_COMPETITION_SIMULATION_CSV = "data/processed/cvyl_competition_simulation.csv"
@@ -18,6 +18,7 @@ VALID_COMPETITION_TYPES = {"playoffs", "tournament"}
 DEFAULT_GAME_FORMAT = "standard"
 DEFAULT_GAME_MINUTES = 48
 DEFAULT_SCORING_ENVIRONMENT_MULTIPLIER = 1.0
+POWER_RATING_COLUMNS = ["power_rating_v4", "power_rating_v3_recency"]
 
 COMPETITION_SIMULATION_COLUMNS = [
     "competition_name",
@@ -374,7 +375,7 @@ def matchup_win_probability(
     if team_a_rating is None or team_b_rating is None:
         return 0.5
     difference = (team_a_rating - team_b_rating) * config.scoring_environment_multiplier
-    return calibrated_power_v3_probability(difference)
+    return calibrated_power_v4_probability(difference)
 
 
 def monte_carlo_competition_advancement(
@@ -508,16 +509,17 @@ def missing_team_note(team_a: str, team_b: str, power_ratings: pd.DataFrame) -> 
 def team_power_rating(team: str, power_ratings: pd.DataFrame) -> float | None:
     if power_ratings.empty or "team" not in power_ratings.columns:
         return None
-    rating_column = "power_rating_v3_recency"
-    if rating_column not in power_ratings.columns:
-        return None
     matches = power_ratings[power_ratings["team"].astype(str) == team]
     if matches.empty:
         return None
-    value = pd.to_numeric(matches.iloc[0][rating_column], errors="coerce")
-    if pd.isna(value):
-        return None
-    return float(value)
+    row = matches.iloc[0]
+    for rating_column in POWER_RATING_COLUMNS:
+        if rating_column not in power_ratings.columns:
+            continue
+        value = pd.to_numeric(row[rating_column], errors="coerce")
+        if pd.notna(value):
+            return float(value)
+    return None
 
 
 def export_competition_simulation(

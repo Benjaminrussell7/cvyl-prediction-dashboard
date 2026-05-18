@@ -6,6 +6,7 @@ from pathlib import Path
 import pandas as pd
 
 from cvyl_scraper.hybrid import hybrid_model_edge, hybrid_win_probability, power_v2_win_probability
+from cvyl_scraper.team_matching import resolve_team_name
 
 
 DEFAULT_ELO_RATINGS_CSV = "data/processed/cvyl_elo_ratings.csv"
@@ -74,14 +75,16 @@ def predict_matchup(
     sos: pd.DataFrame | None = None,
     power_v2: pd.DataFrame | None = None,
 ) -> MatchupPrediction:
-    team_a_elo = _team_elo(team_a, ratings)
-    team_b_elo = _team_elo(team_b, ratings)
-    team_a_games_played = _team_games_played(team_a, ratings)
-    team_b_games_played = _team_games_played(team_b, ratings)
-    team_a_sos, team_a_sos_rank = _team_sos(team_a, sos)
-    team_b_sos, team_b_sos_rank = _team_sos(team_b, sos)
-    team_a_power_v2, team_a_power_rank_v2 = _team_power_v2(team_a, power_v2)
-    team_b_power_v2, team_b_power_rank_v2 = _team_power_v2(team_b, power_v2)
+    team_a_model_name = _resolve_from_frame(team_a, ratings)
+    team_b_model_name = _resolve_from_frame(team_b, ratings)
+    team_a_elo = _team_elo(team_a_model_name, ratings)
+    team_b_elo = _team_elo(team_b_model_name, ratings)
+    team_a_games_played = _team_games_played(team_a_model_name, ratings)
+    team_b_games_played = _team_games_played(team_b_model_name, ratings)
+    team_a_sos, team_a_sos_rank = _team_sos(team_a_model_name, sos)
+    team_b_sos, team_b_sos_rank = _team_sos(team_b_model_name, sos)
+    team_a_power_v2, team_a_power_rank_v2 = _team_power_v2(team_a_model_name, power_v2)
+    team_b_power_v2, team_b_power_rank_v2 = _team_power_v2(team_b_model_name, power_v2)
     team_a_power_value = team_a_power_v2 or 0.0
     team_b_power_value = team_b_power_v2 or 0.0
     team_a_power_probability = power_v2_win_probability(team_a_power_value - team_b_power_value)
@@ -104,7 +107,13 @@ def predict_matchup(
         predicted_winner = team_b
         win_probability = team_b_probability
 
-    team_a_projected_goals, team_b_projected_goals = _projected_goals(team_a, team_b, team_games)
+    team_a_scoring_name = _resolve_from_frame(team_a, team_games)
+    team_b_scoring_name = _resolve_from_frame(team_b, team_games)
+    team_a_projected_goals, team_b_projected_goals = _projected_goals(
+        team_a_scoring_name,
+        team_b_scoring_name,
+        team_games,
+    )
     projected_margin = team_a_projected_goals - team_b_projected_goals
     projected_spread = _projected_spread(team_a, team_b, projected_margin)
     confidence_level = _confidence_level(team_a_games_played, team_b_games_played)
@@ -187,14 +196,14 @@ def format_matchup_prediction(prediction: MatchupPrediction) -> str:
 
 
 def _team_elo(team_name: str, ratings: pd.DataFrame) -> float:
-    matches = ratings[ratings["team"] == team_name]
+    matches = _team_matches(team_name, ratings)
     if matches.empty:
         raise ValueError(f"Team not found in ELO ratings: {team_name}")
     return float(matches.iloc[0]["elo"])
 
 
 def _team_games_played(team_name: str, ratings: pd.DataFrame) -> int:
-    matches = ratings[ratings["team"] == team_name]
+    matches = _team_matches(team_name, ratings)
     if matches.empty:
         raise ValueError(f"Team not found in ELO ratings: {team_name}")
     return int(matches.iloc[0]["games_played"])
@@ -203,7 +212,7 @@ def _team_games_played(team_name: str, ratings: pd.DataFrame) -> int:
 def _team_sos(team_name: str, sos: pd.DataFrame | None) -> tuple[float | None, int | None]:
     if sos is None or sos.empty:
         return None, None
-    matches = sos[sos["team"] == team_name]
+    matches = _team_matches(team_name, sos)
     if matches.empty:
         return None, None
     return float(matches.iloc[0]["average_opponent_elo"]), int(matches.iloc[0]["sos_rank"])
@@ -234,7 +243,7 @@ def _format_sos(average_opponent_elo: float | None, sos_rank: int | None) -> str
 def _team_power_v2(team_name: str, power_v2: pd.DataFrame | None) -> tuple[float | None, int | None]:
     if power_v2 is None or power_v2.empty:
         return None, None
-    matches = power_v2[power_v2["team"] == team_name]
+    matches = _team_matches(team_name, power_v2)
     if matches.empty:
         return None, None
     return float(matches.iloc[0]["power_rating_v2"]), int(matches.iloc[0]["power_rank_v2"])
@@ -274,13 +283,26 @@ def _projected_goals(team_a: str, team_b: str, team_games: pd.DataFrame) -> tupl
 
 
 def _scoring_profile(team_name: str, team_games: pd.DataFrame) -> dict[str, float]:
-    rows = team_games[team_games["team"] == team_name]
+    rows = _team_matches(team_name, team_games)
     if rows.empty:
         raise ValueError(f"Team not found in completed team-game data: {team_name}")
     return {
         "points_for": float(rows["points_for"].mean()),
         "points_against": float(rows["points_against"].mean()),
     }
+
+
+def _resolve_from_frame(team_name: str, frame: pd.DataFrame) -> str:
+    if frame.empty or "team" not in frame.columns:
+        return team_name
+    return resolve_team_name(team_name, frame["team"].dropna().unique())
+
+
+def _team_matches(team_name: str, frame: pd.DataFrame) -> pd.DataFrame:
+    if frame.empty or "team" not in frame.columns:
+        return pd.DataFrame()
+    resolved = _resolve_from_frame(team_name, frame)
+    return frame[frame["team"] == resolved]
 
 
 def _projected_spread(team_a: str, team_b: str, projected_margin: float) -> str:

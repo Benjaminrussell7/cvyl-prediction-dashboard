@@ -65,6 +65,21 @@ def calibrated_power_v3_probability(
     return min(max(raw_probability, min_probability), max_probability)
 
 
+def calibrated_power_v4_probability(
+    rating_difference: float,
+    *,
+    scale: float = DEFAULT_CALIBRATED_LOGISTIC_SCALE,
+    min_probability: float = DEFAULT_MIN_PROBABILITY,
+    max_probability: float = DEFAULT_MAX_PROBABILITY,
+) -> float:
+    return calibrated_power_v3_probability(
+        rating_difference,
+        scale=scale,
+        min_probability=min_probability,
+        max_probability=max_probability,
+    )
+
+
 def build_model_comparison_v4_calibrated_outputs(
     games: pd.DataFrame,
     *,

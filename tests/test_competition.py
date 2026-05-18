@@ -19,6 +19,7 @@ from cvyl_scraper.competition import (
     monte_carlo_competition_advancement,
     safe_competition_id,
     save_competition_config,
+    team_power_rating,
     validate_builder_inputs,
     validate_competition_config,
 )
@@ -59,6 +60,22 @@ def _ratings() -> pd.DataFrame:
             {"team": "Simsbury", "power_rating_v3_recency": 0.5},
         ]
     )
+
+
+def test_team_power_rating_prefers_power_v4_and_falls_back_to_v3() -> None:
+    ratings = pd.DataFrame(
+        [
+            {
+                "team": "Avon",
+                "power_rating_v4": 2.5,
+                "power_rating_v3_recency": 1.0,
+            },
+            {"team": "Granby", "power_rating_v3_recency": -0.5},
+        ]
+    )
+
+    assert team_power_rating("Avon", ratings) == 2.5
+    assert team_power_rating("Granby", ratings) == -0.5
 
 
 def test_load_competition_config_from_yaml(tmp_path) -> None:

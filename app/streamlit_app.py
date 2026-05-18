@@ -13,20 +13,21 @@ import streamlit as st
 from cvyl_scraper import club_branding
 from cvyl_scraper.explanations import generate_matchup_explanation
 from cvyl_scraper.prediction import format_matchup_prediction, predict_matchup
-from cvyl_scraper.probability_calibration import calibrated_power_v3_probability
+from cvyl_scraper.probability_calibration import calibrated_power_v4_probability
+from cvyl_scraper.team_matching import normalize_team_key, resolve_team_name
 
 
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "data" / "processed"
 MODEL_COMPARISON_SUMMARY_FILE = "cvyl_model_comparison_summary.csv"
-PRIMARY_POWER_RATINGS_FILE = "cvyl_power_ratings_v3_recency.csv"
-PRIMARY_MODEL_COMPARISON_SUMMARY_FILE = "cvyl_model_comparison_v4_calibrated_summary.csv"
-PRIMARY_CALIBRATION_FILE = "cvyl_calibration_power_rating_v4.csv"
+PRIMARY_POWER_RATINGS_FILE = "cvyl_power_ratings_v4_opponent_adjusted.csv"
+PRIMARY_MODEL_COMPARISON_SUMMARY_FILE = "cvyl_model_comparison_power_v4_summary.csv"
+PRIMARY_CALIBRATION_FILE = "cvyl_calibration_power_v4_opponent_adjusted.csv"
 BRANDING_CSV_FILE = "cvyl_club_branding.csv"
-POWER_ACCURACY_KEY = "power_v3_calibrated_accuracy"
-POWER_BRIER_KEY = "power_v3_calibrated_brier_score"
-POWER_RATING_COLUMN = "power_rating_v3_recency"
-POWER_RANK_COLUMN = "power_rank_v3_recency"
+POWER_ACCURACY_KEY = "power_v4_accuracy"
+POWER_BRIER_KEY = "power_v4_brier_score"
+POWER_RATING_COLUMN = "power_rating_v4"
+POWER_RANK_COLUMN = "power_rank_v4"
 MATCHUP_TEAM_COLORS = ["#2563eb", "#16a34a"]
 
 LOGGER = logging.getLogger(__name__)
@@ -1046,9 +1047,11 @@ def rankings_display_columns(rankings: pd.DataFrame) -> list[str]:
         column
         for column in [
             "power_rank_v2",
+            "power_rank_v4",
             "power_rank_v3_recency",
             "team",
             "power_rating_v2",
+            "power_rating_v4",
             "power_rating_v3_recency",
             "confidence_tier",
             "elo",
@@ -1070,9 +1073,11 @@ def render_rankings_table(
         rankings[display_columns].sort_values(sort_column, ascending=ascending),
         column_config={
             "power_rank_v2": "Power Rank",
+            "power_rank_v4": "Power Rank",
             "power_rank_v3_recency": "Power Rank",
             "team": "Team",
             "power_rating_v2": st.column_config.NumberColumn("Power Rating", format="%.2f"),
+            "power_rating_v4": st.column_config.NumberColumn("Power Rating", format="%.2f"),
             "power_rating_v3_recency": st.column_config.NumberColumn("Power Rating", format="%.2f"),
             "confidence_tier": "Confidence",
             "elo": st.column_config.NumberColumn("ELO", format="%.1f"),
@@ -2573,7 +2578,7 @@ def matchup_power_context(team_a: str, team_b: str, power_ratings: pd.DataFrame)
         team_a_probability = 0.5
         team_b_probability = 0.5
     else:
-        team_a_probability = calibrated_power_v3_probability(team_a_rating - team_b_rating)
+        team_a_probability = calibrated_power_v4_probability(team_a_rating - team_b_rating)
         team_b_probability = 1.0 - team_a_probability
 
     return {
@@ -2603,7 +2608,8 @@ def format_supporting_prediction_context(prediction) -> str:
 def find_team_row(frame: pd.DataFrame, team: str) -> pd.Series | None:
     if frame.empty or "team" not in frame.columns:
         return None
-    normalized_team = normalize_team_name(team)
+    resolved_team = resolve_team_name(team, frame["team"].dropna().unique())
+    normalized_team = normalize_team_name(resolved_team)
     matches = frame[frame["team"].map(normalize_team_name) == normalized_team]
     if matches.empty:
         return None
@@ -2611,13 +2617,18 @@ def find_team_row(frame: pd.DataFrame, team: str) -> pd.Series | None:
 
 
 def normalize_team_name(team: object) -> str:
-    return " ".join(str(team).strip().casefold().split())
+    return normalize_team_key(team)
 
 
 def power_rating_value(row: pd.Series | None) -> float | None:
     if row is None:
         return None
-    for column in [POWER_RATING_COLUMN, "power_rating_v2"]:
+    for column in [
+        POWER_RATING_COLUMN,
+        "power_rating_v4",
+        "power_rating_v3_recency",
+        "power_rating_v2",
+    ]:
         if column in row and pd.notna(row[column]):
             return float(row[column])
     return None
@@ -2626,7 +2637,12 @@ def power_rating_value(row: pd.Series | None) -> float | None:
 def power_rank_value(row: pd.Series | None) -> int | None:
     if row is None:
         return None
-    for column in [POWER_RANK_COLUMN, "power_rank_v2"]:
+    for column in [
+        POWER_RANK_COLUMN,
+        "power_rank_v4",
+        "power_rank_v3_recency",
+        "power_rank_v2",
+    ]:
         if column in row and pd.notna(row[column]):
             return int(row[column])
     return None

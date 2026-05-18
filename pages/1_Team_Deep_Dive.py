@@ -902,15 +902,26 @@ def league_comparison_data(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
     power = data["power_ratings"].copy()
     if power.empty or "team" not in power.columns:
         return pd.DataFrame()
+    power_rating_column = first_available_column(
+        power,
+        [dashboard.POWER_RATING_COLUMN, "power_rating_v4", "power_rating_v3_recency"],
+    )
+    power_rank_column = first_available_column(
+        power,
+        [dashboard.POWER_RANK_COLUMN, "power_rank_v4", "power_rank_v3_recency"],
+    )
+    rename_columns = {
+        "games_played": "Games Played",
+        "adjusted_offense_rating": "Offensive Strength",
+        "adjusted_defense_rating": "Defensive Strength",
+        "avg_margin": "Recent Margin",
+    }
+    if power_rating_column is not None:
+        rename_columns[power_rating_column] = "Power Rating"
+    if power_rank_column is not None:
+        rename_columns[power_rank_column] = "Power Rank"
     comparison = power.rename(
-        columns={
-            dashboard.POWER_RATING_COLUMN: "Power Rating",
-            dashboard.POWER_RANK_COLUMN: "Power Rank",
-            "games_played": "Games Played",
-            "adjusted_offense_rating": "Offensive Strength",
-            "adjusted_defense_rating": "Defensive Strength",
-            "avg_margin": "Recent Margin",
-        }
+        columns=rename_columns
     )
     if not data["ratings"].empty:
         comparison = comparison.merge(
@@ -1220,10 +1231,14 @@ def remaining_schedule(team: str, data: dict[str, pd.DataFrame]) -> pd.DataFrame
 
 
 def schedule_difficulty_label(average_strength: float, power_ratings: pd.DataFrame) -> str:
-    if power_ratings.empty or POWER_COLUMN not in power_ratings.columns:
+    power_column = first_available_column(
+        power_ratings,
+        [POWER_COLUMN, "power_rating_v4", "power_rating_v3_recency"],
+    )
+    if power_ratings.empty or power_column is None:
         return "Moderate"
-    upper = float(power_ratings[POWER_COLUMN].quantile(0.67))
-    lower = float(power_ratings[POWER_COLUMN].quantile(0.33))
+    upper = float(power_ratings[power_column].quantile(0.67))
+    lower = float(power_ratings[power_column].quantile(0.33))
     if average_strength >= upper:
         return "Difficult"
     if average_strength <= lower:
@@ -1232,6 +1247,10 @@ def schedule_difficulty_label(average_strength: float, power_ratings: pd.DataFra
 
 
 POWER_COLUMN = dashboard.POWER_RATING_COLUMN
+
+
+def first_available_column(frame: pd.DataFrame, columns: list[str]) -> str | None:
+    return next((column for column in columns if column in frame.columns), None)
 
 
 def render_team_games_table(team: str, data: dict[str, pd.DataFrame]) -> None:

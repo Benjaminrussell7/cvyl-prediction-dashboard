@@ -121,6 +121,26 @@ REQUIRED_CSV_COLUMNS = {
         "shrinkage_multiplier",
         "average_recency_weight",
     },
+    "cvyl_power_ratings_v4_opponent_adjusted.csv": {
+        "team",
+        "games_played",
+        "avg_points_for",
+        "avg_points_against",
+        "avg_margin",
+        "adjusted_offense_rating",
+        "adjusted_defense_rating",
+        "adjusted_margin_rating",
+        "avg_capped_margin",
+        "avg_expected_margin_vs_opponent",
+        "avg_performance_above_expectation",
+        "power_rating_v4",
+        "power_rank_v4",
+        "confidence_tier",
+        "shrinkage_multiplier",
+        "average_recency_weight",
+        "baseline_power_rating_v3_recency",
+        "baseline_power_rank_v3_recency",
+    },
     "cvyl_model_comparison_v3_summary.csv": {
         "total_games",
         "power_v3_recency_accuracy",
@@ -149,6 +169,29 @@ REQUIRED_CSV_COLUMNS = {
         "power_v3_recency_correct",
         "power_v3_calibrated_correct",
     },
+    "cvyl_model_comparison_power_v4_summary.csv": {
+        "total_games",
+        "power_v3_recency_accuracy",
+        "power_v4_accuracy",
+        "power_v3_recency_brier_score",
+        "power_v4_brier_score",
+        "power_v3_recency_log_loss",
+        "power_v4_log_loss",
+        "power_v3_recency_margin_mae",
+        "power_v4_margin_mae",
+    },
+    "cvyl_model_comparison_power_v4.csv": {
+        "game_date",
+        "home_team",
+        "away_team",
+        "actual_winner",
+        "power_v3_recency_predicted_winner",
+        "power_v3_recency_win_probability",
+        "power_v4_predicted_winner",
+        "power_v4_win_probability",
+        "power_v3_recency_correct",
+        "power_v4_correct",
+    },
     "cvyl_model_comparison_summary.csv": {
         "total_games",
         "power_v2_accuracy",
@@ -164,6 +207,13 @@ REQUIRED_CSV_COLUMNS = {
         "calibration_gap",
     },
     "cvyl_calibration_power_rating_v4.csv": {
+        "bucket",
+        "games",
+        "average_predicted_probability",
+        "actual_win_rate",
+        "calibration_gap",
+    },
+    "cvyl_calibration_power_v4_opponent_adjusted.csv": {
         "bucket",
         "games",
         "average_predicted_probability",
@@ -210,13 +260,13 @@ def test_dashboard_processed_data_smoke_contract() -> None:
     assert prediction.team_b == "RHAM 12U"
     assert power_context["predicted_winner"] in {"West Hartford 12U Green", "RHAM 12U"}
     assert power_row is not None
-    assert pd.notna(power_row["power_rank_v3_recency"])
-    assert pd.notna(power_row["power_rating_v3_recency"])
+    assert pd.notna(power_row[dashboard.POWER_RANK_COLUMN])
+    assert pd.notna(power_row[dashboard.POWER_RATING_COLUMN])
     assert pd.notna(power_row["average_recency_weight"])
     assert dashboard.metric_value(model_summary, dashboard.POWER_ACCURACY_KEY, percentage=True) != "N/A"
     assert dashboard.metric_value(model_summary, dashboard.POWER_BRIER_KEY) != "N/A"
-    assert pd.notna(model_summary.iloc[0]["power_v3_calibrated_accuracy"])
-    assert pd.notna(model_summary.iloc[0]["power_v3_calibrated_brier_score"])
+    assert pd.notna(model_summary.iloc[0]["power_v4_accuracy"])
+    assert pd.notna(model_summary.iloc[0]["power_v4_brier_score"])
 
     weekly_matchups = dashboard.build_weekly_matchups(
         scheduled_games,
@@ -361,6 +411,24 @@ def test_find_team_row_normalizes_power_rating_team_names() -> None:
 
     assert row is not None
     assert int(row["power_rank_v3_recency"]) == 20
+
+
+def test_find_team_row_resolves_known_scheduled_team_aliases() -> None:
+    power_ratings = pd.DataFrame(
+        [
+            {
+                "team": "Somers 12U Red",
+                "power_rank_v4": 9,
+                "power_rating_v4": 1.25,
+                "confidence_tier": "high",
+            }
+        ]
+    )
+
+    row = dashboard.find_team_row(power_ratings, "Somers Red")
+
+    assert row is not None
+    assert int(row["power_rank_v4"]) == 9
 
 
 def test_matchup_power_context_uses_calibrated_probability() -> None:

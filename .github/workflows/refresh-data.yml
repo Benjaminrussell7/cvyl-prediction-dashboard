@@ -48,6 +48,7 @@ jobs:
             data/processed/cvyl_historical_snapshots.csv \
             data/processed/cvyl_power_ratings_v2.csv \
             data/processed/cvyl_power_ratings_v3_recency.csv \
+            data/processed/cvyl_power_ratings_v4_opponent_adjusted.csv \
             data/processed/cvyl_model_comparison.csv \
             data/processed/cvyl_model_comparison_summary.csv \
             data/processed/cvyl_model_comparison_v3.csv \
@@ -56,6 +57,9 @@ jobs:
             data/processed/cvyl_model_comparison_v4_calibrated.csv \
             data/processed/cvyl_model_comparison_v4_calibrated_summary.csv \
             data/processed/cvyl_calibration_power_rating_v4.csv \
+            data/processed/cvyl_model_comparison_power_v4.csv \
+            data/processed/cvyl_model_comparison_power_v4_summary.csv \
+            data/processed/cvyl_calibration_power_v4_opponent_adjusted.csv \
             data/processed/cvyl_backtest.csv \
             data/processed/cvyl_backtest_summary.csv
           if git diff --cached --quiet; then
