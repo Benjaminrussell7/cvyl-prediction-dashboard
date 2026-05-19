@@ -209,8 +209,8 @@ b2db52ab321da508,Belchertown 12U,Northampton 12U,7,6,True,2026-05-05,2026,U12 Bo
 b2db52ab321da508,Northampton 12U,Belchertown 12U,6,7,False,2026-05-05,2026,U12 Boys,completed
 c8f7e9bb590e3579,East Longmeadow 12U A,Longmeadow 12U Black,6,4,True,2026-05-05,2026,U12 Boys,completed
 c8f7e9bb590e3579,Longmeadow 12U Black,East Longmeadow 12U A,4,6,False,2026-05-05,2026,U12 Boys,completed
-e0e6c1d3295270be,West Hartford 12U White,Wethersfield 12U B,10,6,True,2026-05-05,2026,U12 Boys,completed
-e0e6c1d3295270be,Wethersfield 12U B,West Hartford 12U White,6,10,False,2026-05-05,2026,U12 Boys,completed
+e0e6c1d3295270be,West Hartford 12U White,Wethersfield 12U B,4,7,False,2026-05-05,2026,U12 Boys,completed
+e0e6c1d3295270be,Wethersfield 12U B,West Hartford 12U White,7,4,True,2026-05-05,2026,U12 Boys,completed
 e4d831c631270100,Agawam 12U,South Hadley 12U,17,6,True,2026-05-05,2026,U12 Boys,completed
 e4d831c631270100,South Hadley 12U,Agawam 12U,6,17,False,2026-05-05,2026,U12 Boys,completed
 1048a8626adef5ff,Somers 12U White,South Windsor 12U,14,4,True,2026-05-06,2026,U12 Boys,completed
@@ -277,6 +277,8 @@ ddd8b5c19b323bd1,Wolcott 12U,Southington 12U Blue,5,9,False,2026-05-12,2026,U12 
 24480a4327977f5a,RHAM 12U,Granby 12U,14,2,True,2026-05-13,2026,U12 Boys,completed
 532fd5e2eab9093d,Farmington 12U Red,Glastonbury 12U Blue,6,5,True,2026-05-13,2026,U12 Boys,completed
 532fd5e2eab9093d,Glastonbury 12U Blue,Farmington 12U Red,5,6,False,2026-05-13,2026,U12 Boys,completed
+846a0e33f60b8447,Avon 12U B,Southington 12U White,5,1,True,2026-05-13,2026,U12 Boys,completed
+846a0e33f60b8447,Southington 12U White,Avon 12U B,1,5,False,2026-05-13,2026,U12 Boys,completed
 880f09678b462075,West Hartford 12U Gold,Wethersfield 12U A,10,6,True,2026-05-13,2026,U12 Boys,completed
 880f09678b462075,Wethersfield 12U A,West Hartford 12U Gold,6,10,False,2026-05-13,2026,U12 Boys,completed
 a0e7cb7ff9349848,Berlin 12U A,Newington 12U,15,2,True,2026-05-13,2026,U12 Boys,completed
@@ -311,3 +313,11 @@ ecf5fd6c69d08979,RHAM 12U,West Hartford 12U Green,7,4,True,2026-05-17,2026,U12 B
 ecf5fd6c69d08979,West Hartford 12U Green,RHAM 12U,4,7,False,2026-05-17,2026,U12 Boys,completed
 f402056dd658d86b,Glastonbury 12U White,Simsbury 12U A,13,6,True,2026-05-17,2026,U12 Boys,completed
 f402056dd658d86b,Simsbury 12U A,Glastonbury 12U White,6,13,False,2026-05-17,2026,U12 Boys,completed
+85b347c366e4f209,Glastonbury 12U Blue,Southington 12U White,1,2,False,2026-05-18,2026,U12 Boys,completed
+85b347c366e4f209,Southington 12U White,Glastonbury 12U Blue,2,1,True,2026-05-18,2026,U12 Boys,completed
+9faee70e6335be8c,Berlin 12U A,Bristol 12U,3,4,False,2026-05-18,2026,U12 Boys,completed
+9faee70e6335be8c,Bristol 12U,Berlin 12U A,4,3,True,2026-05-18,2026,U12 Boys,completed
+ba09045dca3590a9,Minnechaug 12U,Somers 12U White,6,4,True,2026-05-18,2026,U12 Boys,completed
+ba09045dca3590a9,Somers 12U White,Minnechaug 12U,4,6,False,2026-05-18,2026,U12 Boys,completed
+ce6171fad65f5185,Minnechaug 12U White,Somers 12U Red,7,4,True,2026-05-18,2026,U12 Boys,completed
+ce6171fad65f5185,Somers 12U Red,Minnechaug 12U White,4,7,False,2026-05-18,2026,U12 Boys,completed
