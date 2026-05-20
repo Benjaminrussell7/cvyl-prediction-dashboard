@@ -162,3 +162,6 @@ game_date,home_team,away_team,actual_winner,elo_predicted_winner,elo_win_probabi
 2026-05-18,Bristol 12U,Berlin 12U A,Bristol 12U,Berlin 12U A,0.5840271480592683,Berlin 12U A,0.5855138734897993,Berlin 12U A,0.5685951173438311,False,False,False
 2026-05-18,Minnechaug 12U,Somers 12U White,Minnechaug 12U,Minnechaug 12U,0.503713405886917,Minnechaug 12U,0.5288243857995459,Minnechaug 12U,0.519311496027394,True,True,True
 2026-05-18,Somers 12U Red,Minnechaug 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5978600868786119,Minnechaug 12U White,0.5856999482882342,Minnechaug 12U White,0.5708497578439011,True,True,True
+2026-05-19,Suffield 12U,Agawam 12U,Suffield 12U,Suffield 12U,0.659806943980628,Suffield 12U,0.7312363384389156,Suffield 12U,0.6794574973623358,True,True,True
+2026-05-19,Suffield 12U White,Wethersfield 12U B,Suffield 12U White,Suffield 12U White,0.5544323576110495,Suffield 12U White,0.556026007226477,Suffield 12U White,0.5447571601952005,True,True,True
+2026-05-19,Belchertown 12U,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.5981146308916752,West Springfield 12U,0.6618889338761933,West Springfield 12U,0.6217679236832179,True,True,True
