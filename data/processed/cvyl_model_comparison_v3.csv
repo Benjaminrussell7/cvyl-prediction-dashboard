@@ -166,5 +166,6 @@ game_date,home_team,away_team,actual_winner,elo_predicted_winner,elo_win_probabi
 2026-05-19,Suffield 12U,Agawam 12U,Suffield 12U,Suffield 12U,0.659806943980628,Suffield 12U,0.7312363384389156,Suffield 12U,0.7266620015334484,True,True,True
 2026-05-19,Suffield 12U White,Wethersfield 12U B,Suffield 12U White,Suffield 12U White,0.5544323576110495,Suffield 12U White,0.556026007226477,Suffield 12U White,0.5524381420131667,True,True,True
 2026-05-19,Belchertown 12U,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.5981146308916752,West Springfield 12U,0.6618889338761933,West Springfield 12U,0.662113524145014,True,True,True
-2026-05-20,Belchertown 12U,East Longmeadow 12U A,Belchertown 12U,Belchertown 12U,0.5635357147411033,Belchertown 12U,0.5469644349155143,Belchertown 12U,0.5511039575925615,True,True,True
-2026-05-20,South Windsor 12U,West Hartford 12U Green,South Windsor 12U,West Hartford 12U Green,0.5800762229784255,West Hartford 12U Green,0.6097410720445715,West Hartford 12U Green,0.604624431511013,False,False,False
+2026-05-20,Westfield 12U Red,South Hadley 12U,Westfield 12U Red,Westfield 12U Red,0.775171734282484,Westfield 12U Red,0.825636800069771,Westfield 12U Red,0.821957320716813,True,True,True
+2026-05-20,Belchertown 12U,East Longmeadow 12U A,Belchertown 12U,Belchertown 12U,0.5635357147411033,Belchertown 12U,0.5462739788387898,Belchertown 12U,0.5505644938969991,True,True,True
+2026-05-20,South Windsor 12U,West Hartford 12U Green,South Windsor 12U,West Hartford 12U Green,0.5800762229784255,West Hartford 12U Green,0.6097410720445715,West Hartford 12U Green,0.6046505824098107,False,False,False
