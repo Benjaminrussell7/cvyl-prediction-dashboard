@@ -162,11 +162,13 @@ game_date,home_team,away_team,actual_winner,elo_predicted_winner,elo_win_probabi
 2026-05-18,Bristol 12U,Berlin 12U A,Bristol 12U,Berlin 12U A,0.5840271480592683,Berlin 12U A,0.5855138734897993,Berlin 12U A,0.5685951173438311,False,False,False
 2026-05-18,Minnechaug 12U,Somers 12U White,Minnechaug 12U,Minnechaug 12U,0.503713405886917,Minnechaug 12U,0.5288243857995459,Minnechaug 12U,0.519311496027394,True,True,True
 2026-05-18,Somers 12U Red,Minnechaug 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5978600868786119,Minnechaug 12U White,0.5856999482882342,Minnechaug 12U White,0.5708497578439011,True,True,True
-2026-05-19,Wolcott 12U,Bristol 12U,Wolcott 12U,Wolcott 12U,0.6719903333503922,Wolcott 12U,0.6756446357646616,Wolcott 12U,0.6424478982432703,True,True,True
+2026-05-19,Newington 12U,Meriden 12U,Newington 12U,Meriden 12U,0.5761029540791378,Meriden 12U,0.5745220813140198,Meriden 12U,0.5601683840307545,False,False,False
+2026-05-19,Wolcott 12U,Bristol 12U,Wolcott 12U,Wolcott 12U,0.6719903333503922,Wolcott 12U,0.6756446357646615,Wolcott 12U,0.6424478982432703,True,True,True
 2026-05-19,Suffield 12U,Agawam 12U,Suffield 12U,Suffield 12U,0.659806943980628,Suffield 12U,0.7312363384389156,Suffield 12U,0.6794574973623358,True,True,True
 2026-05-19,Suffield 12U White,Wethersfield 12U B,Suffield 12U White,Suffield 12U White,0.5544323576110495,Suffield 12U White,0.556026007226477,Suffield 12U White,0.5447571601952005,True,True,True
 2026-05-19,Belchertown 12U,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.5981146308916752,West Springfield 12U,0.6618889338761933,West Springfield 12U,0.6217679236832179,True,True,True
 2026-05-20,Westfield 12U Red,South Hadley 12U,Westfield 12U Red,Westfield 12U Red,0.775171734282484,Westfield 12U Red,0.825636800069771,Westfield 12U Red,0.7683291972709467,True,True,True
-2026-05-20,Belchertown 12U,East Longmeadow 12U A,Belchertown 12U,Belchertown 12U,0.5635357147411033,Belchertown 12U,0.5462739788387898,Belchertown 12U,0.5397902003150956,True,True,True
+2026-05-20,Belchertown 12U,East Longmeadow 12U A,Belchertown 12U,Belchertown 12U,0.563534134951851,Belchertown 12U,0.5462739788387898,Belchertown 12U,0.5397899577870031,True,True,True
 2026-05-20,South Windsor 12U,West Hartford 12U Green,South Windsor 12U,West Hartford 12U Green,0.5800762229784255,West Hartford 12U Green,0.6097410720445715,West Hartford 12U Green,0.5839854135066367,False,False,False
-2026-05-21,West Hartford 12U Gold,Longmeadow 12U Black,West Hartford 12U Gold,West Hartford 12U Gold,0.6914702186011709,West Hartford 12U Gold,0.7155329870626932,West Hartford 12U Gold,0.673098658665682,True,True,True
+2026-05-21,Meriden 12U,Farmington 12U Red,Meriden 12U,Farmington 12U Red,0.5861539701173215,Farmington 12U Red,0.58852570920479,Farmington 12U Red,0.570901125880147,False,False,False
+2026-05-21,West Hartford 12U Gold,Longmeadow 12U Black,West Hartford 12U Gold,West Hartford 12U Gold,0.6914702186011709,West Hartford 12U Gold,0.7160546101218058,West Hartford 12U Gold,0.6734652809017337,True,True,True
