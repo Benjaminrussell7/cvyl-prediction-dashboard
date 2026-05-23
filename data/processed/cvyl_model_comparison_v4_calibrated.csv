@@ -174,3 +174,6 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-21,Suffield 12U White,Westfield 12U Black,Suffield 12U White,Suffield 12U White,0.5848184628043687,Suffield 12U White,0.6122502200351005,True,True
 2026-05-21,Meriden 12U,Farmington 12U Red,Meriden 12U,Farmington 12U Red,0.5841473722580885,Farmington 12U Red,0.6113751981957252,False,False
 2026-05-21,West Hartford 12U Gold,Longmeadow 12U Black,West Hartford 12U Gold,West Hartford 12U Gold,0.713001353652169,West Hartford 12U Gold,0.7708895830105641,True,True
+2026-05-22,Suffield 12U,Burlington 12U,Suffield 12U,Suffield 12U,0.649383811112781,Suffield 12U,0.6946131444567123,True,True
+2026-05-22,Somers 12U Red,East Longmeadow 12U White,Somers 12U Red,Somers 12U Red,0.5425519562312646,Somers 12U Red,0.5566294923099717,True,True
+2026-05-22,Farmington 12U Red,West Hartford 12U White,Tie,Farmington 12U Red,0.6312399230191332,Farmington 12U Red,0.6718842661957525,False,False
