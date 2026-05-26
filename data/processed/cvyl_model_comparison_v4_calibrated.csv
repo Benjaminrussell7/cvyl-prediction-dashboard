@@ -171,12 +171,14 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-20,Ellington 12U,Simsbury 12U A,Ellington 12U,Ellington 12U,0.6152347814205261,Ellington 12U,0.6515427601024056,True,True
 2026-05-20,Belchertown 12U,East Longmeadow 12U A,Belchertown 12U,Belchertown 12U,0.5505118549732546,Belchertown 12U,0.567171139086828,True,True
 2026-05-20,South Windsor 12U,West Hartford 12U Green,South Windsor 12U,West Hartford 12U Green,0.6047009211655014,West Hartford 12U Green,0.6380218010313341,False,False
-2026-05-21,Suffield 12U White,Westfield 12U Black,Suffield 12U White,Suffield 12U White,0.5848184628043687,Suffield 12U White,0.6122502200351005,True,True
-2026-05-21,Meriden 12U,Farmington 12U Red,Meriden 12U,Farmington 12U Red,0.5841473722580885,Farmington 12U Red,0.6113751981957252,False,False
-2026-05-21,West Hartford 12U Gold,Longmeadow 12U Black,West Hartford 12U Gold,West Hartford 12U Gold,0.713001353652169,West Hartford 12U Gold,0.7708895830105641,True,True
-2026-05-21,Colchester 12U,Tolland 12U,Colchester 12U,Colchester 12U,0.7174946322473506,Colchester 12U,0.7760435836692005,True,True
-2026-05-22,Suffield 12U,Burlington 12U,Suffield 12U,Suffield 12U,0.6493511498214901,Suffield 12U,0.6945725712941135,True,True
-2026-05-22,Somers 12U Red,East Longmeadow 12U White,Somers 12U Red,Somers 12U Red,0.5425475111146685,Somers 12U Red,0.5566235988266903,True,True
-2026-05-22,Farmington 12U Red,West Hartford 12U White,Tie,Farmington 12U Red,0.6312483094798739,Farmington 12U Red,0.6718948562721846,False,False
-2026-05-23,Newington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.7676041678569132,RHAM 12U,0.8310531341620417,True,True
-2026-05-23,Colchester 12U,Vernon 12U,Vernon 12U,Colchester 12U,0.5577417219143976,Colchester 12U,0.576723158562636,False,False
+2026-05-20,Simsbury 12U Blue,Glastonbury 12U Blue,Simsbury 12U Blue,Glastonbury 12U Blue,0.50674066669566,Glastonbury 12U Blue,0.5089871321143211,False,False
+2026-05-21,Suffield 12U White,Westfield 12U Black,Suffield 12U White,Suffield 12U White,0.585067516672079,Suffield 12U White,0.612574876842001,True,True
+2026-05-21,Meriden 12U,Farmington 12U Red,Meriden 12U,Farmington 12U Red,0.5852684446190491,Farmington 12U Red,0.6128367670304253,False,False
+2026-05-21,West Hartford 12U Gold,Longmeadow 12U Black,West Hartford 12U Gold,West Hartford 12U Gold,0.7130240334842372,West Hartford 12U Gold,0.7709156828747972,True,True
+2026-05-21,Colchester 12U,Tolland 12U,Colchester 12U,Colchester 12U,0.7179818270124654,Colchester 12U,0.7766003696736594,True,True
+2026-05-22,Suffield 12U,Burlington 12U,Suffield 12U,Suffield 12U,0.649317623948838,Suffield 12U,0.694530922781307,True,True
+2026-05-22,Simsbury 12U A,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.8209823955551331,Westfield 12U Red,0.85,True,True
+2026-05-22,Somers 12U Red,East Longmeadow 12U White,Somers 12U Red,Somers 12U Red,0.5430687912215914,Somers 12U Red,0.5573146816954597,True,True
+2026-05-22,Farmington 12U Red,West Hartford 12U White,Tie,Farmington 12U Red,0.6315828158466991,Farmington 12U Red,0.6723171961120172,False,False
+2026-05-23,Newington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.767638528127299,RHAM 12U,0.8310891915316648,True,True
+2026-05-23,Colchester 12U,Vernon 12U,Vernon 12U,Colchester 12U,0.558313520093681,Colchester 12U,0.5774775891615018,False,False
