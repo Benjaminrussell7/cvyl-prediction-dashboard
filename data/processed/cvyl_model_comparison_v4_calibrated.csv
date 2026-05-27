@@ -182,4 +182,6 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-22,Farmington 12U Red,West Hartford 12U White,Tie,Farmington 12U Red,0.6315828158466991,Farmington 12U Red,0.6723171961120172,False,False
 2026-05-23,Newington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.767638528127299,RHAM 12U,0.8310891915316648,True,True
 2026-05-23,Colchester 12U,Vernon 12U,Vernon 12U,Colchester 12U,0.558313520093681,Colchester 12U,0.5774775891615018,False,False
-2026-05-26,Northampton 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.5691732534974827,Belchertown 12U,0.5917743058334728,True,True
+2026-05-26,Wethersfield 12U A,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6015144184168302,West Springfield 12U,0.633912584386638,True,True
+2026-05-26,Suffield 12U White,Somers 12U Red,Suffield 12U White,Suffield 12U White,0.5749749959207408,Suffield 12U White,0.5993853543538745,True,True
+2026-05-26,Northampton 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.5690632149390633,Belchertown 12U,0.591629760761469,True,True

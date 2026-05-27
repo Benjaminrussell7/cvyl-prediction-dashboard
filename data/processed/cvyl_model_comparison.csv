@@ -182,4 +182,6 @@ game_date,home_team,away_team,actual_winner,elo_predicted_winner,elo_win_probabi
 2026-05-22,Farmington 12U Red,West Hartford 12U White,Tie,Farmington 12U Red,0.6250120193452192,Farmington 12U Red,0.6334321649425931,Farmington 12U Red,0.6066339400283617,False,False,False
 2026-05-23,Newington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.744235027464881,RHAM 12U,0.7712498814003338,RHAM 12U,0.7215880572800792,True,True,True
 2026-05-23,Colchester 12U,Vernon 12U,Vernon 12U,Colchester 12U,0.5546201674605964,Colchester 12U,0.5625876804689034,Colchester 12U,0.5490736987001753,False,False,False
-2026-05-26,Northampton 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.6065168953347455,Belchertown 12U,0.5683687939706893,Belchertown 12U,0.5608592998302583,True,True,True
+2026-05-26,Wethersfield 12U A,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.5961805146762026,West Springfield 12U,0.5967633178255616,West Springfield 12U,0.5778648897042167,True,True,True
+2026-05-26,Suffield 12U White,Somers 12U Red,Suffield 12U White,Suffield 12U White,0.625567573918306,Suffield 12U White,0.5765524543323245,Suffield 12U White,0.5692101003236592,True,True,True
+2026-05-26,Northampton 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.6065168953347455,Belchertown 12U,0.568296516422947,Belchertown 12U,0.5608121339834633,True,True,True
