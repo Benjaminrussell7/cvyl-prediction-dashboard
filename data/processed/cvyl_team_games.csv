@@ -1,6 +1,8 @@
 game_id,team,opponent,points_for,points_against,win,game_date,season,division,status
 d05ea47d15eae67c,Burlington 12U,Meriden 12U,9,2,True,2026-04-04,2026,U12 Boys,completed
 d05ea47d15eae67c,Meriden 12U,Burlington 12U,2,9,False,2026-04-04,2026,U12 Boys,completed
+cffc389569159931,Burlington 12U,Farmington 12U Black,13,4,True,2026-04-06,2026,U12 Boys,completed
+cffc389569159931,Farmington 12U Black,Burlington 12U,4,13,False,2026-04-06,2026,U12 Boys,completed
 3e3ed7e49b8e8a61,Suffield 12U White,Westfield 12U Black,4,2,True,2026-04-09,2026,U12 Boys,completed
 3e3ed7e49b8e8a61,Westfield 12U Black,Suffield 12U White,2,4,False,2026-04-09,2026,U12 Boys,completed
 ad6481562c9661d8,Ellington 12U,West Hartford 12U Gold,2,15,False,2026-04-09,2026,U12 Boys,completed
@@ -255,6 +257,8 @@ f5de61c3d069709c,Avon 12U,Simsbury 12U A,11,0,True,2026-05-10,2026,U12 Boys,comp
 f5de61c3d069709c,Simsbury 12U A,Avon 12U,0,11,False,2026-05-10,2026,U12 Boys,completed
 22bbf2afe92d9de3,Berlin 12U A,Meriden 12U,1,6,False,2026-05-11,2026,U12 Boys,completed
 22bbf2afe92d9de3,Meriden 12U,Berlin 12U A,6,1,True,2026-05-11,2026,U12 Boys,completed
+32d636735b457d2b,Farmington 12U Black,Glastonbury 12U White,4,10,False,2026-05-11,2026,U12 Boys,completed
+32d636735b457d2b,Glastonbury 12U White,Farmington 12U Black,10,4,True,2026-05-11,2026,U12 Boys,completed
 b4d80cff366a8d44,South Windsor 12U,Vernon 12U,12,9,True,2026-05-11,2026,U12 Boys,completed
 b4d80cff366a8d44,Vernon 12U,South Windsor 12U,9,12,False,2026-05-11,2026,U12 Boys,completed
 ceb132d6d7f70515,East Longmeadow 12U White,Minnechaug 12U White,4,6,False,2026-05-11,2026,U12 Boys,completed
@@ -339,6 +343,8 @@ ad265f1c3e1d3c2c,West Springfield 12U,Belchertown 12U,9,5,True,2026-05-19,2026,U
 03c94946054d5d0d,Westfield 12U Red,South Hadley 12U,19,1,True,2026-05-20,2026,U12 Boys,completed
 35ce0d367e024916,Ellington 12U,Simsbury 12U A,9,2,True,2026-05-20,2026,U12 Boys,completed
 35ce0d367e024916,Simsbury 12U A,Ellington 12U,2,9,False,2026-05-20,2026,U12 Boys,completed
+4894a46f2651e3fd,Tolland 12U,Vernon 12U,2,11,False,2026-05-20,2026,U12 Boys,completed
+4894a46f2651e3fd,Vernon 12U,Tolland 12U,11,2,True,2026-05-20,2026,U12 Boys,completed
 4c6e4524278f20af,Belchertown 12U,East Longmeadow 12U A,9,5,True,2026-05-20,2026,U12 Boys,completed
 4c6e4524278f20af,East Longmeadow 12U A,Belchertown 12U,5,9,False,2026-05-20,2026,U12 Boys,completed
 ae768dd98bc5d392,South Windsor 12U,West Hartford 12U Green,8,5,True,2026-05-20,2026,U12 Boys,completed
@@ -365,9 +371,13 @@ addc70bd6ce14e16,Newington 12U,RHAM 12U,1,7,False,2026-05-23,2026,U12 Boys,compl
 addc70bd6ce14e16,RHAM 12U,Newington 12U,7,1,True,2026-05-23,2026,U12 Boys,completed
 cd639f273cfc65d0,Colchester 12U,Vernon 12U,2,4,False,2026-05-23,2026,U12 Boys,completed
 cd639f273cfc65d0,Vernon 12U,Colchester 12U,4,2,True,2026-05-23,2026,U12 Boys,completed
+936f2e07b41ea50f,East Longmeadow 12U A,Northampton 12U,13,1,True,2026-05-24,2026,U12 Boys,completed
+936f2e07b41ea50f,Northampton 12U,East Longmeadow 12U A,1,13,False,2026-05-24,2026,U12 Boys,completed
 003c068f9b787df7,West Springfield 12U,Wethersfield 12U A,7,4,True,2026-05-26,2026,U12 Boys,completed
 003c068f9b787df7,Wethersfield 12U A,West Springfield 12U,4,7,False,2026-05-26,2026,U12 Boys,completed
 569cc83219b2a62d,Somers 12U Red,Suffield 12U White,3,4,False,2026-05-26,2026,U12 Boys,completed
 569cc83219b2a62d,Suffield 12U White,Somers 12U Red,4,3,True,2026-05-26,2026,U12 Boys,completed
 5bd2b12d3aff3a91,Belchertown 12U,Northampton 12U,5,3,True,2026-05-26,2026,U12 Boys,completed
 5bd2b12d3aff3a91,Northampton 12U,Belchertown 12U,3,5,False,2026-05-26,2026,U12 Boys,completed
+e059cee17036615a,South Windsor 12U,Suffield 12U,0,14,False,2026-05-26,2026,U12 Boys,completed
+e059cee17036615a,Suffield 12U,South Windsor 12U,14,0,True,2026-05-26,2026,U12 Boys,completed

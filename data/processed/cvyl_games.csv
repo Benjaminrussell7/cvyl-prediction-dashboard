@@ -1,6 +1,6 @@
 game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_team,home_score,away_score,status,source_name,source_url,game_id
 2026-04-04,,2026,U12 Boys,Meriden 12U,Burlington 12U,Meriden 12U,Burlington 12U,2,9,completed,burlington_12u,https://www.cvyl.org/team/225898/games,d05ea47d15eae67c
-2026-04-06,6:00 PM,2026,U12 Boys,Farmington 12U Black,Burlington 12U,Farmington 12U Black,Burlington 12U,,,scheduled,burlington_12u,https://www.cvyl.org/team/225898/games,80f7a02f76bc7407
+2026-04-06,,2026,U12 Boys,Farmington 12U Black,Burlington 12U,Farmington 12U Black,Burlington 12U,4,13,completed,burlington_12u,https://www.cvyl.org/team/225898/games,cffc389569159931
 2026-04-09,,2026,U12 Boys,Suffield 12U White,Westfield 12U Black,Suffield 12U White,Westfield 12U Black,4,2,completed,suffield_12u_white,https://www.cvyl.org/team/225938/games,3e3ed7e49b8e8a61
 2026-04-09,,2026,U12 Boys,West Hartford 12U Gold,Ellington 12U,West Hartford 12U Gold,Ellington 12U,15,2,completed,ellington_12u,https://www.cvyl.org/team/225901/games,ad6481562c9661d8
 2026-04-10,,2026,U12 Boys,East Longmeadow 12U A,Westfield 12U Red,East Longmeadow 12U A,Westfield 12U Red,0,14,completed,east_longmeadow_12u_a,https://www.cvyl.org/team/225900/games,8a401abd81bd6384
@@ -110,7 +110,6 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-05-05,,2026,U12 Boys,Northampton 12U,Belchertown 12U,Northampton 12U,Belchertown 12U,6,7,completed,belchertown_12u,https://www.cvyl.org/team/225894/games,b2db52ab321da508
 2026-05-05,,2026,U12 Boys,West Hartford 12U Green,Colchester 12U,West Hartford 12U Green,Colchester 12U,8,5,completed,colchester_12u,https://www.cvyl.org/team/225899/games,aa871ccbefa577c5
 2026-05-05,,2026,U12 Boys,West Hartford 12U White,Wethersfield 12U B,West Hartford 12U White,Wethersfield 12U B,4,7,completed,west_hartford_12u_white,https://www.cvyl.org/team/225940/games,e0e6c1d3295270be
-2026-05-06,6:00 PM,2026,U12 Boys,West Hartford 12U White,Newington 12U,West Hartford 12U White,Newington 12U,,,scheduled,newington_12u,https://www.cvyl.org/team/225909/games,1413bbf95c0ffa1d
 2026-05-06,,2026,U12 Boys,Granby 12U,West Springfield 12U,Granby 12U,West Springfield 12U,3,5,completed,granby_12u,https://www.cvyl.org/team/225904/games,490b6386fc0bec82
 2026-05-06,,2026,U12 Boys,Simsbury 12U Blue,Southington 12U White,Simsbury 12U Blue,Southington 12U White,5,6,completed,simsbury_12u_blue,https://www.cvyl.org/team/225935/games,cf07d773e14b264a
 2026-05-06,,2026,U12 Boys,South Windsor 12U,Somers 12U White,South Windsor 12U,Somers 12U White,4,14,completed,somers_12u_white,https://www.cvyl.org/team/225913/games,1048a8626adef5ff
@@ -132,8 +131,8 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-05-10,,2026,U12 Boys,Avon 12U,Simsbury 12U A,Avon 12U,Simsbury 12U A,11,0,completed,avon_12u,https://www.cvyl.org/team/225893/games,f5de61c3d069709c
 2026-05-10,,2026,U12 Boys,Avon 12U B,Simsbury 12U Blue,Avon 12U B,Simsbury 12U Blue,5,3,completed,avon_12u_b,https://www.cvyl.org/team/225869/games,c2feb0da40937837
 2026-05-10,,2026,U12 Boys,Middletown 12U,Vernon 12U,Middletown 12U,Vernon 12U,1,5,completed,middletown_12u,https://www.cvyl.org/team/225907/games,082d3835323f91b7
-2026-05-11,6:00 PM,2026,U12 Boys,Farmington 12U Black,Glastonbury 12U White,Farmington 12U Black,Glastonbury 12U White,,,scheduled,farmington_12u_black,https://www.cvyl.org/team/225902/games,bd4ac2539bbe965a
 2026-05-11,,2026,U12 Boys,Berlin 12U A,Meriden 12U,Berlin 12U A,Meriden 12U,1,6,completed,berlin_12u_a,https://www.cvyl.org/team/225896/games,22bbf2afe92d9de3
+2026-05-11,,2026,U12 Boys,Farmington 12U Black,Glastonbury 12U White,Farmington 12U Black,Glastonbury 12U White,4,10,completed,farmington_12u_black,https://www.cvyl.org/team/225902/games,32d636735b457d2b
 2026-05-11,,2026,U12 Boys,Minnechaug 12U,East Longmeadow 12U A,Minnechaug 12U,East Longmeadow 12U A,14,0,completed,east_longmeadow_12u_a,https://www.cvyl.org/team/225900/games,d381cbfe385c039f
 2026-05-11,,2026,U12 Boys,Minnechaug 12U White,East Longmeadow 12U White,Minnechaug 12U White,East Longmeadow 12U White,6,4,completed,east_longmeadow_12u_white,https://www.cvyl.org/team/225928/games,ceb132d6d7f70515
 2026-05-11,,2026,U12 Boys,Tolland 12U,West Hartford 12U Green,Tolland 12U,West Hartford 12U Green,0,8,completed,tolland_12u,https://www.cvyl.org/team/225918/games,fbae43a7461850be
@@ -181,11 +180,11 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-05-19,,2026,U12 Boys,Suffield 12U,Agawam 12U,Suffield 12U,Agawam 12U,13,1,completed,agawam_12u,https://www.cvyl.org/team/225891/games,2f9278ac0a65120b
 2026-05-19,,2026,U12 Boys,Suffield 12U White,Wethersfield 12U B,Suffield 12U White,Wethersfield 12U B,9,5,completed,suffield_12u_white,https://www.cvyl.org/team/225938/games,3922383cce818a9d
 2026-05-19,,2026,U12 Boys,Wolcott 12U,Bristol 12U,Wolcott 12U,Bristol 12U,6,4,completed,bristol_12u,https://www.cvyl.org/team/225897/games,25cc1f9060d71813
-2026-05-20,6:00 PM,2026,U12 Boys,Vernon 12U,Tolland 12U,Vernon 12U,Tolland 12U,,,scheduled,tolland_12u,https://www.cvyl.org/team/225918/games,86e27eddc261452a
 2026-05-20,,2026,U12 Boys,Belchertown 12U,East Longmeadow 12U A,Belchertown 12U,East Longmeadow 12U A,9,5,completed,belchertown_12u,https://www.cvyl.org/team/225894/games,4c6e4524278f20af
 2026-05-20,,2026,U12 Boys,Ellington 12U,Simsbury 12U A,Ellington 12U,Simsbury 12U A,9,2,completed,ellington_12u,https://www.cvyl.org/team/225901/games,35ce0d367e024916
 2026-05-20,,2026,U12 Boys,Simsbury 12U Blue,Glastonbury 12U Blue,Simsbury 12U Blue,Glastonbury 12U Blue,5,4,completed,glastonbury_12u_blue,https://www.cvyl.org/team/225930/games,b91a3e56ed62854e
 2026-05-20,,2026,U12 Boys,South Windsor 12U,West Hartford 12U Green,South Windsor 12U,West Hartford 12U Green,8,5,completed,south_windsor_12u,https://www.cvyl.org/team/225915/games,ae768dd98bc5d392
+2026-05-20,,2026,U12 Boys,Vernon 12U,Tolland 12U,Vernon 12U,Tolland 12U,11,2,completed,tolland_12u,https://www.cvyl.org/team/225918/games,4894a46f2651e3fd
 2026-05-20,,2026,U12 Boys,Westfield 12U Red,South Hadley 12U,Westfield 12U Red,South Hadley 12U,19,1,completed,south_hadley_12u,https://www.cvyl.org/team/225914/games,03c94946054d5d0d
 2026-05-21,6:00 PM,2026,U12 Boys,Northampton 12U,West Springfield 12U,Northampton 12U,West Springfield 12U,,,scheduled,northampton_12u,https://www.cvyl.org/team/225910/games,2cdb914d24bc2220
 2026-05-21,,2026,U12 Boys,Colchester 12U,Tolland 12U,Colchester 12U,Tolland 12U,11,5,completed,colchester_12u,https://www.cvyl.org/team/225899/games,b110612ba52b8eee
@@ -202,12 +201,12 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-05-23,8:15 AM,2026,U12 Boys,Glastonbury 12U White,West Hartford 12U Gold,Glastonbury 12U White,West Hartford 12U Gold,,,scheduled,glastonbury_12u_white,https://www.cvyl.org/team/225903/games,a7fbe98fa0630575
 2026-05-23,,2026,U12 Boys,Colchester 12U,Vernon 12U,Colchester 12U,Vernon 12U,2,4,completed,colchester_12u,https://www.cvyl.org/team/225899/games,cd639f273cfc65d0
 2026-05-23,,2026,U12 Boys,Newington 12U,RHAM 12U,Newington 12U,RHAM 12U,1,7,completed,newington_12u,https://www.cvyl.org/team/225909/games,addc70bd6ce14e16
-2026-05-24,1:00 PM,2026,U12 Boys,East Longmeadow 12U A,Northampton 12U,East Longmeadow 12U A,Northampton 12U,,,scheduled,east_longmeadow_12u_a,https://www.cvyl.org/team/225900/games,f6f53847ca4ca8fd
 2026-05-24,9:00 AM,2026,U12 Boys,Avon 12U B,Somers Red,Avon 12U B,Somers Red,,,scheduled,avon_12u_b,https://www.cvyl.org/team/225869/games,db823e7d020599b9
+2026-05-24,,2026,U12 Boys,East Longmeadow 12U A,Northampton 12U,East Longmeadow 12U A,Northampton 12U,13,1,completed,east_longmeadow_12u_a,https://www.cvyl.org/team/225900/games,936f2e07b41ea50f
 2026-05-26,6:15 PM,2026,U12 Boys,South Hadley 12U,Agawam 12U,South Hadley 12U,Agawam 12U,,,scheduled,agawam_12u,https://www.cvyl.org/team/225891/games,67f0ecdda19d9e44
 2026-05-26,6:30 PM,2026,U12 Boys,Ellington 12U,RHAM,Ellington 12U,RHAM 12U,,,scheduled,ellington_12u,https://www.cvyl.org/team/225901/games,ac1b767dd08db015
-2026-05-26,7:30 PM,2026,U12 Boys,Suffield 12U,South Windsor 12U,Suffield 12U,South Windsor 12U,,,scheduled,south_windsor_12u,https://www.cvyl.org/team/225915/games,577e088b85692e74
 2026-05-26,,2026,U12 Boys,Northampton 12U,Belchertown 12U,Northampton 12U,Belchertown 12U,3,5,completed,belchertown_12u,https://www.cvyl.org/team/225894/games,5bd2b12d3aff3a91
+2026-05-26,,2026,U12 Boys,Suffield 12U,South Windsor 12U,Suffield 12U,South Windsor 12U,14,0,completed,south_windsor_12u,https://www.cvyl.org/team/225915/games,e059cee17036615a
 2026-05-26,,2026,U12 Boys,Suffield 12U White,Somers 12U Red,Suffield 12U White,Somers 12U Red,4,3,completed,somers_12u_red,https://www.cvyl.org/team/225936/games,569cc83219b2a62d
 2026-05-26,,2026,U12 Boys,Wethersfield 12U A,West Springfield 12U,Wethersfield 12U A,West Springfield 12U,4,7,completed,west_springfield_12u,https://www.cvyl.org/team/225921/games,003c068f9b787df7
 2026-05-27,5:30 PM,2026,U12 Boys,Minnechaug,Somers 12U White,Minnechaug,Somers 12U White,,,scheduled,somers_12u_white,https://www.cvyl.org/team/225913/games,8a70543939781559
