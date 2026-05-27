@@ -187,15 +187,17 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-21,Colchester 12U,Tolland 12U,Colchester 12U,Colchester 12U,0.7369174431654911,Colchester 12U,0.7979198858114691,True,True
 2026-05-22,Suffield 12U,Burlington 12U,Suffield 12U,Suffield 12U,0.6233295987959919,Suffield 12U,0.661862793187501,True,True
 2026-05-22,Simsbury 12U A,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.8340572130076962,Westfield 12U Red,0.85,True,True
-2026-05-22,Somers 12U Red,East Longmeadow 12U White,Somers 12U Red,Somers 12U Red,0.5515857490418401,Somers 12U Red,0.5685914109181247,True,True
-2026-05-22,Southington 12U White,Wethersfield 12U B,Wethersfield 12U B,Wethersfield 12U B,0.5383828799605459,Wethersfield 12U B,0.5510990353570665,True,True
-2026-05-22,Farmington 12U Red,West Hartford 12U White,Tie,Farmington 12U Red,0.6312086434573154,Farmington 12U Red,0.6718447669971358,False,False
-2026-05-23,Glastonbury 12U White,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.666561547693488,West Hartford 12U Gold,0.7157680591201492,True,True
-2026-05-23,Newington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.7699355958610922,RHAM 12U,0.8334942244177341,True,True
-2026-05-23,Colchester 12U,Vernon 12U,Vernon 12U,Colchester 12U,0.5216785273643598,Colchester 12U,0.528890618968815,False,False
-2026-05-24,East Longmeadow 12U A,Northampton 12U,East Longmeadow 12U A,Northampton 12U,0.5200580726178602,Northampton 12U,0.5267329404518379,False,False
-2026-05-26,Wethersfield 12U A,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6045528765327465,West Springfield 12U,0.637831077520937,True,True
-2026-05-26,Suffield 12U White,Somers 12U Red,Suffield 12U White,Suffield 12U White,0.576659891344083,Suffield 12U White,0.6015918730184567,True,True
-2026-05-26,Northampton 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.5882850264170847,Belchertown 12U,0.6167651567668064,True,True
-2026-05-26,Suffield 12U,South Windsor 12U,Suffield 12U,Suffield 12U,0.6774338354078281,Suffield 12U,0.7289571744598238,True,True
-2026-05-26,Ellington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.7044323231361277,RHAM 12U,0.7609677630147319,True,True
+2026-05-22,Southington 12U Blue,Wethersfield 12U A,Wethersfield 12U A,Southington 12U Blue,0.5380327148547801,Southington 12U Blue,0.5506342667434878,False,False
+2026-05-22,Somers 12U Red,East Longmeadow 12U White,Somers 12U Red,Somers 12U Red,0.5515820289896207,Somers 12U Red,0.5685864918292154,True,True
+2026-05-22,Southington 12U White,Wethersfield 12U B,Wethersfield 12U B,Wethersfield 12U B,0.5383908396792896,Wethersfield 12U B,0.551109599714485,True,True
+2026-05-22,Farmington 12U Red,West Hartford 12U White,Tie,Farmington 12U Red,0.6312181193882804,Farmington 12U Red,0.6718567331210414,False,False
+2026-05-23,Glastonbury 12U White,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6665527995981826,West Hartford 12U Gold,0.7157573822596175,True,True
+2026-05-23,Meriden 12U,Berlin 12U A,Berlin 12U A,Berlin 12U A,0.5093575353910733,Berlin 12U A,0.5124755809313847,True,True
+2026-05-23,Newington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.7701623197550611,RHAM 12U,0.8337310163700773,True,True
+2026-05-23,Colchester 12U,Vernon 12U,Vernon 12U,Colchester 12U,0.5217501993969967,Colchester 12U,0.5289860415438683,False,False
+2026-05-24,East Longmeadow 12U A,Northampton 12U,East Longmeadow 12U A,Northampton 12U,0.5199887630038915,Northampton 12U,0.5266406428712102,False,False
+2026-05-26,Wethersfield 12U A,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.5879786642286732,West Springfield 12U,0.6163664888889248,True,True
+2026-05-26,Suffield 12U White,Somers 12U Red,Suffield 12U White,Suffield 12U White,0.5766502124609967,Suffield 12U White,0.6015792027452472,True,True
+2026-05-26,Northampton 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.5883185744242475,Belchertown 12U,0.6168088085280126,True,True
+2026-05-26,Suffield 12U,South Windsor 12U,Suffield 12U,Suffield 12U,0.6780130419046078,Suffield 12U,0.7296552124486534,True,True
+2026-05-26,Ellington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.7045317677409597,RHAM 12U,0.7610835918549126,True,True
