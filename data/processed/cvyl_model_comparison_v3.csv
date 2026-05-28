@@ -30,184 +30,186 @@ game_date,home_team,away_team,actual_winner,elo_predicted_winner,elo_win_probabi
 2026-04-21,Somers 12U Red,West Springfield 12U,West Springfield 12U,Somers 12U Red,0.5005533170357626,West Springfield 12U,0.5022321280285059,West Springfield 12U,0.5017929384682219,False,True,True
 2026-04-21,Somers 12U White,West Springfield 12U,Somers 12U White,West Springfield 12U,0.525429646223081,West Springfield 12U,0.5128939660183979,West Springfield 12U,0.5184379518295811,False,False,False
 2026-04-22,West Hartford 12U Green,Farmington 12U Red,West Hartford 12U Green,West Hartford 12U Green,0.5,West Hartford 12U Green,0.5,West Hartford 12U Green,0.5,True,True,True
-2026-04-22,South Windsor 12U,Suffield 12U,Suffield 12U,Suffield 12U,0.5228806709073461,Suffield 12U,0.5527543159691807,Suffield 12U,0.5527242955301723,True,True,True
-2026-04-22,Granby 12U,Newington 12U,Granby 12U,Newington 12U,0.5400920132922757,Newington 12U,0.5767690241849435,Newington 12U,0.5758441922258792,False,False,False
+2026-04-22,Glastonbury 12U Blue,West Hartford 12U White,Glastonbury 12U Blue,Glastonbury 12U Blue,0.5,Glastonbury 12U Blue,0.5,Glastonbury 12U Blue,0.5,True,True,True
+2026-04-22,South Windsor 12U,Suffield 12U,Suffield 12U,Suffield 12U,0.5228806709073461,Suffield 12U,0.5527543159691807,Suffield 12U,0.5527248522659474,True,True,True
+2026-04-22,Granby 12U,Newington 12U,Granby 12U,Newington 12U,0.5400920132922757,Newington 12U,0.5767690241849435,Newington 12U,0.5758711851511185,False,False,False
 2026-04-22,RHAM 12U,Vernon 12U,RHAM 12U,RHAM 12U,0.5,RHAM 12U,0.5,RHAM 12U,0.5,True,True,True
-2026-04-22,Southington 12U Blue,Wolcott 12U,Southington 12U Blue,Wolcott 12U,0.5198953414698915,Wolcott 12U,0.5178495544061347,Wolcott 12U,0.519627401282311,False,False,False
-2026-04-23,West Hartford 12U Gold,Farmington 12U Black,West Hartford 12U Gold,West Hartford 12U Gold,0.5596984731035228,West Hartford 12U Gold,0.6101437887626132,West Hartford 12U Gold,0.6101311790438566,True,True,True
-2026-04-23,Suffield 12U,Ellington 12U,Suffield 12U,Suffield 12U,0.6009737575860598,Suffield 12U,0.6668997921023198,Suffield 12U,0.6654807795046067,True,True,True
+2026-04-22,Southington 12U Blue,Wolcott 12U,Southington 12U Blue,Wolcott 12U,0.5198953414698915,Wolcott 12U,0.5178495544061347,Wolcott 12U,0.5196204781864748,False,False,False
+2026-04-23,West Hartford 12U Gold,Farmington 12U Black,West Hartford 12U Gold,West Hartford 12U Gold,0.5596984731035228,West Hartford 12U Gold,0.6101437887626132,West Hartford 12U Gold,0.6101315324922247,True,True,True
+2026-04-23,Suffield 12U,Ellington 12U,Suffield 12U,Suffield 12U,0.6010107847724447,Suffield 12U,0.6668997921023198,Suffield 12U,0.6654310556151709,True,True,True
 2026-04-24,Simsbury 12U A,Wethersfield 12U A,Wethersfield 12U A,Simsbury 12U A,0.5,Simsbury 12U A,0.5,Simsbury 12U A,0.5,False,False,False
-2026-04-24,Berlin 12U A,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.512874506594595,Wolcott 12U,0.5136684686198905,Wolcott 12U,0.5078254564642848,True,True,True
-2026-04-24,Southington 12U White,Bristol 12U,Bristol 12U,Southington 12U White,0.5204849486466058,Southington 12U White,0.5511596218825361,Southington 12U White,0.5497147801021838,False,False,False
-2026-04-24,Colchester 12U,Middletown 12U,Colchester 12U,Colchester 12U,0.5143138299798863,Colchester 12U,0.5164870762172674,Colchester 12U,0.5152798370928604,True,True,True
-2026-04-25,Avon 12U B,West Hartford 12U White,Avon 12U B,Avon 12U B,0.5,Avon 12U B,0.5,Avon 12U B,0.5,True,True,True
-2026-04-25,Westfield 12U Black,Minnechaug 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5057471797375883,Minnechaug 12U White,0.5157850965623134,Minnechaug 12U White,0.5161127920096638,True,True,True
-2026-04-25,Ellington 12U,Vernon 12U,Ellington 12U,Vernon 12U,0.5325838121841086,Vernon 12U,0.5197070476074971,Vernon 12U,0.5198261143031426,False,False,False
-2026-04-25,Avon 12U,Southington 12U Blue,Avon 12U,Southington 12U Blue,0.5478258685451886,Southington 12U Blue,0.588258519726042,Southington 12U Blue,0.5881451851381458,False,False,False
-2026-04-25,Granby 12U,Suffield Juniors 1 Blue,Suffield Juniors 1 Blue,Suffield Juniors 1 Blue,0.5225236574620734,Suffield Juniors 1 Blue,0.549962908845259,Suffield Juniors 1 Blue,0.5426160806018308,True,True,True
-2026-04-25,West Hartford 12U Gold,Newington 12U,West Hartford 12U Gold,West Hartford 12U Gold,0.6047660119776104,West Hartford 12U Gold,0.6746223766863607,West Hartford 12U Gold,0.6785265244184957,True,True,True
-2026-04-25,Suffield 12U White,Simsbury 12U Blue,Suffield 12U White,Suffield 12U White,0.5678880068297766,Suffield 12U White,0.5890692518247211,Suffield 12U White,0.5909116026710027,True,True,True
-2026-04-26,Somers 12U White,Simsbury 12U A,Somers 12U White,Somers 12U White,0.5186217911985326,Somers 12U White,0.529587786759503,Somers 12U White,0.5269378917314853,True,True,True
-2026-04-26,Avon 12U B,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.5091597969245178,West Hartford 12U Green,0.5312093733737562,West Hartford 12U Green,0.5312093733737562,True,True,True
-2026-04-26,Avon 12U,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.570339564299595,West Hartford 12U Gold,0.5735191735880996,West Hartford 12U Gold,0.5732730309497847,True,True,True
-2026-04-26,Farmington 12U Red,Simsbury 12U Blue,Farmington 12U Red,Farmington 12U Red,0.5164437584904825,Simsbury 12U Blue,0.5260181446753457,Simsbury 12U Blue,0.5259550277046587,True,False,False
-2026-04-26,RHAM 12U,Tolland 12U,RHAM 12U,RHAM 12U,0.5297954141676655,RHAM 12U,0.5698526514141571,RHAM 12U,0.5700603215051997,True,True,True
-2026-04-26,Wethersfield 12U A,Glastonbury 12U White,Wethersfield 12U A,Wethersfield 12U A,0.5149737018151339,Glastonbury 12U White,0.501302080389902,Glastonbury 12U White,0.5017888676396576,True,False,False
-2026-04-26,Minnechaug 12U,Suffield 12U,Suffield 12U,Suffield 12U,0.554578658268778,Suffield 12U,0.5876276187386233,Suffield 12U,0.5867930817580089,True,True,True
-2026-04-26,Minnechaug 12U White,Suffield 12U White,Minnechaug 12U White,Suffield 12U White,0.5049965921455566,Minnechaug 12U White,0.5043944180978035,Minnechaug 12U White,0.509837511549447,False,True,True
-2026-04-26,Wethersfield 12U B,Glastonbury 12U Blue,Wethersfield 12U B,Wethersfield 12U B,0.5143912672159356,Wethersfield 12U B,0.5123672686531205,Wethersfield 12U B,0.5120383805142381,True,True,True
-2026-04-27,Minnechaug 12U,Longmeadow 12U Black,Minnechaug 12U,Minnechaug 12U,0.5316513551159132,Minnechaug 12U,0.574244448374018,Minnechaug 12U,0.5724981246550325,True,True,True
-2026-04-27,Westfield 12U Black,East Longmeadow 12U White,Tie,East Longmeadow 12U White,0.5045099219730893,East Longmeadow 12U White,0.5022507288451703,East Longmeadow 12U White,0.5031484070080738,False,False,False
-2026-04-27,Farmington 12U Black,Simsbury 12U A,Farmington 12U Black,Simsbury 12U A,0.509206708187472,Simsbury 12U A,0.5178495544061347,Simsbury 12U A,0.5167307976489072,False,False,False
-2026-04-27,Bristol 12U,Newington 12U,Bristol 12U,Bristol 12U,0.5745546107480907,Bristol 12U,0.5882059556913265,Bristol 12U,0.5971003728955443,True,True,True
-2026-04-27,Southington 12U White,West Hartford 12U White,Southington 12U White,West Hartford 12U White,0.5065074962221335,West Hartford 12U White,0.5273165233795671,West Hartford 12U White,0.5263472739807254,False,False,False
-2026-04-28,Agawam 12U,East Longmeadow 12U A,Agawam 12U,East Longmeadow 12U A,0.5583381486274093,East Longmeadow 12U A,0.5892493490093127,East Longmeadow 12U A,0.5920577606553434,False,False,False
-2026-04-28,Southington 12U Blue,Berlin 12U A,Southington 12U Blue,Southington 12U Blue,0.5355911106364737,Southington 12U Blue,0.5655920253890571,Southington 12U Blue,0.5615346986069224,True,True,True
-2026-04-28,South Hadley 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.5359478952096111,Belchertown 12U,0.5649215996469823,Belchertown 12U,0.5653596415036267,True,True,True
-2026-04-28,Colchester 12U,Glastonbury 12U Blue,Colchester 12U,Colchester 12U,0.5385678071372932,Colchester 12U,0.5596109657638044,Colchester 12U,0.5593117050437252,True,True,True
-2026-04-28,Wolcott 12U,Burlington 12U,Burlington 12U,Burlington 12U,0.5248916124702985,Burlington 12U,0.5971851085720843,Burlington 12U,0.6015889057955301,True,True,True
-2026-04-28,Wethersfield 12U B,RHAM 12U,RHAM 12U,RHAM 12U,0.5224655378280192,RHAM 12U,0.5671148243468209,RHAM 12U,0.5657945539390907,True,True,True
-2026-04-28,West Springfield 12U,Northampton 12U,West Springfield 12U,West Springfield 12U,0.5536267963355607,West Springfield 12U,0.5811219860903085,West Springfield 12U,0.5818580234510278,True,True,True
-2026-04-29,West Hartford 12U Gold,Southington 12U Blue,West Hartford 12U Gold,West Hartford 12U Gold,0.565924117220556,West Hartford 12U Gold,0.5739784332830032,West Hartford 12U Gold,0.5746775868516071,True,True,True
-2026-04-29,Granby 12U,South Windsor 12U,South Windsor 12U,South Windsor 12U,0.539277363306998,South Windsor 12U,0.536307509332028,South Windsor 12U,0.531389077226027,True,True,True
-2026-04-29,Suffield 12U,Westfield 12U Red,Westfield 12U Red,Suffield 12U,0.53184482858177,Suffield 12U,0.519774113869448,Suffield 12U,0.5173953240952612,False,False,False
-2026-04-29,Simsbury 12U Blue,West Hartford 12U White,Simsbury 12U Blue,West Hartford 12U White,0.5259879002988048,West Hartford 12U White,0.5110968878041923,West Hartford 12U White,0.5130791495723461,False,False,False
-2026-04-29,Somers 12U Red,Longmeadow 12U White,Somers 12U Red,Longmeadow 12U White,0.5129504255382307,Longmeadow 12U White,0.5090484911765754,Longmeadow 12U White,0.5084482121083473,False,False,False
-2026-04-29,Belchertown 12U,Northampton 12U,Belchertown 12U,Belchertown 12U,0.5702727245221655,Belchertown 12U,0.5759212069706778,Belchertown 12U,0.5828342098671183,True,True,True
-2026-04-29,Newington 12U,Vernon 12U,Vernon 12U,Vernon 12U,0.5359883009699489,Vernon 12U,0.5217199534277546,Vernon 12U,0.5239494114955259,True,True,True
-2026-04-30,Westfield 12U Black,Agawam 12U,Agawam 12U,Westfield 12U Black,0.5171261899992806,Westfield 12U Black,0.5438530610474717,Westfield 12U Black,0.5325068418721919,False,False,False
-2026-04-30,Bristol 12U,Wolcott 12U,Wolcott 12U,Bristol 12U,0.5024805945313963,Wolcott 12U,0.5236224469898921,Wolcott 12U,0.516279008846003,False,True,True
-2026-04-30,West Hartford 12U Green,Glastonbury 12U Blue,West Hartford 12U Green,West Hartford 12U Green,0.5913048985867627,West Hartford 12U Green,0.6657417857074445,West Hartford 12U Green,0.6648181191267706,True,True,True
-2026-04-30,West Hartford 12U Gold,Glastonbury 12U White,West Hartford 12U Gold,West Hartford 12U Gold,0.653393936922018,West Hartford 12U Gold,0.6857250128044375,West Hartford 12U Gold,0.6872185236253505,True,True,True
-2026-04-30,West Springfield 12U,East Longmeadow 12U A,West Springfield 12U,West Springfield 12U,0.5422278402757645,West Springfield 12U,0.5835163132972037,West Springfield 12U,0.5903534710425645,True,True,True
-2026-04-30,Ellington 12U,Somers 12U White,Somers 12U White,Somers 12U White,0.5859328900584869,Somers 12U White,0.6285391544070935,Somers 12U White,0.6276771555023335,True,True,True
-2026-05-01,Berlin 12U A,Bristol 12U,Berlin 12U A,Bristol 12U,0.5355472305620077,Bristol 12U,0.5379847072523906,Bristol 12U,0.5413716612454462,False,False,False
-2026-05-01,Wolcott 12U,Middletown 12U,Wolcott 12U,Wolcott 12U,0.5653739884447281,Wolcott 12U,0.5529995580567734,Wolcott 12U,0.552096651255471,True,True,True
-2026-05-01,Somers 12U White,South Hadley 12U,Somers 12U White,Somers 12U White,0.6324001996728698,Somers 12U White,0.6706773052594506,Somers 12U White,0.6691829701409205,True,True,True
-2026-05-01,East Longmeadow 12U A,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.6034902600572368,Minnechaug 12U,0.6717807076193365,Minnechaug 12U,0.6766411661265275,True,True,True
-2026-05-02,Westfield 12U Black,Simsbury 12U Blue,Westfield 12U Black,Westfield 12U Black,0.5226204209875943,Westfield 12U Black,0.527229976098589,Westfield 12U Black,0.5220788168614748,True,True,True
-2026-05-02,Vernon 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.6144754348190029,RHAM 12U,0.7042957445276792,RHAM 12U,0.6998228599070668,True,True,True
-2026-05-02,Middletown 12U,Burlington 12U,Burlington 12U,Burlington 12U,0.6175178439756809,Burlington 12U,0.670320595215425,Burlington 12U,0.6696070605541868,True,True,True
-2026-05-02,Newington 12U,West Hartford 12U White,Newington 12U,West Hartford 12U White,0.5328306877636286,West Hartford 12U White,0.522434027870967,West Hartford 12U White,0.5235124671189164,False,False,False
-2026-05-02,Simsbury 12U A,Granby 12U,Simsbury 12U A,Simsbury 12U A,0.50768601195881,Granby 12U,0.5099596199398764,Granby 12U,0.5094384964202965,True,False,False
-2026-05-02,South Windsor 12U,Tolland 12U,South Windsor 12U,South Windsor 12U,0.538194528104249,South Windsor 12U,0.5624969619832143,South Windsor 12U,0.5661120113458513,True,True,True
-2026-05-02,Avon 12U B,Farmington 12U Red,Avon 12U B,Avon 12U B,0.5058671864263136,Avon 12U B,0.5161773871669431,Avon 12U B,0.5123359244815063,True,True,True
-2026-05-02,Westfield 12U Red,Somers 12U White,Westfield 12U Red,Westfield 12U Red,0.5137952910076645,Westfield 12U Red,0.5684077475455971,Westfield 12U Red,0.5612135083223988,True,True,True
-2026-05-03,Simsbury 12U Blue,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.6359576562680347,West Hartford 12U Green,0.6761794378105863,West Hartford 12U Green,0.676336571059909,True,True,True
-2026-05-03,Minnechaug 12U White,East Longmeadow 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5724780793042964,Minnechaug 12U White,0.6158890561835582,Minnechaug 12U White,0.6195051168814047,True,True,True
-2026-05-03,RHAM 12U,Colchester 12U,RHAM 12U,RHAM 12U,0.561786360758863,RHAM 12U,0.5927464298156739,RHAM 12U,0.5889157462864807,True,True,True
-2026-05-03,Simsbury 12U A,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6937938095575003,West Hartford 12U Gold,0.7345564521835619,West Hartford 12U Gold,0.7290364287013098,True,True,True
-2026-05-03,Middletown 12U,Berlin 12U A,Middletown 12U,Berlin 12U A,0.5574167356839317,Berlin 12U A,0.5625325655573171,Berlin 12U A,0.5690776328810555,False,False,False
-2026-05-03,Farmington 12U Red,Wethersfield 12U B,Farmington 12U Red,Wethersfield 12U B,0.5221317124484526,Farmington 12U Red,0.5069982408743129,Farmington 12U Red,0.512031116445846,False,True,True
-2026-05-03,Farmington 12U Black,Wethersfield 12U A,Wethersfield 12U A,Wethersfield 12U A,0.5661874034641363,Wethersfield 12U A,0.5853043409955996,Wethersfield 12U A,0.5799150392447713,True,True,True
-2026-05-04,Bristol 12U,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.5909433740978615,Wolcott 12U,0.6183056340350992,Wolcott 12U,0.6215059236399725,True,True,True
-2026-05-04,Westfield 12U Red,Minnechaug 12U,Minnechaug 12U,Westfield 12U Red,0.5456071095387712,Westfield 12U Red,0.5650180226551197,Westfield 12U Red,0.5634449635461987,False,False,False
-2026-05-04,West Springfield 12U,Belchertown 12U,West Springfield 12U,West Springfield 12U,0.5474557859611048,West Springfield 12U,0.6117094594068129,West Springfield 12U,0.613117659210245,True,True,True
-2026-05-05,West Hartford 12U Green,Colchester 12U,West Hartford 12U Green,West Hartford 12U Green,0.5606520208604755,West Hartford 12U Green,0.5836353497012633,West Hartford 12U Green,0.5860738760809346,True,True,True
-2026-05-05,Northampton 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.5663731470617948,Belchertown 12U,0.5365665430168327,Belchertown 12U,0.5357760583674884,True,True,True
-2026-05-05,East Longmeadow 12U A,Longmeadow 12U Black,East Longmeadow 12U A,Longmeadow 12U Black,0.541990717598172,Longmeadow 12U Black,0.5327755796407463,Longmeadow 12U Black,0.5390310641782646,False,False,False
-2026-05-05,West Hartford 12U White,Wethersfield 12U B,Wethersfield 12U B,Wethersfield 12U B,0.5774143937528201,Wethersfield 12U B,0.590009495128841,Wethersfield 12U B,0.5867543277332818,True,True,True
-2026-05-05,Agawam 12U,South Hadley 12U,Agawam 12U,Agawam 12U,0.5866857577275789,Agawam 12U,0.5988187477034037,Agawam 12U,0.6058524998528153,True,True,True
-2026-05-06,South Windsor 12U,Somers 12U White,Somers 12U White,Somers 12U White,0.5162178204362817,Somers 12U White,0.5247121979139646,Somers 12U White,0.5172869160956306,True,True,True
-2026-05-06,Granby 12U,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.675489129360731,West Springfield 12U,0.7268555527322729,West Springfield 12U,0.7348948407883188,True,True,True
-2026-05-06,Simsbury 12U Blue,Southington 12U White,Southington 12U White,Southington 12U White,0.5982937089717324,Southington 12U White,0.6037233300485028,Southington 12U White,0.6086189790506413,True,True,True
-2026-05-07,Bristol 12U,Burlington 12U,Burlington 12U,Burlington 12U,0.6335430289229834,Burlington 12U,0.6966008249825688,Burlington 12U,0.6959400838039609,True,True,True
-2026-05-07,Agawam 12U,Longmeadow 12U Black,Longmeadow 12U Black,Agawam 12U,0.5635399113209775,Agawam 12U,0.5760148349558779,Agawam 12U,0.5876498812801835,False,False,False
-2026-05-07,Somers 12U Red,Suffield B,Suffield B,Somers 12U Red,0.5027432324155124,Somers 12U Red,0.5050634843007125,Somers 12U Red,0.5068496880137158,False,False,False
-2026-05-07,Suffield 12U White,Somers 12U Red,Suffield 12U White,Suffield 12U White,0.5525478735596924,Suffield 12U White,0.5610224131245749,Suffield 12U White,0.5587222047415273,True,True,True
-2026-05-08,Southington 12U White,Farmington 12U Red,Farmington 12U Red,Southington 12U White,0.5112948988733296,Farmington 12U Red,0.5124594427076811,Farmington 12U Red,0.5124320339364166,False,True,True
-2026-05-08,Belchertown 12U,Minnechaug 12U White,Belchertown 12U,Minnechaug 12U White,0.6035569327722937,Minnechaug 12U White,0.6877865956259444,Minnechaug 12U White,0.6895608542905167,False,False,False
-2026-05-08,Southington 12U Blue,Farmington 12U Black,Southington 12U Blue,Southington 12U Blue,0.5797128442921714,Southington 12U Blue,0.6557835679621584,Southington 12U Blue,0.6510041492099939,True,True,True
-2026-05-08,South Hadley 12U,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.7224608533588796,Minnechaug 12U,0.7964995797512953,Minnechaug 12U,0.798970105684095,True,True,True
-2026-05-09,Granby 12U,Tolland 12U,Granby 12U,Tolland 12U,0.5523345136008848,Granby 12U,0.5045323659327026,Granby 12U,0.5058171026655818,False,True,True
-2026-05-09,RHAM 12U,South Windsor 12U,RHAM 12U,RHAM 12U,0.6172913904354669,RHAM 12U,0.6776642021824235,RHAM 12U,0.6758218403568939,True,True,True
-2026-05-09,Bristol 12U,Meriden 12U,Meriden 12U,Meriden 12U,0.5068150987123345,Bristol 12U,0.5120785862556925,Bristol 12U,0.5102727902214873,True,False,False
-2026-05-09,Belchertown 12U,Berkshire,Berkshire,Belchertown 12U,0.5125889247883667,Berkshire,0.5457992916460195,Berkshire,0.5419455256006533,False,True,True
-2026-05-09,Wolcott 12U,Burlington 12U,Wolcott 12U,Burlington 12U,0.5150698733011774,Burlington 12U,0.5528772703627229,Burlington 12U,0.5440094226739104,False,False,False
-2026-05-09,Middletown 12U,Newington 12U,Newington 12U,Middletown 12U,0.5269711417720598,Middletown 12U,0.5123564245912829,Middletown 12U,0.508529171538954,False,False,False
-2026-05-10,Middletown 12U,Vernon 12U,Vernon 12U,Vernon 12U,0.5386923307537588,Vernon 12U,0.5453688713759557,Vernon 12U,0.5511301998772169,True,True,True
-2026-05-10,Avon 12U B,Simsbury 12U Blue,Avon 12U B,Avon 12U B,0.6255976094617096,Avon 12U B,0.6311653777785299,Avon 12U B,0.6323679580394396,True,True,True
-2026-05-10,Avon 12U,Simsbury 12U A,Avon 12U,Avon 12U,0.5793101099367742,Avon 12U,0.6332545107231653,Avon 12U,0.6292167010617893,True,True,True
-2026-05-11,Berlin 12U A,Meriden 12U,Meriden 12U,Meriden 12U,0.5029013074954385,Berlin 12U A,0.505270142121877,Meriden 12U,0.5058148290757367,True,False,True
-2026-05-11,Farmington 12U Black,Glastonbury 12U White,Glastonbury 12U White,Glastonbury 12U White,0.5521121806929428,Glastonbury 12U White,0.617305023181202,Glastonbury 12U White,0.6142127762959442,True,True,True
-2026-05-11,Vernon 12U,South Windsor 12U,South Windsor 12U,South Windsor 12U,0.5129163159052532,South Windsor 12U,0.5227740714519713,South Windsor 12U,0.5154418232226188,True,True,True
-2026-05-11,Minnechaug 12U White,East Longmeadow 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5912516576407361,Minnechaug 12U White,0.6365249479973712,Minnechaug 12U White,0.6367809216697278,True,True,True
-2026-05-11,Minnechaug 12U,East Longmeadow 12U A,Minnechaug 12U,Minnechaug 12U,0.6815096976540608,Minnechaug 12U,0.7337390577721689,Minnechaug 12U,0.7364179827511643,True,True,True
-2026-05-11,Tolland 12U,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.6873647751578876,West Hartford 12U Green,0.762837344013372,West Hartford 12U Green,0.7623626955353755,True,True,True
-2026-05-12,Glastonbury 12U White,Suffield 12U,Suffield 12U,Suffield 12U,0.5849131694167823,Suffield 12U,0.5951579547336576,Suffield 12U,0.5874163444614329,True,True,True
-2026-05-12,Somers 12U White,Agawam 12U,Somers 12U White,Somers 12U White,0.6081331363517058,Somers 12U White,0.6408049370672328,Somers 12U White,0.6380459088239522,True,True,True
-2026-05-12,Longmeadow 12U Black,East Longmeadow 12U A,Longmeadow 12U Black,Longmeadow 12U Black,0.5705108844353997,Longmeadow 12U Black,0.5888544893699866,Longmeadow 12U Black,0.5969600312958876,True,True,True
-2026-05-12,West Springfield 12U,South Hadley 12U,West Springfield 12U,West Springfield 12U,0.7217633678520263,West Springfield 12U,0.7735759466792419,West Springfield 12U,0.7771443495342549,True,True,True
-2026-05-12,Wolcott 12U,Southington 12U Blue,Southington 12U Blue,Wolcott 12U,0.5878532203085987,Wolcott 12U,0.5578708648464262,Wolcott 12U,0.56749466061246,False,False,False
-2026-05-13,West Hartford 12U White,Suffield 12U White,Suffield 12U White,Suffield 12U White,0.6517072618052164,Suffield 12U White,0.6735075237064586,Suffield 12U White,0.6705743890362639,True,True,True
-2026-05-13,RHAM 12U,Granby 12U,RHAM 12U,RHAM 12U,0.7047625770017243,RHAM 12U,0.7350247174599874,RHAM 12U,0.7275362141137907,True,True,True
-2026-05-13,Farmington 12U Red,Glastonbury 12U Blue,Farmington 12U Red,Farmington 12U Red,0.5976259329734145,Farmington 12U Red,0.6573546612718448,Farmington 12U Red,0.6614341659457428,True,True,True
-2026-05-13,Avon 12U B,Southington 12U White,Avon 12U B,Avon 12U B,0.5456340876798084,Avon 12U B,0.5750460063480441,Avon 12U B,0.5758751462759039,True,True,True
-2026-05-13,Wethersfield 12U A,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6185773445702947,West Hartford 12U Gold,0.6458648058335249,West Hartford 12U Gold,0.6427907933871287,True,True,True
-2026-05-13,Tolland 12U,Ellington 12U,Ellington 12U,Ellington 12U,0.5518498908144057,Ellington 12U,0.5950925510415099,Ellington 12U,0.5959961400662235,True,True,True
-2026-05-13,Newington 12U,Berlin 12U A,Berlin 12U A,Berlin 12U A,0.5119563951272074,Berlin 12U A,0.5181187321888928,Berlin 12U A,0.5136955812150679,True,True,True
-2026-05-14,Southington 12U Blue,Burlington 12U,Southington 12U Blue,Burlington 12U,0.5075148413196906,Burlington 12U,0.5108453509091065,Southington 12U Blue,0.500987062793941,False,False,True
-2026-05-14,East Longmeadow 12U A,Agawam 12U,Agawam 12U,Agawam 12U,0.5455058072192862,Agawam 12U,0.5201713378056294,Agawam 12U,0.5235337723453548,True,True,True
-2026-05-14,Meriden 12U,Bristol 12U,Tie,Meriden 12U,0.581008427281471,Meriden 12U,0.5768364841631526,Meriden 12U,0.5948398782345012,False,False,False
-2026-05-14,Westfield 12U Red,Suffield 12U,Westfield 12U Red,Westfield 12U Red,0.5061995248111207,Westfield 12U Red,0.5226328813767291,Westfield 12U Red,0.5216054925124743,True,True,True
-2026-05-15,Berlin 12U A,Middletown 12U,Berlin 12U A,Berlin 12U A,0.5743733576199003,Berlin 12U A,0.5878701810932332,Berlin 12U A,0.5943772157220779,True,True,True
-2026-05-15,Wolcott 12U,Meriden 12U,Wolcott 12U,Wolcott 12U,0.5967491205572757,Wolcott 12U,0.6049042066494005,Wolcott 12U,0.5928607260711463,True,True,True
-2026-05-15,Suffield 12U White,Glastonbury 12U Blue,Suffield 12U White,Suffield 12U White,0.6438105750334177,Suffield 12U White,0.6670380169886302,Suffield 12U White,0.6620473467001127,True,True,True
-2026-05-15,Glastonbury 12U White,Simsbury 12U A,Glastonbury 12U White,Glastonbury 12U White,0.5788137852238946,Glastonbury 12U White,0.6359422420388081,Glastonbury 12U White,0.6352123827108792,True,True,True
-2026-05-15,East Longmeadow 12U A,South Hadley 12U,East Longmeadow 12U A,East Longmeadow 12U A,0.5610611191151512,East Longmeadow 12U A,0.5991583179358942,East Longmeadow 12U A,0.5979309966117438,True,True,True
-2026-05-16,West Springfield 12U,Agawam 12U,West Springfield 12U,West Springfield 12U,0.632915601211538,West Springfield 12U,0.6877621373975489,West Springfield 12U,0.6886538386474494,True,True,True
-2026-05-16,Belchertown 12U,Northampton 12U,Belchertown 12U,Belchertown 12U,0.5940945220271707,Belchertown 12U,0.5586238658293602,Belchertown 12U,0.5589769683952586,True,True,True
-2026-05-16,Longmeadow 12U Black,South Hadley 12U,Longmeadow 12U Black,Longmeadow 12U Black,0.6774183240749173,Longmeadow 12U Black,0.6894741635109166,Longmeadow 12U Black,0.6923575668356875,True,True,True
-2026-05-17,Suffield 12U,Minnechaug 12U,Suffield 12U,Minnechaug 12U,0.5660192739606623,Minnechaug 12U,0.5477599287762669,Minnechaug 12U,0.5580707093332431,False,False,False
-2026-05-17,Wethersfield 12U A,Avon 12U,Avon 12U,Avon 12U,0.5036627536408408,Avon 12U,0.5494600137560341,Avon 12U,0.5527993027351303,True,True,True
-2026-05-17,Suffield 12U White,Minnechaug 12U White,Tie,Suffield 12U White,0.5029911414880706,Minnechaug 12U White,0.5236502864231627,Minnechaug 12U White,0.521920752871595,False,False,False
-2026-05-17,Wethersfield 12U B,Avon 12U,Wethersfield 12U B,Avon 12U,0.5456544851365057,Avon 12U,0.5894443606124633,Avon 12U,0.5895939797297294,False,False,False
-2026-05-17,RHAM 12U,West Hartford 12U Green,RHAM 12U,RHAM 12U,0.5445288160176841,RHAM 12U,0.5523198772824491,RHAM 12U,0.5504006956442069,True,True,True
-2026-05-17,Simsbury 12U A,Glastonbury 12U White,Glastonbury 12U White,Glastonbury 12U White,0.6197948731653098,Glastonbury 12U White,0.6708054756113035,Glastonbury 12U White,0.6727499033021003,True,True,True
-2026-05-18,Southington 12U Blue,Glastonbury 12U White,Glastonbury 12U White,Southington 12U Blue,0.5540348576632934,Southington 12U Blue,0.5239554392543403,Southington 12U Blue,0.52160190975827,False,False,False
-2026-05-18,Northampton 12U,East Longmeadow 12U White,Northampton 12U,East Longmeadow 12U White,0.5759303565801206,East Longmeadow 12U White,0.5585867702354816,East Longmeadow 12U White,0.5524635087308765,False,False,False
-2026-05-18,Southington 12U White,Glastonbury 12U Blue,Southington 12U White,Southington 12U White,0.5557244932573526,Southington 12U White,0.5488509815850475,Southington 12U White,0.5434039402781525,True,True,True
-2026-05-18,Ellington 12U,Granby 12U,Ellington 12U,Ellington 12U,0.5580321323688036,Ellington 12U,0.5415932660170563,Ellington 12U,0.5485772211632728,True,True,True
-2026-05-18,Bristol 12U,Berlin 12U A,Bristol 12U,Berlin 12U A,0.5834747042839402,Berlin 12U A,0.5849296064384562,Berlin 12U A,0.5913943036923562,False,False,False
-2026-05-18,Minnechaug 12U,Somers 12U White,Minnechaug 12U,Minnechaug 12U,0.5038213071465255,Minnechaug 12U,0.5303908983291666,Minnechaug 12U,0.5211018171554481,True,True,True
-2026-05-18,Somers 12U Red,Minnechaug 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5984236660330695,Minnechaug 12U White,0.5865916708362524,Minnechaug 12U White,0.5820517102544023,True,True,True
-2026-05-18,Longmeadow 12U Black,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.6069854451866001,Westfield 12U Red,0.6625224490697967,Westfield 12U Red,0.6522348895742496,True,True,True
-2026-05-19,Newington 12U,Meriden 12U,Newington 12U,Meriden 12U,0.5764154624143389,Meriden 12U,0.5749949004985655,Meriden 12U,0.5834975901874007,False,False,False
-2026-05-19,Wolcott 12U,Bristol 12U,Wolcott 12U,Wolcott 12U,0.6733084095583811,Wolcott 12U,0.6749379946156259,Wolcott 12U,0.6764995998040596,True,True,True
-2026-05-19,Suffield 12U,Agawam 12U,Suffield 12U,Suffield 12U,0.6703822906637542,Suffield 12U,0.7286408435004827,Suffield 12U,0.7241583168711982,True,True,True
-2026-05-19,Suffield 12U White,Wethersfield 12U B,Suffield 12U White,Suffield 12U White,0.5546239485502774,Suffield 12U White,0.5564922132409376,Suffield 12U White,0.552927035230625,True,True,True
-2026-05-19,South Hadley 12U,Longmeadow 12U Black,Longmeadow 12U Black,Longmeadow 12U Black,0.6810350055001908,Longmeadow 12U Black,0.6808092453851498,Longmeadow 12U Black,0.6814128060376154,True,True,True
-2026-05-19,Belchertown 12U,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6084884721996783,West Springfield 12U,0.6536001608015218,West Springfield 12U,0.6516084199602497,True,True,True
-2026-05-20,Westfield 12U Red,South Hadley 12U,Westfield 12U Red,Westfield 12U Red,0.8214501069992853,Westfield 12U Red,0.851681637619627,Westfield 12U Red,0.8503267694242547,True,True,True
-2026-05-20,Ellington 12U,Simsbury 12U A,Ellington 12U,Ellington 12U,0.610738834016386,Ellington 12U,0.6007602271030439,Ellington 12U,0.6111043337225706,True,True,True
-2026-05-20,Vernon 12U,Tolland 12U,Vernon 12U,Vernon 12U,0.6104250462411734,Vernon 12U,0.6872790157290605,Vernon 12U,0.6907255049090334,True,True,True
-2026-05-20,Belchertown 12U,East Longmeadow 12U A,Belchertown 12U,Belchertown 12U,0.5755722833645875,Belchertown 12U,0.5444637552666217,Belchertown 12U,0.5479706917083688,True,True,True
-2026-05-20,South Windsor 12U,West Hartford 12U Green,South Windsor 12U,West Hartford 12U Green,0.5801981181789035,West Hartford 12U Green,0.608963243685654,West Hartford 12U Green,0.6036738513298414,False,False,False
-2026-05-20,Simsbury 12U Blue,Glastonbury 12U Blue,Simsbury 12U Blue,Glastonbury 12U Blue,0.5165715507113994,Glastonbury 12U Blue,0.501583270063761,Glastonbury 12U Blue,0.5062867036434197,False,False,False
-2026-05-21,Suffield 12U White,Westfield 12U Black,Suffield 12U White,Suffield 12U White,0.5931168600506936,Suffield 12U White,0.5758875245905053,Suffield 12U White,0.5736097866602051,True,True,True
-2026-05-21,Meriden 12U,Farmington 12U Red,Meriden 12U,Farmington 12U Red,0.5860938541312457,Farmington 12U Red,0.589086884771816,Farmington 12U Red,0.5852932575230038,False,False,False
-2026-05-21,West Hartford 12U Gold,Longmeadow 12U Black,West Hartford 12U Gold,West Hartford 12U Gold,0.6665899164786593,West Hartford 12U Gold,0.701392542268801,West Hartford 12U Gold,0.697421061966493,True,True,True
-2026-05-21,Colchester 12U,Tolland 12U,Colchester 12U,Colchester 12U,0.6663641705500458,Colchester 12U,0.7399162788680274,Colchester 12U,0.7369514193105774,True,True,True
-2026-05-22,Suffield 12U,Burlington 12U,Suffield 12U,Suffield 12U,0.6147537485650292,Suffield 12U,0.640468224866144,Suffield 12U,0.6520808655826268,True,True,True
-2026-05-22,Simsbury 12U A,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.7950353134198883,Westfield 12U Red,0.8326321148786784,Westfield 12U Red,0.8328282219151424,True,True,True
-2026-05-22,Southington 12U Blue,Wethersfield 12U A,Wethersfield 12U A,Southington 12U Blue,0.5200891078758112,Southington 12U Blue,0.5122854731572802,Southington 12U Blue,0.5089729390952251,False,False,False
-2026-05-22,Somers 12U Red,East Longmeadow 12U White,Somers 12U Red,Somers 12U Red,0.5201195345907733,Somers 12U Red,0.5503027343194725,Somers 12U Red,0.551085356670932,True,True,True
-2026-05-22,Southington 12U White,Wethersfield 12U B,Wethersfield 12U B,Wethersfield 12U B,0.5263142594381403,Wethersfield 12U B,0.5401355763456627,Wethersfield 12U B,0.5383163156222672,True,True,True
-2026-05-22,Farmington 12U Red,West Hartford 12U White,Tie,Farmington 12U Red,0.6250593830495136,Farmington 12U Red,0.63342169428718,Farmington 12U Red,0.6311227079471282,False,False,False
-2026-05-23,Glastonbury 12U White,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6494872084746948,West Hartford 12U Gold,0.6359626497083515,West Hartford 12U Gold,0.6328519968558133,True,True,True
-2026-05-23,Meriden 12U,Berlin 12U A,Berlin 12U A,Meriden 12U,0.5006731890422966,Berlin 12U A,0.514300392617771,Berlin 12U A,0.5091020640249428,False,True,True
-2026-05-23,Newington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.7445148931067405,RHAM 12U,0.7735988068353307,RHAM 12U,0.77014543347446,True,True,True
-2026-05-23,Colchester 12U,Vernon 12U,Vernon 12U,Colchester 12U,0.5281920551897289,Colchester 12U,0.5298117581031,Colchester 12U,0.5217875995972839,False,False,False
-2026-05-24,East Longmeadow 12U A,Northampton 12U,East Longmeadow 12U A,Northampton 12U,0.5108374708423906,Northampton 12U,0.5118987274106086,Northampton 12U,0.5194234166248195,False,False,False
-2026-05-26,Wethersfield 12U A,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.586443933117915,West Springfield 12U,0.5756664393230875,West Springfield 12U,0.5780953865092098,True,True,True
-2026-05-26,Suffield 12U White,Somers 12U Red,Suffield 12U White,Suffield 12U White,0.6265833470964616,Suffield 12U White,0.5782958143151493,Suffield 12U White,0.5770124495408041,True,True,True
-2026-05-26,Northampton 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.6376091153632952,Belchertown 12U,0.585280729302759,Belchertown 12U,0.5879960161642959,True,True,True
-2026-05-26,South Hadley 12U,Agawam 12U,Agawam 12U,Agawam 12U,0.6631864704746346,Agawam 12U,0.6452239880020229,Agawam 12U,0.6457601894434453,True,True,True
-2026-05-26,Suffield 12U,South Windsor 12U,Suffield 12U,Suffield 12U,0.6411023185936092,Suffield 12U,0.6829088446712231,Suffield 12U,0.6806427449719504,True,True,True
-2026-05-26,Ellington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.6887118645094572,RHAM 12U,0.7167697416337013,RHAM 12U,0.7045972882827423,True,True,True
-2026-05-27,Berlin 12U A,Bristol 12U,Berlin 12U A,Berlin 12U A,0.5763884658247574,Berlin 12U A,0.5792003932007386,Berlin 12U A,0.5829384634676591,True,True,True
-2026-05-27,Westfield 12U Black,West Springfield 12U,Westfield 12U Black,West Springfield 12U,0.6496427117269119,West Springfield 12U,0.6335060164955963,West Springfield 12U,0.6354677631053974,False,False,False
-2026-05-27,Westfield 12U Red,Longmeadow 12U Black,Westfield 12U Red,Westfield 12U Red,0.6828165264173736,Westfield 12U Red,0.7329998618574307,Westfield 12U Red,0.7312386858861853,True,True,True
-2026-05-27,Colchester 12U,South Windsor 12U,South Windsor 12U,South Windsor 12U,0.5090416303860087,Colchester 12U,0.5138944100076195,Colchester 12U,0.5136218671122261,True,False,False
-2026-05-27,Minnechaug 12U White,Somers 12U Red,Minnechaug 12U White,Minnechaug 12U White,0.6177055470863133,Minnechaug 12U White,0.5911537859394134,Minnechaug 12U White,0.5876141024746655,True,True,True
-2026-05-27,Minnechaug 12U,Somers 12U White,Minnechaug 12U,Minnechaug 12U,0.5346492385527231,Minnechaug 12U,0.5458451138397911,Minnechaug 12U,0.5415529770870112,True,True,True
+2026-04-24,Berlin 12U A,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.5128451137352956,Wolcott 12U,0.5136684686198905,Wolcott 12U,0.5076516936653475,True,True,True
+2026-04-24,Southington 12U White,Bristol 12U,Bristol 12U,Southington 12U White,0.5204849486466058,Southington 12U White,0.5511596218825361,Southington 12U White,0.5497456634701323,False,False,False
+2026-04-24,Colchester 12U,Middletown 12U,Colchester 12U,Colchester 12U,0.5143138299798863,Colchester 12U,0.5164870762172674,Colchester 12U,0.5152618577550836,True,True,True
+2026-04-25,Avon 12U B,West Hartford 12U White,Avon 12U B,Avon 12U B,0.521785420360895,Avon 12U B,0.5312093733737563,Avon 12U B,0.5312093733737563,True,True,True
+2026-04-25,Westfield 12U Black,Minnechaug 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5057471797375883,Minnechaug 12U White,0.5157850965623134,Minnechaug 12U White,0.5161056970963711,True,True,True
+2026-04-25,Ellington 12U,Vernon 12U,Ellington 12U,Vernon 12U,0.5325771918825151,Vernon 12U,0.5197070476074971,Vernon 12U,0.5198293516544166,False,False,False
+2026-04-25,Avon 12U,Southington 12U Blue,Avon 12U,Southington 12U Blue,0.5478550115959286,Southington 12U Blue,0.588258519726042,Southington 12U Blue,0.588241433558149,False,False,False
+2026-04-25,Granby 12U,Suffield Juniors 1 Blue,Suffield Juniors 1 Blue,Suffield Juniors 1 Blue,0.5224907967192016,Suffield Juniors 1 Blue,0.549962908845259,Suffield Juniors 1 Blue,0.5424015540996501,True,True,True
+2026-04-25,West Hartford 12U Gold,Newington 12U,West Hartford 12U Gold,West Hartford 12U Gold,0.6048309289617464,West Hartford 12U Gold,0.6746223766863607,West Hartford 12U Gold,0.6785780002328441,True,True,True
+2026-04-25,Suffield 12U White,Simsbury 12U Blue,Suffield 12U White,Suffield 12U White,0.5678880068297766,Suffield 12U White,0.5890692518247211,Suffield 12U White,0.590861432853438,True,True,True
+2026-04-26,Somers 12U White,Simsbury 12U A,Somers 12U White,Somers 12U White,0.5186361181991159,Somers 12U White,0.529587786759503,Somers 12U White,0.5269922468369842,True,True,True
+2026-04-26,Avon 12U B,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.5099708686319755,West Hartford 12U Green,0.5325061699360482,West Hartford 12U Green,0.5324659373429299,True,True,True
+2026-04-26,Avon 12U,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.570368944629102,West Hartford 12U Gold,0.5735191735880996,West Hartford 12U Gold,0.5732531140470029,True,True,True
+2026-04-26,Farmington 12U Red,Simsbury 12U Blue,Farmington 12U Red,Farmington 12U Red,0.5164550993171124,Simsbury 12U Blue,0.5260181446753457,Simsbury 12U Blue,0.5259513332208157,True,False,False
+2026-04-26,RHAM 12U,Tolland 12U,RHAM 12U,RHAM 12U,0.5298284416226933,RHAM 12U,0.5698526514141571,RHAM 12U,0.5700560929663541,True,True,True
+2026-04-26,Wethersfield 12U A,Glastonbury 12U White,Wethersfield 12U A,Wethersfield 12U A,0.5149880358521062,Glastonbury 12U White,0.501302080389902,Glastonbury 12U White,0.5017793024350028,True,False,False
+2026-04-26,Minnechaug 12U,Suffield 12U,Suffield 12U,Suffield 12U,0.5546429805006867,Suffield 12U,0.5876276187386233,Suffield 12U,0.5867474446867419,True,True,True
+2026-04-26,Minnechaug 12U White,Suffield 12U White,Minnechaug 12U White,Suffield 12U White,0.5049852262742767,Minnechaug 12U White,0.5043944180978035,Minnechaug 12U White,0.5099248998078049,False,True,True
+2026-04-26,Wethersfield 12U B,Glastonbury 12U Blue,Wethersfield 12U B,Glastonbury 12U Blue,0.5074034376422876,Glastonbury 12U Blue,0.5201713378056294,Glastonbury 12U Blue,0.5205421280721835,False,False,False
+2026-04-27,Minnechaug 12U,Longmeadow 12U Black,Minnechaug 12U,Minnechaug 12U,0.5316462231805771,Minnechaug 12U,0.574244448374018,Minnechaug 12U,0.5724731841620285,True,True,True
+2026-04-27,Westfield 12U Black,East Longmeadow 12U White,Tie,East Longmeadow 12U White,0.5045326402336615,East Longmeadow 12U White,0.5022507288451703,East Longmeadow 12U White,0.5033019512382081,False,False,False
+2026-04-27,Farmington 12U Black,Simsbury 12U A,Farmington 12U Black,Simsbury 12U A,0.5092038664274392,Simsbury 12U A,0.5178495544061347,Simsbury 12U A,0.516768132548623,False,False,False
+2026-04-27,Bristol 12U,Newington 12U,Bristol 12U,Bristol 12U,0.5746254814018681,Bristol 12U,0.5882059556913265,Bristol 12U,0.5972701508066041,True,True,True
+2026-04-27,Southington 12U White,West Hartford 12U White,Southington 12U White,Southington 12U White,0.5144532144810137,Southington 12U White,0.5053941359547202,Southington 12U White,0.5066300757389206,True,True,True
+2026-04-28,Agawam 12U,East Longmeadow 12U A,Agawam 12U,East Longmeadow 12U A,0.5583381486274093,East Longmeadow 12U A,0.5892493490093127,East Longmeadow 12U A,0.5920235562123185,False,False,False
+2026-04-28,Southington 12U Blue,Berlin 12U A,Southington 12U Blue,Southington 12U Blue,0.5356129897549936,Southington 12U Blue,0.5655920253890571,Southington 12U Blue,0.5615340514022286,True,True,True
+2026-04-28,South Hadley 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.5359478952096111,Belchertown 12U,0.5649215996469823,Belchertown 12U,0.5653710943148542,True,True,True
+2026-04-28,Colchester 12U,Glastonbury 12U Blue,Colchester 12U,Colchester 12U,0.5179432520248064,Colchester 12U,0.5276874216383546,Colchester 12U,0.531061794406449,True,True,True
+2026-04-28,Wolcott 12U,Burlington 12U,Burlington 12U,Burlington 12U,0.5249066016770603,Burlington 12U,0.5971851085720843,Burlington 12U,0.6016951285521516,True,True,True
+2026-04-28,Wethersfield 12U B,RHAM 12U,RHAM 12U,RHAM 12U,0.5214240092791993,RHAM 12U,0.5597943255786377,RHAM 12U,0.558627844064027,True,True,True
+2026-04-28,West Springfield 12U,Northampton 12U,West Springfield 12U,West Springfield 12U,0.5536267963355607,West Springfield 12U,0.5811219860903085,West Springfield 12U,0.5818874835718932,True,True,True
+2026-04-29,West Hartford 12U Gold,Southington 12U Blue,West Hartford 12U Gold,West Hartford 12U Gold,0.5659660790910513,West Hartford 12U Gold,0.5739784332830032,West Hartford 12U Gold,0.5746829100249189,True,True,True
+2026-04-29,Granby 12U,South Windsor 12U,South Windsor 12U,South Windsor 12U,0.5392338486532078,South Windsor 12U,0.536307509332028,South Windsor 12U,0.5311333754108044,True,True,True
+2026-04-29,Suffield 12U,Westfield 12U Red,Westfield 12U Red,Suffield 12U,0.5319147943886259,Suffield 12U,0.519774113869448,Suffield 12U,0.5173616526484222,False,False,False
+2026-04-29,Simsbury 12U Blue,West Hartford 12U White,Simsbury 12U Blue,West Hartford 12U White,0.5061690611899667,Simsbury 12U Blue,0.5157283160359967,Simsbury 12U Blue,0.5139965516097013,False,True,True
+2026-04-29,Somers 12U Red,Longmeadow 12U White,Somers 12U Red,Longmeadow 12U White,0.5129504255382307,Longmeadow 12U White,0.5090484911765754,Longmeadow 12U White,0.508450925713618,False,False,False
+2026-04-29,Belchertown 12U,Northampton 12U,Belchertown 12U,Belchertown 12U,0.5702882568114982,Belchertown 12U,0.5759212069706778,Belchertown 12U,0.5828793957590124,True,True,True
+2026-04-29,Newington 12U,Vernon 12U,Vernon 12U,Vernon 12U,0.535996224927231,Vernon 12U,0.5217199534277546,Vernon 12U,0.524001747961256,True,True,True
+2026-04-30,Westfield 12U Black,Agawam 12U,Agawam 12U,Westfield 12U Black,0.5170928007039916,Westfield 12U Black,0.5438530610474717,Westfield 12U Black,0.5323605912292989,False,False,False
+2026-04-30,Bristol 12U,Wolcott 12U,Wolcott 12U,Bristol 12U,0.5025271385732452,Wolcott 12U,0.5236224469898921,Wolcott 12U,0.5160777334945956,False,True,True
+2026-04-30,West Hartford 12U Green,Glastonbury 12U Blue,West Hartford 12U Green,West Hartford 12U Green,0.572312898405267,West Hartford 12U Green,0.6336477887822943,West Hartford 12U Green,0.6372431158970836,True,True,True
+2026-04-30,West Hartford 12U Gold,Glastonbury 12U White,West Hartford 12U Gold,West Hartford 12U Gold,0.6534640229146343,West Hartford 12U Gold,0.6857250128044375,West Hartford 12U Gold,0.6872050008738758,True,True,True
+2026-04-30,West Springfield 12U,East Longmeadow 12U A,West Springfield 12U,West Springfield 12U,0.5422493198369918,West Springfield 12U,0.5835163132972037,West Springfield 12U,0.5904700802565097,True,True,True
+2026-04-30,Ellington 12U,Somers 12U White,Somers 12U White,Somers 12U White,0.5859694122360422,Somers 12U White,0.6285391544070935,Somers 12U White,0.6277611627896216,True,True,True
+2026-05-01,Berlin 12U A,Bristol 12U,Berlin 12U A,Bristol 12U,0.5355891171054394,Bristol 12U,0.5379847072523906,Bristol 12U,0.5414309205325543,False,False,False
+2026-05-01,Wolcott 12U,Middletown 12U,Wolcott 12U,Wolcott 12U,0.5653758866636653,Wolcott 12U,0.5529995580567734,Wolcott 12U,0.5519925062838491,True,True,True
+2026-05-01,Somers 12U White,South Hadley 12U,Somers 12U White,Somers 12U White,0.6324316738814079,Somers 12U White,0.6706773052594506,Somers 12U White,0.6692425427017051,True,True,True
+2026-05-01,East Longmeadow 12U A,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.6035175649180868,Minnechaug 12U,0.6717807076193365,Minnechaug 12U,0.6766628947654072,True,True,True
+2026-05-02,Westfield 12U Black,Simsbury 12U Blue,Westfield 12U Black,Westfield 12U Black,0.523499876719433,Westfield 12U Black,0.5271001521101145,Westfield 12U Black,0.5219012298077104,True,True,True
+2026-05-02,Vernon 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.6146339695957679,RHAM 12U,0.7042957445276792,RHAM 12U,0.6998748959845447,True,True,True
+2026-05-02,Middletown 12U,Burlington 12U,Burlington 12U,Burlington 12U,0.6175413016629948,Burlington 12U,0.670320595215425,Burlington 12U,0.6695660663872526,True,True,True
+2026-05-02,Newington 12U,West Hartford 12U White,Newington 12U,West Hartford 12U White,0.5139447947046767,West Hartford 12U White,0.5010732306749972,West Hartford 12U White,0.5021057501688313,False,False,False
+2026-05-02,Simsbury 12U A,Granby 12U,Simsbury 12U A,Simsbury 12U A,0.5076437629088559,Granby 12U,0.5099596199398764,Granby 12U,0.509502990794189,True,False,False
+2026-05-02,South Windsor 12U,Tolland 12U,South Windsor 12U,South Windsor 12U,0.5381841329964699,South Windsor 12U,0.5624969619832143,South Windsor 12U,0.5660208095538831,True,True,True
+2026-05-02,Avon 12U B,Farmington 12U Red,Avon 12U B,Avon 12U B,0.5050531501430298,Avon 12U B,0.5160658960546076,Avon 12U B,0.5120917191613052,True,True,True
+2026-05-02,Westfield 12U Red,Somers 12U White,Westfield 12U Red,Westfield 12U Red,0.513773836450222,Westfield 12U Red,0.5684077475455971,Westfield 12U Red,0.5611218441208448,True,True,True
+2026-05-03,Simsbury 12U Blue,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.6375348636570218,West Hartford 12U Green,0.6802198218655761,West Hartford 12U Green,0.6803133530942526,True,True,True
+2026-05-03,Minnechaug 12U White,East Longmeadow 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5725088892602863,Minnechaug 12U White,0.6158890561835582,Minnechaug 12U White,0.6195042885689507,True,True,True
+2026-05-03,RHAM 12U,Colchester 12U,RHAM 12U,RHAM 12U,0.5607142770755962,RHAM 12U,0.5877077491541619,RHAM 12U,0.5841546527851008,True,True,True
+2026-05-03,Simsbury 12U A,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6938886432475116,West Hartford 12U Gold,0.7345564521835619,West Hartford 12U Gold,0.7290794698320049,True,True,True
+2026-05-03,Middletown 12U,Berlin 12U A,Middletown 12U,Berlin 12U A,0.557424461669799,Berlin 12U A,0.5625325655573171,Berlin 12U A,0.5690475183618469,False,False,False
+2026-05-03,Farmington 12U Red,Wethersfield 12U B,Farmington 12U Red,Wethersfield 12U B,0.5231534051571869,Farmington 12U Red,0.5024413868476314,Farmington 12U Red,0.50788281412646,False,True,True
+2026-05-03,Farmington 12U Black,Wethersfield 12U A,Wethersfield 12U A,Wethersfield 12U A,0.566232209836983,Wethersfield 12U A,0.5853043409955996,Wethersfield 12U A,0.5799003767523272,True,True,True
+2026-05-04,Bristol 12U,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.5909322248578313,Wolcott 12U,0.6183056340350992,Wolcott 12U,0.6213736562223926,True,True,True
+2026-05-04,Westfield 12U Red,Minnechaug 12U,Minnechaug 12U,Westfield 12U Red,0.5456116813613253,Westfield 12U Red,0.5650180226551197,Westfield 12U Red,0.5634528398504155,False,False,False
+2026-05-04,West Springfield 12U,Belchertown 12U,West Springfield 12U,West Springfield 12U,0.5474630671423418,West Springfield 12U,0.6117094594068129,West Springfield 12U,0.6131566813889137,True,True,True
+2026-05-05,West Hartford 12U Green,Colchester 12U,West Hartford 12U Green,West Hartford 12U Green,0.5602767341493645,West Hartford 12U Green,0.5831430685898504,West Hartford 12U Green,0.585718256336314,True,True,True
+2026-05-05,Northampton 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.5663909376763729,Belchertown 12U,0.5365665430168327,Belchertown 12U,0.5358151667726615,True,True,True
+2026-05-05,East Longmeadow 12U A,Longmeadow 12U Black,East Longmeadow 12U A,Longmeadow 12U Black,0.5419986105594357,Longmeadow 12U Black,0.5327755796407463,Longmeadow 12U Black,0.5390678490402854,False,False,False
+2026-05-05,West Hartford 12U White,Wethersfield 12U B,Wethersfield 12U B,Wethersfield 12U B,0.5962192158857901,Wethersfield 12U B,0.6114173289664133,Wethersfield 12U B,0.6078135659556272,True,True,True
+2026-05-05,Agawam 12U,South Hadley 12U,Agawam 12U,Agawam 12U,0.5867114180166058,Agawam 12U,0.5988187477034037,Agawam 12U,0.605895945197542,True,True,True
+2026-05-06,South Windsor 12U,Somers 12U White,Somers 12U White,Somers 12U White,0.5162597735041249,Somers 12U White,0.5247121979139646,Somers 12U White,0.5174269861126972,True,True,True
+2026-05-06,Granby 12U,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6755214356116257,West Springfield 12U,0.7268555527322729,West Springfield 12U,0.7348875465688742,True,True,True
+2026-05-06,Simsbury 12U Blue,Southington 12U White,Southington 12U White,Southington 12U White,0.5979508935659366,Southington 12U White,0.6036639928401124,Southington 12U White,0.6085575601836004,True,True,True
+2026-05-07,Bristol 12U,Burlington 12U,Burlington 12U,Burlington 12U,0.6335486450737029,Burlington 12U,0.6966008249825688,Burlington 12U,0.6958708463227821,True,True,True
+2026-05-07,Agawam 12U,Longmeadow 12U Black,Longmeadow 12U Black,Agawam 12U,0.563577800451417,Agawam 12U,0.5760148349558779,Agawam 12U,0.5877301494605982,False,False,False
+2026-05-07,Somers 12U Red,Suffield B,Suffield B,Somers 12U Red,0.5027487984116639,Somers 12U Red,0.5050634843007125,Somers 12U Red,0.5068632180115659,False,False,False
+2026-05-07,Suffield 12U White,Somers 12U Red,Suffield 12U White,Suffield 12U White,0.5525481545434994,Suffield 12U White,0.5610224131245749,Suffield 12U White,0.5586667009140085,True,True,True
+2026-05-08,Southington 12U White,Farmington 12U Red,Farmington 12U Red,Southington 12U White,0.510141008756555,Farmington 12U Red,0.5125895693406676,Farmington 12U Red,0.5126598991941811,False,True,True
+2026-05-08,Belchertown 12U,Minnechaug 12U White,Belchertown 12U,Minnechaug 12U White,0.6035841634873977,Minnechaug 12U White,0.6877865956259444,Minnechaug 12U White,0.6895562963662341,False,False,False
+2026-05-08,Southington 12U Blue,Farmington 12U Black,Southington 12U Blue,Southington 12U Blue,0.5797478763887578,Southington 12U Blue,0.6557835679621584,Southington 12U Blue,0.6509639296241779,True,True,True
+2026-05-08,South Hadley 12U,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.7224893480734824,Minnechaug 12U,0.7964995797512953,Minnechaug 12U,0.7989554567168426,True,True,True
+2026-05-09,Granby 12U,Tolland 12U,Granby 12U,Tolland 12U,0.5523251007196519,Granby 12U,0.5045323659327026,Granby 12U,0.5058607860402378,False,True,True
+2026-05-09,RHAM 12U,South Windsor 12U,RHAM 12U,RHAM 12U,0.617491460315955,RHAM 12U,0.6776642021824235,RHAM 12U,0.6758566050164279,True,True,True
+2026-05-09,Bristol 12U,Meriden 12U,Meriden 12U,Meriden 12U,0.5068137050039335,Bristol 12U,0.5120785862556925,Bristol 12U,0.5103275699449513,True,False,False
+2026-05-09,Belchertown 12U,Berkshire,Berkshire,Belchertown 12U,0.5126006194955541,Berkshire,0.5457992916460195,Berkshire,0.5419332976702984,False,True,True
+2026-05-09,Wolcott 12U,Burlington 12U,Wolcott 12U,Burlington 12U,0.5150795533510789,Burlington 12U,0.5528772703627229,Burlington 12U,0.5440531305785365,False,False,False
+2026-05-09,Middletown 12U,Newington 12U,Newington 12U,Middletown 12U,0.5275858434662395,Middletown 12U,0.5124431767594477,Middletown 12U,0.508663566687664,False,False,False
+2026-05-10,Middletown 12U,Vernon 12U,Vernon 12U,Vernon 12U,0.5386969503253396,Vernon 12U,0.5453688713759557,Vernon 12U,0.5511045853939458,True,True,True
+2026-05-10,Avon 12U B,Simsbury 12U Blue,Avon 12U B,Avon 12U B,0.6256204966845001,Avon 12U B,0.6311187428106237,Avon 12U B,0.6323509976376541,True,True,True
+2026-05-10,Avon 12U,Simsbury 12U A,Avon 12U,Avon 12U,0.5793602097955156,Avon 12U,0.6332545107231653,Avon 12U,0.6292328642609109,True,True,True
+2026-05-11,Berlin 12U A,Meriden 12U,Meriden 12U,Meriden 12U,0.5029248945206986,Berlin 12U A,0.505270142121877,Meriden 12U,0.5058338672393952,True,False,True
+2026-05-11,Farmington 12U Black,Glastonbury 12U White,Glastonbury 12U White,Glastonbury 12U White,0.5521311063362133,Glastonbury 12U White,0.617305023181202,Glastonbury 12U White,0.6141947779851518,True,True,True
+2026-05-11,Vernon 12U,South Windsor 12U,South Windsor 12U,South Windsor 12U,0.5129336016093852,South Windsor 12U,0.5227740714519713,South Windsor 12U,0.5154866576822851,True,True,True
+2026-05-11,Minnechaug 12U White,East Longmeadow 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5912837599164492,Minnechaug 12U White,0.6365249479973712,Minnechaug 12U White,0.636808208637588,True,True,True
+2026-05-11,Minnechaug 12U,East Longmeadow 12U A,Minnechaug 12U,Minnechaug 12U,0.681546829740359,Minnechaug 12U,0.7337390577721689,Minnechaug 12U,0.7364565675334523,True,True,True
+2026-05-11,Tolland 12U,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.6880682976759196,West Hartford 12U Green,0.7654655893233087,West Hartford 12U Green,0.7648386670950494,True,True,True
+2026-05-12,Glastonbury 12U White,Suffield 12U,Suffield 12U,Suffield 12U,0.5849757373068549,Suffield 12U,0.5951579547336576,Suffield 12U,0.5874339917590482,True,True,True
+2026-05-12,Somers 12U White,Agawam 12U,Somers 12U White,Somers 12U White,0.6081495339514398,Somers 12U White,0.6408049370672328,Somers 12U White,0.6380372595650377,True,True,True
+2026-05-12,Longmeadow 12U Black,East Longmeadow 12U A,Longmeadow 12U Black,Longmeadow 12U Black,0.5705211384227783,Longmeadow 12U Black,0.5888544893699866,Longmeadow 12U Black,0.5969542571018506,True,True,True
+2026-05-12,West Springfield 12U,South Hadley 12U,West Springfield 12U,West Springfield 12U,0.7217941850943542,West Springfield 12U,0.7735759466792419,West Springfield 12U,0.7771680990242624,True,True,True
+2026-05-12,Wolcott 12U,Southington 12U Blue,Southington 12U Blue,Wolcott 12U,0.5878502427190372,Wolcott 12U,0.5578708648464262,Wolcott 12U,0.5674394743802809,False,False,False
+2026-05-13,West Hartford 12U White,Suffield 12U White,Suffield 12U White,Suffield 12U White,0.6675905216396361,Suffield 12U White,0.6873325607277387,Suffield 12U White,0.6843070499585949,True,True,True
+2026-05-13,RHAM 12U,Granby 12U,RHAM 12U,RHAM 12U,0.7049268676395027,RHAM 12U,0.7350247174599874,RHAM 12U,0.7275416342442806,True,True,True
+2026-05-13,Farmington 12U Red,Glastonbury 12U Blue,Farmington 12U Red,Farmington 12U Red,0.5795364376549842,Farmington 12U Red,0.6256359688561691,Farmington 12U Red,0.632987495394703,True,True,True
+2026-05-13,Avon 12U B,Southington 12U White,Avon 12U B,Avon 12U B,0.5459315733627488,Avon 12U B,0.5750460063480441,Avon 12U B,0.5758687561460617,True,True,True
+2026-05-13,Wethersfield 12U A,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6186197298993356,West Hartford 12U Gold,0.6458648058335249,West Hartford 12U Gold,0.6428126496214593,True,True,True
+2026-05-13,Tolland 12U,Ellington 12U,Ellington 12U,Ellington 12U,0.5518205980003676,Ellington 12U,0.5950925510415099,Ellington 12U,0.5960213153678495,True,True,True
+2026-05-13,Newington 12U,Berlin 12U A,Berlin 12U A,Berlin 12U A,0.5125494677852254,Berlin 12U A,0.5182044705665096,Berlin 12U A,0.5138394406945318,True,True,True
+2026-05-14,Southington 12U Blue,Burlington 12U,Southington 12U Blue,Burlington 12U,0.5075068600060109,Burlington 12U,0.5108453509091065,Southington 12U Blue,0.5009712432396398,False,False,True
+2026-05-14,East Longmeadow 12U A,Agawam 12U,Agawam 12U,Agawam 12U,0.545535447678348,Agawam 12U,0.5201713378056294,Agawam 12U,0.523628161478328,True,True,True
+2026-05-14,Meriden 12U,Bristol 12U,Tie,Meriden 12U,0.5810167148212606,Meriden 12U,0.5768364841631526,Meriden 12U,0.5948255364481461,False,False,False
+2026-05-14,Westfield 12U Red,Suffield 12U,Westfield 12U Red,Westfield 12U Red,0.5061584419766638,Westfield 12U Red,0.5226328813767291,Westfield 12U Red,0.5216075327227668,True,True,True
+2026-05-15,Berlin 12U A,Middletown 12U,Berlin 12U A,Berlin 12U A,0.5743559907296553,Berlin 12U A,0.5878701810932332,Berlin 12U A,0.5943520608007463,True,True,True
+2026-05-15,Wolcott 12U,Meriden 12U,Wolcott 12U,Wolcott 12U,0.596747630991086,Wolcott 12U,0.6049042066494005,Wolcott 12U,0.5928039464182181,True,True,True
+2026-05-15,Suffield 12U White,Glastonbury 12U Blue,Suffield 12U White,Suffield 12U White,0.6264351064283503,Suffield 12U White,0.6395795781708851,Suffield 12U White,0.6381357256496576,True,True,True
+2026-05-15,Glastonbury 12U White,Simsbury 12U A,Glastonbury 12U White,Glastonbury 12U White,0.5788467090778278,Glastonbury 12U White,0.6359422420388081,Glastonbury 12U White,0.6352079717413326,True,True,True
+2026-05-15,East Longmeadow 12U A,South Hadley 12U,East Longmeadow 12U A,East Longmeadow 12U A,0.5610545651732721,East Longmeadow 12U A,0.5991583179358942,East Longmeadow 12U A,0.5978891081849108,True,True,True
+2026-05-16,West Springfield 12U,Agawam 12U,West Springfield 12U,West Springfield 12U,0.6329289619729601,West Springfield 12U,0.6877621373975489,West Springfield 12U,0.6886509901834313,True,True,True
+2026-05-16,Belchertown 12U,Northampton 12U,Belchertown 12U,Belchertown 12U,0.5941172333525275,Belchertown 12U,0.5586238658293602,Belchertown 12U,0.5589878965297452,True,True,True
+2026-05-16,Longmeadow 12U Black,South Hadley 12U,Longmeadow 12U Black,Longmeadow 12U Black,0.6774258040442266,Longmeadow 12U Black,0.6894741635109166,Longmeadow 12U Black,0.6923229024498384,True,True,True
+2026-05-16,Avon 12U B,Glastonbury 12U Blue,Avon 12U B,Avon 12U B,0.6221454615835347,Avon 12U B,0.6290618964384699,Avon 12U B,0.6302921128632468,True,True,True
+2026-05-17,Suffield 12U,Minnechaug 12U,Suffield 12U,Minnechaug 12U,0.5659877113227805,Minnechaug 12U,0.5477599287762669,Minnechaug 12U,0.5580105850832826,False,False,False
+2026-05-17,Wethersfield 12U A,Avon 12U,Avon 12U,Avon 12U,0.5036514963892288,Avon 12U,0.5494600137560341,Avon 12U,0.5527517972740001,True,True,True
+2026-05-17,Suffield 12U White,Minnechaug 12U White,Tie,Suffield 12U White,0.502887796602305,Minnechaug 12U White,0.5225180328633798,Minnechaug 12U White,0.5209678449174997,False,False,False
+2026-05-17,Wethersfield 12U B,Avon 12U,Wethersfield 12U B,Avon 12U,0.5454231683963463,Avon 12U,0.5881256873624743,Avon 12U,0.5885825558993212,False,False,False
+2026-05-17,RHAM 12U,West Hartford 12U Green,RHAM 12U,RHAM 12U,0.5439633336013435,RHAM 12U,0.5502450770281236,RHAM 12U,0.5486428147982255,True,True,True
+2026-05-17,Simsbury 12U A,Glastonbury 12U White,Glastonbury 12U White,Glastonbury 12U White,0.6198275858923736,Glastonbury 12U White,0.6708054756113035,Glastonbury 12U White,0.6727234923970781,True,True,True
+2026-05-18,Southington 12U Blue,Glastonbury 12U White,Glastonbury 12U White,Southington 12U Blue,0.554053164520859,Southington 12U Blue,0.5239554392543403,Southington 12U Blue,0.5215723387356889,False,False,False
+2026-05-18,Northampton 12U,East Longmeadow 12U White,Northampton 12U,East Longmeadow 12U White,0.57594137730832,East Longmeadow 12U White,0.5585867702354816,East Longmeadow 12U White,0.5524937237920274,False,False,False
+2026-05-18,Southington 12U White,Glastonbury 12U Blue,Southington 12U White,Southington 12U White,0.55622902193099,Southington 12U White,0.538447328552118,Southington 12U White,0.5382228989133525,True,True,True
+2026-05-18,Ellington 12U,Granby 12U,Ellington 12U,Ellington 12U,0.5580192724017424,Ellington 12U,0.5415932660170563,Ellington 12U,0.5484964407218988,True,True,True
+2026-05-18,Bristol 12U,Berlin 12U A,Bristol 12U,Berlin 12U A,0.5834191349704645,Berlin 12U A,0.5849296064384562,Berlin 12U A,0.5912975332755772,False,False,False
+2026-05-18,Minnechaug 12U,Somers 12U White,Minnechaug 12U,Minnechaug 12U,0.5038092746766726,Minnechaug 12U,0.5303908983291666,Minnechaug 12U,0.5210624319528336,True,True,True
+2026-05-18,Somers 12U Red,Minnechaug 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5984483326693419,Minnechaug 12U White,0.5865916708362524,Minnechaug 12U White,0.5820790172254774,True,True,True
+2026-05-18,Longmeadow 12U Black,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.6070114476731095,Westfield 12U Red,0.6625224490697967,Westfield 12U Red,0.6523089269835678,True,True,True
+2026-05-19,Newington 12U,Meriden 12U,Newington 12U,Meriden 12U,0.5769803015877539,Meriden 12U,0.5750728245798536,Meriden 12U,0.583578370505466,False,False,False
+2026-05-19,Wolcott 12U,Bristol 12U,Wolcott 12U,Wolcott 12U,0.6733147004220136,Wolcott 12U,0.6749379946156259,Wolcott 12U,0.6764293138686622,True,True,True
+2026-05-19,Suffield 12U,Agawam 12U,Suffield 12U,Suffield 12U,0.6704285566389145,Suffield 12U,0.7286408435004827,Suffield 12U,0.7241617138820503,True,True,True
+2026-05-19,Suffield 12U White,Wethersfield 12U B,Suffield 12U White,Suffield 12U White,0.5543111362142021,Suffield 12U White,0.5563548019370507,Suffield 12U White,0.5529222971082308,True,True,True
+2026-05-19,South Hadley 12U,Longmeadow 12U Black,Longmeadow 12U Black,Longmeadow 12U Black,0.6810420852027415,Longmeadow 12U Black,0.6808092453851498,Longmeadow 12U Black,0.6813536823556704,True,True,True
+2026-05-19,Belchertown 12U,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6085030036835117,West Springfield 12U,0.6536001608015218,West Springfield 12U,0.6516498885064018,True,True,True
+2026-05-20,Westfield 12U Red,South Hadley 12U,Westfield 12U Red,Westfield 12U Red,0.8214761815937259,Westfield 12U Red,0.851681637619627,Westfield 12U Red,0.8503419117897189,True,True,True
+2026-05-20,Ellington 12U,Simsbury 12U A,Ellington 12U,Ellington 12U,0.6107675091617263,Ellington 12U,0.6007602271030439,Ellington 12U,0.6110548633466154,True,True,True
+2026-05-20,Vernon 12U,Tolland 12U,Vernon 12U,Vernon 12U,0.6103849451972428,Vernon 12U,0.6872790157290605,Vernon 12U,0.6906891048724256,True,True,True
+2026-05-20,Belchertown 12U,East Longmeadow 12U A,Belchertown 12U,Belchertown 12U,0.575598766974763,Belchertown 12U,0.5444637552666217,Belchertown 12U,0.5479903111522232,True,True,True
+2026-05-20,South Windsor 12U,West Hartford 12U Green,South Windsor 12U,West Hartford 12U Green,0.5809160214167453,West Hartford 12U Green,0.610502124614906,West Hartford 12U Green,0.6049894397721917,False,False,False
+2026-05-20,Simsbury 12U Blue,Glastonbury 12U Blue,Simsbury 12U Blue,Glastonbury 12U Blue,0.5158109781255233,Glastonbury 12U Blue,0.5112787204498519,Glastonbury 12U Blue,0.5112083754878042,False,False,False
+2026-05-21,Suffield 12U White,Westfield 12U Black,Suffield 12U White,Suffield 12U White,0.5931371916328869,Suffield 12U White,0.5764153114776546,Suffield 12U White,0.5740314206273229,True,True,True
+2026-05-21,Meriden 12U,Farmington 12U Red,Meriden 12U,Farmington 12U Red,0.5865734404322946,Farmington 12U Red,0.5905836702710426,Farmington 12U Red,0.5867412806581724,False,False,False
+2026-05-21,West Hartford 12U Gold,Longmeadow 12U Black,West Hartford 12U Gold,West Hartford 12U Gold,0.6666578070331598,West Hartford 12U Gold,0.701392542268801,West Hartford 12U Gold,0.6974689924435777,True,True,True
+2026-05-21,Colchester 12U,Tolland 12U,Colchester 12U,Colchester 12U,0.6673716200121762,Colchester 12U,0.7406580303433582,Colchester 12U,0.7375148017783372,True,True,True
+2026-05-22,Suffield 12U,Burlington 12U,Suffield 12U,Suffield 12U,0.6148081837685541,Suffield 12U,0.640468224866144,Suffield 12U,0.6520647287186261,True,True,True
+2026-05-22,Simsbury 12U A,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.7950784289934023,Westfield 12U Red,0.8326321148786784,Westfield 12U Red,0.8328319065578013,True,True,True
+2026-05-22,Southington 12U Blue,Wethersfield 12U A,Wethersfield 12U A,Southington 12U Blue,0.5200755075883737,Southington 12U Blue,0.5122854731572802,Southington 12U Blue,0.5089335613589373,False,False,False
+2026-05-22,Somers 12U Red,East Longmeadow 12U White,Somers 12U Red,Somers 12U Red,0.5201273321525457,Somers 12U Red,0.5503027343194725,Somers 12U Red,0.5510763134136148,True,True,True
+2026-05-22,Southington 12U White,Wethersfield 12U B,Wethersfield 12U B,Wethersfield 12U B,0.5276102856996343,Wethersfield 12U B,0.5393258393356058,Wethersfield 12U B,0.5373038383408735,True,True,True
+2026-05-22,Farmington 12U Red,West Hartford 12U White,Tie,Farmington 12U Red,0.6413279791285554,Farmington 12U Red,0.6466156061581004,Farmington 12U Red,0.6440130772335776,False,False,False
+2026-05-23,Glastonbury 12U White,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6495450339608527,West Hartford 12U Gold,0.6359626497083515,West Hartford 12U Gold,0.6328363396396042,True,True,True
+2026-05-23,Meriden 12U,Berlin 12U A,Berlin 12U A,Meriden 12U,0.5007467199582566,Berlin 12U A,0.514300392617771,Berlin 12U A,0.5090474338603288,False,True,True
+2026-05-23,Newington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.7450922309075663,RHAM 12U,0.7736900145096165,RHAM 12U,0.7702589400607822,True,True,True
+2026-05-23,Colchester 12U,Vernon 12U,Vernon 12U,Colchester 12U,0.5292983841461485,Colchester 12U,0.5306766373574519,Colchester 12U,0.522453269159277,False,False,False
+2026-05-24,East Longmeadow 12U A,Northampton 12U,East Longmeadow 12U A,Northampton 12U,0.5108471981286619,Northampton 12U,0.5118987274106086,Northampton 12U,0.5194583406889466,False,False,False
+2026-05-26,Wethersfield 12U A,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.5864457185835799,West Springfield 12U,0.5756664393230875,West Springfield 12U,0.5781285336124773,True,True,True
+2026-05-26,Suffield 12U White,Somers 12U Red,Suffield 12U White,Suffield 12U White,0.6265326520135472,Suffield 12U White,0.5787332505981168,Suffield 12U White,0.5773165206316951,True,True,True
+2026-05-26,Northampton 12U,Belchertown 12U,Belchertown 12U,Belchertown 12U,0.637633203454292,Belchertown 12U,0.585280729302759,Belchertown 12U,0.5879903982528176,True,True,True
+2026-05-26,South Hadley 12U,Agawam 12U,Agawam 12U,Agawam 12U,0.6632128846284266,Agawam 12U,0.6452239880020229,Agawam 12U,0.6457840441082475,True,True,True
+2026-05-26,Suffield 12U,South Windsor 12U,Suffield 12U,Suffield 12U,0.6411428742149908,Suffield 12U,0.6829088446712231,Suffield 12U,0.6806790589403552,True,True,True
+2026-05-26,Ellington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.688868544219712,RHAM 12U,0.7167697416337013,RHAM 12U,0.7046292434469563,True,True,True
+2026-05-27,Berlin 12U A,Bristol 12U,Berlin 12U A,Berlin 12U A,0.5763358709850929,Berlin 12U A,0.5792003932007386,Berlin 12U A,0.5828728192006639,True,True,True
+2026-05-27,Westfield 12U Black,West Springfield 12U,Westfield 12U Black,West Springfield 12U,0.6497367170622528,West Springfield 12U,0.6335060164955963,West Springfield 12U,0.6355217067476533,False,False,False
+2026-05-27,Westfield 12U Red,Longmeadow 12U Black,Westfield 12U Red,Westfield 12U Red,0.6828398630426114,Westfield 12U Red,0.7329998618574307,Westfield 12U Red,0.7312808158099857,True,True,True
+2026-05-27,Colchester 12U,South Windsor 12U,South Windsor 12U,South Windsor 12U,0.5080145045418059,Colchester 12U,0.5146829067950598,Colchester 12U,0.5142055072152852,True,False,False
+2026-05-27,Minnechaug 12U White,Somers 12U Red,Minnechaug 12U White,Minnechaug 12U White,0.6177330374746898,Minnechaug 12U White,0.5911537859394134,Minnechaug 12U White,0.5876322119571854,True,True,True
+2026-05-27,Minnechaug 12U,Somers 12U White,Minnechaug 12U,Minnechaug 12U,0.5346431448497813,Minnechaug 12U,0.5458451138397911,Minnechaug 12U,0.5415189781261573,True,True,True
