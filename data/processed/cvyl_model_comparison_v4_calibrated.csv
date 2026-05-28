@@ -203,4 +203,7 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-26,South Hadley 12U,Agawam 12U,Agawam 12U,Agawam 12U,0.6457720304882818,Agawam 12U,0.6901187404445415,True,True
 2026-05-26,Suffield 12U,South Windsor 12U,Suffield 12U,Suffield 12U,0.6795742594432325,Suffield 12U,0.7315343653481348,True,True
 2026-05-26,Ellington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.7045835702965568,RHAM 12U,0.7611439229717645,True,True
-2026-05-27,Colchester 12U,South Windsor 12U,South Windsor 12U,Colchester 12U,0.5128753713790415,Colchester 12U,0.5171642107633133,False,False
+2026-05-27,Berlin 12U A,Bristol 12U,Berlin 12U A,Berlin 12U A,0.5826358245409032,Berlin 12U A,0.6094031846162007,True,True
+2026-05-27,Colchester 12U,South Windsor 12U,South Windsor 12U,Colchester 12U,0.5128762995148411,Colchester 12U,0.5171654476395032,False,False
+2026-05-27,Minnechaug 12U White,Somers 12U Red,Minnechaug 12U White,Minnechaug 12U White,0.5869803363181411,Minnechaug 12U White,0.6150668999827121,True,True
+2026-05-27,Minnechaug 12U,Somers 12U White,Minnechaug 12U,Minnechaug 12U,0.5419277283938247,Minnechaug 12U,0.5558018025276966,True,True

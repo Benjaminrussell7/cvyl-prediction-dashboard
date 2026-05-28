@@ -203,4 +203,7 @@ game_date,home_team,away_team,actual_winner,elo_predicted_winner,elo_win_probabi
 2026-05-26,South Hadley 12U,Agawam 12U,Agawam 12U,Agawam 12U,0.6631817054601343,Agawam 12U,0.6452239880020229,Agawam 12U,0.6205197732901606,True,True,True
 2026-05-26,Suffield 12U,South Windsor 12U,Suffield 12U,Suffield 12U,0.6425284314018639,Suffield 12U,0.6813693830839326,Suffield 12U,0.6417975651260228,True,True,True
 2026-05-26,Ellington 12U,RHAM 12U,RHAM 12U,RHAM 12U,0.6887134508874584,RHAM 12U,0.7167697416337013,RHAM 12U,0.6735375391634701,True,True,True
+2026-05-27,Berlin 12U A,Bristol 12U,Berlin 12U A,Berlin 12U A,0.5763885149426257,Berlin 12U A,0.5788143812482629,Berlin 12U A,0.5630259702329269,True,True,True
 2026-05-27,Colchester 12U,South Windsor 12U,South Windsor 12U,South Windsor 12U,0.5091516257552422,Colchester 12U,0.5131621724023645,Colchester 12U,0.5071656678919997,True,False,False
+2026-05-27,Minnechaug 12U White,Somers 12U Red,Minnechaug 12U White,Minnechaug 12U White,0.6177021728298584,Minnechaug 12U White,0.5905945616808906,Minnechaug 12U White,0.5771555730137122,True,True,True
+2026-05-27,Minnechaug 12U,Somers 12U White,Minnechaug 12U,Minnechaug 12U,0.5346476554861367,Minnechaug 12U,0.5462852380991442,Minnechaug 12U,0.5353875253943421,True,True,True
