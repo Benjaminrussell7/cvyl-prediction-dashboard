@@ -210,7 +210,8 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-27,Berlin 12U A,Bristol 12U,Berlin 12U A,Berlin 12U A,0.5828728192006639,Berlin 12U A,0.6097124786695036,True,True
 2026-05-27,Westfield 12U Black,West Springfield 12U,Westfield 12U Black,West Springfield 12U,0.6355217067476533,West Springfield 12U,0.6772813034223639,False,False
 2026-05-27,Westfield 12U Red,Longmeadow 12U Black,Westfield 12U Red,Westfield 12U Red,0.7312808158099857,Westfield 12U Red,0.7916402390483623,True,True
-2026-05-27,Colchester 12U,South Windsor 12U,South Windsor 12U,Colchester 12U,0.5142055072152852,Colchester 12U,0.5189367129199591,False,False
-2026-05-27,Minnechaug 12U White,Somers 12U Red,Minnechaug 12U White,Minnechaug 12U White,0.5876322119571854,Minnechaug 12U White,0.6159155703425542,True,True
-2026-05-27,Minnechaug 12U,Somers 12U White,Minnechaug 12U,Minnechaug 12U,0.5415189781261573,Minnechaug 12U,0.5552597500921739,True,True
-2026-05-28,West Hartford 12U Gold,Bristol 12U,West Hartford 12U Gold,West Hartford 12U Gold,0.7684136563438916,West Hartford 12U Gold,0.8319019622175888,True,True
+2026-05-27,Vernon 12U,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.5776968673823593,West Hartford 12U Green,0.6029489968744751,True,True
+2026-05-27,Colchester 12U,South Windsor 12U,South Windsor 12U,Colchester 12U,0.5140800548858753,Colchester 12U,0.5187695472211488,False,False
+2026-05-27,Minnechaug 12U White,Somers 12U Red,Minnechaug 12U White,Minnechaug 12U White,0.5876465654306116,Minnechaug 12U White,0.6159342535562833,True,True
+2026-05-27,Minnechaug 12U,Somers 12U White,Minnechaug 12U,Minnechaug 12U,0.5415355102644296,Minnechaug 12U,0.5552816748305406,True,True
+2026-05-28,West Hartford 12U Gold,Bristol 12U,West Hartford 12U Gold,West Hartford 12U Gold,0.7684257908799018,West Hartford 12U Gold,0.8319146762562238,True,True
