@@ -215,8 +215,9 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-27,Colchester 12U,South Windsor 12U,South Windsor 12U,Colchester 12U,0.5141265256013017,Colchester 12U,0.5188314698386857,False,False
 2026-05-27,Minnechaug 12U White,Somers 12U Red,Minnechaug 12U White,Minnechaug 12U White,0.5873980944391423,Minnechaug 12U White,0.615610810135484,True,True
 2026-05-27,Minnechaug 12U,Somers 12U White,Minnechaug 12U,Minnechaug 12U,0.5413123355908858,Minnechaug 12U,0.5549856951439688,True,True
-2026-05-28,Longmeadow 12U Black,Agawam 12U,Longmeadow 12U Black,Longmeadow 12U Black,0.5138084072790761,Longmeadow 12U Black,0.5184075694909467,True,True
-2026-05-28,West Hartford 12U Gold,Bristol 12U,West Hartford 12U Gold,West Hartford 12U Gold,0.7686558885565449,West Hartford 12U Gold,0.832155705427775,True,True
-2026-05-29,Middletown 12U,Meriden 12U,Meriden 12U,Meriden 12U,0.6042537632501987,Meriden 12U,0.6374456776323865,True,True
-2026-05-29,Suffield 12U,Simsbury 12U A,Suffield 12U,Suffield 12U,0.8550145099782168,Suffield 12U,0.85,True,True
-2026-05-29,Glastonbury 12U Blue,Simsbury 12U Blue,Glastonbury 12U Blue,Simsbury 12U Blue,0.5000466494012333,Simsbury 12U Blue,0.5000621992015041,False,False
+2026-05-27,Suffield 12U White,West Hartford 12U White,Suffield 12U White,Suffield 12U White,0.6923705833111962,Suffield 12U White,0.7468030708699109,True,True
+2026-05-28,Longmeadow 12U Black,Agawam 12U,Longmeadow 12U Black,Longmeadow 12U Black,0.5138270330240847,Longmeadow 12U Black,0.5184323890680549,True,True
+2026-05-28,West Hartford 12U Gold,Bristol 12U,West Hartford 12U Gold,West Hartford 12U Gold,0.7686678113981196,West Hartford 12U Gold,0.8321681917404719,True,True
+2026-05-29,Middletown 12U,Meriden 12U,Meriden 12U,Meriden 12U,0.6042191333511758,Meriden 12U,0.6374010529600365,True,True
+2026-05-29,Suffield 12U,Simsbury 12U A,Suffield 12U,Suffield 12U,0.855005258910758,Suffield 12U,0.85,True,True
+2026-05-29,Glastonbury 12U Blue,Simsbury 12U Blue,Glastonbury 12U Blue,Glastonbury 12U Blue,0.5000657345363297,Glastonbury 12U Blue,0.5000876460480469,True,True
