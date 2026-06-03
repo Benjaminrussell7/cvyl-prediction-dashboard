@@ -224,5 +224,7 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-05-30,Southington 12U White,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.6837494522398302,Wolcott 12U,0.7365426615311204,True,True
 2026-05-30,Granby 12U,Avon 12U,Granby 12U,Avon 12U,0.6677983273167692,Avon 12U,0.7172764948469483,False,False
 2026-05-31,Bristol 12U,West Hartford 12U White,Bristol 12U,Bristol 12U,0.5519741954804493,Bristol 12U,0.5691050277618038,True,True
-2026-06-01,East Longmeadow 12U White,Glastonbury 12U Blue,East Longmeadow 12U White,Glastonbury 12U Blue,0.5241095929011442,Glastonbury 12U Blue,0.5321267511516186,False,False
-2026-06-02,Southington 12U White,West Hartford 12U White,Southington 12U White,Southington 12U White,0.5298007900970322,Southington 12U White,0.5396978066763222,True,True
+2026-06-01,Belchertown 12U,Simsbury,Belchertown 12U,Simsbury,0.5301333942089429,Simsbury,0.5401400406361027,False,False
+2026-06-01,East Longmeadow 12U White,Glastonbury 12U Blue,East Longmeadow 12U White,Glastonbury 12U Blue,0.5240785655413572,Glastonbury 12U Blue,0.5320854560235455,False,False
+2026-06-02,Southington 12U White,West Hartford 12U White,Southington 12U White,Southington 12U White,0.5298247658309123,Southington 12U White,0.5397296859838925,True,True
+2026-06-02,Bristol 12U,Granby 12U,Bristol 12U,Bristol 12U,0.513920337347428,Bristol 12U,0.5185567203456926,True,True
