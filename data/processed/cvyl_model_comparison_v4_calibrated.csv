@@ -228,7 +228,8 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-06-01,East Longmeadow 12U White,Glastonbury 12U Blue,East Longmeadow 12U White,Glastonbury 12U Blue,0.5240785655413572,Glastonbury 12U Blue,0.5320854560235455,False,False
 2026-06-02,Southington 12U White,West Hartford 12U White,Southington 12U White,Southington 12U White,0.5298247658309123,Southington 12U White,0.5397296859838925,True,True
 2026-06-02,Bristol 12U,Granby 12U,Bristol 12U,Bristol 12U,0.513920337347428,Bristol 12U,0.5185567203456926,True,True
-2026-06-03,RHAM 12U,West Hartford Green,RHAM 12U,RHAM 12U,0.6946047616961745,RHAM 12U,0.7494438328081904,True,True
-2026-06-03,Meriden 12U,Middletown 12U,Meriden 12U,Meriden 12U,0.6369140622269099,Meriden 12U,0.6790320198242374,True,True
-2026-06-03,Avon 12U B,Wethersfield 12U B,Wethersfield 12U B,Avon 12U B,0.544026186376957,Avon 12U B,0.5585836874738173,False,False
-2026-06-03,South Windsor 12U,Southington 12U Blue,Southington 12U Blue,South Windsor 12U,0.5096795690511264,South Windsor 12U,0.5129048381101755,False,False
+2026-06-03,Ellington 12U,Vernon 12U,Ellington 12U,Vernon 12U,0.5357542292882,Vernon 12U,0.5476091418179942,False,False
+2026-06-03,RHAM 12U,West Hartford Green,RHAM 12U,RHAM 12U,0.6948743748467332,RHAM 12U,0.7497619944157747,True,True
+2026-06-03,Meriden 12U,Middletown 12U,Meriden 12U,Meriden 12U,0.6371762493806182,Meriden 12U,0.6793614487166703,True,True
+2026-06-03,Avon 12U B,Wethersfield 12U B,Wethersfield 12U B,Avon 12U B,0.5440278896037041,Avon 12U B,0.5585859447672806,False,False
+2026-06-03,South Windsor 12U,Southington 12U Blue,Southington 12U Blue,South Windsor 12U,0.5093451156772509,South Windsor 12U,0.5124590258178442,False,False
