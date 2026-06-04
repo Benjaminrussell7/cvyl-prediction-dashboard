@@ -230,6 +230,8 @@ game_date,home_team,away_team,actual_winner,elo_predicted_winner,elo_win_probabi
 2026-06-02,Bristol 12U,Granby 12U,Bristol 12U,Bristol 12U,0.5069918392122712,Bristol 12U,0.5170465188788654,Bristol 12U,0.5121449941725459,True,True,True
 2026-06-03,Ellington 12U,Vernon 12U,Ellington 12U,Vernon 12U,0.5159548698542313,Vernon 12U,0.5381756137379272,Vernon 12U,0.5272614870225363,False,False,False
 2026-06-03,RHAM 12U,West Hartford Green,RHAM 12U,RHAM 12U,0.6949143962914313,RHAM 12U,0.6968483541559123,RHAM 12U,0.6606396218011729,True,True,True
+2026-06-03,Westfield 12U Black,Simsbury 14U Blue,Westfield 12U Black,Westfield 12U Black,0.510739891426814,Westfield 12U Black,0.5037538751739814,Westfield 12U Black,0.5040727222245222,True,True,True
+2026-06-03,South Hadley 12U,Northampton 12U,South Hadley 12U,Northampton 12U,0.5957006230180308,Northampton 12U,0.6195407708877609,Northampton 12U,0.5928726084986461,False,False,False
 2026-06-03,Meriden 12U,Middletown 12U,Meriden 12U,Meriden 12U,0.6260590219875465,Meriden 12U,0.6266266094659928,Meriden 12U,0.6022588686630239,True,True,True
 2026-06-03,Avon 12U B,Wethersfield 12U B,Wethersfield 12U B,Avon 12U B,0.5367868155177105,Avon 12U B,0.544435834223091,Avon 12U B,0.5345065876346123,False,False,False
 2026-06-03,South Windsor 12U,Southington 12U Blue,Southington 12U Blue,South Windsor 12U,0.5199884166329806,South Windsor 12U,0.5002911234125222,South Windsor 12U,0.5032291061150087,False,False,False

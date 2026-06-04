@@ -230,6 +230,8 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-06-02,Bristol 12U,Granby 12U,Bristol 12U,Bristol 12U,0.513920337347428,Bristol 12U,0.5185567203456926,True,True
 2026-06-03,Ellington 12U,Vernon 12U,Ellington 12U,Vernon 12U,0.5357542292882,Vernon 12U,0.5476091418179942,False,False
 2026-06-03,RHAM 12U,West Hartford Green,RHAM 12U,RHAM 12U,0.6948743748467332,RHAM 12U,0.7497619944157747,True,True
-2026-06-03,Meriden 12U,Middletown 12U,Meriden 12U,Meriden 12U,0.6371762493806182,Meriden 12U,0.6793614487166703,True,True
-2026-06-03,Avon 12U B,Wethersfield 12U B,Wethersfield 12U B,Avon 12U B,0.5440278896037041,Avon 12U B,0.5585859447672806,False,False
-2026-06-03,South Windsor 12U,Southington 12U Blue,Southington 12U Blue,South Windsor 12U,0.5093451156772509,South Windsor 12U,0.5124590258178442,False,False
+2026-06-03,Westfield 12U Black,Simsbury 14U Blue,Westfield 12U Black,Westfield 12U Black,0.505430513057138,Westfield 12U Black,0.5072404626393322,True,True
+2026-06-03,South Hadley 12U,Northampton 12U,South Hadley 12U,Northampton 12U,0.621627616652471,Northampton 12U,0.6596982552280721,False,False
+2026-06-03,Meriden 12U,Middletown 12U,Meriden 12U,Meriden 12U,0.6370998922982534,Meriden 12U,0.679265516598218,True,True
+2026-06-03,Avon 12U B,Wethersfield 12U B,Wethersfield 12U B,Avon 12U B,0.5440305622592572,Avon 12U B,0.5585894868466259,False,False
+2026-06-03,South Windsor 12U,Southington 12U Blue,Southington 12U Blue,South Windsor 12U,0.5092779788499255,South Windsor 12U,0.5123695341933862,False,False
