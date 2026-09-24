@@ -1,8 +1,8 @@
 game_id,team,opponent,points_for,points_against,win,game_date,season,division,status
-854cb0a420e3e87e,Burlington 12U,Connecticut Valley Youth Lacrosse,9,2,True,2026-04-04,2026,U12 Boys,completed
-854cb0a420e3e87e,Connecticut Valley Youth Lacrosse,Burlington 12U,2,9,False,2026-04-04,2026,U12 Boys,completed
 b9eb8fd793ea9472,Connecticut Valley Youth Lacrosse,Meriden 12U,9,2,True,2026-04-04,2026,U12 Boys,completed
 b9eb8fd793ea9472,Meriden 12U,Connecticut Valley Youth Lacrosse,2,9,False,2026-04-04,2026,U12 Boys,completed
+d05ea47d15eae67c,Burlington 12U,Meriden 12U,9,2,True,2026-04-04,2026,U12 Boys,completed
+d05ea47d15eae67c,Meriden 12U,Burlington 12U,2,9,False,2026-04-04,2026,U12 Boys,completed
 1a4c5eeb8d2b43c1,Connecticut Valley Youth Lacrosse,Farmington 12U Black,13,4,True,2026-04-06,2026,U12 Boys,completed
 1a4c5eeb8d2b43c1,Farmington 12U Black,Connecticut Valley Youth Lacrosse,4,13,False,2026-04-06,2026,U12 Boys,completed
 4151a96de41b9e06,Burlington 12U,Connecticut Valley Youth Lacrosse,13,4,True,2026-04-06,2026,U12 Boys,completed
@@ -29,8 +29,8 @@ c5f90e5b1e1540af,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,0,14,Fa
 540d2d8f0c3cf8cb,Westfield 12U Black,Connecticut Valley Youth Lacrosse,5,5,False,2026-04-11,2026,U12 Boys,completed
 5f32622b84b09838,Connecticut Valley Youth Lacrosse,Minnechaug 12U,3,20,False,2026-04-11,2026,U12 Boys,completed
 5f32622b84b09838,Minnechaug 12U,Connecticut Valley Youth Lacrosse,20,3,True,2026-04-11,2026,U12 Boys,completed
-773d1a4ca4c750bb,Connecticut Valley Youth Lacrosse,Newington 12U,2,4,False,2026-04-11,2026,U12 Boys,completed
-773d1a4ca4c750bb,Newington 12U,Connecticut Valley Youth Lacrosse,4,2,True,2026-04-11,2026,U12 Boys,completed
+df4edf5d3e859650,Meriden 12U,Newington 12U,2,4,False,2026-04-11,2026,U12 Boys,completed
+df4edf5d3e859650,Newington 12U,Meriden 12U,4,2,True,2026-04-11,2026,U12 Boys,completed
 52ef78622739b7a7,Connecticut Valley Youth Lacrosse,Northampton 12U,10,6,True,2026-04-12,2026,U12 Boys,completed
 52ef78622739b7a7,Northampton 12U,Connecticut Valley Youth Lacrosse,6,10,False,2026-04-12,2026,U12 Boys,completed
 5ee6b94c1912f763,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,6,10,False,2026-04-12,2026,U12 Boys,completed
@@ -79,10 +79,10 @@ ce0e51b4c82f9d2f,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,3,8,Fals
 ce0e51b4c82f9d2f,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,8,3,True,2026-04-17,2026,U12 Boys,completed
 e5a6bc6a79dfa164,Connecticut Valley Youth Lacrosse,Minnechaug 12U,2,11,False,2026-04-17,2026,U12 Boys,completed
 e5a6bc6a79dfa164,Minnechaug 12U,Connecticut Valley Youth Lacrosse,11,2,True,2026-04-17,2026,U12 Boys,completed
+c40f5ae40ba864be,Meriden 12U,Wolcott 12U,3,6,False,2026-04-18,2026,U12 Boys,completed
+c40f5ae40ba864be,Wolcott 12U,Meriden 12U,6,3,True,2026-04-18,2026,U12 Boys,completed
 d3f7f8200927d90c,Connecticut Valley Youth Lacrosse,Meriden 12U,6,3,True,2026-04-18,2026,U12 Boys,completed
 d3f7f8200927d90c,Meriden 12U,Connecticut Valley Youth Lacrosse,3,6,False,2026-04-18,2026,U12 Boys,completed
-f00e7622dcb450c8,Connecticut Valley Youth Lacrosse,Wolcott 12U,3,6,False,2026-04-18,2026,U12 Boys,completed
-f00e7622dcb450c8,Wolcott 12U,Connecticut Valley Youth Lacrosse,6,3,True,2026-04-18,2026,U12 Boys,completed
 51cb1b6a16077c16,Bristol 12U,Connecticut Valley Youth Lacrosse,1,0,True,2026-04-19,2026,U12 Boys,completed
 51cb1b6a16077c16,Connecticut Valley Youth Lacrosse,Bristol 12U,0,1,False,2026-04-19,2026,U12 Boys,completed
 788c5b36a285a6f0,Connecticut Valley Youth Lacrosse,Middletown 12U,1,0,True,2026-04-19,2026,U12 Boys,completed
@@ -471,6 +471,8 @@ fa4512404839b5fa,Farmington 12U Red,Connecticut Valley Youth Lacrosse,7,1,True,2
 58e0d2e43fba5e6b,South Windsor 12U,Connecticut Valley Youth Lacrosse,8,9,False,2026-05-09,2026,U12 Boys,completed
 6ddfe1bcaec8ab69,Connecticut Valley Youth Lacrosse,Middletown 12U,5,3,True,2026-05-09,2026,U12 Boys,completed
 6ddfe1bcaec8ab69,Middletown 12U,Connecticut Valley Youth Lacrosse,3,5,False,2026-05-09,2026,U12 Boys,completed
+6ea0f27283433899,Bristol 12U,Meriden 12U,3,8,False,2026-05-09,2026,U12 Boys,completed
+6ea0f27283433899,Meriden 12U,Bristol 12U,8,3,True,2026-05-09,2026,U12 Boys,completed
 afb73ff5c9b1e4f7,Burlington 12U,Connecticut Valley Youth Lacrosse,2,12,False,2026-05-09,2026,U12 Boys,completed
 afb73ff5c9b1e4f7,Connecticut Valley Youth Lacrosse,Burlington 12U,12,2,True,2026-05-09,2026,U12 Boys,completed
 bbe4a6a7d3448516,Connecticut Valley Youth Lacrosse,Meriden 12U,3,8,False,2026-05-09,2026,U12 Boys,completed
@@ -483,8 +485,6 @@ d41f1c36786c3aa0,Connecticut Valley Youth Lacrosse,Wolcott 12U,2,12,False,2026-0
 d41f1c36786c3aa0,Wolcott 12U,Connecticut Valley Youth Lacrosse,12,2,True,2026-05-09,2026,U12 Boys,completed
 f1a9d5ae8743c841,Berkshire,Connecticut Valley Youth Lacrosse,9,5,True,2026-05-09,2026,U12 Boys,completed
 f1a9d5ae8743c841,Connecticut Valley Youth Lacrosse,Berkshire,5,9,False,2026-05-09,2026,U12 Boys,completed
-f9703274a2cdacc1,Bristol 12U,Connecticut Valley Youth Lacrosse,3,8,False,2026-05-09,2026,U12 Boys,completed
-f9703274a2cdacc1,Connecticut Valley Youth Lacrosse,Bristol 12U,8,3,True,2026-05-09,2026,U12 Boys,completed
 09c9d8039be43bee,Connecticut Valley Youth Lacrosse,Middletown 12U,5,1,True,2026-05-10,2026,U12 Boys,completed
 09c9d8039be43bee,Middletown 12U,Connecticut Valley Youth Lacrosse,1,5,False,2026-05-10,2026,U12 Boys,completed
 1ac82c82b905102b,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,5,3,True,2026-05-10,2026,U12 Boys,completed
@@ -497,8 +497,8 @@ f9703274a2cdacc1,Connecticut Valley Youth Lacrosse,Bristol 12U,8,3,True,2026-05-
 9a6bb2fb99565533,Vernon 12U,Connecticut Valley Youth Lacrosse,5,1,True,2026-05-10,2026,U12 Boys,completed
 f6ac12c96b2821fe,Avon 12U,Connecticut Valley Youth Lacrosse,11,0,True,2026-05-10,2026,U12 Boys,completed
 f6ac12c96b2821fe,Connecticut Valley Youth Lacrosse,Avon 12U,0,11,False,2026-05-10,2026,U12 Boys,completed
-1fc4fdc61a680741,Berlin 12U A,Connecticut Valley Youth Lacrosse,1,6,False,2026-05-11,2026,U12 Boys,completed
-1fc4fdc61a680741,Connecticut Valley Youth Lacrosse,Berlin 12U A,6,1,True,2026-05-11,2026,U12 Boys,completed
+22bbf2afe92d9de3,Berlin 12U A,Meriden 12U,1,6,False,2026-05-11,2026,U12 Boys,completed
+22bbf2afe92d9de3,Meriden 12U,Berlin 12U A,6,1,True,2026-05-11,2026,U12 Boys,completed
 272f40087b49802e,Connecticut Valley Youth Lacrosse,Vernon 12U,12,9,True,2026-05-11,2026,U12 Boys,completed
 272f40087b49802e,Vernon 12U,Connecticut Valley Youth Lacrosse,9,12,False,2026-05-11,2026,U12 Boys,completed
 2afc045d4a3535ee,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,4,10,False,2026-05-11,2026,U12 Boys,completed
@@ -577,8 +577,8 @@ f8118e8de0de8875,Farmington 12U Red,Connecticut Valley Youth Lacrosse,6,5,True,2
 652d32017d5860dd,Suffield 12U,Connecticut Valley Youth Lacrosse,5,7,False,2026-05-14,2026,U12 Boys,completed
 732ca2f59a41f308,Connecticut Valley Youth Lacrosse,Southington 12U Blue,13,17,False,2026-05-14,2026,U12 Boys,completed
 732ca2f59a41f308,Southington 12U Blue,Connecticut Valley Youth Lacrosse,17,13,True,2026-05-14,2026,U12 Boys,completed
-bb0268684da5dda8,Bristol 12U,Connecticut Valley Youth Lacrosse,5,5,False,2026-05-14,2026,U12 Boys,completed
-bb0268684da5dda8,Connecticut Valley Youth Lacrosse,Bristol 12U,5,5,False,2026-05-14,2026,U12 Boys,completed
+7deb99b80a88b533,Bristol 12U,Meriden 12U,5,5,False,2026-05-14,2026,U12 Boys,completed
+7deb99b80a88b533,Meriden 12U,Bristol 12U,5,5,False,2026-05-14,2026,U12 Boys,completed
 c0cf6dd18e62202d,Agawam 12U,Connecticut Valley Youth Lacrosse,10,9,True,2026-05-14,2026,U12 Boys,completed
 c0cf6dd18e62202d,Connecticut Valley Youth Lacrosse,Agawam 12U,9,10,False,2026-05-14,2026,U12 Boys,completed
 d8ac0d8a25390786,Connecticut Valley Youth Lacrosse,Westfield 12U Red,5,7,False,2026-05-14,2026,U12 Boys,completed
@@ -587,10 +587,10 @@ d8ac0d8a25390786,Westfield 12U Red,Connecticut Valley Youth Lacrosse,7,5,True,20
 156f921832eed7fa,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,6,4,True,2026-05-15,2026,U12 Boys,completed
 2036e8c331becc9b,Connecticut Valley Youth Lacrosse,Meriden 12U,9,3,True,2026-05-15,2026,U12 Boys,completed
 2036e8c331becc9b,Meriden 12U,Connecticut Valley Youth Lacrosse,3,9,False,2026-05-15,2026,U12 Boys,completed
+228fc14a07acfd56,Meriden 12U,Wolcott 12U,3,9,False,2026-05-15,2026,U12 Boys,completed
+228fc14a07acfd56,Wolcott 12U,Meriden 12U,9,3,True,2026-05-15,2026,U12 Boys,completed
 541430845fe66ecd,Connecticut Valley Youth Lacrosse,Suffield 12U White,3,5,False,2026-05-15,2026,U12 Boys,completed
 541430845fe66ecd,Suffield 12U White,Connecticut Valley Youth Lacrosse,5,3,True,2026-05-15,2026,U12 Boys,completed
-55e0a00bfc3d49e9,Connecticut Valley Youth Lacrosse,Wolcott 12U,3,9,False,2026-05-15,2026,U12 Boys,completed
-55e0a00bfc3d49e9,Wolcott 12U,Connecticut Valley Youth Lacrosse,9,3,True,2026-05-15,2026,U12 Boys,completed
 58af4fe106b643b5,Connecticut Valley Youth Lacrosse,Simsbury 12U A,12,7,True,2026-05-15,2026,U12 Boys,completed
 58af4fe106b643b5,Simsbury 12U A,Connecticut Valley Youth Lacrosse,7,12,False,2026-05-15,2026,U12 Boys,completed
 b3d626043974dce8,Connecticut Valley Youth Lacrosse,South Hadley 12U,6,4,True,2026-05-15,2026,U12 Boys,completed
@@ -675,6 +675,8 @@ f4e51fe765850269,Connecticut Valley Youth Lacrosse,Westfield 12U Red,2,14,False,
 f4e51fe765850269,Westfield 12U Red,Connecticut Valley Youth Lacrosse,14,2,True,2026-05-18,2026,U12 Boys,completed
 07150c51642aba2f,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,9,5,True,2026-05-19,2026,U12 Boys,completed
 07150c51642aba2f,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,5,9,False,2026-05-19,2026,U12 Boys,completed
+07f5cd9636eaebcd,Meriden 12U,Newington 12U,4,5,False,2026-05-19,2026,U12 Boys,completed
+07f5cd9636eaebcd,Newington 12U,Meriden 12U,5,4,True,2026-05-19,2026,U12 Boys,completed
 1429e6ffd85d217e,Connecticut Valley Youth Lacrosse,Suffield 12U White,5,9,False,2026-05-19,2026,U12 Boys,completed
 1429e6ffd85d217e,Suffield 12U White,Connecticut Valley Youth Lacrosse,9,5,True,2026-05-19,2026,U12 Boys,completed
 43aa6b6e3d158303,Connecticut Valley Youth Lacrosse,Meriden 12U,5,4,True,2026-05-19,2026,U12 Boys,completed
@@ -695,8 +697,6 @@ f4e51fe765850269,Westfield 12U Red,Connecticut Valley Youth Lacrosse,14,2,True,2
 9c04663cb9ec08f9,South Hadley 12U,Connecticut Valley Youth Lacrosse,2,19,False,2026-05-19,2026,U12 Boys,completed
 bd3495e4c5948ca1,Connecticut Valley Youth Lacrosse,Suffield 12U,1,13,False,2026-05-19,2026,U12 Boys,completed
 bd3495e4c5948ca1,Suffield 12U,Connecticut Valley Youth Lacrosse,13,1,True,2026-05-19,2026,U12 Boys,completed
-e18c24625e259de9,Connecticut Valley Youth Lacrosse,Newington 12U,4,5,False,2026-05-19,2026,U12 Boys,completed
-e18c24625e259de9,Newington 12U,Connecticut Valley Youth Lacrosse,5,4,True,2026-05-19,2026,U12 Boys,completed
 2780749fb2b8854e,Belchertown 12U,Connecticut Valley Youth Lacrosse,9,5,True,2026-05-20,2026,U12 Boys,completed
 2780749fb2b8854e,Connecticut Valley Youth Lacrosse,Belchertown 12U,5,9,False,2026-05-20,2026,U12 Boys,completed
 3837951e9167db8e,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,4,5,False,2026-05-20,2026,U12 Boys,completed
@@ -731,8 +731,8 @@ e2394b98a4d0aa3e,South Windsor 12U,Connecticut Valley Youth Lacrosse,8,5,True,20
 557a99a2ca197843,Tolland 12U,Connecticut Valley Youth Lacrosse,5,11,False,2026-05-21,2026,U12 Boys,completed
 67f4c056f078b580,Connecticut Valley Youth Lacrosse,West Springfield 12U,3,9,False,2026-05-21,2026,U12 Boys,completed
 67f4c056f078b580,West Springfield 12U,Connecticut Valley Youth Lacrosse,9,3,True,2026-05-21,2026,U12 Boys,completed
-9551a3fb524c81c9,Connecticut Valley Youth Lacrosse,Farmington 12U Red,8,3,True,2026-05-21,2026,U12 Boys,completed
-9551a3fb524c81c9,Farmington 12U Red,Connecticut Valley Youth Lacrosse,3,8,False,2026-05-21,2026,U12 Boys,completed
+75e23ba5b7d97a7d,Farmington 12U Red,Meriden 12U,3,8,False,2026-05-21,2026,U12 Boys,completed
+75e23ba5b7d97a7d,Meriden 12U,Farmington 12U Red,8,3,True,2026-05-21,2026,U12 Boys,completed
 ad225480a03921f5,Connecticut Valley Youth Lacrosse,Westfield 12U Black,6,4,True,2026-05-21,2026,U12 Boys,completed
 ad225480a03921f5,Westfield 12U Black,Connecticut Valley Youth Lacrosse,4,6,False,2026-05-21,2026,U12 Boys,completed
 bd28a7d7e67ac445,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,2,12,False,2026-05-21,2026,U12 Boys,completed
@@ -769,8 +769,8 @@ e521fed12a829ec0,West Hartford 12U White,Connecticut Valley Youth Lacrosse,5,5,F
 2dff4eb01f895107,RHAM 12U,Connecticut Valley Youth Lacrosse,7,1,True,2026-05-23,2026,U12 Boys,completed
 512b619ece16b9a5,Connecticut Valley Youth Lacrosse,Vernon 12U,2,4,False,2026-05-23,2026,U12 Boys,completed
 512b619ece16b9a5,Vernon 12U,Connecticut Valley Youth Lacrosse,4,2,True,2026-05-23,2026,U12 Boys,completed
-6bd8c07489a752a6,Berlin 12U A,Connecticut Valley Youth Lacrosse,4,2,True,2026-05-23,2026,U12 Boys,completed
-6bd8c07489a752a6,Connecticut Valley Youth Lacrosse,Berlin 12U A,2,4,False,2026-05-23,2026,U12 Boys,completed
+64747ad2d0d99fea,Berlin 12U A,Meriden 12U,4,2,True,2026-05-23,2026,U12 Boys,completed
+64747ad2d0d99fea,Meriden 12U,Berlin 12U A,2,4,False,2026-05-23,2026,U12 Boys,completed
 72170503e7269833,Connecticut Valley Youth Lacrosse,Meriden 12U,4,2,True,2026-05-23,2026,U12 Boys,completed
 72170503e7269833,Meriden 12U,Connecticut Valley Youth Lacrosse,2,4,False,2026-05-23,2026,U12 Boys,completed
 76ae69838f64b9a2,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,9,10,False,2026-05-23,2026,U12 Boys,completed
@@ -851,12 +851,12 @@ f18ea8676a87072a,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,0,12,F
 f18ea8676a87072a,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,12,0,True,2026-05-28,2026,U12 Boys,completed
 452960cf89b5091a,Connecticut Valley Youth Lacrosse,Suffield 12U,3,14,False,2026-05-29,2026,U12 Boys,completed
 452960cf89b5091a,Suffield 12U,Connecticut Valley Youth Lacrosse,14,3,True,2026-05-29,2026,U12 Boys,completed
+5215d7cb27776444,Meriden 12U,Middletown 12U,7,2,True,2026-05-29,2026,U12 Boys,completed
+5215d7cb27776444,Middletown 12U,Meriden 12U,2,7,False,2026-05-29,2026,U12 Boys,completed
 7edd002b3bb04f0c,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,2,9,False,2026-05-29,2026,U12 Boys,completed
 7edd002b3bb04f0c,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,9,2,True,2026-05-29,2026,U12 Boys,completed
 91466487f4f43c71,Connecticut Valley Youth Lacrosse,Meriden 12U,2,7,False,2026-05-29,2026,U12 Boys,completed
 91466487f4f43c71,Meriden 12U,Connecticut Valley Youth Lacrosse,7,2,True,2026-05-29,2026,U12 Boys,completed
-ac7bcdf5c5e2bd7a,Connecticut Valley Youth Lacrosse,Middletown 12U,7,2,True,2026-05-29,2026,U12 Boys,completed
-ac7bcdf5c5e2bd7a,Middletown 12U,Connecticut Valley Youth Lacrosse,2,7,False,2026-05-29,2026,U12 Boys,completed
 b95f9560d9276ade,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,9,2,True,2026-05-29,2026,U12 Boys,completed
 b95f9560d9276ade,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,2,9,False,2026-05-29,2026,U12 Boys,completed
 c8f609f8e854878c,Connecticut Valley Youth Lacrosse,Simsbury 12U A,14,3,True,2026-05-29,2026,U12 Boys,completed
@@ -899,14 +899,14 @@ da55b86bc21ec738,Connecticut Valley Youth Lacrosse,Bristol 12U,1,4,False,2026-06
 5692e221e01aa7e8,Ellington 12U,Connecticut Valley Youth Lacrosse,5,3,True,2026-06-03,2026,U12 Boys,completed
 82ef6448640b3b46,Connecticut Valley Youth Lacrosse,West Hartford Green,6,3,True,2026-06-03,2026,U12 Boys,completed
 82ef6448640b3b46,West Hartford Green,Connecticut Valley Youth Lacrosse,3,6,False,2026-06-03,2026,U12 Boys,completed
+8e4572946b2e6d65,Meriden 12U,Middletown 12U,9,1,True,2026-06-03,2026,U12 Boys,completed
+8e4572946b2e6d65,Middletown 12U,Meriden 12U,1,9,False,2026-06-03,2026,U12 Boys,completed
 be5f46e80b98aafd,Connecticut Valley Youth Lacrosse,Vernon 12U,5,3,True,2026-06-03,2026,U12 Boys,completed
 be5f46e80b98aafd,Vernon 12U,Connecticut Valley Youth Lacrosse,3,5,False,2026-06-03,2026,U12 Boys,completed
 d58cebcc36a968c4,Connecticut Valley Youth Lacrosse,South Windsor 12U,16,3,True,2026-06-03,2026,U12 Boys,completed
 d58cebcc36a968c4,South Windsor 12U,Connecticut Valley Youth Lacrosse,3,16,False,2026-06-03,2026,U12 Boys,completed
 e7162a052c6da1b9,Connecticut Valley Youth Lacrosse,Northampton 12U,8,0,True,2026-06-03,2026,U12 Boys,completed
 e7162a052c6da1b9,Northampton 12U,Connecticut Valley Youth Lacrosse,0,8,False,2026-06-03,2026,U12 Boys,completed
-e90cec658ee3ca5f,Connecticut Valley Youth Lacrosse,Middletown 12U,9,1,True,2026-06-03,2026,U12 Boys,completed
-e90cec658ee3ca5f,Middletown 12U,Connecticut Valley Youth Lacrosse,1,9,False,2026-06-03,2026,U12 Boys,completed
 f2ce1e11101cba24,Connecticut Valley Youth Lacrosse,South Hadley 12U,0,8,False,2026-06-03,2026,U12 Boys,completed
 f2ce1e11101cba24,South Hadley 12U,Connecticut Valley Youth Lacrosse,8,0,True,2026-06-03,2026,U12 Boys,completed
 fe07997ac93e3741,Avon 12U B,Connecticut Valley Youth Lacrosse,2,3,False,2026-06-03,2026,U12 Boys,completed
