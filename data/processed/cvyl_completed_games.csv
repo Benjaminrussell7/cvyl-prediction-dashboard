@@ -28,7 +28,7 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-04-15,,2026,U12 Boys,Granby,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,1,7,completed,somers_12u_white,https://www.cvyl.org/team/225913/games,7d9f576570a7f3f7
 2026-04-15,,2026,U12 Boys,Newington 12U,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,4,9,completed,wolcott_12u,https://www.cvyl.org/team/225925/games,3f91756fb0e9ceef
 2026-04-15,,2026,U12 Boys,Northampton 12U,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,5,8,completed,westfield_12u_black,https://www.cvyl.org/team/225922/games,6b430695a3a2d201
-2026-04-15,,2026,U12 Boys,Somers Juniors,Granby 12U,Somers Juniors,Granby 12U,8,1,completed,granby_12u,https://www.cvyl.org/team/225904/games,4a6cbe0bf830460d
+2026-04-15,,2026,U12 Boys,Somers Juniors,Connecticut Valley Youth Lacrosse,Somers Juniors,Connecticut Valley Youth Lacrosse,8,1,completed,granby_12u,https://www.cvyl.org/team/225904/games,f821152d4a7d3066
 2026-04-16,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,Bristol 12U,14,1,completed,southington_12u_blue,https://www.cvyl.org/team/225916/games,6e1e022892b1b5e6
 2026-04-16,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,7,10,completed,northampton_12u,https://www.cvyl.org/team/225910/games,362d6eb16fd2c3b9
 2026-04-16,,2026,U12 Boys,Northampton 12U,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,7,10,completed,east_longmeadow_12u_a,https://www.cvyl.org/team/225900/games,608404c5544321c3
@@ -55,12 +55,12 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-04-21,,2026,U12 Boys,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Connecticut Valley Youth Lacrosse,9,3,completed,east_longmeadow_12u_white,https://www.cvyl.org/team/225928/games,7736c96fcd703c4d
 2026-04-21,,2026,U12 Boys,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,6,4,completed,simsbury_12u_blue,https://www.cvyl.org/team/225935/games,6524b1e0579aa42d
 2026-04-22,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Farmington 12U Red,7,0,completed,west_hartford_12u_green,https://www.cvyl.org/team/225939/games,5c211eb83d0befc8
+2026-04-22,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,Newington 12U,7,1,completed,granby_12u,https://www.cvyl.org/team/225904/games,df1810c987b55a87
 2026-04-22,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,1,12,completed,south_windsor_12u,https://www.cvyl.org/team/225915/games,ad6f3cf22ac05e18
 2026-04-22,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Vernon 12U,Connecticut Valley Youth Lacrosse,Vernon 12U,10,2,completed,rham_12u,https://www.cvyl.org/team/225911/games,474c49190e5856bd
 2026-04-22,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,West Hartford 12U White,6,2,completed,glastonbury_12u_blue,https://www.cvyl.org/team/225930/games,e7bf1f825cc3bfdc
 2026-04-22,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,9,3,completed,southington_12u_blue,https://www.cvyl.org/team/225916/games,d047cf94f598c393
 2026-04-22,,2026,U12 Boys,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,6,2,completed,west_hartford_12u_white,https://www.cvyl.org/team/225940/games,f1a3f1d86f407361
-2026-04-22,,2026,U12 Boys,Granby 12U,Newington 12U,Granby 12U,Newington 12U,7,1,completed,granby_12u,https://www.cvyl.org/team/225904/games,53ce0a58eed0cce1
 2026-04-22,,2026,U12 Boys,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,Connecticut Valley Youth Lacrosse,10,2,completed,vernon_12u,https://www.cvyl.org/team/225919/games,6ba833ad530b3d8d
 2026-04-22,,2026,U12 Boys,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,Connecticut Valley Youth Lacrosse,1,12,completed,suffield_12u,https://www.cvyl.org/team/225917/games,f855a6a4a17b66cf
 2026-04-22,,2026,U12 Boys,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Connecticut Valley Youth Lacrosse,9,3,completed,wolcott_12u,https://www.cvyl.org/team/225925/games,51db3be9e2e6b22f
@@ -84,9 +84,9 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-04-25,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,Newington 12U,17,1,completed,west_hartford_12u_gold,https://www.cvyl.org/team/225920/games,838de0821326515d
 2026-04-25,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,6,3,completed,suffield_12u_white,https://www.cvyl.org/team/225938/games,9541dfa02af1b28d
 2026-04-25,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,8,3,completed,avon_12u,https://www.cvyl.org/team/225893/games,f70dc207bd2e269d
+2026-04-25,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Suffield Juniors 1 Blue,Connecticut Valley Youth Lacrosse,Suffield Juniors 1 Blue,0,13,completed,granby_12u,https://www.cvyl.org/team/225904/games,825beccb6712c484
 2026-04-25,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Vernon,Connecticut Valley Youth Lacrosse,Vernon 12U,7,5,completed,ellington_12u,https://www.cvyl.org/team/225901/games,6648fb04f0447740
 2026-04-25,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,West Hartford 12U White,4,1,completed,avon_12u_b,https://www.cvyl.org/team/225869/games,b457480f351df8db
-2026-04-25,,2026,U12 Boys,Granby 12U,Suffield Juniors 1 Blue,Granby 12U,Suffield Juniors 1 Blue,0,13,completed,granby_12u,https://www.cvyl.org/team/225904/games,8b43b577819bdcab
 2026-04-25,,2026,U12 Boys,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Connecticut Valley Youth Lacrosse,6,3,completed,simsbury_12u_blue,https://www.cvyl.org/team/225935/games,de94ff18146e8f6d
 2026-04-25,,2026,U12 Boys,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,17,1,completed,newington_12u,https://www.cvyl.org/team/225909/games,c22adc06944f3384
 2026-04-25,,2026,U12 Boys,Westfield 12U Black,Connecticut Valley Youth Lacrosse,Westfield 12U Black,Connecticut Valley Youth Lacrosse,2,9,completed,minnechaug_12u_white,https://www.cvyl.org/team/225933/games,4bb4ddedc35c9847
@@ -134,12 +134,12 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-04-29,,2026,U12 Boys,Belchertown 12U,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,4,3,completed,northampton_12u,https://www.cvyl.org/team/225910/games,1a8f13f1a13730fc
 2026-04-29,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Longmeadow 12U White,Connecticut Valley Youth Lacrosse,Longmeadow 12U White,5,3,completed,somers_12u_red,https://www.cvyl.org/team/225936/games,e2ad28799946d753
 2026-04-29,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,Northampton 12U,4,3,completed,belchertown_12u,https://www.cvyl.org/team/225894/games,495f9a9e6d9246d5
+2026-04-29,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,3,9,completed,granby_12u,https://www.cvyl.org/team/225904/games,3b570a86942a7b0c
 2026-04-29,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,12,0,completed,west_hartford_12u_gold,https://www.cvyl.org/team/225920/games,4b441f7bf96de16e
 2026-04-29,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Vernon 12U,Connecticut Valley Youth Lacrosse,Vernon 12U,4,8,completed,newington_12u,https://www.cvyl.org/team/225909/games,03863a1677d1e0e1
 2026-04-29,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,West Hartford 12U White,10,6,completed,simsbury_12u_blue,https://www.cvyl.org/team/225935/games,26bc4565b5f0bef3
 2026-04-29,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Connecticut Valley Youth Lacrosse,Westfield 12U Red,5,9,completed,suffield_12u,https://www.cvyl.org/team/225917/games,a7b30073015c8698
 2026-04-29,,2026,U12 Boys,Granby 12U,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,3,9,completed,south_windsor_12u,https://www.cvyl.org/team/225915/games,0c58b4b296027435
-2026-04-29,,2026,U12 Boys,Granby 12U,South Windsor 12U,Granby 12U,South Windsor 12U,3,9,completed,granby_12u,https://www.cvyl.org/team/225904/games,502a2651ccd24c37
 2026-04-29,,2026,U12 Boys,Newington 12U,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,4,8,completed,vernon_12u,https://www.cvyl.org/team/225919/games,afcb1c6ee2c8816d
 2026-04-29,,2026,U12 Boys,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,10,6,completed,west_hartford_12u_white,https://www.cvyl.org/team/225940/games,9572d46969ad2d4d
 2026-04-29,,2026,U12 Boys,Somers 12U Red,Connecticut Valley Youth Lacrosse,Somers 12U Red,Connecticut Valley Youth Lacrosse,5,3,completed,longmeadow_12u_white,https://www.cvyl.org/team/225932/games,b1c804c2c840c1c9
@@ -175,7 +175,7 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-05-02,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,West Hartford 12U White,4,2,completed,newington_12u,https://www.cvyl.org/team/225909/games,34a61e3b2e291619
 2026-05-02,,2026,U12 Boys,Middletown 12U,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,4,10,completed,burlington_12u,https://www.cvyl.org/team/225898/games,a59b429662d87487
 2026-05-02,,2026,U12 Boys,Newington 12U,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,4,2,completed,west_hartford_12u_white,https://www.cvyl.org/team/225940/games,f538be5cf1d02e5e
-2026-05-02,,2026,U12 Boys,Simsbury 12U A,Granby 12U,Simsbury 12U A,Granby 12U,9,4,completed,granby_12u,https://www.cvyl.org/team/225904/games,b0e9706b9dc83d58
+2026-05-02,,2026,U12 Boys,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,9,4,completed,granby_12u,https://www.cvyl.org/team/225904/games,fa6105ec17e12e13
 2026-05-02,,2026,U12 Boys,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,Connecticut Valley Youth Lacrosse,16,4,completed,tolland_12u,https://www.cvyl.org/team/225918/games,7d22f6632856090f
 2026-05-02,,2026,U12 Boys,Vernon 12U,Connecticut Valley Youth Lacrosse,Vernon 12U,Connecticut Valley Youth Lacrosse,6,8,completed,rham_12u,https://www.cvyl.org/team/225911/games,a397d489bf6d1938
 2026-05-02,,2026,U12 Boys,Westfield 12U Black,Connecticut Valley Youth Lacrosse,Westfield 12U Black,Connecticut Valley Youth Lacrosse,13,4,completed,simsbury_12u_blue,https://www.cvyl.org/team/225935/games,bc1ee9a78cb23a9c
@@ -212,8 +212,8 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-05-05,,2026,U12 Boys,West Hartford 12U White,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,4,7,completed,wethersfield_12u_b,https://www.cvyl.org/team/225943/games,a9109c93fcacc4ec
 2026-05-06,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Somers 12U White,Connecticut Valley Youth Lacrosse,Somers 12U White,4,14,completed,south_windsor_12u,https://www.cvyl.org/team/225915/games,72260acb0a4aa1ba
 2026-05-06,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Southington 12U White,Connecticut Valley Youth Lacrosse,Southington 12U White,5,6,completed,simsbury_12u_blue,https://www.cvyl.org/team/225935/games,2ff0bd3651b12a54
+2026-05-06,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,3,5,completed,granby_12u,https://www.cvyl.org/team/225904/games,0fc19d68253fada5
 2026-05-06,,2026,U12 Boys,Granby 12U,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,3,5,completed,west_springfield_12u,https://www.cvyl.org/team/225921/games,506d74b51044b0cc
-2026-05-06,,2026,U12 Boys,Granby 12U,West Springfield 12U,Granby 12U,West Springfield 12U,3,5,completed,granby_12u,https://www.cvyl.org/team/225904/games,490b6386fc0bec82
 2026-05-06,,2026,U12 Boys,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,5,6,completed,southington_12u_white,https://www.cvyl.org/team/225937/games,9255505b8803bbaf
 2026-05-06,,2026,U12 Boys,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,Connecticut Valley Youth Lacrosse,4,14,completed,somers_12u_white,https://www.cvyl.org/team/225913/games,99a707ed33062246
 2026-05-07,,2026,U12 Boys,Agawam 12U,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,1,11,completed,longmeadow_12u_black,https://www.cvyl.org/team/225905/games,2ba5d3b847476383
@@ -237,8 +237,8 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-05-09,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Meriden 12U,Connecticut Valley Youth Lacrosse,Meriden 12U,3,8,completed,bristol_12u,https://www.cvyl.org/team/225897/games,bbe4a6a7d3448516
 2026-05-09,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,Newington 12U,3,5,completed,middletown_12u,https://www.cvyl.org/team/225907/games,ca1b44ed1bd46b66
 2026-05-09,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,9,8,completed,rham_12u,https://www.cvyl.org/team/225911/games,58e0d2e43fba5e6b
+2026-05-09,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Tolland 12U,Connecticut Valley Youth Lacrosse,Tolland 12U,12,2,completed,granby_12u,https://www.cvyl.org/team/225904/games,2174754254e69aec
 2026-05-09,,2026,U12 Boys,Granby 12U,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,12,2,completed,tolland_12u,https://www.cvyl.org/team/225918/games,2ec1dd19df6d1b8a
-2026-05-09,,2026,U12 Boys,Granby 12U,Tolland 12U,Granby 12U,Tolland 12U,12,2,completed,granby_12u,https://www.cvyl.org/team/225904/games,4a382d3304b60238
 2026-05-09,,2026,U12 Boys,Middletown 12U,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,3,5,completed,newington_12u,https://www.cvyl.org/team/225909/games,6ddfe1bcaec8ab69
 2026-05-09,,2026,U12 Boys,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,Connecticut Valley Youth Lacrosse,9,8,completed,south_windsor_12u,https://www.cvyl.org/team/225915/games,d381646c882baee7
 2026-05-09,,2026,U12 Boys,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Connecticut Valley Youth Lacrosse,12,2,completed,burlington_12u,https://www.cvyl.org/team/225898/games,d41f1c36786c3aa0
@@ -279,7 +279,7 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-05-13,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,6,10,completed,wethersfield_12u_a,https://www.cvyl.org/team/225924/games,4d2d19f1e9b9b0da
 2026-05-13,,2026,U12 Boys,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Connecticut Valley Youth Lacrosse,6,5,completed,glastonbury_12u_blue,https://www.cvyl.org/team/225930/games,f8118e8de0de8875
 2026-05-13,,2026,U12 Boys,Newington 12U,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,2,15,completed,berlin_12u_a,https://www.cvyl.org/team/225896/games,9fc7aa44e48ee150
-2026-05-13,,2026,U12 Boys,RHAM 12U,Granby 12U,RHAM 12U,Granby 12U,14,2,completed,granby_12u,https://www.cvyl.org/team/225904/games,24480a4327977f5a
+2026-05-13,,2026,U12 Boys,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,Connecticut Valley Youth Lacrosse,14,2,completed,granby_12u,https://www.cvyl.org/team/225904/games,43faaa10a0102563
 2026-05-13,,2026,U12 Boys,Tolland 12U,Connecticut Valley Youth Lacrosse,Tolland 12U,Connecticut Valley Youth Lacrosse,3,10,completed,ellington_12u,https://www.cvyl.org/team/225901/games,acc624d31c754564
 2026-05-13,,2026,U12 Boys,West Hartford 12U White,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,2,5,completed,suffield_12u_white,https://www.cvyl.org/team/225938/games,6bf4419f77d1bab7
 2026-05-13,,2026,U12 Boys,Wethersfield 12U A,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,Connecticut Valley Youth Lacrosse,6,10,completed,west_hartford_12u_gold,https://www.cvyl.org/team/225920/games,30b3f5ec858b897b
@@ -329,7 +329,7 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-05-18,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,4,7,completed,somers_12u_red,https://www.cvyl.org/team/225936/games,d7edb5906c00e538
 2026-05-18,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Somers 12U White,Connecticut Valley Youth Lacrosse,Somers 12U White,6,4,completed,minnechaug_12u,https://www.cvyl.org/team/225908/games,76e9a2c4395f39bb
 2026-05-18,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Connecticut Valley Youth Lacrosse,Westfield 12U Red,2,14,completed,longmeadow_12u_black,https://www.cvyl.org/team/225905/games,f4e51fe765850269
-2026-05-18,,2026,U12 Boys,Ellington 12U,Granby 12U,Ellington 12U,Granby 12U,5,4,completed,granby_12u,https://www.cvyl.org/team/225904/games,92a15b78c7420f09
+2026-05-18,,2026,U12 Boys,Ellington 12U,Connecticut Valley Youth Lacrosse,Ellington 12U,Connecticut Valley Youth Lacrosse,5,4,completed,granby_12u,https://www.cvyl.org/team/225904/games,34f922ec400e049d
 2026-05-18,,2026,U12 Boys,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,2,14,completed,westfield_12u_red,https://www.cvyl.org/team/225923/games,c92859b95d226abc
 2026-05-18,,2026,U12 Boys,Minnechaug 12U,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Connecticut Valley Youth Lacrosse,6,4,completed,somers_12u_white,https://www.cvyl.org/team/225913/games,9631d0463eecfbfe
 2026-05-18,,2026,U12 Boys,Northampton 12U,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,7,5,completed,east_longmeadow_12u_white,https://www.cvyl.org/team/225928/games,648c01d42fdacfa9
@@ -430,8 +430,8 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-05-29,,2026,U12 Boys,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,9,2,completed,simsbury_12u_blue,https://www.cvyl.org/team/225935/games,7edd002b3bb04f0c
 2026-05-29,,2026,U12 Boys,Middletown 12U,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,2,7,completed,meriden_12u,https://www.cvyl.org/team/225906/games,ac7bcdf5c5e2bd7a
 2026-05-29,,2026,U12 Boys,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Connecticut Valley Youth Lacrosse,14,3,completed,simsbury_12u_a,https://www.cvyl.org/team/225912/games,452960cf89b5091a
+2026-05-30,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Avon 12U,Connecticut Valley Youth Lacrosse,Avon 12U,3,2,completed,granby_12u,https://www.cvyl.org/team/225904/games,ae15fd5d3f235489
 2026-05-30,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,1,10,completed,southington_12u_white,https://www.cvyl.org/team/225937/games,45aa932251d9a5d6
-2026-05-30,,2026,U12 Boys,Granby 12U,Avon 12U,Granby 12U,Avon 12U,3,2,completed,granby_12u,https://www.cvyl.org/team/225904/games,ec77514f25180931
 2026-05-30,,2026,U12 Boys,Granby 12U,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,3,2,completed,avon_12u,https://www.cvyl.org/team/225893/games,b2b48602fbe00bea
 2026-05-30,,2026,U12 Boys,Southington 12U White,Connecticut Valley Youth Lacrosse,Southington 12U White,Connecticut Valley Youth Lacrosse,1,10,completed,wolcott_12u,https://www.cvyl.org/team/225925/games,a7f97b20e0bb94a6
 2026-05-31,,2026,U12 Boys,Bristol 12U,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,6,3,completed,west_hartford_12u_white,https://www.cvyl.org/team/225940/games,2648e4e3ac95f616
@@ -439,7 +439,7 @@ game_date,game_time,season,division,raw_home_team,raw_away_team,home_team,away_t
 2026-06-01,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,10,1,completed,east_longmeadow_12u_white,https://www.cvyl.org/team/225928/games,6278ef844168a52e
 2026-06-01,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Simsbury,Connecticut Valley Youth Lacrosse,Simsbury,6,3,completed,belchertown_12u,https://www.cvyl.org/team/225894/games,0b4e68bf5683cf1a
 2026-06-01,,2026,U12 Boys,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,10,1,completed,glastonbury_12u_blue,https://www.cvyl.org/team/225930/games,fd1f2cde389d1955
-2026-06-02,,2026,U12 Boys,Bristol 12U,Granby 12U,Bristol 12U,Granby 12U,4,1,completed,granby_12u,https://www.cvyl.org/team/225904/games,fe49ba6727f5d94a
+2026-06-02,,2026,U12 Boys,Bristol 12U,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,4,1,completed,granby_12u,https://www.cvyl.org/team/225904/games,da55b86bc21ec738
 2026-06-02,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,Granby 12U,4,1,completed,bristol_12u,https://www.cvyl.org/team/225897/games,0b565f798e5ae5ec
 2026-06-02,,2026,U12 Boys,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,West Hartford 12U White,7,1,completed,southington_12u_white,https://www.cvyl.org/team/225937/games,053e6b33b4d2ec2c
 2026-06-02,,2026,U12 Boys,Southington 12U White,Connecticut Valley Youth Lacrosse,Southington 12U White,Connecticut Valley Youth Lacrosse,7,1,completed,west_hartford_12u_white,https://www.cvyl.org/team/225940/games,58fdc6b13b748052
