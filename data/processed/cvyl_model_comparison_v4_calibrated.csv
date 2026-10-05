@@ -25,436 +25,437 @@ game_date,home_team,away_team,actual_winner,power_v3_recency_predicted_winner,po
 2026-04-15,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.6114724463102834,Westfield 12U Red,0.6467250070341497,True,True
 2026-04-15,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Newington 12U,0.5416619998908944,Newington 12U,0.5554494208580987,False,False
 2026-04-15,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Agawam 12U,0.5124916726893808,Agawam 12U,0.5166528685491673,False,False
-2026-04-15,Somers Juniors,Granby 12U,Somers Juniors,Somers Juniors,0.5,Somers Juniors,0.5,True,True
-2026-04-15,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5417847563172413,Connecticut Valley Youth Lacrosse,0.5556122107748934,True,True
-2026-04-15,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5596779986203592,Connecticut Valley Youth Lacrosse,0.5792772435713525,True,True
-2026-04-15,Connecticut Valley Youth Lacrosse,Westfield 12U Black,Westfield 12U Black,Connecticut Valley Youth Lacrosse,0.5299800808199834,Connecticut Valley Youth Lacrosse,0.5399361969386969,False,False
-2026-04-16,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,0.5285036114434779,Connecticut Valley Youth Lacrosse,0.5379728059695378,False,False
-2026-04-16,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5654775964960637,Connecticut Valley Youth Lacrosse,0.5869160363462492,True,True
-2026-04-16,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5086503687867855,Connecticut Valley Youth Lacrosse,0.5115329300502937,True,True
-2026-04-16,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Connecticut Valley Youth Lacrosse,0.517611026806823,Connecticut Valley Youth Lacrosse,0.52347381768059,False,False
-2026-04-17,Somers 12U Red,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5080309099458069,Connecticut Valley Youth Lacrosse,0.5107071637598875,True,True
-2026-04-17,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5091514090968368,Connecticut Valley Youth Lacrosse,0.51220081910111,True,True
-2026-04-17,Connecticut Valley Youth Lacrosse,Westfield 12U Black,Westfield 12U Black,Connecticut Valley Youth Lacrosse,0.5014557942461106,Connecticut Valley Youth Lacrosse,0.5019410547286989,False,False
-2026-04-17,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5850225669109331,Connecticut Valley Youth Lacrosse,0.6125162853047151,True,True
-2026-04-17,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,0.5216759023771995,Connecticut Valley Youth Lacrosse,0.5288871241008373,False,False
-2026-04-17,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.5186718707272701,Minnechaug 12U,0.5248868279114163,True,True
-2026-04-18,Meriden 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5834431276851506,Connecticut Valley Youth Lacrosse,0.6104566128913453,True,True
-2026-04-18,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.542720490982624,Wolcott 12U,0.5568529361445327,True,True
-2026-04-19,Connecticut Valley Youth Lacrosse,Bristol 12U,Bristol 12U,Connecticut Valley Youth Lacrosse,0.588122363637196,Connecticut Valley Youth Lacrosse,0.6165534927978237,False,False
-2026-04-19,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5048019742785794,Connecticut Valley Youth Lacrosse,0.5064024792669088,True,True
-2026-04-19,Connecticut Valley Youth Lacrosse,Somers 12U Red,Somers 12U Red,Connecticut Valley Youth Lacrosse,0.515852399520238,Connecticut Valley Youth Lacrosse,0.5211310250029706,False,False
-2026-04-19,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5045683538576599,Connecticut Valley Youth Lacrosse,0.5060910066487214,True,True
-2026-04-20,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Connecticut Valley Youth Lacrosse,0.50553962439223,Connecticut Valley Youth Lacrosse,0.5073859308020947,False,False
-2026-04-20,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,South Windsor 12U,0.5012737181370749,South Windsor 12U,0.5016982879921539,True,True
-2026-04-20,South Windsor 12U,Southington 12U Blue,South Windsor 12U,Southington 12U Blue,0.5724041114770214,Southington 12U Blue,0.5960151933265168,False,False
-2026-04-20,Connecticut Valley Youth Lacrosse,Somers 12U White,Connecticut Valley Youth Lacrosse,Somers 12U White,0.5045707830223514,Somers 12U White,0.5060942453245725,False,False
-2026-04-21,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5121405605764972,Connecticut Valley Youth Lacrosse,0.5161849399818805,True,True
-2026-04-21,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,0.5380232165620626,East Longmeadow 12U White,0.550621659270196,False,False
-2026-04-21,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,0.5097624812787387,Connecticut Valley Youth Lacrosse,0.5130153552480504,False,False
-2026-04-21,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,Connecticut Valley Youth Lacrosse,0.5076195530604077,Connecticut Valley Youth Lacrosse,0.5101587924202463,False,False
-2026-04-21,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5148528800440246,Suffield 12U White,0.5197993098057139,True,True
-2026-04-22,South Windsor 12U,Suffield 12U,Suffield 12U,Suffield 12U,0.5523188632334848,Suffield 12U,0.5695607047205902,True,True
-2026-04-22,Connecticut Valley Youth Lacrosse,Vernon 12U,Connecticut Valley Youth Lacrosse,Vernon 12U,0.5007292044165572,Vernon 12U,0.5009722720192666,False,False
-2026-04-22,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Southington 12U Blue,0.5455906230088179,Southington 12U Blue,0.5606565913616752,True,True
-2026-04-22,Granby 12U,Newington 12U,Granby 12U,Newington 12U,0.5719057973047443,Newington 12U,0.5953614953582782,False,False
-2026-04-22,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5014317587208134,Connecticut Valley Youth Lacrosse,0.5019090075694701,True,True
-2026-04-22,West Hartford 12U Green,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,Connecticut Valley Youth Lacrosse,0.5076248706364732,Connecticut Valley Youth Lacrosse,0.5101658812401886,False,False
-2026-04-22,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,Connecticut Valley Youth Lacrosse,0.5013596865468157,Connecticut Valley Youth Lacrosse,0.5018129119200003,False,False
-2026-04-22,Connecticut Valley Youth Lacrosse,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,0.5753065160131233,Wolcott 12U,0.5998196486761127,False,False
-2026-04-22,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,West Hartford 12U White,0.500343855370674,West Hartford 12U White,0.5004584737713493,False,False
-2026-04-22,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,0.5029984531664868,Connecticut Valley Youth Lacrosse,0.5039979002798501,False,False
-2026-04-22,South Windsor 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.512686313769529,Connecticut Valley Youth Lacrosse,0.5169122620428558,True,True
-2026-04-23,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.5763479368191163,West Hartford 12U Gold,0.6011834750265712,True,True
-2026-04-23,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,0.6262380927228745,Suffield 12U,0.6655550081124701,True,True
-2026-04-23,Connecticut Valley Youth Lacrosse,Ellington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5797681527324748,Connecticut Valley Youth Lacrosse,0.6056576887978505,True,True
-2026-04-23,Connecticut Valley Youth Lacrosse,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5843317007590211,Connecticut Valley Youth Lacrosse,0.6116155716240244,True,True
-2026-04-24,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,Wethersfield 12U A,Connecticut Valley Youth Lacrosse,0.5058429875302901,Connecticut Valley Youth Lacrosse,0.5077903742168692,False,False
-2026-04-24,Connecticut Valley Youth Lacrosse,Bristol 12U,Bristol 12U,Connecticut Valley Youth Lacrosse,0.5637681470260492,Connecticut Valley Youth Lacrosse,0.5846662943485132,False,False
-2026-04-24,Southington 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5004700843768936,Connecticut Valley Youth Lacrosse,0.5006267790255564,True,True
-2026-04-24,Colchester 12U,Connecticut Valley Youth Lacrosse,Colchester 12U,Connecticut Valley Youth Lacrosse,0.5041151232850487,Connecticut Valley Youth Lacrosse,0.5054867346908372,False,False
-2026-04-24,Berlin 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5026080315392327,Connecticut Valley Youth Lacrosse,0.5034773508571878,True,True
-2026-04-24,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.505913582346013,Wolcott 12U,0.5078844905191864,True,True
-2026-04-24,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5025290593323835,Connecticut Valley Youth Lacrosse,0.5033720567427888,True,True
-2026-04-24,Colchester 12U,Middletown 12U,Colchester 12U,Colchester 12U,0.5312093733737563,Colchester 12U,0.5415704832167999,True,True
-2026-04-25,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5441611147792158,Minnechaug 12U White,0.5587625053673618,True,True
-2026-04-25,Westfield 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Westfield 12U Black,0.5175258539742958,Westfield 12U Black,0.5233603629282052,False,False
-2026-04-25,Connecticut Valley Youth Lacrosse,Vernon 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5856764109299893,Connecticut Valley Youth Lacrosse,0.6133684247376462,True,True
-2026-04-25,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5824395239127443,Connecticut Valley Youth Lacrosse,0.609146970153026,True,True
-2026-04-25,Avon 12U B,Connecticut Valley Youth Lacrosse,Avon 12U B,Connecticut Valley Youth Lacrosse,0.5091304242570518,Connecticut Valley Youth Lacrosse,0.512172846587716,False,False
-2026-04-25,Granby 12U,Suffield Juniors 1 Blue,Suffield Juniors 1 Blue,Suffield Juniors 1 Blue,0.5475895137522933,Suffield Juniors 1 Blue,0.5633038068491867,True,True
-2026-04-25,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5315439930914232,Connecticut Valley Youth Lacrosse,0.5420152772897401,True,True
-2026-04-25,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5487063067487828,Connecticut Valley Youth Lacrosse,0.5647821426057535,True,True
-2026-04-25,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.6297158568051213,West Hartford 12U Gold,0.6699585019690965,True,True
-2026-04-25,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5684700324975416,Suffield 12U White,0.5908504464152017,True,True
-2026-04-25,Connecticut Valley Youth Lacrosse,Ellington 12U,Ellington 12U,Connecticut Valley Youth Lacrosse,0.6426030158610241,Connecticut Valley Youth Lacrosse,0.6861626772844897,False,False
-2026-04-25,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,0.5865168934892002,Southington 12U Blue,0.6144633638214195,False,False
-2026-04-25,Avon 12U,Connecticut Valley Youth Lacrosse,Avon 12U,Connecticut Valley Youth Lacrosse,0.506887985231065,Connecticut Valley Youth Lacrosse,0.5091835284516548,False,False
-2026-04-26,Somers 12U White,Connecticut Valley Youth Lacrosse,Somers 12U White,Connecticut Valley Youth Lacrosse,0.5858650149056359,Connecticut Valley Youth Lacrosse,0.6136141720641466,False,False
-2026-04-26,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,Suffield 12U,0.6702145885892314,Suffield 12U,0.7202175584353175,True,True
-2026-04-26,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5480563725452317,Connecticut Valley Youth Lacrosse,0.5639218636025147,True,True
-2026-04-26,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Wethersfield 12U B,0.5168167636936812,Wethersfield 12U B,0.5224157764410086,True,True
-2026-04-26,Wethersfield 12U A,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,Wethersfield 12U A,0.5195656735507301,Wethersfield 12U A,0.526077209890326,True,True
-2026-04-26,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,0.5408645807648838,Glastonbury 12U Blue,0.5543918205310052,False,False
-2026-04-26,Avon 12U B,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Avon 12U B,0.5278686625218867,Avon 12U B,0.5371282987600322,False,False
-2026-04-26,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.5686429378291943,West Hartford 12U Green,0.5910776274644833,True,True
-2026-04-26,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5240887896937518,Connecticut Valley Youth Lacrosse,0.5320990636377427,True,True
-2026-04-26,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5063691775065855,Connecticut Valley Youth Lacrosse,0.508491879422984,True,True
-2026-04-26,Avon 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Avon 12U,0.5456706727246227,Avon 12U,0.560762633980732,False,False
-2026-04-26,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,0.5912788030422386,Minnechaug 12U White,0.6206573332302051,True,True
-2026-04-26,Connecticut Valley Youth Lacrosse,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,0.5805943645418392,Suffield 12U White,0.6067373739188493,False,False
-2026-04-26,Connecticut Valley Youth Lacrosse,Tolland 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5081621095345332,Connecticut Valley Youth Lacrosse,0.5108820608692932,True,True
-2026-04-26,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6687460043730646,West Hartford 12U Gold,0.7184309414833785,True,True
-2026-04-26,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Connecticut Valley Youth Lacrosse,0.5815594408743319,Connecticut Valley Youth Lacrosse,0.607997952951733,False,False
-2026-04-26,Minnechaug 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Minnechaug 12U,0.5883675285447025,Minnechaug 12U,0.6168725048448312,False,False
-2026-04-26,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,0.5757983307101538,RHAM 12U,0.6004638048446187,True,True
-2026-04-27,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5924282808186692,Connecticut Valley Youth Lacrosse,0.6221499868821617,True,True
-2026-04-27,Southington 12U White,Connecticut Valley Youth Lacrosse,Southington 12U White,Connecticut Valley Youth Lacrosse,0.5565626678788436,Connecticut Valley Youth Lacrosse,0.5751670241697169,False,False
-2026-04-27,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Tie,Connecticut Valley Youth Lacrosse,0.523926503867492,Connecticut Valley Youth Lacrosse,0.5318830703741534,False,False
-2026-04-27,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5636073749736203,Connecticut Valley Youth Lacrosse,0.5844546286165913,True,True
-2026-04-27,Minnechaug 12U,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,0.5668961269766412,Minnechaug 12U,0.5887817149582854,True,True
-2026-04-27,Westfield 12U Black,Connecticut Valley Youth Lacrosse,Tie,Connecticut Valley Youth Lacrosse,0.5368892493303019,Connecticut Valley Youth Lacrosse,0.5491162960019211,False,False
-2026-04-27,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5012910748993283,Connecticut Valley Youth Lacrosse,0.5017214302234192,True,True
-2026-04-27,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Farmington 12U Black,Connecticut Valley Youth Lacrosse,0.6429355917856554,Connecticut Valley Youth Lacrosse,0.6865783974660394,False,False
-2026-04-27,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6324249991646905,Connecticut Valley Youth Lacrosse,0.6733799884115498,True,True
-2026-04-28,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6162410568354582,Connecticut Valley Youth Lacrosse,0.6528290846666478,True,True
-2026-04-28,Wolcott 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wolcott 12U,0.5216270038025633,Wolcott 12U,0.5288220210561235,False,False
-2026-04-28,Colchester 12U,Glastonbury 12U Blue,Colchester 12U,Colchester 12U,0.5438711588454938,Colchester 12U,0.5583782244245741,True,True
-2026-04-28,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Southington 12U Blue,0.5377045534846504,Southington 12U Blue,0.550198668290169,True,True
-2026-04-28,Colchester 12U,Connecticut Valley Youth Lacrosse,Colchester 12U,Colchester 12U,0.578750296562493,Colchester 12U,0.6043269499293245,True,True
-2026-04-28,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,0.5054671124169295,East Longmeadow 12U A,0.507289257278347,False,False
-2026-04-28,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,RHAM 12U,0.6401623896673577,RHAM 12U,0.683108019447404,True,True
-2026-04-28,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,0.5676833587142304,Wethersfield 12U B,0.5898166200830746,False,False
-2026-04-28,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,0.5116345430999929,West Springfield 12U,0.5155105466497919,True,True
-2026-04-28,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5734612736038867,Connecticut Valley Youth Lacrosse,0.5974015072723926,True,True
-2026-04-28,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.51964011324696,Connecticut Valley Youth Lacrosse,0.5261763441936412,True,True
-2026-04-28,Connecticut Valley Youth Lacrosse,Belchertown 12U,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.5535110148995908,Connecticut Valley Youth Lacrosse,0.571136421666166,False,False
-2026-04-28,Agawam 12U,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,0.6319185161337824,Connecticut Valley Youth Lacrosse,0.6727409235328544,False,False
-2026-04-28,Connecticut Valley Youth Lacrosse,Burlington 12U,Burlington 12U,Burlington 12U,0.6311654626297649,Burlington 12U,0.6717902374128035,True,True
-2026-04-29,Connecticut Valley Youth Lacrosse,Vernon 12U,Vernon 12U,Connecticut Valley Youth Lacrosse,0.5861309691982146,Connecticut Valley Youth Lacrosse,0.6139606627422944,False,False
-2026-04-29,Belchertown 12U,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.5278793516976702,Connecticut Valley Youth Lacrosse,0.537142516563564,False,False
-2026-04-29,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5984926381071728,Connecticut Valley Youth Lacrosse,0.6300080014631126,True,True
-2026-04-29,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6188776997929812,Connecticut Valley Youth Lacrosse,0.6561949491761988,True,True
-2026-04-29,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,0.5849926191142087,Southington 12U Blue,0.6124772478862112,False,False
-2026-04-29,Granby 12U,South Windsor 12U,South Windsor 12U,Granby 12U,0.5037031529388378,Granby 12U,0.5049374670342934,False,False
-2026-04-29,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,0.5934507442968655,Connecticut Valley Youth Lacrosse,0.623476865606001,False,False
-2026-04-29,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.6432343859682292,Westfield 12U Red,0.6869517817530832,True,True
-2026-04-29,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6194709218091462,Connecticut Valley Youth Lacrosse,0.6569513189079401,True,True
-2026-04-29,Somers 12U Red,Connecticut Valley Youth Lacrosse,Somers 12U Red,Connecticut Valley Youth Lacrosse,0.5004845399785955,Connecticut Valley Youth Lacrosse,0.5006460531474966,False,False
-2026-04-29,Suffield 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Suffield 12U,0.6603656079739169,Suffield 12U,0.708180845387965,False,False
-2026-04-29,Connecticut Valley Youth Lacrosse,Longmeadow 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5022716281216693,Connecticut Valley Youth Lacrosse,0.5030288212870258,True,True
-2026-04-29,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.674214634464142,West Hartford 12U Gold,0.7250689290695305,True,True
-2026-04-30,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,0.5745020104534928,West Springfield 12U,0.5987656218056636,True,True
-2026-04-30,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5559179476044405,Connecticut Valley Youth Lacrosse,0.5743158365831015,True,True
-2026-04-30,West Hartford 12U Green,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,West Hartford 12U Green,0.5692747971711085,West Hartford 12U Green,0.591907686025047,True,True
-2026-04-30,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.7059128639677508,West Hartford 12U Gold,0.7626905882049294,True,True
-2026-04-30,Connecticut Valley Youth Lacrosse,Agawam 12U,Agawam 12U,Connecticut Valley Youth Lacrosse,0.5713011638895346,Connecticut Valley Youth Lacrosse,0.5945681284736536,False,False
-2026-04-30,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.5174410517024337,Wolcott 12U,0.5232474007349299,True,True
-2026-04-30,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5077474674393927,Connecticut Valley Youth Lacrosse,0.5103293136010694,True,True
-2026-04-30,Ellington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5998527570093706,Connecticut Valley Youth Lacrosse,0.6317663980245101,True,True
-2026-04-30,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.509816458867186,Connecticut Valley Youth Lacrosse,0.5130873039096039,True,True
-2026-04-30,Connecticut Valley Youth Lacrosse,Somers 12U White,Somers 12U White,Somers 12U White,0.5061803797867442,Somers 12U White,0.5082401799665637,True,True
-2026-04-30,Westfield 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5285691152513238,Connecticut Valley Youth Lacrosse,0.5380599232454177,True,True
-2026-04-30,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5287792658046453,Connecticut Valley Youth Lacrosse,0.5383394076666822,True,True
-2026-05-01,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5419216731588946,Connecticut Valley Youth Lacrosse,0.5557937729733,True,True
-2026-05-01,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.615617260967576,Minnechaug 12U,0.6520317970695464,True,True
-2026-05-01,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.5394595745112427,Wolcott 12U,0.552527869419467,True,True
-2026-05-01,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5136680692878829,Connecticut Valley Youth Lacrosse,0.5182205620281128,True,True
-2026-05-01,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5694295131401794,Connecticut Valley Youth Lacrosse,0.5921108980594267,True,True
-2026-05-01,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6034591577578857,Connecticut Valley Youth Lacrosse,0.6364214791461257,True,True
-2026-05-01,Berlin 12U A,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,0.5851226087758941,Connecticut Valley Youth Lacrosse,0.6126466868908891,False,False
-2026-05-02,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5550580452318393,Connecticut Valley Youth Lacrosse,0.5731802579297771,True,True
-2026-05-02,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6201470097272737,Connecticut Valley Youth Lacrosse,0.6578129274802624,True,True
-2026-05-02,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Farmington 12U Red,0.5002985609560738,Farmington 12U Red,0.5003980812379665,False,False
-2026-05-02,Westfield 12U Red,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,0.6470744440449628,Westfield 12U Red,0.6917412135566497,True,True
-2026-05-02,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,RHAM 12U,0.6758787179209347,RHAM 12U,0.7270806680192805,True,True
-2026-05-02,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,Connecticut Valley Youth Lacrosse,0.5444114711258501,Connecticut Valley Youth Lacrosse,0.5590942799559715,False,False
-2026-05-02,Vernon 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5404737874870216,Connecticut Valley Youth Lacrosse,0.5538734407933237,True,True
-2026-05-02,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5746192564126446,Connecticut Valley Youth Lacrosse,0.598919256970641,True,True
-2026-05-02,Connecticut Valley Youth Lacrosse,Burlington 12U,Burlington 12U,Burlington 12U,0.6124226313393002,Burlington 12U,0.6479429701706612,True,True
-2026-05-02,Avon 12U B,Connecticut Valley Youth Lacrosse,Avon 12U B,Avon 12U B,0.5167722686398679,Avon 12U B,0.5223565017513703,True,True
-2026-05-02,Simsbury 12U A,Granby 12U,Simsbury 12U A,Granby 12U,0.5012007959179765,Granby 12U,0.5016010588298794,False,False
-2026-05-02,Connecticut Valley Youth Lacrosse,Somers 12U White,Connecticut Valley Youth Lacrosse,Somers 12U White,0.5542420582172158,Somers 12U White,0.5721023624524371,False,False
-2026-05-02,Westfield 12U Black,Connecticut Valley Youth Lacrosse,Westfield 12U Black,Connecticut Valley Youth Lacrosse,0.5423627633350914,Connecticut Valley Youth Lacrosse,0.5563786479380219,False,False
-2026-05-02,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6329812671826983,Connecticut Valley Youth Lacrosse,0.6740815536403865,True,True
-2026-05-02,South Windsor 12U,Tolland 12U,South Windsor 12U,South Windsor 12U,0.5969577638650914,South Windsor 12U,0.6280218875908558,True,True
-2026-05-02,Newington 12U,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,0.6333353317262245,Connecticut Valley Youth Lacrosse,0.6745279265175788,False,False
-2026-05-03,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5385706076503572,Connecticut Valley Youth Lacrosse,0.5513481873344089,True,True
-2026-05-03,RHAM 12U,Colchester 12U,RHAM 12U,RHAM 12U,0.5617306362262584,RHAM 12U,0.5819827991466278,True,True
-2026-05-03,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Connecticut Valley Youth Lacrosse,0.5064034727205622,Connecticut Valley Youth Lacrosse,0.5085376005729525,False,False
-2026-05-03,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5135863965851253,Connecticut Valley Youth Lacrosse,0.518111727996531,True,True
-2026-05-03,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5987437943905187,Connecticut Valley Youth Lacrosse,0.6303328155459882,True,True
-2026-05-03,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5875306321593883,Connecticut Valley Youth Lacrosse,0.615783344660257,True,True
-2026-05-03,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.571398846489968,Connecticut Valley Youth Lacrosse,0.5946963168222363,True,True
-2026-05-03,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5242883901223576,Connecticut Valley Youth Lacrosse,0.5323647133130265,True,True
-2026-05-03,Middletown 12U,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,0.6196028548607512,Connecticut Valley Youth Lacrosse,0.6571194897418193,False,False
-2026-05-03,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6826916618528969,West Hartford 12U Gold,0.735276184352543,True,True
-2026-05-03,Connecticut Valley Youth Lacrosse,Colchester 12U,Connecticut Valley Youth Lacrosse,Colchester 12U,0.5657742181351729,Colchester 12U,0.5873062494351572,False,False
-2026-05-03,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,Wethersfield 12U A,Wethersfield 12U A,0.5181766402565795,Wethersfield 12U A,0.5242272178189474,True,True
-2026-05-03,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,0.5916990140718572,Minnechaug 12U White,0.6212031132817625,True,True
-2026-05-03,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.5867371893462554,West Hartford 12U Green,0.6147502715970989,True,True
-2026-05-04,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.5721034127325724,Wolcott 12U,0.5956207486657148,True,True
-2026-05-04,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5659929881691155,Connecticut Valley Youth Lacrosse,0.5875940162584001,True,True
-2026-05-04,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,0.6076869227842704,West Springfield 12U,0.641864582896017,True,True
-2026-05-04,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.6505403628437343,Minnechaug 12U,0.696049031143752,True,True
-2026-05-04,Westfield 12U Red,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Westfield 12U Red,0.6838458680336083,Westfield 12U Red,0.7366580178398102,False,False
-2026-05-04,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5203172706601696,Connecticut Valley Youth Lacrosse,0.5270780997817976,True,True
-2026-05-05,Connecticut Valley Youth Lacrosse,Colchester 12U,Connecticut Valley Youth Lacrosse,Colchester 12U,0.524490340227593,Colchester 12U,0.5326334820267586,False,False
-2026-05-05,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6149138179120135,Connecticut Valley Youth Lacrosse,0.6511322714072824,True,True
-2026-05-05,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,0.6139044873874835,Connecticut Valley Youth Lacrosse,0.6498407851291257,False,False
-2026-05-05,Agawam 12U,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,0.5543466875281243,Connecticut Valley Youth Lacrosse,0.5722405915436957,False,False
-2026-05-05,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,0.5276106198263165,Connecticut Valley Youth Lacrosse,0.5367850650289383,False,False
-2026-05-05,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6173512601673816,Connecticut Valley Youth Lacrosse,0.6542471489210147,True,True
-2026-05-05,West Hartford 12U Green,Colchester 12U,West Hartford 12U Green,West Hartford 12U Green,0.60747570279075,West Hartford 12U Green,0.641593012081072,True,True
-2026-05-05,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.584685081077399,Connecticut Valley Youth Lacrosse,0.6120763311038842,True,True
-2026-05-05,Connecticut Valley Youth Lacrosse,Belchertown 12U,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.5795380069188406,Connecticut Valley Youth Lacrosse,0.6053568567113026,False,False
-2026-05-05,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6492060242733069,Connecticut Valley Youth Lacrosse,0.6943922750407447,True,True
-2026-05-06,South Windsor 12U,Somers 12U White,Somers 12U White,South Windsor 12U,0.5549056052443955,South Windsor 12U,0.5729789119374782,False,False
-2026-05-06,Connecticut Valley Youth Lacrosse,Southington 12U White,Southington 12U White,Southington 12U White,0.5076215006928846,Southington 12U White,0.5101613887943978,True,True
-2026-05-06,Granby 12U,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.7739939266512634,West Springfield 12U,0.8377166732385173,True,True
-2026-05-06,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6397841197437091,Connecticut Valley Youth Lacrosse,0.6826339755519777,True,True
-2026-05-06,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6181797730772416,Connecticut Valley Youth Lacrosse,0.6553046435227119,True,True
-2026-05-06,South Windsor 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5062085535579763,Connecticut Valley Youth Lacrosse,0.5082777405105645,True,True
-2026-05-07,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Agawam 12U,0.5057738919265747,Agawam 12U,0.5076982564150582,False,False
-2026-05-07,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5530139613458938,Suffield 12U White,0.5704795206725545,True,True
-2026-05-07,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,0.5928382752193506,Connecticut Valley Youth Lacrosse,0.6226821433621841,False,False
-2026-05-07,Connecticut Valley Youth Lacrosse,Somers 12U Red,Connecticut Valley Youth Lacrosse,Somers 12U Red,0.5113713356700822,Somers 12U Red,0.5151597478695245,False,False
-2026-05-07,Connecticut Valley Youth Lacrosse,Suffield B,Suffield B,Connecticut Valley Youth Lacrosse,0.5070774223963115,Connecticut Valley Youth Lacrosse,0.5094360730228734,False,False
-2026-05-07,Connecticut Valley Youth Lacrosse,Burlington 12U,Burlington 12U,Burlington 12U,0.6382628067062268,Burlington 12U,0.6807258559503224,True,True
-2026-05-07,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5925493195565195,Connecticut Valley Youth Lacrosse,0.6223071036352892,True,True
-2026-05-08,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6850511817113187,Connecticut Valley Youth Lacrosse,0.7380989652446812,True,True
-2026-05-08,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.6468800861168552,Minnechaug 12U,0.6914992205184007,True,True
-2026-05-08,Connecticut Valley Youth Lacrosse,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6308556098974835,Connecticut Valley Youth Lacrosse,0.6713988913395567,True,True
-2026-05-08,Southington 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Southington 12U White,0.5122594558628137,Southington 12U White,0.5163433936305312,False,False
-2026-05-08,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Southington 12U Blue,0.5257930330879125,Southington 12U Blue,0.5343669909332247,True,True
-2026-05-08,Belchertown 12U,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.56772831494763,Connecticut Valley Youth Lacrosse,0.5898757097387421,False,False
-2026-05-08,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,0.6204242323325461,Minnechaug 12U White,0.658166091948404,False,False
-2026-05-08,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Farmington 12U Red,Farmington 12U Red,0.5038774418736855,Farmington 12U Red,0.5051698418925035,True,True
-2026-05-09,Granby 12U,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,0.6412917919535466,Connecticut Valley Youth Lacrosse,0.6845224098294675,False,False
-2026-05-09,Granby 12U,Tolland 12U,Granby 12U,Granby 12U,0.5519294644749437,Granby 12U,0.5690458862261327,True,True
-2026-05-09,Connecticut Valley Youth Lacrosse,South Windsor 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5421234497162306,Connecticut Valley Youth Lacrosse,0.5560613322532665,True,True
-2026-05-09,RHAM 12U,South Windsor 12U,RHAM 12U,RHAM 12U,0.720229483305127,RHAM 12U,0.7791638394190417,True,True
-2026-05-09,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5983601183321823,Connecticut Valley Youth Lacrosse,0.6298365964903572,True,True
-2026-05-09,Connecticut Valley Youth Lacrosse,Burlington 12U,Connecticut Valley Youth Lacrosse,Burlington 12U,0.6351929237255953,Burlington 12U,0.6768675883019475,False,False
-2026-05-09,Connecticut Valley Youth Lacrosse,Meriden 12U,Meriden 12U,Connecticut Valley Youth Lacrosse,0.5972393527097704,Connecticut Valley Youth Lacrosse,0.6283864019721952,False,False
-2026-05-09,Connecticut Valley Youth Lacrosse,Newington 12U,Newington 12U,Connecticut Valley Youth Lacrosse,0.6060698717062103,Connecticut Valley Youth Lacrosse,0.6397845067525936,False,False
-2026-05-09,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.5907944539376315,Wolcott 12U,0.620028085265101,True,True
-2026-05-09,Connecticut Valley Youth Lacrosse,Berkshire,Berkshire,Connecticut Valley Youth Lacrosse,0.5028552883254038,Connecticut Valley Youth Lacrosse,0.5038070189134763,False,False
-2026-05-09,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5914677608242118,Connecticut Valley Youth Lacrosse,0.6209027724612266,True,True
-2026-05-10,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5990481680053985,Connecticut Valley Youth Lacrosse,0.6307263859579388,True,True
-2026-05-10,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6125200788440532,Connecticut Valley Youth Lacrosse,0.6480678333794273,True,True
-2026-05-10,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.609217161082461,Connecticut Valley Youth Lacrosse,0.6438308731098203,True,True
-2026-05-10,Avon 12U B,Connecticut Valley Youth Lacrosse,Avon 12U B,Avon 12U B,0.5179989675749356,Avon 12U B,0.523990561981049,True,True
-2026-05-10,Connecticut Valley Youth Lacrosse,Vernon 12U,Vernon 12U,Connecticut Valley Youth Lacrosse,0.5559372630825483,Connecticut Valley Youth Lacrosse,0.5743413405126971,False,False
-2026-05-10,Avon 12U,Connecticut Valley Youth Lacrosse,Avon 12U,Avon 12U,0.5132807238149949,Avon 12U,0.5177043931019348,True,True
-2026-05-11,Berlin 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5420463415100494,Connecticut Valley Youth Lacrosse,0.5559590870811857,True,True
-2026-05-11,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,0.5215622730072836,Connecticut Valley Youth Lacrosse,0.5287358385011748,False,False
-2026-05-11,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.562977122660977,Connecticut Valley Youth Lacrosse,0.5836247344454497,True,True
-2026-05-11,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5886814843461807,Connecticut Valley Youth Lacrosse,0.6172809649398862,True,True
-2026-05-11,Connecticut Valley Youth Lacrosse,Meriden 12U,Meriden 12U,Connecticut Valley Youth Lacrosse,0.5384284134306802,Connecticut Valley Youth Lacrosse,0.5511594683577754,False,False
-2026-05-11,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.6187440340294191,West Hartford 12U Green,0.6560244756867395,True,True
-2026-05-11,Connecticut Valley Youth Lacrosse,South Windsor 12U,South Windsor 12U,Connecticut Valley Youth Lacrosse,0.536133726868058,Connecticut Valley Youth Lacrosse,0.5481131066790965,False,False
-2026-05-11,Tolland 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6797144778455066,Connecticut Valley Youth Lacrosse,0.7317029689091461,True,True
-2026-05-11,Vernon 12U,South Windsor 12U,South Windsor 12U,Vernon 12U,0.5029955202387281,Vernon 12U,0.5039939898187805,False,False
-2026-05-11,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,0.5848717922848219,Minnechaug 12U White,0.6123197418826072,True,True
-2026-05-11,Minnechaug 12U,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,0.6769431220321219,Minnechaug 12U,0.7283654147046978,True,True
-2026-05-11,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6175063681146243,Connecticut Valley Youth Lacrosse,0.6544451750851398,True,True
-2026-05-12,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,0.5345942645101284,Glastonbury 12U White,0.5460684703845746,False,False
-2026-05-12,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,0.6427844806171261,West Springfield 12U,0.6863895241629726,True,True
-2026-05-12,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Southington 12U Blue,Southington 12U Blue,0.5355112936070007,Southington 12U Blue,0.5472865058937104,True,True
-2026-05-12,Wolcott 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wolcott 12U,0.6242128167263884,Wolcott 12U,0.6629849067947445,False,False
-2026-05-12,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7062710042844244,Connecticut Valley Youth Lacrosse,0.7631068053459646,True,True
-2026-05-12,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.544339923237307,Connecticut Valley Youth Lacrosse,0.5589994663645557,True,True
-2026-05-12,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6234759598727557,Connecticut Valley Youth Lacrosse,0.6620487966237981,True,True
-2026-05-12,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,0.5135720950167009,Connecticut Valley Youth Lacrosse,0.5180926701764315,False,False
-2026-05-12,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,Suffield 12U,0.618333490472064,Suffield 12U,0.6555007724056965,True,True
-2026-05-13,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,Suffield 12U White,0.5572923904889671,Suffield 12U White,0.5761302011781086,True,True
-2026-05-13,RHAM 12U,Granby 12U,RHAM 12U,RHAM 12U,0.725005019958989,RHAM 12U,0.784581473109537,True,True
-2026-05-13,Connecticut Valley Youth Lacrosse,Southington 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5316081576764843,Connecticut Valley Youth Lacrosse,0.5421005648866736,True,True
-2026-05-13,Wethersfield 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,0.5778907786530747,Wethersfield 12U A,0.6032026988026661,False,False
-2026-05-13,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.7096022302684954,West Hartford 12U Gold,0.766968238021672,True,True
-2026-05-13,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5886739532491845,Connecticut Valley Youth Lacrosse,0.6172711677346987,True,True
-2026-05-13,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6242598220284005,Connecticut Valley Youth Lacrosse,0.663044604251271,True,True
-2026-05-13,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5864558954162551,Connecticut Valley Youth Lacrosse,0.6143839153726345,True,True
-2026-05-13,Tolland 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7128254694131961,Connecticut Valley Youth Lacrosse,0.7706871470006318,True,True
-2026-05-13,Connecticut Valley Youth Lacrosse,Ellington 12U,Ellington 12U,Connecticut Valley Youth Lacrosse,0.6387539435615872,Connecticut Valley Youth Lacrosse,0.6813421522441951,False,False
-2026-05-13,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5874753184017742,Connecticut Valley Youth Lacrosse,0.6157113400285001,True,True
-2026-05-13,Avon 12U B,Connecticut Valley Youth Lacrosse,Avon 12U B,Avon 12U B,0.5294489493441474,Avon 12U B,0.5392299657506627,True,True
-2026-05-13,Connecticut Valley Youth Lacrosse,Berlin 12U A,Berlin 12U A,Connecticut Valley Youth Lacrosse,0.5734874577940453,Connecticut Valley Youth Lacrosse,0.597435835482219,False,False
-2026-05-13,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Farmington 12U Red,0.5453646305116394,Farmington 12U Red,0.5603572039274838,True,True
-2026-05-14,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6227742157440909,Connecticut Valley Youth Lacrosse,0.6611567879729481,True,True
-2026-05-14,Connecticut Valley Youth Lacrosse,Burlington 12U,Connecticut Valley Youth Lacrosse,Burlington 12U,0.5723626200726211,Burlington 12U,0.5959607697519436,False,False
-2026-05-14,Meriden 12U,Connecticut Valley Youth Lacrosse,Tie,Meriden 12U,0.5000125366062286,Meriden 12U,0.5000167154749686,False,False
-2026-05-14,Connecticut Valley Youth Lacrosse,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,0.6344137542205568,Suffield 12U,0.6758866703606399,False,False
-2026-05-14,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Southington 12U Blue,0.5504544581030706,Southington 12U Blue,0.5670952155733634,True,True
-2026-05-14,Connecticut Valley Youth Lacrosse,Bristol 12U,Tie,Connecticut Valley Youth Lacrosse,0.6112247034203285,Connecticut Valley Youth Lacrosse,0.6464073109533975,False,False
-2026-05-14,Connecticut Valley Youth Lacrosse,Agawam 12U,Agawam 12U,Connecticut Valley Youth Lacrosse,0.588586576913025,Connecticut Valley Youth Lacrosse,0.6171574968313595,False,False
-2026-05-14,Westfield 12U Red,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,0.6443330573640083,Westfield 12U Red,0.6883238342998153,True,True
-2026-05-15,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,0.6177386545649379,Connecticut Valley Youth Lacrosse,0.6547416919534903,False,False
-2026-05-15,Connecticut Valley Youth Lacrosse,Meriden 12U,Connecticut Valley Youth Lacrosse,Meriden 12U,0.5004855607911896,Meriden 12U,0.500647414229959,False,False
-2026-05-15,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.568131071746558,Suffield 12U White,0.5904050355427347,True,True
-2026-05-15,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.5926425130796473,Wolcott 12U,0.6224280677813716,True,True
-2026-05-15,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6470080897049281,Connecticut Valley Youth Lacrosse,0.6916586014816999,True,True
-2026-05-15,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7186523701404879,Connecticut Valley Youth Lacrosse,0.7773660328954485,True,True
-2026-05-15,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,0.5102981275430074,Connecticut Valley Youth Lacrosse,0.5137293266878905,False,False
-2026-05-15,Berlin 12U A,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,0.5150492789799686,Connecticut Valley Youth Lacrosse,0.5200609929691931,False,False
-2026-05-15,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.611457986013277,Connecticut Valley Youth Lacrosse,0.6467064652291464,True,True
-2026-05-15,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5848382597374554,Connecticut Valley Youth Lacrosse,0.6122760281187578,True,True
-2026-05-16,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,0.6582137977363842,West Springfield 12U,0.705534231253586,True,True
-2026-05-16,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5748281479097703,Connecticut Valley Youth Lacrosse,0.5991929604437461,True,True
-2026-05-16,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Longmeadow 12U Black,0.5022430510272471,Longmeadow 12U Black,0.5029907190985092,True,True
-2026-05-16,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5875111988219712,Connecticut Valley Youth Lacrosse,0.6157580475819222,True,True
-2026-05-16,Belchertown 12U,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.5344177331262618,Connecticut Valley Youth Lacrosse,0.545833966338385,False,False
-2026-05-16,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6079378277320676,Connecticut Valley Youth Lacrosse,0.6421871267018829,True,True
-2026-05-16,Avon 12U B,Connecticut Valley Youth Lacrosse,Avon 12U B,Avon 12U B,0.5546443528709064,Avon 12U B,0.5726338197303161,True,True
-2026-05-16,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.708878768287504,Connecticut Valley Youth Lacrosse,0.7661311684371267,True,True
-2026-05-17,Suffield 12U White,Connecticut Valley Youth Lacrosse,Tie,Suffield 12U White,0.5732509360593931,Suffield 12U White,0.5971257338064289,False,False
-2026-05-17,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.660014181392437,Connecticut Valley Youth Lacrosse,0.7077490133050708,True,True
-2026-05-17,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,0.6897649041467376,RHAM 12U,0.7437136262069447,True,True
-2026-05-17,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Connecticut Valley Youth Lacrosse,Minnechaug 12U,0.6945815199741474,Minnechaug 12U,0.7494164007890932,False,False
-2026-05-17,Wethersfield 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,0.5337632895148627,Wethersfield 12U A,0.5449645272013249,False,False
-2026-05-17,Connecticut Valley Youth Lacrosse,Avon 12U,Avon 12U,Avon 12U,0.5769598457142175,Avon 12U,0.6019845030375874,True,True
-2026-05-17,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,0.6503365318710295,West Hartford 12U Green,0.6957960872753242,False,False
-2026-05-17,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,0.6089616863877838,Suffield 12U,0.6435027434202684,True,True
-2026-05-17,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Tie,Minnechaug 12U White,0.5857281666197839,Minnechaug 12U White,0.6134358638915365,False,False
-2026-05-17,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,0.5051983481640399,Connecticut Valley Youth Lacrosse,0.5069309366520018,False,False
-2026-05-17,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Glastonbury 12U White,Glastonbury 12U White,0.5242800198392301,Glastonbury 12U White,0.532353573402452,True,True
-2026-05-18,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5687864819638306,Connecticut Valley Youth Lacrosse,0.5912662178688579,True,True
-2026-05-18,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Southington 12U Blue,0.5677236552121517,Southington 12U Blue,0.589869585119553,False,False
-2026-05-18,Northampton 12U,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,0.6094056331245724,Connecticut Valley Youth Lacrosse,0.6440729078628733,False,False
-2026-05-18,Southington 12U White,Connecticut Valley Youth Lacrosse,Southington 12U White,Connecticut Valley Youth Lacrosse,0.5566736518228079,Connecticut Valley Youth Lacrosse,0.5753135304465901,False,False
-2026-05-18,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6129502262092404,Connecticut Valley Youth Lacrosse,0.6486188935026197,True,True
-2026-05-18,Connecticut Valley Youth Lacrosse,Somers 12U White,Connecticut Valley Youth Lacrosse,Somers 12U White,0.5367158154059339,Somers 12U White,0.5488860242109316,False,False
-2026-05-18,Bristol 12U,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,0.6019199037797502,Connecticut Valley Youth Lacrosse,0.6344359591340721,False,False
-2026-05-18,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Glastonbury 12U White,Glastonbury 12U White,0.5637019414209141,Glastonbury 12U White,0.584579132473716,True,True
-2026-05-18,Ellington 12U,Granby 12U,Ellington 12U,Ellington 12U,0.5392531075581862,Ellington 12U,0.5522539052172173,True,True
-2026-05-18,Minnechaug 12U,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,0.6458957682588394,Minnechaug 12U,0.6902729718311241,True,True
-2026-05-18,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6072120463771934,Connecticut Valley Youth Lacrosse,0.641253967561271,True,True
-2026-05-18,Somers 12U Red,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Somers 12U Red,0.5034132829351396,Somers 12U Red,0.5045509889280898,False,False
-2026-05-18,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,0.5346538759054837,Longmeadow 12U Black,0.5461476560655041,False,False
-2026-05-18,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5770863251442033,Minnechaug 12U White,0.6021500432313066,True,True
-2026-05-18,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,Berlin 12U A,0.5133528343868793,Berlin 12U A,0.5178004874920785,False,False
-2026-05-18,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.6409468562745062,Westfield 12U Red,0.6840905883965789,True,True
-2026-05-19,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,0.502259234580952,Wethersfield 12U B,0.5030122968299158,False,False
-2026-05-19,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5658709830517132,Suffield 12U White,0.5874335357616621,True,True
-2026-05-19,Connecticut Valley Youth Lacrosse,Meriden 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5363069334723212,Connecticut Valley Youth Lacrosse,0.5483431071382325,True,True
-2026-05-19,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6488776168896477,West Springfield 12U,0.6939841859200576,True,True
-2026-05-19,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,0.5175612316112135,Connecticut Valley Youth Lacrosse,0.5234074879544081,False,False
-2026-05-19,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.6123562173776316,Wolcott 12U,0.6478578664411792,True,True
-2026-05-19,Belchertown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5185906482209512,Connecticut Valley Youth Lacrosse,0.5247786481604582,True,True
-2026-05-19,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.573383904038281,Connecticut Valley Youth Lacrosse,0.5973000711738501,True,True
-2026-05-19,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5888476616100186,Connecticut Valley Youth Lacrosse,0.6174971344623201,True,True
-2026-05-19,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7148326826192579,Connecticut Valley Youth Lacrosse,0.7729943018499192,True,True
-2026-05-19,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,0.6411636643137737,Suffield 12U,0.6843620239683809,True,True
-2026-05-19,Newington 12U,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,0.619413167279568,Connecticut Valley Youth Lacrosse,0.656877695738576,False,False
-2026-05-20,Belchertown 12U,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.5394199630441617,Connecticut Valley Youth Lacrosse,0.5524753094265717,False,False
-2026-05-20,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,0.6121308916072701,Connecticut Valley Youth Lacrosse,0.647569100941948,False,False
-2026-05-20,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5995850654082705,Connecticut Valley Youth Lacrosse,0.6314204382302167,True,True
-2026-05-20,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6027693471432197,Connecticut Valley Youth Lacrosse,0.6355319220611126,True,True
-2026-05-20,Vernon 12U,Connecticut Valley Youth Lacrosse,Vernon 12U,Connecticut Valley Youth Lacrosse,0.538916529955638,Connecticut Valley Youth Lacrosse,0.5518072655153368,False,False
-2026-05-20,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6779276795762879,Connecticut Valley Youth Lacrosse,0.7295523667541997,True,True
-2026-05-20,Westfield 12U Red,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,0.669597643276309,Westfield 12U Red,0.7194673643147261,True,True
-2026-05-20,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7296701619146854,Connecticut Valley Youth Lacrosse,0.789835313904682,True,True
-2026-05-20,South Windsor 12U,West Hartford 12U Green,South Windsor 12U,West Hartford 12U Green,0.632110055324255,West Hartford 12U Green,0.6729826341181429,False,False
-2026-05-20,Ellington 12U,Connecticut Valley Youth Lacrosse,Ellington 12U,Connecticut Valley Youth Lacrosse,0.5618454159720505,Connecticut Valley Youth Lacrosse,0.5821340261801798,False,False
-2026-05-20,Connecticut Valley Youth Lacrosse,Tolland 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7273021372586082,Connecticut Valley Youth Lacrosse,0.7871732726109789,True,True
-2026-05-20,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,South Windsor 12U,0.5029101413550352,South Windsor 12U,0.5038801543954176,True,True
-2026-05-21,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5815768110489976,Suffield 12U White,0.608020636111637,True,True
-2026-05-21,Meriden 12U,Connecticut Valley Youth Lacrosse,Meriden 12U,Connecticut Valley Youth Lacrosse,0.5374416841755509,Connecticut Valley Youth Lacrosse,0.5498497136693108,False,False
-2026-05-21,Colchester 12U,Connecticut Valley Youth Lacrosse,Colchester 12U,Connecticut Valley Youth Lacrosse,0.5028660532025726,Connecticut Valley Youth Lacrosse,0.5038213717176108,False,False
-2026-05-21,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6582902294575981,West Springfield 12U,0.7056283392830878,True,True
-2026-05-21,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Farmington 12U Red,0.5497712901397377,Farmington 12U Red,0.5661914286260199,False,False
-2026-05-21,Connecticut Valley Youth Lacrosse,Westfield 12U Black,Connecticut Valley Youth Lacrosse,Westfield 12U Black,0.5072808655483824,Westfield 12U Black,0.5097072870623853,False,False
-2026-05-21,Colchester 12U,Tolland 12U,Colchester 12U,Colchester 12U,0.7659320261702589,Colchester 12U,0.8292954909832092,True,True
-2026-05-21,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.7129144224591277,West Hartford 12U Gold,0.7707895349850445,True,True
-2026-05-21,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,0.5312885729570218,Longmeadow 12U Black,0.5416757620819839,False,False
-2026-05-21,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5856887911137025,Connecticut Valley Youth Lacrosse,0.6133845566449112,True,True
-2026-05-22,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,0.5196839787766059,Connecticut Valley Youth Lacrosse,0.5262347612413065,False,False
-2026-05-22,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6931712045571108,Connecticut Valley Youth Lacrosse,0.7477502680740096,True,True
-2026-05-22,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5717909780965914,Connecticut Valley Youth Lacrosse,0.5952108524697557,True,True
-2026-05-22,Connecticut Valley Youth Lacrosse,Burlington 12U,Connecticut Valley Youth Lacrosse,Burlington 12U,0.5468721270383574,Burlington 12U,0.5623539187666067,False,False
-2026-05-22,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,0.6678582521508695,Suffield 12U,0.7173495301184952,True,True
-2026-05-22,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.6923918256172084,Westfield 12U Red,0.7468282147638329,True,True
-2026-05-22,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,Wethersfield 12U A,Wethersfield 12U A,0.5263946203546614,Wethersfield 12U A,0.5351674089323967,True,True
-2026-05-22,Somers 12U Red,Connecticut Valley Youth Lacrosse,Somers 12U Red,Connecticut Valley Youth Lacrosse,0.5162431968958969,Connecticut Valley Youth Lacrosse,0.5216516707484162,False,False
-2026-05-22,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Southington 12U Blue,0.5281341067928885,Southington 12U Blue,0.5374813615993626,False,False
-2026-05-22,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Tie,Farmington 12U Red,0.5142224864921284,Farmington 12U Red,0.518959337727845,False,False
-2026-05-22,Southington 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5410294739666923,Connecticut Valley Youth Lacrosse,0.5546105327138571,True,True
-2026-05-22,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Tie,Connecticut Valley Youth Lacrosse,0.6277727880153651,Connecticut Valley Youth Lacrosse,0.6674997627035599,False,False
-2026-05-23,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,RHAM 12U,0.6933551615211171,RHAM 12U,0.7479677654850847,True,True
-2026-05-23,Connecticut Valley Youth Lacrosse,Berlin 12U A,Berlin 12U A,Berlin 12U A,0.509166250098115,Berlin 12U A,0.5122206019390012,True,True
-2026-05-23,Meriden 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5085196318375471,Connecticut Valley Youth Lacrosse,0.5113586540864823,True,True
-2026-05-23,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.7296970223865912,West Hartford 12U Gold,0.7898654522095844,True,True
-2026-05-23,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6031143987259675,Connecticut Valley Youth Lacrosse,0.6359769393449961,True,True
-2026-05-23,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,0.6024985031550965,Glastonbury 12U White,0.635182541173303,False,False
-2026-05-23,Colchester 12U,Vernon 12U,Vernon 12U,Colchester 12U,0.5299811668072606,Colchester 12U,0.5399376408753068,False,False
-2026-05-23,Colchester 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Colchester 12U,0.5321599941953958,Colchester 12U,0.5428340215169397,False,False
-2026-05-24,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,0.6082873337828728,Connecticut Valley Youth Lacrosse,0.6426363319603934,False,False
-2026-05-24,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6088126962611506,Connecticut Valley Youth Lacrosse,0.6433113548873929,True,True
-2026-05-26,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6710073603530019,West Springfield 12U,0.7211807955294027,True,True
-2026-05-26,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5846809016866273,Suffield 12U White,0.6120708822580582,True,True
-2026-05-26,Connecticut Valley Youth Lacrosse,Somers 12U Red,Connecticut Valley Youth Lacrosse,Somers 12U Red,0.5108978243489956,Somers 12U Red,0.5145286429744247,False,False
-2026-05-26,Wethersfield 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,0.5419420659934723,Wethersfield 12U A,0.5558208148749417,False,False
-2026-05-26,Connecticut Valley Youth Lacrosse,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,0.5142619660126551,South Windsor 12U,0.5190119438748717,False,False
-2026-05-26,Connecticut Valley Youth Lacrosse,Agawam 12U,Agawam 12U,Connecticut Valley Youth Lacrosse,0.6043481963129985,Connecticut Valley Youth Lacrosse,0.6375673604810568,False,False
-2026-05-26,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,RHAM 12U,0.7020840179160588,RHAM 12U,0.7582279569963697,True,True
-2026-05-26,Connecticut Valley Youth Lacrosse,Belchertown 12U,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.5154725013083271,Connecticut Valley Youth Lacrosse,0.5206248805838536,False,False
-2026-05-26,Suffield 12U,South Windsor 12U,Suffield 12U,Suffield 12U,0.7004173589071824,Suffield 12U,0.756278116299032,True,True
-2026-05-26,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.636330671577301,Connecticut Valley Youth Lacrosse,0.6782987374269969,True,True
-2026-05-26,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7417886952162844,Connecticut Valley Youth Lacrosse,0.8032999528986635,True,True
-2026-05-27,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,0.5875487204827299,Minnechaug 12U White,0.61580689064141,True,True
-2026-05-27,Minnechaug 12U,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,0.6456772517777553,Minnechaug 12U,0.6900005925561378,True,True
-2026-05-27,Connecticut Valley Youth Lacrosse,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,0.6716091867092804,West Springfield 12U,0.7219114573787474,False,False
-2026-05-27,Westfield 12U Red,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,0.7107920445442396,Westfield 12U Red,0.7683430217382888,True,True
-2026-05-27,Connecticut Valley Youth Lacrosse,Somers 12U White,Connecticut Valley Youth Lacrosse,Somers 12U White,0.5203964735589741,Somers 12U White,0.5271835675385218,False,False
-2026-05-27,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5827912059904374,Suffield 12U White,0.6096059722232055,True,True
-2026-05-27,Connecticut Valley Youth Lacrosse,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6419844251826661,Connecticut Valley Youth Lacrosse,0.6853891003672251,True,True
-2026-05-27,Berlin 12U A,Connecticut Valley Youth Lacrosse,Berlin 12U A,Berlin 12U A,0.5173202448412991,Berlin 12U A,0.5230864762700815,True,True
-2026-05-27,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6158708320888299,Connecticut Valley Youth Lacrosse,0.6523559363294714,True,True
-2026-05-27,Colchester 12U,South Windsor 12U,South Windsor 12U,Colchester 12U,0.5541565810818654,Colchester 12U,0.5719894322650422,False,False
-2026-05-27,Connecticut Valley Youth Lacrosse,Somers 12U Red,Connecticut Valley Youth Lacrosse,Somers 12U Red,0.5030859893471902,Somers 12U Red,0.5041146118265943,False,False
-2026-05-27,Vernon 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Vernon 12U,0.5195658453576847,Vernon 12U,0.526077438693515,False,False
-2026-05-27,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.6117025738477005,Wolcott 12U,0.6470200639046572,True,True
-2026-05-27,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5151583462273706,Connecticut Valley Youth Lacrosse,0.5202063127727107,True,True
-2026-05-27,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.5939403430831134,West Hartford 12U Green,0.6241119484507351,True,True
-2026-05-27,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5903942749119182,Connecticut Valley Youth Lacrosse,0.6195080560998015,True,True
-2026-05-28,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5883649649691658,Connecticut Valley Youth Lacrosse,0.6168691693092637,True,True
-2026-05-28,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,0.5540393117478324,Connecticut Valley Youth Lacrosse,0.5718344937272002,False,False
-2026-05-28,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5630318474040006,Connecticut Valley Youth Lacrosse,0.5836968022798208,True,True
-2026-05-28,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.7149343882641301,West Hartford 12U Gold,0.7731110259055141,True,True
-2026-05-29,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,0.7035760482909067,Suffield 12U,0.7599697541695181,True,True
-2026-05-29,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,0.5984263771361917,Connecticut Valley Youth Lacrosse,0.6299222993429442,False,False
-2026-05-29,Connecticut Valley Youth Lacrosse,Meriden 12U,Meriden 12U,Connecticut Valley Youth Lacrosse,0.5184338650448066,Connecticut Valley Youth Lacrosse,0.5245698267510801,False,False
-2026-05-29,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6246383620468581,Connecticut Valley Youth Lacrosse,0.6635252745990909,True,True
-2026-05-29,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.597622006840057,Connecticut Valley Youth Lacrosse,0.6288816433449158,True,True
-2026-05-29,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7116069709642133,Connecticut Valley Youth Lacrosse,0.7692832892429824,True,True
-2026-05-30,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.6347898251262399,Wolcott 12U,0.6763601989983352,True,True
-2026-05-30,Southington 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5834052802905043,Connecticut Valley Youth Lacrosse,0.6104072367840556,True,True
-2026-05-30,Granby 12U,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,0.6090651969805547,Connecticut Valley Youth Lacrosse,0.6436356986089031,False,False
-2026-05-30,Granby 12U,Avon 12U,Granby 12U,Avon 12U,0.6694967318807967,Avon 12U,0.7193446088734395,False,False
-2026-05-31,Bristol 12U,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,0.6126673302636301,Connecticut Valley Youth Lacrosse,0.6482564957279033,False,False
-2026-05-31,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6402095003584007,Connecticut Valley Youth Lacrosse,0.6831670467446566,True,True
-2026-06-01,Connecticut Valley Youth Lacrosse,Simsbury,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.502969471283802,Connecticut Valley Youth Lacrosse,0.5039592588400577,True,True
-2026-06-01,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5594016971163088,Connecticut Valley Youth Lacrosse,0.5789128940431669,True,True
-2026-06-01,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,0.5891758933567588,Connecticut Valley Youth Lacrosse,0.6179240512786552,False,False
-2026-06-02,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6432410394117218,Connecticut Valley Youth Lacrosse,0.6869600949701907,True,True
-2026-06-02,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5901936295721811,Connecticut Valley Youth Lacrosse,0.6192472745219731,True,True
-2026-06-02,Southington 12U White,Connecticut Valley Youth Lacrosse,Southington 12U White,Connecticut Valley Youth Lacrosse,0.6188242973252343,Connecticut Valley Youth Lacrosse,0.6561268432675704,False,False
-2026-06-02,Bristol 12U,Granby 12U,Bristol 12U,Granby 12U,0.5014230630317149,Granby 12U,0.5018974133908336,False,False
-2026-06-03,Meriden 12U,Connecticut Valley Youth Lacrosse,Meriden 12U,Meriden 12U,0.5027967320116018,Meriden 12U,0.5037289457683473,True,True
-2026-06-03,Connecticut Valley Youth Lacrosse,Simsbury 14U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5029432555004111,Connecticut Valley Youth Lacrosse,0.5039243054126608,True,True
-2026-06-03,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Wethersfield 12U B,Wethersfield 12U B,0.5237257603819339,Wethersfield 12U B,0.5316158849163918,True,True
-2026-06-03,Ellington 12U,Connecticut Valley Youth Lacrosse,Ellington 12U,Connecticut Valley Youth Lacrosse,0.516468944182193,Connecticut Valley Youth Lacrosse,0.521952416660203,False,False
-2026-06-03,Connecticut Valley Youth Lacrosse,West Hartford Green,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.503023446233223,Connecticut Valley Youth Lacrosse,0.5040312234289345,True,True
-2026-06-03,South Windsor 12U,Southington 12U Blue,Southington 12U Blue,Southington 12U Blue,0.5174768323063206,Southington 12U Blue,0.523295062975391,True,True
-2026-06-03,Connecticut Valley Youth Lacrosse,Vernon 12U,Connecticut Valley Youth Lacrosse,Vernon 12U,0.5112631944468473,Vernon 12U,0.5150156170219558,False,False
-2026-06-03,South Windsor 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5299660568089024,Connecticut Valley Youth Lacrosse,0.5399175504848941,True,True
-2026-06-03,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6369721642748607,Connecticut Valley Youth Lacrosse,0.6791050295579532,True,True
-2026-06-03,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6415857936484649,Connecticut Valley Youth Lacrosse,0.6848903604864358,True,True
-2026-06-03,South Hadley 12U,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,0.7555840668850524,Connecticut Valley Youth Lacrosse,0.8182931800415945,False,False
-2026-06-03,Avon 12U B,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Avon 12U B,0.5767739789068174,Avon 12U B,0.6017412164363644,False,False
-2026-06-04,Colchester 12U,Tolland,Colchester 12U,Tolland,0.5093744886624532,Tolland,0.5124981791245893,False,False
-2026-06-04,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,Berlin 12U A,0.5165126045405584,Berlin 12U A,0.5220105812292681,False,False
-2026-06-04,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.6512994121719521,Wolcott 12U,0.6969905300042019,True,True
-2026-06-06,Connecticut Valley Youth Lacrosse,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,0.6592873794417242,Wolcott 12U,0.7068554191848984,False,False
-2026-06-06,Ellington 12U,Connecticut Valley Youth Lacrosse,Ellington 12U,Connecticut Valley Youth Lacrosse,0.5072246169576824,Connecticut Valley Youth Lacrosse,0.5096323012145875,False,False
+2026-04-15,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5417918526354388,Connecticut Valley Youth Lacrosse,0.5556216211947399,True,True
+2026-04-15,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5052567994895778,Connecticut Valley Youth Lacrosse,0.5070088651268215,True,True
+2026-04-15,Connecticut Valley Youth Lacrosse,Westfield 12U Black,Westfield 12U Black,Connecticut Valley Youth Lacrosse,0.5301675544024751,Connecticut Valley Youth Lacrosse,0.5401854588334233,False,False
+2026-04-15,Somers Juniors,Connecticut Valley Youth Lacrosse,Somers Juniors,Connecticut Valley Youth Lacrosse,0.5095022561546306,Connecticut Valley Youth Lacrosse,0.5126684885694317,False,False
+2026-04-16,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,0.5187939992782427,Connecticut Valley Youth Lacrosse,0.525049488244841,False,False
+2026-04-16,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5564884066407214,Connecticut Valley Youth Lacrosse,0.5750689911232797,True,True
+2026-04-16,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,Bristol 12U,0.5014551307358923,Bristol 12U,0.5019401700542383,False,False
+2026-04-16,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Connecticut Valley Youth Lacrosse,0.5075942999007033,Connecticut Valley Youth Lacrosse,0.5101251276020021,False,False
+2026-04-17,Somers 12U Red,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Somers 12U Red,0.5013928874444622,Somers 12U Red,0.5018571795226477,False,False
+2026-04-17,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,Belchertown 12U,0.5000026950052473,Belchertown 12U,0.5000035933403297,False,False
+2026-04-17,Connecticut Valley Youth Lacrosse,Westfield 12U Black,Westfield 12U Black,Westfield 12U Black,0.5060940032413901,Westfield 12U Black,0.5081250247347855,True,True
+2026-04-17,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5770781279088342,Connecticut Valley Youth Lacrosse,0.60213931474306,True,True
+2026-04-17,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,0.5135489764193333,Connecticut Valley Youth Lacrosse,0.5180618630122998,False,False
+2026-04-17,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.5264777256188373,Minnechaug 12U,0.5352779751516901,True,True
+2026-04-18,Meriden 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5766524043727137,Connecticut Valley Youth Lacrosse,0.6015820721021898,True,True
+2026-04-18,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.5498638265009861,Wolcott 12U,0.5663138595366313,True,True
+2026-04-19,Connecticut Valley Youth Lacrosse,Bristol 12U,Bristol 12U,Connecticut Valley Youth Lacrosse,0.5812987958541246,Connecticut Valley Youth Lacrosse,0.6076575606348655,False,False
+2026-04-19,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Middletown 12U,0.5023924045145401,Middletown 12U,0.5031898537523427,False,False
+2026-04-19,Simsbury 12U Blue,Somers 12U Red,Somers 12U Red,Simsbury 12U Blue,0.5104951195160975,Simsbury 12U Blue,0.5139918943306712,False,False
+2026-04-19,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5094693444466476,Connecticut Valley Youth Lacrosse,0.5126246185756775,True,True
+2026-04-20,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Connecticut Valley Youth Lacrosse,0.500236656127452,Connecticut Valley Youth Lacrosse,0.5003155414849426,False,False
+2026-04-20,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,0.5880193879468099,Southington 12U Blue,0.6164194864076151,False,False
+2026-04-20,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,South Windsor 12U,0.505269372879538,South Windsor 12U,0.5070256282020644,True,True
+2026-04-20,Suffield 12U,Somers 12U White,Suffield 12U,Suffield 12U,0.5817794272321555,Suffield 12U,0.6082852112070647,True,True
+2026-04-21,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5123469583206672,Connecticut Valley Youth Lacrosse,0.5164600086374133,True,True
+2026-04-21,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,0.5447620560027864,East Longmeadow 12U White,0.5595588396079453,False,False
+2026-04-21,Wethersfield 12U B,Simsbury 12U Blue,Wethersfield 12U B,Wethersfield 12U B,0.5317487698637299,Wethersfield 12U B,0.5422874628999241,True,True
+2026-04-21,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,Connecticut Valley Youth Lacrosse,0.5019963100418827,Connecticut Valley Youth Lacrosse,0.5026617357219144,False,False
+2026-04-21,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5195001817637945,Suffield 12U White,0.5259899911301179,True,True
+2026-04-22,South Windsor 12U,Suffield 12U,Suffield 12U,Suffield 12U,0.6018637185540026,Suffield 12U,0.6343634469758426,True,True
+2026-04-22,Connecticut Valley Youth Lacrosse,Vernon 12U,Connecticut Valley Youth Lacrosse,Vernon 12U,0.5068162392672801,Vernon 12U,0.5090878811396042,False,False
+2026-04-22,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Southington 12U Blue,0.5582473182821799,Southington 12U Blue,0.5773902505090873,True,True
+2026-04-22,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Farmington 12U Red,0.5047139893111717,Farmington 12U Red,0.5062851742395682,False,False
+2026-04-22,West Hartford 12U Green,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,Connecticut Valley Youth Lacrosse,0.5017167843748989,Connecticut Valley Youth Lacrosse,0.5022890388367169,False,False
+2026-04-22,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,0.5045449355412527,RHAM 12U,0.5060597842437925,True,True
+2026-04-22,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,Suffield 12U,0.6573059416090176,Suffield 12U,0.7044158503119738,True,True
+2026-04-22,Connecticut Valley Youth Lacrosse,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,0.5843063224239202,Wolcott 12U,0.6115824784227283,False,False
+2026-04-22,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5185331329899133,Connecticut Valley Youth Lacrosse,0.5247020433666838,True,True
+2026-04-22,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,West Hartford 12U White,0.5064009120984643,West Hartford 12U White,0.5085341868455109,False,False
+2026-04-22,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Glastonbury 12U Blue,0.5029983051083179,Glastonbury 12U Blue,0.5039977028744796,True,True
+2026-04-23,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.5878037139565913,West Hartford 12U Gold,0.6161387964046988,True,True
+2026-04-23,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,0.6894219587724283,Suffield 12U,0.7433062487895439,True,True
+2026-04-23,Suffield 12U,Ellington 12U,Suffield 12U,Suffield 12U,0.7697436132953086,Suffield 12U,0.8332936337083123,True,True
+2026-04-23,Connecticut Valley Youth Lacrosse,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5679964966651914,Connecticut Valley Youth Lacrosse,0.5902281794507124,True,True
+2026-04-24,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,Wethersfield 12U A,Wethersfield 12U A,0.5105126836500369,Wethersfield 12U A,0.5140153051379441,True,True
+2026-04-24,Southington 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Southington 12U White,0.5118529217309399,Southington 12U White,0.51580159323402,False,False
+2026-04-24,Colchester 12U,Connecticut Valley Youth Lacrosse,Colchester 12U,Colchester 12U,0.5078872961830778,Colchester 12U,0.510515716480142,True,True
+2026-04-24,Berlin 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Berlin 12U A,0.5092394569372494,Berlin 12U A,0.5123181853405109,False,False
+2026-04-24,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.5137228984868705,Wolcott 12U,0.5182936249726237,True,True
+2026-04-24,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Simsbury 12U A,0.5089376740213398,Simsbury 12U A,0.5119159115270054,False,False
+2026-04-24,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.504154707722933,Connecticut Valley Youth Lacrosse,0.5055395111339138,True,True
+2026-04-24,Southington 12U White,Bristol 12U,Bristol 12U,Southington 12U White,0.5087056569152957,Southington 12U White,0.5116066302845113,False,False
+2026-04-25,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,Minnechaug 12U White,0.5495442932212504,Minnechaug 12U White,0.5658910837829543,True,True
+2026-04-25,Westfield 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Westfield 12U Black,0.5214623263503196,Westfield 12U Black,0.5286027680917278,False,False
+2026-04-25,Connecticut Valley Youth Lacrosse,Vernon 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5785924528725127,Connecticut Valley Youth Lacrosse,0.604120525773125,True,True
+2026-04-25,Connecticut Valley Youth Lacrosse,Suffield Juniors 1 Blue,Suffield Juniors 1 Blue,Suffield Juniors 1 Blue,0.5026698652991768,Suffield Juniors 1 Blue,0.5035597940841261,True,True
+2026-04-25,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5708341307823338,Connecticut Valley Youth Lacrosse,0.5939551661548009,True,True
+2026-04-25,Avon 12U B,Connecticut Valley Youth Lacrosse,Avon 12U B,Avon 12U B,0.503242064882447,Avon 12U B,0.5043227060575942,True,True
+2026-04-25,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5341779044373636,Connecticut Valley Youth Lacrosse,0.5455153640170501,True,True
+2026-04-25,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5392692107373224,Connecticut Valley Youth Lacrosse,0.5522752732743138,True,True
+2026-04-25,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.6391592279920265,West Hartford 12U Gold,0.6818505143257727,True,True
+2026-04-25,Suffield 12U White,Simsbury 12U Blue,Suffield 12U White,Suffield 12U White,0.6260082607753303,Suffield 12U White,0.6652635584596339,True,True
+2026-04-25,Connecticut Valley Youth Lacrosse,Ellington 12U,Ellington 12U,Connecticut Valley Youth Lacrosse,0.605223411458911,Connecticut Valley Youth Lacrosse,0.6386947668894294,False,False
+2026-04-25,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,0.6033752632124945,Southington 12U Blue,0.6363133129291108,False,False
+2026-04-25,Avon 12U,Connecticut Valley Youth Lacrosse,Avon 12U,Avon 12U,0.5038211102653719,Avon 12U,0.5050947365437412,True,True
+2026-04-26,Somers 12U White,Connecticut Valley Youth Lacrosse,Somers 12U White,Connecticut Valley Youth Lacrosse,0.543397907784724,Connecticut Valley Youth Lacrosse,0.5577509555147341,False,False
+2026-04-26,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,Suffield 12U,0.7420107083824621,Suffield 12U,0.8035441060432722,True,True
+2026-04-26,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5515328701100441,Connecticut Valley Youth Lacrosse,0.568521487645001,True,True
+2026-04-26,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Wethersfield 12U B,0.521010076985161,Wethersfield 12U B,0.5280006147180261,True,True
+2026-04-26,Wethersfield 12U A,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,Wethersfield 12U A,0.5297884915792572,Wethersfield 12U A,0.5396814539109207,True,True
+2026-04-26,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,0.5509053920159606,Glastonbury 12U Blue,0.5676916654498185,False,False
+2026-04-26,Farmington 12U Red,Simsbury 12U Blue,Farmington 12U Red,Farmington 12U Red,0.5212375732441296,Farmington 12U Red,0.5283035221095483,True,True
+2026-04-26,Avon 12U B,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Avon 12U B,0.5369391861943644,Avon 12U B,0.5491825965025786,False,False
+2026-04-26,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.5774423220307325,West Hartford 12U Green,0.6026159284760048,True,True
+2026-04-26,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5152121808049456,Connecticut Valley Youth Lacrosse,0.5202780407237874,True,True
+2026-04-26,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,0.5037887916097314,Glastonbury 12U White,0.5050516469437893,False,False
+2026-04-26,Avon 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Avon 12U,0.5542278826936339,Avon 12U,0.5720836343424646,False,False
+2026-04-26,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,0.5978028221846667,Minnechaug 12U White,0.62911561881063,True,True
+2026-04-26,Connecticut Valley Youth Lacrosse,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,0.5806842861365872,Suffield 12U White,0.6068548553366957,False,False
+2026-04-26,Minnechaug 12U,Suffield 12U,Suffield 12U,Suffield 12U,0.6365855338355226,Suffield 12U,0.6786191281809458,True,True
+2026-04-26,Connecticut Valley Youth Lacrosse,Tolland 12U,Connecticut Valley Youth Lacrosse,Tolland 12U,0.5031502937319018,Tolland 12U,0.5042003484126352,False,False
+2026-04-26,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.677746504592362,West Hartford 12U Gold,0.7293340505274264,True,True
+2026-04-26,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,0.5829105235537265,RHAM 12U,0.6097616818769527,True,True
+2026-04-27,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5861501511765711,Connecticut Valley Youth Lacrosse,0.6139856514836391,True,True
+2026-04-27,Southington 12U White,Connecticut Valley Youth Lacrosse,Southington 12U White,Connecticut Valley Youth Lacrosse,0.5907977122676953,Connecticut Valley Youth Lacrosse,0.6200323189481847,False,False
+2026-04-27,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Tie,Connecticut Valley Youth Lacrosse,0.517500254889693,Connecticut Valley Youth Lacrosse,0.5233262633768677,False,False
+2026-04-27,Minnechaug 12U,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,0.59454533096729,Minnechaug 12U,0.6248964533368625,True,True
+2026-04-27,Westfield 12U Black,Connecticut Valley Youth Lacrosse,Tie,Connecticut Valley Youth Lacrosse,0.5294782711251493,Connecticut Valley Youth Lacrosse,0.5392689559379498,False,False
+2026-04-27,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,0.5098430698396962,Longmeadow 12U Black,0.5131227745410496,False,False
+2026-04-27,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Farmington 12U Black,Connecticut Valley Youth Lacrosse,0.6335344251448909,Connecticut Valley Youth Lacrosse,0.6747788662948628,False,False
+2026-04-27,Southington 12U White,West Hartford 12U White,Southington 12U White,Southington 12U White,0.5322881719748723,Southington 12U White,0.5430043735326916,True,True
+2026-04-27,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6163574512444668,Connecticut Valley Youth Lacrosse,0.6529778103010178,True,True
+2026-04-28,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6077506674597661,Connecticut Valley Youth Lacrosse,0.6419465333187601,True,True
+2026-04-28,Wolcott 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wolcott 12U,0.5286019041000237,Wolcott 12U,0.5381035306370016,False,False
+2026-04-28,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Southington 12U Blue,0.5532520909600869,Southington 12U Blue,0.5707942439484666,True,True
+2026-04-28,Colchester 12U,Connecticut Valley Youth Lacrosse,Colchester 12U,Colchester 12U,0.5289581154739418,Colchester 12U,0.5385772559752536,True,True
+2026-04-28,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,0.5130533558541676,East Longmeadow 12U A,0.5174013993197384,False,False
+2026-04-28,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,RHAM 12U,0.6469438372650309,RHAM 12U,0.6915786013362932,True,True
+2026-04-28,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,0.5688328917747824,Wethersfield 12U B,0.5913271892670771,False,False
+2026-04-28,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,0.5189204221767898,West Springfield 12U,0.5252178656768173,True,True
+2026-04-28,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5012473116591319,Connecticut Valley Youth Lacrosse,0.5016630795289474,True,True
+2026-04-28,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.570372599007478,Connecticut Valley Youth Lacrosse,0.5933492991080828,True,True
+2026-04-28,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.515466705802869,Connecticut Valley Youth Lacrosse,0.5206171589953502,True,True
+2026-04-28,Connecticut Valley Youth Lacrosse,Belchertown 12U,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.5494840753522859,Connecticut Valley Youth Lacrosse,0.5658114045900705,False,False
+2026-04-28,Agawam 12U,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,0.6282152521342392,Connecticut Valley Youth Lacrosse,0.6680599981544839,False,False
+2026-04-28,Connecticut Valley Youth Lacrosse,Burlington 12U,Burlington 12U,Burlington 12U,0.6344732538265714,Burlington 12U,0.6759615993729593,True,True
+2026-04-29,Connecticut Valley Youth Lacrosse,Vernon 12U,Vernon 12U,Connecticut Valley Youth Lacrosse,0.5822109311490895,Connecticut Valley Youth Lacrosse,0.6088485746366675,False,False
+2026-04-29,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.555943164210744,Connecticut Valley Youth Lacrosse,0.5743491322584349,True,True
+2026-04-29,Belchertown 12U,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.5268028200310255,Connecticut Valley Youth Lacrosse,0.5357104777942014,False,False
+2026-04-29,Connecticut Valley Youth Lacrosse,South Windsor 12U,South Windsor 12U,Connecticut Valley Youth Lacrosse,0.537183079865722,Connecticut Valley Youth Lacrosse,0.5495063998614454,False,False
+2026-04-29,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6147170379822693,Connecticut Valley Youth Lacrosse,0.6508805566933997,True,True
+2026-04-29,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,0.5963561886848205,Southington 12U Blue,0.6272429430286326,False,False
+2026-04-29,Suffield 12U,Westfield 12U Red,Westfield 12U Red,Suffield 12U,0.5841200243165522,Suffield 12U,0.6113395331341496,False,False
+2026-04-29,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,0.6192414549183463,Connecticut Valley Youth Lacrosse,0.656658784554575,False,False
+2026-04-29,Simsbury 12U Blue,West Hartford 12U White,Simsbury 12U Blue,Simsbury 12U Blue,0.505240980732466,Simsbury 12U Blue,0.5069877752584837,True,True
+2026-04-29,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6069204629078605,Connecticut Valley Youth Lacrosse,0.6408789398993294,True,True
+2026-04-29,Somers 12U Red,Connecticut Valley Youth Lacrosse,Somers 12U Red,Somers 12U Red,0.5017409739928116,Somers 12U Red,0.5023212913606715,True,True
+2026-04-29,Suffield 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Suffield 12U,0.6960955753612236,Suffield 12U,0.7512016913576995,False,False
+2026-04-29,Connecticut Valley Youth Lacrosse,Longmeadow 12U White,Connecticut Valley Youth Lacrosse,Longmeadow 12U White,0.5042217411603123,Longmeadow 12U White,0.5056288841727845,False,False
+2026-04-29,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.6785893004846124,West Hartford 12U Gold,0.7303492266749413,True,True
+2026-04-30,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,0.57942039642372,West Springfield 12U,0.6052031103160881,True,True
+2026-04-30,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5608938398666656,Connecticut Valley Youth Lacrosse,0.5808800835612509,True,True
+2026-04-30,West Hartford 12U Green,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,West Hartford 12U Green,0.5741581099502301,West Hartford 12U Green,0.5983149375757091,True,True
+2026-04-30,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.7092433157461343,West Hartford 12U Gold,0.7665530692747435,True,True
+2026-04-30,Connecticut Valley Youth Lacrosse,Agawam 12U,Agawam 12U,Connecticut Valley Youth Lacrosse,0.5662966033925643,Connecticut Valley Youth Lacrosse,0.5879933440123076,False,False
+2026-04-30,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.5214967856512593,Wolcott 12U,0.5286486478993443,True,True
+2026-04-30,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Bristol 12U,0.5000855945413839,Bristol 12U,0.5001141260543114,False,False
+2026-04-30,Ellington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.58175978071327,Connecticut Valley Youth Lacrosse,0.6082595580975239,True,True
+2026-04-30,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5044358742024683,Connecticut Valley Youth Lacrosse,0.5059143782478518,True,True
+2026-04-30,Connecticut Valley Youth Lacrosse,Somers 12U White,Somers 12U White,Somers 12U White,0.5256454574441474,Somers 12U White,0.5341706281462486,True,True
+2026-04-30,Westfield 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5249084983503274,Connecticut Valley Youth Lacrosse,0.5331899684414878,True,True
+2026-04-30,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5241920621760519,Connecticut Valley Youth Lacrosse,0.5322365107396925,True,True
+2026-05-01,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5354511859503499,Connecticut Valley Youth Lacrosse,0.5472066759526646,True,True
+2026-05-01,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.6303571672095777,Minnechaug 12U,0.6707691415319637,True,True
+2026-05-01,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.5431241540619728,Wolcott 12U,0.5573880728639968,True,True
+2026-05-01,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5196847189698646,Connecticut Valley Youth Lacrosse,0.5262357469762816,True,True
+2026-05-01,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5651237740362619,Connecticut Valley Youth Lacrosse,0.5864505120659946,True,True
+2026-05-01,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5988901089879973,Connecticut Valley Youth Lacrosse,0.6305220170427581,True,True
+2026-05-01,Berlin 12U A,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,0.5805410754220957,Connecticut Valley Youth Lacrosse,0.6066677498351498,False,False
+2026-05-02,Connecticut Valley Youth Lacrosse,Tolland 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5795631076766502,Connecticut Valley Youth Lacrosse,0.6053896685224682,True,True
+2026-05-02,Westfield 12U Black,Simsbury 12U Blue,Westfield 12U Black,Westfield 12U Black,0.5340808172534622,Westfield 12U Black,0.5453863831426969,True,True
+2026-05-02,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6019291718411279,Connecticut Valley Youth Lacrosse,0.6344479201599601,True,True
+2026-05-02,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6231494218343684,Connecticut Valley Youth Lacrosse,0.6616337852749268,True,True
+2026-05-02,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5059634431135591,Connecticut Valley Youth Lacrosse,0.5079509642486809,True,True
+2026-05-02,Westfield 12U Red,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,0.6607619496065478,Westfield 12U Red,0.7086676786703355,True,True
+2026-05-02,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,RHAM 12U,0.6780947606441878,RHAM 12U,0.729753658638755,True,True
+2026-05-02,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,South Windsor 12U,0.5108476730342263,South Windsor 12U,0.5144617991458365,True,True
+2026-05-02,Vernon 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5390587051208295,Connecticut Valley Youth Lacrosse,0.551995936946335,True,True
+2026-05-02,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5817939436920607,Connecticut Valley Youth Lacrosse,0.6083041656623116,True,True
+2026-05-02,Connecticut Valley Youth Lacrosse,Burlington 12U,Burlington 12U,Burlington 12U,0.6139390736353734,Burlington 12U,0.6498850555556452,True,True
+2026-05-02,Avon 12U B,Connecticut Valley Youth Lacrosse,Avon 12U B,Avon 12U B,0.5183190727130876,Avon 12U B,0.5244169310710481,True,True
+2026-05-02,Connecticut Valley Youth Lacrosse,Somers 12U White,Connecticut Valley Youth Lacrosse,Somers 12U White,0.5684189407231385,Somers 12U White,0.5907833134857746,False,False
+2026-05-02,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6066404674984358,Connecticut Valley Youth Lacrosse,0.6405187466956629,True,True
+2026-05-02,Newington 12U,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,0.6265879465771296,Connecticut Valley Youth Lacrosse,0.6659985535643489,False,False
+2026-05-02,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,0.610287117386884,Connecticut Valley Youth Lacrosse,0.6452044834756849,False,False
+2026-05-03,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5368933501478157,Connecticut Valley Youth Lacrosse,0.5491217406307243,True,True
+2026-05-03,Simsbury 12U Blue,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.7077914956008773,West Hartford 12U Green,0.7648715466345773,True,True
+2026-05-03,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Connecticut Valley Youth Lacrosse,0.5122115554443327,Connecticut Valley Youth Lacrosse,0.5162795561492353,False,False
+2026-05-03,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.517974245332437,Connecticut Valley Youth Lacrosse,0.5239576321603763,True,True
+2026-05-03,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6331505196959343,Connecticut Valley Youth Lacrosse,0.6742949489060952,True,True
+2026-05-03,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5866110882201543,Connecticut Valley Youth Lacrosse,0.6145860448882905,True,True
+2026-05-03,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5602489313304099,Connecticut Valley Youth Lacrosse,0.5800299940766649,True,True
+2026-05-03,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5231897378880932,Connecticut Valley Youth Lacrosse,0.5309024113297609,True,True
+2026-05-03,Middletown 12U,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,0.6218968580429882,Connecticut Valley Youth Lacrosse,0.6600408611905954,False,False
+2026-05-03,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.6837780481917304,West Hartford 12U Gold,0.7365768764616619,True,True
+2026-05-03,Connecticut Valley Youth Lacrosse,Colchester 12U,Connecticut Valley Youth Lacrosse,Colchester 12U,0.5761527659480319,Colchester 12U,0.600927934279477,False,False
+2026-05-03,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,Wethersfield 12U A,Wethersfield 12U A,0.5197143246433285,Wethersfield 12U A,0.526275173562724,True,True
+2026-05-03,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,0.6654670645132044,RHAM 12U,0.7144314773552678,True,True
+2026-05-03,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,0.5943520595021738,Minnechaug 12U White,0.6246458634881482,True,True
+2026-05-04,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.5733834888007953,Wolcott 12U,0.5972995267630705,True,True
+2026-05-04,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5630571763942069,Connecticut Valley Youth Lacrosse,0.5837301578796794,True,True
+2026-05-04,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,0.6091992726946013,West Springfield 12U,0.643807899296326,True,True
+2026-05-04,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.6610813940051812,Minnechaug 12U,0.7090599106271831,True,True
+2026-05-04,Westfield 12U Red,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Westfield 12U Red,0.6950887679904657,Westfield 12U Red,0.750014912948561,False,False
+2026-05-04,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5189416760824349,Connecticut Valley Youth Lacrosse,0.5252461726293086,True,True
+2026-05-05,Connecticut Valley Youth Lacrosse,Colchester 12U,Connecticut Valley Youth Lacrosse,Colchester 12U,0.5153764650861663,Colchester 12U,0.5204969270499114,False,False
+2026-05-05,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6137025301811898,Connecticut Valley Youth Lacrosse,0.6495822575885304,True,True
+2026-05-05,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,0.6128140998024014,Connecticut Valley Youth Lacrosse,0.6484445208734984,False,False
+2026-05-05,Agawam 12U,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,0.5530052739290975,Connecticut Valley Youth Lacrosse,0.5704680385044721,False,False
+2026-05-05,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,0.5312353914074122,Connecticut Valley Youth Lacrosse,0.5416050687932306,False,False
+2026-05-05,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6200394305482132,Connecticut Valley Youth Lacrosse,0.657675858033564,True,True
+2026-05-05,West Hartford 12U Green,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,West Hartford 12U Green,0.6086976504006464,West Hartford 12U Green,0.6431635567244468,True,True
+2026-05-05,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.582062390060127,Connecticut Valley Youth Lacrosse,0.6086546563345325,True,True
+2026-05-05,Connecticut Valley Youth Lacrosse,Belchertown 12U,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.577570439702054,Connecticut Valley Youth Lacrosse,0.6027835735043207,False,False
+2026-05-05,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6472570848074132,Connecticut Valley Youth Lacrosse,0.6919685769166501,True,True
+2026-05-06,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6510547379533217,West Springfield 12U,0.696687120813704,True,True
+2026-05-06,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6302928314948938,Connecticut Valley Youth Lacrosse,0.6706878384216078,True,True
+2026-05-06,Connecticut Valley Youth Lacrosse,Somers 12U White,Somers 12U White,Connecticut Valley Youth Lacrosse,0.5042351908059269,Connecticut Valley Youth Lacrosse,0.5056468160360755,False,False
+2026-05-06,South Windsor 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,South Windsor 12U,0.5698245776749077,South Windsor 12U,0.5926297342679571,False,False
+2026-05-06,Simsbury 12U Blue,Southington 12U White,Southington 12U White,Southington 12U White,0.6463584125191881,Southington 12U White,0.6908494694602838,True,True
+2026-05-07,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Agawam 12U,0.5102061155795774,Agawam 12U,0.513606684183909,False,False
+2026-05-07,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.551354411986207,Suffield 12U White,0.5682854987515426,True,True
+2026-05-07,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,0.5883271778576239,Connecticut Valley Youth Lacrosse,0.6168200029518996,False,False
+2026-05-07,Connecticut Valley Youth Lacrosse,Somers 12U Red,Connecticut Valley Youth Lacrosse,Somers 12U Red,0.509783918141011,Somers 12U Red,0.5130439292381319,False,False
+2026-05-07,Connecticut Valley Youth Lacrosse,Suffield B,Suffield B,Connecticut Valley Youth Lacrosse,0.5017065566417348,Connecticut Valley Youth Lacrosse,0.5022754019834659,False,False
+2026-05-07,Connecticut Valley Youth Lacrosse,Burlington 12U,Burlington 12U,Burlington 12U,0.642218522167162,Burlington 12U,0.6856819013572875,True,True
+2026-05-07,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5876111471432762,Connecticut Valley Youth Lacrosse,0.6158881510372576,True,True
+2026-05-08,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6816479906687206,Connecticut Valley Youth Lacrosse,0.7340250227250933,True,True
+2026-05-08,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,Minnechaug 12U,0.6589805899318397,Minnechaug 12U,0.7064780227550775,True,True
+2026-05-08,Connecticut Valley Youth Lacrosse,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.627048834249559,Connecticut Valley Youth Lacrosse,0.6665826760716828,True,True
+2026-05-08,Southington 12U White,Farmington 12U Red,Farmington 12U Red,Southington 12U White,0.5021078620120212,Southington 12U White,0.5028104697330257,False,False
+2026-05-08,Southington 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5311117325004788,Connecticut Valley Youth Lacrosse,0.5414406883787132,True,True
+2026-05-08,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Southington 12U Blue,0.5309558718394275,Southington 12U Blue,0.5412334963960098,True,True
+2026-05-08,Belchertown 12U,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.5642855476685542,Connecticut Valley Youth Lacrosse,0.5853473898692603,False,False
+2026-05-08,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,0.6237093340545969,Minnechaug 12U White,0.6623453365120503,False,False
+2026-05-09,Connecticut Valley Youth Lacrosse,Tolland 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.641858136460284,Connecticut Valley Youth Lacrosse,0.685231116424375,True,True
+2026-05-09,Granby 12U,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,0.6302996009469106,Connecticut Valley Youth Lacrosse,0.6706963934013409,False,False
+2026-05-09,Connecticut Valley Youth Lacrosse,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,0.501868300924244,South Windsor 12U,0.5024910588817688,False,False
+2026-05-09,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5977061909737371,Connecticut Valley Youth Lacrosse,0.6289905810566873,True,True
+2026-05-09,Connecticut Valley Youth Lacrosse,Burlington 12U,Connecticut Valley Youth Lacrosse,Burlington 12U,0.6355704509637543,Burlington 12U,0.6773426292989988,False,False
+2026-05-09,Connecticut Valley Youth Lacrosse,Meriden 12U,Meriden 12U,Connecticut Valley Youth Lacrosse,0.59680058827301,Connecticut Valley Youth Lacrosse,0.6278183977407095,False,False
+2026-05-09,Connecticut Valley Youth Lacrosse,Newington 12U,Newington 12U,Connecticut Valley Youth Lacrosse,0.6041218332430177,Connecticut Valley Youth Lacrosse,0.6372756649360971,False,False
+2026-05-09,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,0.684495510318974,RHAM 12U,0.7374349263349501,True,True
+2026-05-09,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.5910952855563135,Wolcott 12U,0.6204189348845872,True,True
+2026-05-09,Connecticut Valley Youth Lacrosse,Berkshire,Berkshire,Connecticut Valley Youth Lacrosse,0.5016574556435538,Connecticut Valley Youth Lacrosse,0.502209934562166,False,False
+2026-05-09,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5924654213806438,Connecticut Valley Youth Lacrosse,0.6221981991117032,True,True
+2026-05-10,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5984193199015126,Connecticut Valley Youth Lacrosse,0.6299131712880446,True,True
+2026-05-10,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6394077643027356,Connecticut Valley Youth Lacrosse,0.6821621706444624,True,True
+2026-05-10,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6059611834440937,Connecticut Valley Youth Lacrosse,0.6396446152072074,True,True
+2026-05-10,Connecticut Valley Youth Lacrosse,Vernon 12U,Vernon 12U,Connecticut Valley Youth Lacrosse,0.555708107612957,Connecticut Valley Youth Lacrosse,0.5740387552418263,False,False
+2026-05-10,Avon 12U B,Simsbury 12U Blue,Avon 12U B,Avon 12U B,0.6568952242238654,Avon 12U B,0.7039095489105898,True,True
+2026-05-10,Avon 12U,Connecticut Valley Youth Lacrosse,Avon 12U,Avon 12U,0.5135786225321655,Avon 12U,0.5181013685410162,True,True
+2026-05-11,Berlin 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.541858824354398,Connecticut Valley Youth Lacrosse,0.5557104314603036,True,True
+2026-05-11,Vernon 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5201174779592157,Connecticut Valley Youth Lacrosse,0.5268120481673162,True,True
+2026-05-11,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,0.521812187534692,Connecticut Valley Youth Lacrosse,0.5290685704463217,False,False
+2026-05-11,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5634058212909385,Connecticut Valley Youth Lacrosse,0.5841892523524299,True,True
+2026-05-11,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5892390028097346,Connecticut Valley Youth Lacrosse,0.618006125988368,True,True
+2026-05-11,Connecticut Valley Youth Lacrosse,Meriden 12U,Meriden 12U,Connecticut Valley Youth Lacrosse,0.5389417792079213,Connecticut Valley Youth Lacrosse,0.5518407726349411,False,False
+2026-05-11,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.6139305222821128,West Hartford 12U Green,0.6498741099195215,True,True
+2026-05-11,Connecticut Valley Youth Lacrosse,South Windsor 12U,South Windsor 12U,Connecticut Valley Youth Lacrosse,0.503308778777626,Connecticut Valley Youth Lacrosse,0.5044116549487893,False,False
+2026-05-11,Tolland 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6798451897438023,Connecticut Valley Youth Lacrosse,0.7318601162403252,True,True
+2026-05-11,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,0.5841385446300079,Minnechaug 12U White,0.6113636859451896,True,True
+2026-05-11,Minnechaug 12U,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,0.6836064755780369,Minnechaug 12U,0.7363715727194775,True,True
+2026-05-11,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6181011878519092,Connecticut Valley Youth Lacrosse,0.6552043674201165,True,True
+2026-05-12,Glastonbury 12U White,Suffield 12U,Suffield 12U,Suffield 12U,0.6354605558093067,Suffield 12U,0.677204364769177,True,True
+2026-05-12,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,0.6459904455848782,West Springfield 12U,0.6903909690451814,True,True
+2026-05-12,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Southington 12U Blue,Southington 12U Blue,0.5365291002751036,Southington 12U Blue,0.5486381084687277,True,True
+2026-05-12,Wolcott 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wolcott 12U,0.6246798712064656,Wolcott 12U,0.6635779741452436,False,False
+2026-05-12,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7056579057064583,Connecticut Valley Youth Lacrosse,0.7623941589909468,True,True
+2026-05-12,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5435728214471193,Connecticut Valley Youth Lacrosse,0.5579828036114483,True,True
+2026-05-12,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6230941211923472,Connecticut Valley Youth Lacrosse,0.6615634907275583,True,True
+2026-05-12,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,0.5125697311267347,Connecticut Valley Youth Lacrosse,0.5167568956291191,False,False
+2026-05-12,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,Suffield 12U,0.6736270817701067,Suffield 12U,0.7243577073874713,True,True
+2026-05-13,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,Suffield 12U White,0.5531717359999282,Suffield 12U White,0.5706880458446253,True,True
+2026-05-13,Connecticut Valley Youth Lacrosse,Southington 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5617944018449944,Connecticut Valley Youth Lacrosse,0.5820668137997687,True,True
+2026-05-13,Wethersfield 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,0.5786214031772373,Wethersfield 12U A,0.6041583874872766,False,False
+2026-05-13,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,0.6719278348726291,RHAM 12U,0.7222981194127357,True,True
+2026-05-13,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.7113081960089291,West Hartford 12U Gold,0.7689386882732565,True,True
+2026-05-13,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5867165478350707,Connecticut Valley Youth Lacrosse,0.6147233900781665,True,True
+2026-05-13,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.629271342319058,Connecticut Valley Youth Lacrosse,0.6693963658500666,True,True
+2026-05-13,Avon 12U B,Southington 12U White,Avon 12U B,Avon 12U B,0.6041862351498789,Avon 12U B,0.6373586588370886,True,True
+2026-05-13,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5825634587719144,Connecticut Valley Youth Lacrosse,0.6093087347922725,True,True
+2026-05-13,Tolland 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7109761064131574,Connecticut Valley Youth Lacrosse,0.768555489541616,True,True
+2026-05-13,Connecticut Valley Youth Lacrosse,Ellington 12U,Ellington 12U,Connecticut Valley Youth Lacrosse,0.6272492751106193,Connecticut Valley Youth Lacrosse,0.6668366437460834,False,False
+2026-05-13,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5624808485043946,Connecticut Valley Youth Lacrosse,0.5829711127135182,True,True
+2026-05-13,Connecticut Valley Youth Lacrosse,Berlin 12U A,Berlin 12U A,Connecticut Valley Youth Lacrosse,0.5722525005903208,Connecticut Valley Youth Lacrosse,0.595816322914683,False,False
+2026-05-13,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Farmington 12U Red,0.5381746235491094,Farmington 12U Red,0.5508226245843783,True,True
+2026-05-14,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6219283473025703,Connecticut Valley Youth Lacrosse,0.66008092615469,True,True
+2026-05-14,Connecticut Valley Youth Lacrosse,Burlington 12U,Connecticut Valley Youth Lacrosse,Burlington 12U,0.573716866823083,Burlington 12U,0.59773657942244,False,False
+2026-05-14,Meriden 12U,Connecticut Valley Youth Lacrosse,Tie,Meriden 12U,0.5011980854871183,Meriden 12U,0.5015974449382438,False,False
+2026-05-14,Connecticut Valley Youth Lacrosse,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,0.6829180661004369,Suffield 12U,0.735547391571137,False,False
+2026-05-14,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Southington 12U Blue,0.5518577131922818,Southington 12U Blue,0.5689510177742856,True,True
+2026-05-14,Westfield 12U Red,Suffield 12U,Westfield 12U Red,Suffield 12U,0.5125444972756783,Suffield 12U,0.5167232669975298,False,False
+2026-05-14,Connecticut Valley Youth Lacrosse,Bristol 12U,Tie,Connecticut Valley Youth Lacrosse,0.6120685809139155,Connecticut Valley Youth Lacrosse,0.6474892386865139,False,False
+2026-05-14,Connecticut Valley Youth Lacrosse,Agawam 12U,Agawam 12U,Connecticut Valley Youth Lacrosse,0.5871367506764558,Connecticut Valley Youth Lacrosse,0.6152705620075808,False,False
+2026-05-15,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,0.6170144081707576,Connecticut Valley Youth Lacrosse,0.6538170112481727,False,False
+2026-05-15,Connecticut Valley Youth Lacrosse,Meriden 12U,Connecticut Valley Youth Lacrosse,Meriden 12U,0.5014837778586345,Meriden 12U,0.5019783659612922,False,False
+2026-05-15,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5649501333662795,Suffield 12U White,0.5862220283909662,True,True
+2026-05-15,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.5935596349755671,Wolcott 12U,0.6236181290019651,True,True
+2026-05-15,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6412422506443916,Connecticut Valley Youth Lacrosse,0.6844603979063235,True,True
+2026-05-15,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7179293898036885,Connecticut Valley Youth Lacrosse,0.7765404616820676,True,True
+2026-05-15,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Glastonbury 12U White,0.5000963423061231,Glastonbury 12U White,0.5001284564069276,True,True
+2026-05-15,Berlin 12U A,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,0.5138210350985677,Connecticut Valley Youth Lacrosse,0.518424396588079,False,False
+2026-05-15,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6102478526268573,Connecticut Valley Youth Lacrosse,0.6451540934949762,True,True
+2026-05-15,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5834161998887443,Connecticut Valley Youth Lacrosse,0.6104214827069657,True,True
+2026-05-16,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,0.6639163691117874,West Springfield 12U,0.712535060337237,True,True
+2026-05-16,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5736902566691946,Connecticut Valley Youth Lacrosse,0.5977016964563377,True,True
+2026-05-16,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Longmeadow 12U Black,0.5036853438760527,Longmeadow 12U Black,0.5049137226254404,True,True
+2026-05-16,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5862054360769287,Connecticut Valley Youth Lacrosse,0.6140576707575389,True,True
+2026-05-16,Belchertown 12U,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.5333342534576031,Connecticut Valley Youth Lacrosse,0.5443944805800297,False,False
+2026-05-16,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6068863578728186,Connecticut Valley Youth Lacrosse,0.6408350699716541,True,True
+2026-05-16,Avon 12U B,Connecticut Valley Youth Lacrosse,Avon 12U B,Avon 12U B,0.5472070049638368,Avon 12U B,0.5627973539264107,True,True
+2026-05-16,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7080427796825771,Connecticut Valley Youth Lacrosse,0.7651628345549838,True,True
+2026-05-17,Suffield 12U White,Connecticut Valley Youth Lacrosse,Tie,Suffield 12U White,0.5706185804690688,Suffield 12U White,0.5936722220034337,False,False
+2026-05-17,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6547711581170406,Connecticut Valley Youth Lacrosse,0.7012877853114037,True,True
+2026-05-17,RHAM 12U,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,0.6960089563987819,RHAM 12U,0.7510996504100224,True,True
+2026-05-17,Wethersfield 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,0.5357190698250297,Wethersfield 12U A,0.5475624486200207,False,False
+2026-05-17,Connecticut Valley Youth Lacrosse,Avon 12U,Avon 12U,Avon 12U,0.5792104661916148,Avon 12U,0.604928656448284,True,True
+2026-05-17,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,0.6484428022621275,West Hartford 12U Green,0.693443673218193,False,False
+2026-05-17,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,0.6527006388273184,Suffield 12U,0.6987267209714648,True,True
+2026-05-17,Suffield 12U,Minnechaug 12U,Suffield 12U,Minnechaug 12U,0.5356340084258124,Minnechaug 12U,0.5474494821084848,False,False
+2026-05-17,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Tie,Minnechaug 12U White,0.5881330631629891,Minnechaug 12U White,0.6165674160798018,False,False
+2026-05-17,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,0.5068710886619197,Connecticut Valley Youth Lacrosse,0.5091610030098763,False,False
+2026-05-17,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Glastonbury 12U White,Glastonbury 12U White,0.5365057975695176,Glastonbury 12U White,0.5486071669701933,True,True
+2026-05-18,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5661438422736165,Connecticut Valley Youth Lacrosse,0.5877924323243121,True,True
+2026-05-18,Ellington 12U,Connecticut Valley Youth Lacrosse,Ellington 12U,Connecticut Valley Youth Lacrosse,0.5594913534880364,Connecticut Valley Youth Lacrosse,0.5790311250045077,False,False
+2026-05-18,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Southington 12U Blue,0.5708338989036243,Southington 12U Blue,0.593954861791575,False,False
+2026-05-18,Northampton 12U,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,0.6067564102099506,Connecticut Valley Youth Lacrosse,0.6406679066309566,False,False
+2026-05-18,Southington 12U White,Connecticut Valley Youth Lacrosse,Southington 12U White,Connecticut Valley Youth Lacrosse,0.5861314092230212,Connecticut Valley Youth Lacrosse,0.6139612359741995,False,False
+2026-05-18,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6036430363253124,Connecticut Valley Youth Lacrosse,0.636658535116048,True,True
+2026-05-18,Connecticut Valley Youth Lacrosse,Somers 12U White,Connecticut Valley Youth Lacrosse,Somers 12U White,0.5490988002369399,Somers 12U White,0.5653015805113722,False,False
+2026-05-18,Bristol 12U,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,0.6008755911678545,Connecticut Valley Youth Lacrosse,0.6330877501776887,False,False
+2026-05-18,Southington 12U White,Glastonbury 12U Blue,Southington 12U White,Southington 12U White,0.5316551653339296,Southington 12U White,0.5421630468032054,True,True
+2026-05-18,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,Glastonbury 12U White,Glastonbury 12U White,0.5747591047130142,Glastonbury 12U White,0.5991024984441036,True,True
+2026-05-18,Minnechaug 12U,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,0.6608726755118584,Minnechaug 12U,0.7088036491037499,True,True
+2026-05-18,Somers 12U Red,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Somers 12U Red,0.5018905722283291,Somers 12U Red,0.5025207536275508,False,False
+2026-05-18,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,0.5380560528436397,Longmeadow 12U Black,0.5506652440921483,False,False
+2026-05-18,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,Minnechaug 12U White,0.579924700907682,Minnechaug 12U White,0.6058622988551384,True,True
+2026-05-18,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,Berlin 12U A,0.5165297511694352,Berlin 12U A,0.5220334239910256,False,False
+2026-05-18,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.6591419773919582,Westfield 12U Red,0.7066765681366448,True,True
+2026-05-19,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,0.5016233351576869,Wethersfield 12U B,0.502164440961884,False,False
+2026-05-19,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5654377596864206,Suffield 12U White,0.5868636264173313,True,True
+2026-05-19,Suffield 12U,Agawam 12U,Suffield 12U,Suffield 12U,0.7473333507868377,Suffield 12U,0.8093697875667267,True,True
+2026-05-19,Connecticut Valley Youth Lacrosse,Meriden 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5330471334688809,Connecticut Valley Youth Lacrosse,0.5440129649183016,True,True
+2026-05-19,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6557822411218298,West Springfield 12U,0.7025364820707214,True,True
+2026-05-19,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,0.5139529677133269,Connecticut Valley Youth Lacrosse,0.5186002012138382,False,False
+2026-05-19,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.6153176733995724,Wolcott 12U,0.6516487571497623,True,True
+2026-05-19,Belchertown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5152135296154519,Connecticut Valley Youth Lacrosse,0.5202798378431461,True,True
+2026-05-19,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5861932138330157,Connecticut Valley Youth Lacrosse,0.6140417491074025,True,True
+2026-05-19,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7114600658344519,Connecticut Valley Youth Lacrosse,0.7691138703189666,True,True
+2026-05-19,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,0.7008383045375591,Suffield 12U,0.7567709995562305,True,True
+2026-05-19,Newington 12U,Connecticut Valley Youth Lacrosse,Newington 12U,Connecticut Valley Youth Lacrosse,0.6126230817723328,Connecticut Valley Youth Lacrosse,0.6481998055006069,False,False
+2026-05-20,Belchertown 12U,Connecticut Valley Youth Lacrosse,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.535422248567197,Connecticut Valley Youth Lacrosse,0.5471682433725146,False,False
+2026-05-20,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,0.6319211887345599,Connecticut Valley Youth Lacrosse,0.6727442964589968,False,False
+2026-05-20,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5957035306908605,Connecticut Valley Youth Lacrosse,0.626397531545835,True,True
+2026-05-20,Vernon 12U,Connecticut Valley Youth Lacrosse,Vernon 12U,Connecticut Valley Youth Lacrosse,0.5337724598636185,Connecticut Valley Youth Lacrosse,0.5449767109937389,False,False
+2026-05-20,Connecticut Valley Youth Lacrosse,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6707012098773388,Connecticut Valley Youth Lacrosse,0.7208089165567259,True,True
+2026-05-20,Westfield 12U Red,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,0.6884434404150801,Westfield 12U Red,0.7421429203641481,True,True
+2026-05-20,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7259573294439424,Connecticut Valley Youth Lacrosse,0.7856570743039326,True,True
+2026-05-20,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,0.6223075291423135,West Hartford 12U Green,0.6605632962284566,False,False
+2026-05-20,Simsbury 12U Blue,Glastonbury 12U Blue,Simsbury 12U Blue,Glastonbury 12U Blue,0.5237896097253393,Glastonbury 12U Blue,0.531700867944263,False,False
+2026-05-20,Ellington 12U,Connecticut Valley Youth Lacrosse,Ellington 12U,Connecticut Valley Youth Lacrosse,0.5445305174969413,Connecticut Valley Youth Lacrosse,0.5592520332581448,False,False
+2026-05-20,Connecticut Valley Youth Lacrosse,Tolland 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7237838514565038,Connecticut Valley Youth Lacrosse,0.7831998817634576,True,True
+2026-05-20,South Windsor 12U,Connecticut Valley Youth Lacrosse,South Windsor 12U,South Windsor 12U,0.5163184845023018,South Windsor 12U,0.5217519714585799,True,True
+2026-05-21,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5822068231859931,Suffield 12U White,0.6088432119488663,True,True
+2026-05-21,Meriden 12U,Connecticut Valley Youth Lacrosse,Meriden 12U,Connecticut Valley Youth Lacrosse,0.5342130603353659,Connecticut Valley Youth Lacrosse,0.5455620681693032,False,False
+2026-05-21,Colchester 12U,Connecticut Valley Youth Lacrosse,Colchester 12U,Connecticut Valley Youth Lacrosse,0.5020183092108432,Connecticut Valley Youth Lacrosse,0.5026910675794962,False,False
+2026-05-21,Connecticut Valley Youth Lacrosse,Tolland 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7411608392678612,Connecticut Valley Youth Lacrosse,0.8026089867906402,True,True
+2026-05-21,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6637756156357464,West Springfield 12U,0.712362769980859,True,True
+2026-05-21,Connecticut Valley Youth Lacrosse,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Farmington 12U Red,0.5467959992485631,Farmington 12U Red,0.5622531065886353,False,False
+2026-05-21,Connecticut Valley Youth Lacrosse,Westfield 12U Black,Connecticut Valley Youth Lacrosse,Westfield 12U Black,0.5060458667448053,Westfield 12U Black,0.5080608500961101,False,False
+2026-05-21,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.7151705167362392,West Hartford 12U Gold,0.7733819553598986,True,True
+2026-05-21,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,0.5341935325151204,Longmeadow 12U Black,0.5455361257578581,False,False
+2026-05-21,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5833018388691467,Connecticut Valley Youth Lacrosse,0.610272281018511,True,True
+2026-05-22,Suffield 12U,Burlington 12U,Suffield 12U,Suffield 12U,0.6735428686131977,Suffield 12U,0.7242557297734222,True,True
+2026-05-22,Simsbury 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6885410530984746,Connecticut Valley Youth Lacrosse,0.7422590331005559,True,True
+2026-05-22,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5699414854562775,Connecticut Valley Youth Lacrosse,0.5927832514617157,True,True
+2026-05-22,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,0.724736454010213,Suffield 12U,0.784277849658591,True,True
+2026-05-22,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,Westfield 12U Red,0.7089610124252215,Westfield 12U Red,0.7662263708705694,True,True
+2026-05-22,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,Wethersfield 12U A,Wethersfield 12U A,0.529377895637106,Wethersfield 12U A,0.5391354823068912,True,True
+2026-05-22,Somers 12U Red,Connecticut Valley Youth Lacrosse,Somers 12U Red,Connecticut Valley Youth Lacrosse,0.5167656617757737,Connecticut Valley Youth Lacrosse,0.5223477003042288,False,False
+2026-05-22,Southington 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Southington 12U Blue,0.5307959575399446,Southington 12U Blue,0.5410209092703036,False,False
+2026-05-22,Southington 12U White,Wethersfield 12U B,Wethersfield 12U B,Wethersfield 12U B,0.5458364606540324,Wethersfield 12U B,0.5609822471234915,True,True
+2026-05-22,Farmington 12U Red,Connecticut Valley Youth Lacrosse,Tie,Farmington 12U Red,0.5110059671905606,Farmington 12U Red,0.5146727796281956,False,False
+2026-05-22,Southington 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5915390973274789,Connecticut Valley Youth Lacrosse,0.6209954252308588,True,True
+2026-05-22,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Tie,Connecticut Valley Youth Lacrosse,0.6314098709858017,Connecticut Valley Youth Lacrosse,0.6720988548784221,False,False
+2026-05-23,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,RHAM 12U,0.6975896832538305,RHAM 12U,0.7529599862592936,True,True
+2026-05-23,Connecticut Valley Youth Lacrosse,Vernon 12U,Vernon 12U,Vernon 12U,0.5170394888070278,Vernon 12U,0.5227124785579486,True,True
+2026-05-23,Connecticut Valley Youth Lacrosse,Berlin 12U A,Berlin 12U A,Berlin 12U A,0.5118683042103821,Berlin 12U A,0.5158220942312948,True,True
+2026-05-23,Meriden 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.505987181497449,Connecticut Valley Youth Lacrosse,0.5079826119114694,True,True
+2026-05-23,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,West Hartford 12U Gold,0.7319717459656968,West Hartford 12U Gold,0.7924130812877513,True,True
+2026-05-23,Newington 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.59783019843651,Connecticut Valley Youth Lacrosse,0.6291510414631689,True,True
+2026-05-23,Glastonbury 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Glastonbury 12U White,0.614268707607545,Glastonbury 12U White,0.6503069315726233,False,False
+2026-05-23,Colchester 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Colchester 12U,0.540079290277935,Colchester 12U,0.5533500959776633,False,False
+2026-05-24,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,East Longmeadow 12U A,Connecticut Valley Youth Lacrosse,0.6058652088988622,Connecticut Valley Youth Lacrosse,0.6395210788605055,False,False
+2026-05-24,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6063707646695133,Connecticut Valley Youth Lacrosse,0.6401717296083805,True,True
+2026-05-26,Connecticut Valley Youth Lacrosse,West Springfield 12U,West Springfield 12U,West Springfield 12U,0.6763108483450766,West Springfield 12U,0.7276024455247161,True,True
+2026-05-26,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,0.7346979653428113,Suffield 12U,0.7954540984996248,True,True
+2026-05-26,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5853890822226587,Suffield 12U White,0.6129939929318354,True,True
+2026-05-26,Connecticut Valley Youth Lacrosse,Somers 12U Red,Connecticut Valley Youth Lacrosse,Somers 12U Red,0.5112205618004146,Somers 12U Red,0.5149587958411475,False,False
+2026-05-26,Wethersfield 12U A,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Wethersfield 12U A,0.5453203031085083,Wethersfield 12U A,0.5602984781893796,False,False
+2026-05-26,Connecticut Valley Youth Lacrosse,Agawam 12U,Agawam 12U,Connecticut Valley Youth Lacrosse,0.5916536167878118,Connecticut Valley Youth Lacrosse,0.6211441565959477,False,False
+2026-05-26,Connecticut Valley Youth Lacrosse,RHAM 12U,RHAM 12U,RHAM 12U,0.7089258395684787,RHAM 12U,0.7661856575731135,True,True
+2026-05-26,Connecticut Valley Youth Lacrosse,Belchertown 12U,Belchertown 12U,Connecticut Valley Youth Lacrosse,0.511402666737454,Connecticut Valley Youth Lacrosse,0.5152015057757546,False,False
+2026-05-26,Suffield 12U,South Windsor 12U,Suffield 12U,Suffield 12U,0.7180223850444053,Suffield 12U,0.7766467028405337,True,True
+2026-05-26,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6322916334301183,Connecticut Valley Youth Lacrosse,0.6732117382099593,True,True
+2026-05-26,South Hadley 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.7380168184691929,Connecticut Valley Youth Lacrosse,0.7991379247260088,True,True
+2026-05-27,Minnechaug 12U White,Connecticut Valley Youth Lacrosse,Minnechaug 12U White,Minnechaug 12U White,0.5916069611641909,Minnechaug 12U White,0.6210835641127092,True,True
+2026-05-27,Minnechaug 12U,Connecticut Valley Youth Lacrosse,Minnechaug 12U,Minnechaug 12U,0.6643933405762223,Minnechaug 12U,0.7131187076632736,True,True
+2026-05-27,Colchester 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Colchester 12U,0.5251716305986116,Colchester 12U,0.5335401273673372,False,False
+2026-05-27,Connecticut Valley Youth Lacrosse,West Springfield 12U,Connecticut Valley Youth Lacrosse,West Springfield 12U,0.6772683359508138,West Springfield 12U,0.7287576337181044,False,False
+2026-05-27,Westfield 12U Red,Connecticut Valley Youth Lacrosse,Westfield 12U Red,Westfield 12U Red,0.7274361391811189,Westfield 12U Red,0.7873241777425563,True,True
+2026-05-27,Connecticut Valley Youth Lacrosse,Somers 12U White,Connecticut Valley Youth Lacrosse,Somers 12U White,0.5373342931642986,Somers 12U White,0.5497071477226926,False,False
+2026-05-27,Suffield 12U White,Connecticut Valley Youth Lacrosse,Suffield 12U White,Suffield 12U White,0.5838620744031132,Suffield 12U White,0.6110031094950055,True,True
+2026-05-27,Connecticut Valley Youth Lacrosse,Farmington 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6382641930450468,Connecticut Valley Youth Lacrosse,0.6807275959579294,True,True
+2026-05-27,Berlin 12U A,Connecticut Valley Youth Lacrosse,Berlin 12U A,Berlin 12U A,0.5207474645620339,Berlin 12U A,0.5276509395486545,True,True
+2026-05-27,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6179007317982184,Connecticut Valley Youth Lacrosse,0.6549485551853809,True,True
+2026-05-27,Connecticut Valley Youth Lacrosse,South Windsor 12U,South Windsor 12U,Connecticut Valley Youth Lacrosse,0.5004575122990514,Connecticut Valley Youth Lacrosse,0.500610016266319,False,False
+2026-05-27,Connecticut Valley Youth Lacrosse,Somers 12U Red,Connecticut Valley Youth Lacrosse,Somers 12U Red,0.504812130799051,Somers 12U Red,0.5064160203206737,False,False
+2026-05-27,Vernon 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Vernon 12U,0.5258926717044848,Vernon 12U,0.5344995665238383,False,False
+2026-05-27,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.6156066715446068,Wolcott 12U,0.6520182593225125,True,True
+2026-05-27,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.510115635779033,Connecticut Valley Youth Lacrosse,0.5134860831968272,True,True
+2026-05-27,Connecticut Valley Youth Lacrosse,West Hartford 12U Green,West Hartford 12U Green,West Hartford 12U Green,0.5972458273392816,West Hartford 12U Green,0.6283947825839968,True,True
+2026-05-27,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5883614616496841,Connecticut Valley Youth Lacrosse,0.6168646110404259,True,True
+2026-05-28,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5862676580441362,Connecticut Valley Youth Lacrosse,0.6141387243159993,True,True
+2026-05-28,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,Longmeadow 12U Black,Connecticut Valley Youth Lacrosse,0.5492810621612778,Connecticut Valley Youth Lacrosse,0.5655427702955009,False,False
+2026-05-28,Connecticut Valley Youth Lacrosse,Agawam 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5501429906041418,Connecticut Valley Youth Lacrosse,0.5666831882371199,True,True
+2026-05-28,West Hartford 12U Gold,Connecticut Valley Youth Lacrosse,West Hartford 12U Gold,West Hartford 12U Gold,0.7188899038499734,West Hartford 12U Gold,0.7776370780763349,True,True
+2026-05-29,Suffield 12U,Connecticut Valley Youth Lacrosse,Suffield 12U,Suffield 12U,0.7512335302494729,Suffield 12U,0.8136043517970161,True,True
+2026-05-29,Suffield 12U,Simsbury 12U A,Suffield 12U,Suffield 12U,0.8824203706807099,Suffield 12U,0.85,True,True
+2026-05-29,Connecticut Valley Youth Lacrosse,Meriden 12U,Meriden 12U,Connecticut Valley Youth Lacrosse,0.5150498131829971,Connecticut Valley Youth Lacrosse,0.5200617047380935,False,False
+2026-05-29,Glastonbury 12U Blue,Simsbury 12U Blue,Glastonbury 12U Blue,Glastonbury 12U Blue,0.5164516697825401,Glastonbury 12U Blue,0.5219294035382471,True,True
+2026-05-29,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6213595554235354,Connecticut Valley Youth Lacrosse,0.6593570798524431,True,True
+2026-05-29,Connecticut Valley Youth Lacrosse,Simsbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6298251390999086,Connecticut Valley Youth Lacrosse,0.6700966693493764,True,True
+2026-05-30,Southington 12U White,Wolcott 12U,Wolcott 12U,Wolcott 12U,0.7382240261303643,Wolcott 12U,0.7993672488162693,True,True
+2026-05-30,Southington 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.632773182595233,Connecticut Valley Youth Lacrosse,0.6738191562660204,True,True
+2026-05-30,Connecticut Valley Youth Lacrosse,Avon 12U,Connecticut Valley Youth Lacrosse,Avon 12U,0.5782793401646183,Avon 12U,0.603710996941708,False,False
+2026-05-30,Granby 12U,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,0.5987106871334343,Connecticut Valley Youth Lacrosse,0.6302900016787829,False,False
+2026-05-31,Bristol 12U,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,0.6128088047550024,Connecticut Valley Youth Lacrosse,0.6484377377796354,False,False
+2026-05-31,Connecticut Valley Youth Lacrosse,West Hartford 12U White,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6440836035674983,Connecticut Valley Youth Lacrosse,0.688012432024389,True,True
+2026-06-01,Connecticut Valley Youth Lacrosse,Simsbury,Connecticut Valley Youth Lacrosse,Simsbury,0.5013983242304746,Simsbury,0.5018644285267383,False,False
+2026-06-01,Connecticut Valley Youth Lacrosse,Glastonbury 12U Blue,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5672201652282716,Connecticut Valley Youth Lacrosse,0.5892077414802744,True,True
+2026-06-01,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,East Longmeadow 12U White,Connecticut Valley Youth Lacrosse,0.5867036956056382,Connecticut Valley Youth Lacrosse,0.614706652417473,False,False
+2026-06-02,Connecticut Valley Youth Lacrosse,Granby 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.5845344390772493,Connecticut Valley Youth Lacrosse,0.6118799251882813,True,True
+2026-06-02,Southington 12U White,West Hartford 12U White,Southington 12U White,West Hartford 12U White,0.5063830791347712,West Hartford 12U White,0.5085104125828888,False,False
+2026-06-02,Southington 12U White,Connecticut Valley Youth Lacrosse,Southington 12U White,Connecticut Valley Youth Lacrosse,0.6297218800220952,Connecticut Valley Youth Lacrosse,0.6699661175470195,False,False
+2026-06-02,Bristol 12U,Connecticut Valley Youth Lacrosse,Bristol 12U,Connecticut Valley Youth Lacrosse,0.5944373761111122,Connecticut Valley Youth Lacrosse,0.6247564859463468,False,False
+2026-06-03,Meriden 12U,Connecticut Valley Youth Lacrosse,Meriden 12U,Meriden 12U,0.5062519939393417,Meriden 12U,0.5083356540246364,True,True
+2026-06-03,Connecticut Valley Youth Lacrosse,Simsbury 14U Blue,Connecticut Valley Youth Lacrosse,Simsbury 14U Blue,0.5027784178154298,Simsbury 14U Blue,0.5037045274304472,False,False
+2026-06-03,Connecticut Valley Youth Lacrosse,Wethersfield 12U B,Wethersfield 12U B,Wethersfield 12U B,0.5219034760944239,Wethersfield 12U B,0.5291901076704151,True,True
+2026-06-03,Connecticut Valley Youth Lacrosse,Southington 12U Blue,Southington 12U Blue,Southington 12U Blue,0.5146803613602191,Southington 12U Blue,0.5195694409165512,True,True
+2026-06-03,Ellington 12U,Connecticut Valley Youth Lacrosse,Ellington 12U,Ellington 12U,0.501720417768151,Ellington 12U,0.5022938833165373,True,True
+2026-06-03,Connecticut Valley Youth Lacrosse,West Hartford Green,Connecticut Valley Youth Lacrosse,West Hartford Green,0.5035439051110568,West Hartford Green,0.5047251452720016,False,False
+2026-06-03,Connecticut Valley Youth Lacrosse,Vernon 12U,Connecticut Valley Youth Lacrosse,Vernon 12U,0.518226831404002,Vernon 12U,0.5242940703882879,False,False
+2026-06-03,South Windsor 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,South Windsor 12U,0.5379641949365358,South Windsor 12U,0.5505433168109009,False,False
+2026-06-03,Connecticut Valley Youth Lacrosse,Northampton 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6329656663679931,Connecticut Valley Youth Lacrosse,0.6740618824246475,True,True
+2026-06-03,Connecticut Valley Youth Lacrosse,Middletown 12U,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,0.6373694341408304,Connecticut Valley Youth Lacrosse,0.6796041297990509,True,True
+2026-06-03,South Hadley 12U,Connecticut Valley Youth Lacrosse,South Hadley 12U,Connecticut Valley Youth Lacrosse,0.7522739071129694,Connecticut Valley Youth Lacrosse,0.8147289760064984,False,False
+2026-06-03,Avon 12U B,Connecticut Valley Youth Lacrosse,Connecticut Valley Youth Lacrosse,Avon 12U B,0.5739109582868446,Avon 12U B,0.5979909988412766,False,False
+2026-06-04,Connecticut Valley Youth Lacrosse,Tolland,Connecticut Valley Youth Lacrosse,Tolland,0.5003155484805407,Tolland,0.5004207312639435,False,False
+2026-06-04,Connecticut Valley Youth Lacrosse,Berlin 12U A,Connecticut Valley Youth Lacrosse,Berlin 12U A,0.5203220191607465,Berlin 12U A,0.5270844229855313,False,False
+2026-06-04,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,Wolcott 12U,0.6529324604649147,Wolcott 12U,0.6990137281508602,True,True
+2026-06-06,Connecticut Valley Youth Lacrosse,Wolcott 12U,Connecticut Valley Youth Lacrosse,Wolcott 12U,0.6609246810821467,Wolcott 12U,0.7088675060355554,False,False
+2026-06-06,Ellington 12U,Connecticut Valley Youth Lacrosse,Ellington 12U,Ellington 12U,0.508962825587952,Ellington 12U,0.5119494385918908,True,True
